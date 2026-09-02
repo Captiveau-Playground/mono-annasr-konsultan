@@ -92,6 +92,27 @@ export function Navbar() {
     return () => document.removeEventListener("pointerdown", onPointerDown)
   }, [])
 
+  // Jeda kecil sebelum menutup group saat mouse keluar — memberi waktu untuk
+  // "intip" ke panel (jarak mt-2 antara trigger dan menu tidak mematikan hover).
+  const timerTutup = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(
+    () => () => {
+      if (timerTutup.current) clearTimeout(timerTutup.current)
+    },
+    []
+  )
+
+  const bukaGrup = (href: string) => {
+    if (timerTutup.current) clearTimeout(timerTutup.current)
+    setGrupBuka(href)
+  }
+
+  const tutupGrupNanti = () => {
+    if (timerTutup.current) clearTimeout(timerTutup.current)
+    timerTutup.current = setTimeout(() => setGrupBuka(null), 250)
+  }
+
   const aktif = (to: string) =>
     to === "/" ? pathname === "/" : pathname.startsWith(to)
 
@@ -161,8 +182,8 @@ export function Navbar() {
               <li
                 key={grup.href}
                 className="relative flex items-center"
-                onMouseEnter={() => setGrupBuka(grup.href)}
-                onMouseLeave={() => setGrupBuka(null)}
+                onMouseEnter={() => bukaGrup(grup.href)}
+                onMouseLeave={tutupGrupNanti}
               >
                 <Link
                   href={grup.href}
@@ -196,6 +217,7 @@ export function Navbar() {
                 {terbuka ? (
                   <div
                     role="menu"
+                    onMouseEnter={() => bukaGrup(grup.href)}
                     className="border-border bg-background absolute top-full left-0 z-20 mt-2 w-64 rounded-2xl border p-2 shadow-[var(--shadow-soft)]"
                   >
                     {grup.anak.map((anak) => (
