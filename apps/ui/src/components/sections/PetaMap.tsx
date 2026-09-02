@@ -41,15 +41,18 @@ export function PetaMap() {
         return
       }
 
-      L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
-        {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
-          subdomains: "abcd",
-          maxZoom: 19,
-        }
-      ).addTo(map)
+      const kartokunci = process.env.NEXT_PUBLIC_CARTO_BASEMAPS_KEY
+      const polaTile = kartokunci
+        ? "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=" +
+          kartokunci
+        : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+
+      L.tileLayer(polaTile, {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: "abcd",
+        maxZoom: 20,
+      }).addTo(map)
 
       const koordinat: [number, number][] = kotaProyek.map((k) => [
         k.lat,

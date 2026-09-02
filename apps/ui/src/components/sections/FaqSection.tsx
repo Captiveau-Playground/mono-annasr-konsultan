@@ -4,7 +4,7 @@ import { Plus } from "lucide-react"
 import { useState } from "react"
 
 import { Reveal } from "@/components/site/Reveal"
-import { SectionShell } from "@/components/site/SectionShell"
+import { SectionHeading } from "@/components/site/SectionHeading"
 
 const faq = [
   {
@@ -43,60 +43,74 @@ export function FaqSection() {
   const [aktif, setAktif] = useState<number | null>(0)
 
   return (
-    <SectionShell tone="krem" judul={"Pertanyaan yang\nSering Diajukan"}>
-      <div className="mx-auto flex max-w-3xl flex-col gap-3">
-        {faq.map((f, i) => {
-          const terbuka = aktif === i
+    <section className="bg-surface scroll-mt-20 py-16 lg:py-24">
+      <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
+        {/* 2 kolom dalam 1 baris: judul kiri (sticky), daftar FAQ kanan (rata atas) */}
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-start">
+          <div className="lg:sticky lg:top-24">
+            <SectionHeading
+              eyebrow="FAQ"
+              judul={"Pertanyaan yang\nSering Diajukan"}
+              deskripsi="Jawaban singkat untuk kebutuhan yang paling sering ditanyakan calon klien kami."
+              align="left"
+            />
+          </div>
 
-          return (
-            <Reveal key={f.tanya} delay={i * 0.04}>
-              <div className="border-border bg-card rounded-xl border">
-                <button
-                  type="button"
-                  onClick={() => setAktif(terbuka ? null : i)}
-                  aria-expanded={terbuka}
-                  aria-controls={`faq-panel-${i}`}
-                  className="flex w-full items-center gap-4 px-5 py-4 text-left"
-                >
-                  <span className="text-foreground min-w-0 flex-1 text-sm font-medium sm:text-base">
-                    {f.tanya}
-                  </span>
-                  <span
-                    className={`flex size-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
-                      terbuka
-                        ? "bg-accent text-accent-foreground"
-                        : "bg-surface text-primary"
-                    }`}
-                  >
-                    <Plus
-                      className={`size-4 transition-transform duration-300 ${
-                        terbuka ? "rotate-45" : "rotate-0"
+          <div className="flex flex-col gap-3">
+            {faq.map((f, i) => {
+              const terbuka = aktif === i
+
+              return (
+                <Reveal key={f.tanya} delay={i * 0.03}>
+                  <div className="border-border bg-card rounded-xl border">
+                    <button
+                      type="button"
+                      onClick={() => setAktif(terbuka ? null : i)}
+                      aria-expanded={terbuka}
+                      aria-controls={`faq-panel-${i}`}
+                      className="flex w-full items-center gap-4 px-5 py-4 text-left"
+                    >
+                      <span className="text-foreground min-w-0 flex-1 text-sm font-medium sm:text-base">
+                        {f.tanya}
+                      </span>
+                      <span
+                        className={`flex size-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                          terbuka
+                            ? "bg-accent text-accent-foreground"
+                            : "bg-primary/10 text-primary"
+                        }`}
+                      >
+                        <Plus
+                          className={`size-4 transition-transform duration-300 ${
+                            terbuka ? "rotate-45" : "rotate-0"
+                          }`}
+                        />
+                      </span>
+                    </button>
+
+                    <div
+                      id={`faq-panel-${i}`}
+                      className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                        terbuka ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
                       }`}
-                    />
-                  </span>
-                </button>
-
-                <div
-                  id={`faq-panel-${i}`}
-                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
-                    terbuka ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
-                  }`}
-                >
-                  <div
-                    className={`min-h-0 overflow-hidden transition-opacity duration-300 ${
-                      terbuka ? "opacity-100" : "opacity-0"
-                    }`}
-                  >
-                    <p className="text-muted-foreground px-5 pb-5 text-sm leading-relaxed">
-                      {f.jawab}
-                    </p>
+                    >
+                      <div
+                        className={`min-h-0 overflow-hidden transition-opacity duration-300 ${
+                          terbuka ? "opacity-100" : "opacity-0"
+                        }`}
+                      >
+                        <p className="text-muted-foreground px-5 pb-5 text-sm leading-relaxed">
+                          {f.jawab}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </Reveal>
-          )
-        })}
+                </Reveal>
+              )
+            })}
+          </div>
+        </div>
       </div>
-    </SectionShell>
+    </section>
   )
 }
