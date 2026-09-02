@@ -19,8 +19,8 @@ const kartu = [
 
 export function TentangSection() {
   return (
-    <section className="px-6 py-20 lg:px-8 lg:py-24">
-      <div className="mx-auto max-w-5xl">
+    <section className="py-20 lg:py-24">
+      <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
         <Reveal className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
           <Image
             src="/images/annasr/founder.jpg"

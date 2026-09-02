@@ -359,7 +359,14 @@ export const artikel = [
       "Persetujuan Bangunan Gedung diurus sebelum membangun, Sertifikat Laik Fungsi setelah bangunan berdiri. Keduanya menentukan legalitas bangunan.",
     tanggal: "12 Agustus 2026",
     kategori: "Perizinan",
+    penulis: "Tim CV. AN NASR KONSULTAN",
     gambar: "/images/annasr/layanan-perizinan.jpg",
+    isi: [
+      "Setiap bangunan yang akan didirikan atau difungsikan wajib memiliki dokumen legalitas yang diatur dalam Undang-Undang Cipta Kerja dan Peraturan Pemerintah Nomor 16 Tahun 2021. Dokumen tersebut adalah Persetujuan Bangunan Gedung (PBG) dan Sertifikat Laik Fungsi (SLF).",
+      "PBG diterbitkan sebelum pekerjaan konstruksi dimulai, menggantikan izin mendirikan bangunan (IMB). Prosesnya memerlukan gambar rencana, perhitungan struktur, dan kesesuaian penggunaan lahan yang diverifikasi secara sistem. Setelah bangunan berdiri, pemilik wajib mengurus SLF untuk memastikan bangunan layak fungsi, aman, sehat, dan tidak mengganggu lingkungan.",
+      "Sebagai konsultan, kami mendampingi dari penyiapan berkas teknis, pengajuan melalui sistem online perizinan, hingga pemantauan sampai dokumen terbit. Dengan pengurusan yang benar dan terjadwal, Anda menghindari sanksi administratif yang justru lebih mahal dibanding biaya pendampingan.",
+      "Pastikan arsitek atau konsultan yang Anda libatkan memahami persyaratan teknis kota/kabupaten setempat. Kesalahan gambar atau spesifikasi sejak awal adalah penyebab paling umum pengajuan PBG ditolak.",
+    ],
   },
   {
     slug: "menyusun-rab-yang-realistis",
@@ -368,7 +375,14 @@ export const artikel = [
       "Rencana anggaran biaya yang disusun dari analisa harga satuan dan volume terukur menekan risiko pekerjaan tambah kurang di lapangan.",
     tanggal: "29 Juli 2026",
     kategori: "Perencanaan",
+    penulis: "Tim CV. AN NASR KONSULTAN",
     gambar: "/images/annasr/layanan-perencanaan.jpg",
+    isi: [
+      "Rencana Anggaran Biaya (RAB) yang baik bukan sekadar daftar harga. RAB lahir dari volume pekerjaan yang terukur dan analisa harga satuan yang jujur, sehingga angka yang tertera benar-benar dapat dijadikan acuan pelaksanaan.",
+      "Kesalahan paling umum adalah memakai harga satuan yang tidak memperhitungkan kondisi lapangan: jarak sumber material, mobilitas alat, hingga fluktuasi harga. Akibatnya muncul pekerjaan tambah kurang yang membuat anggaran membengkak di tengah jalan.",
+      "Dalam penyusunan RAB, kami memulai dari gambar rencana dan perhitungan volume yang akurat, lalu menyusun analisa harga satuan berdasarkan harga pasar di wilayah proyek. Cadangan anggaran (contingency) juga disiapkan secara wajar, bukan sekadar menaikkan harga satuan.",
+      "Hasilnya, pemberi tugas dapat memantau realisasi biaya per termin dengan bukti fisik yang jelas, dan perubahan lingkup dapat dihitung konsekuensi biayanya sebelum diputuskan.",
+    ],
   },
   {
     slug: "peran-pengawas-lapangan",
@@ -377,7 +391,14 @@ export const artikel = [
       "Pengawas memastikan mutu bahan, volume, dan metode kerja sesuai gambar rencana, serta mendokumentasikan progres secara berkala.",
     tanggal: "10 Juli 2026",
     kategori: "Pengawasan",
+    penulis: "Tim CV. AN NASR KONSULTAN",
     gambar: "/images/annasr/layanan-pengawasan.jpg",
+    isi: [
+      "Kualitas sebuah proyek ditentukan pada malam hari, bukan di atas meja rapat: mutu beton yang dituang, tebal lapisan yang dipadatkan, dan kerapian penulangan. Di sinilah pengawas lapangan berperan sebagai mata dan telinga pemberi tugas.",
+      "Tugas pengawas mencakup pemeriksaan mutu bahan sebelum dipakai, pengendalian volume pekerjaan, serta kesesuaian metode kerja dengan gambar rencana dan spesifikasi. Setiap temuan dicatat dan dilaporkan secara berkala, baik laporan harian maupun mingguan, lengkap dengan dokumentasi visual.",
+      "Pengawasan yang disiplin juga melindungi pemberi tugas dalam hal pembayaran termin. Volume yang dibayarkan harus sesuai realisasi di lapangan, sehingga tidak ada pemborosan karena pekerjaan tersamar atau material yang tidak sesuai spesifikasi.",
+      "Kami menempatkan pengawas yang familiar dengan jenis pekerjaan, karena pengalaman memahami titik rawan mutu jauh lebih berharga daripada sekadar mencatat progres.",
+    ],
   },
   {
     slug: "memilih-struktur-jalan-desa",
@@ -386,6 +407,112 @@ export const artikel = [
       "Pemilihan perkerasan bergantung pada beban lalu lintas, kondisi tanah dasar, dan kemampuan pemeliharaan jangka panjang.",
     tanggal: "24 Juni 2026",
     kategori: "Konstruksi",
+    penulis: "Tim CV. AN NASR KONSULTAN",
     gambar: "/images/annasr/layanan-konstruksi.jpg",
+    isi: [
+      "Pertanyaan klasik perencanaan jalan perdesaan: beton atau aspal? Keduanya memiliki kelebihan dan keterbatasan, dan jawabannya sangat bergantung pada kondisi spesifik tiap ruas.",
+      "Perkerasan beton unggul untuk lalu lintas kendaraan berat, tahan genangan, dan perawatannya ringan dalam jangka panjang — asalkan tanah dasar dipersiapkan baik. Kelemahannya adalah biaya awal yang lebih besar dan perbaikan lokal yang lebih sulit bila terjadi kerusakan.",
+      "Perkerasan aspal lebih nyaman, lebih cepat dikerjakan, dan biaya awalnya lebih rendah. Namun aspal sensitif terhadap genangan dan membutuhkan pemeliharaan berkala (pelapisan ulang) yang harus dianggarkan pemerintah desa.",
+      "Kami biasanya menyusun perbandingan biaya siklus hidup (life cycle cost) kedua jenis perkerasan berdasarkan volume lalu lintas, kondisi tanah, dan anggaran pemeliharaan desa, sebelum merekomendasikan jenis perkerasan.",
+    ],
+  },
+  {
+    slug: "memilih-konsultan-konstruksi",
+    judul: "Kriteria Memilih Konsultan Konstruksi yang Tepat",
+    ringkas:
+      "Legalitas, portofolio, tenaga ahli, dan transparansi biaya adalah hal pertama yang perlu diperiksa sebelum menunjuk konsultan.",
+    tanggal: "5 Juni 2026",
+    kategori: "Perencanaan",
+    penulis: "Tim CV. AN NASR KONSULTAN",
+    gambar: "/images/annasr/tim-engineer.jpg",
+    isi: [
+      "Memilih konsultan konstruksi adalah keputusan jangka panjang: keputusan ini menentukan apakah proyek berjalan tepat mutu, tepat biaya, dan tepat waktu. Karena itu, pemeriksaan awal perlu dilakukan secara sistematis.",
+      "Pertama, pastikan legalitas: badan usaha berbadan hukum, memiliki tenaga ahli bersertifikat (misalnya SKA/SKT), dan pengalaman sesuai jenis pekerjaan. Kedua, periksa portofolio — bukan hanya jumlah proyek, tetapi kemiripan lingkup dan skala dengan kebutuhan Anda.",
+      "Ketiga, perhatikan transparansi. Konsultan yang baik bersedia memaparkan struktur biaya jasa, metode kerja, dan jadwal penugasan secara tertulis sejak awal. Keempat, pastikan ada PIC tunggal yang bertanggung jawab memantau penugasan, bukan sekadar tim yang berganti-ganti.",
+      "Konsultasi awal biasanya dapat dilakukan tanpa biaya. Gunakan kesempatan itu untuk mengukur kedalaman pemahaman konsultan terhadap kondisi lapangan di wilayah proyek Anda.",
+    ],
+  },
+  {
+    slug: "tips-membangun-rumah-tinggal",
+    judul: "Tips Membangun Rumah Tinggal: Fase yang Sering Terlewat",
+    ringkas:
+      "Survei tanah, gambar kerja lengkap, dan perizinan sering dianggap sepele padahal menentukan kelancaran pembangunan rumah.",
+    tanggal: "19 Mei 2026",
+    kategori: "Konstruksi",
+    penulis: "Tim CV. AN NASR KONSULTAN",
+    gambar: "/images/annasr/proyek-renovasi.jpg",
+    isi: [
+      "Sebagian besar pembangunan rumah tinggal bermasalah bukan karena tukang, melainkan karena fase perencanaan yang disederhanakan berlebihan. Padahal tiga persiapan kecil menentukan kelancaran keseluruhan proyek.",
+      "Pertama, survei dan uji tanah. Daya dukung tanah menentukan jenis pondasi; membangun di tanah yang berbeda tanpa uji tanah adalah undian. Kedua, gambar kerja yang lengkap: denah, tampak, potongan, detail, sampai jadwal material — semuanya mencegah revisi di tengah pekerjaan.",
+      "Ketiga, perizinan. PBG bukan sekadar formalitas; kesalahan struktur yang terverifikasi melalui perizinan dapat menyelamatkan Anda dari kerugian yang jauh lebih besar. Prosesnya juga harus dimulai sebelum pekerjaan, bukan setelahnya.",
+      "Dengan tiga fase ini dikerjakan dengan benar oleh tenaga yang tepat, pembangunan rumah umumnya berjalan lebih cepat dan biayanya lebih terkendali dibanding proyek yang 'langsung tancap bangun'.",
+    ],
+  },
+  {
+    slug: "pentingnya-as-built-drawing",
+    judul: "Pentingnya Gambar As Built untuk Pemeliharaan Bangunan",
+    ringkas:
+      "Gambar as built adalah dokumen paling berharga pasca konstruksi — acuan pemeliharaan, renovasi, dan audit teknis bangunan.",
+    tanggal: "2 Mei 2026",
+    kategori: "Perencanaan",
+    penulis: "Tim CV. AN NASR KONSULTAN",
+    gambar: "/images/annasr/proyek-gedung.jpg",
+    isi: [
+      "Ketika sebuah gedung selesai dibangun, dokumen yang paling jarang diperhatikan justru paling menentukan masa depannya: gambar as built. Ini adalah gambar yang merekam kondisi pelaksanaan sebenarnya, termasuk setiap penyesuaian yang terjadi di lapangan.",
+      "Tanpa as built, pemeliharaan menjadi tebak-tebakan: letak pipa, jalur kabel, dimensi utilitas, hingga posisi tulangan tidak terdokumentasi. Ketika renovasi dilakukan bertahun-tahun kemudian, ketidaktahuan ini sering berujung pada tembus pipa, potong kabel, atau kesalahan struktur.",
+      "Pada setiap proyek yang kami kawal, penyusunan gambar as built adalah bagian wajib dari serah terima. Dokumen disusun bersama kontraktor dan diverifikasi di lapangan sebelum diserahkan kepada pemberi tugas.",
+      "Jika bangunan Anda belum memiliki as built, kami dapat melakukan redrawing dari kondisi eksisting — investasi kecil yang nilainya terasa ketika kebutuhan renovasi atau audit teknis muncul.",
+    ],
+  },
+  {
+    slug: "pengawasan-rehabilitasi-irigasi",
+    judul: "Mengawal Rehabilitasi Saluran Irigasi agar Berumur Panjang",
+    ringkas:
+      "Pengawasan irigasi bukan hanya mengecek dimensi, tetapi memastikan kemiringan, mutu pasangan, dan titik pembuangan air benar.",
+    tanggal: "15 April 2026",
+    kategori: "Pengawasan",
+    penulis: "Tim CV. AN NASR KONSULTAN",
+    gambar: "/images/annasr/proyek-irigasi.jpg",
+    isi: [
+      "Saluran irigasi yang salah kemiringan akan menggenang, bukan mengalir. Karena itulah pengawasan rehabilitasi irigasi menuntut ketelitian pada elemen yang tidak terlihat saat pekerjaan selesai.",
+      "Pengawas harus memeriksa kemiringan memanjang (gradien) sesuai desain, mutu pasangan batu dan beton, ketebalan plesteran, hingga elevasi pintu air dan titik pembuangan. Penyimpangan kecil pada dimensi dapat mengurangi luas areal yang terlayani secara signifikan.",
+      "Dokumentasi juga penting: kondisi sebelum, saat, dan sesudah pekerjaan menjadi dasar penilaian volumenya. Tanpa dokumentasi yang baik, pembayaran termin sulit dipertanggungjawabkan secara transparan.",
+      "Pengalaman kami menangani rehabilitasi irigasi primer dan sekunder di Jawa Timur menunjukkan bahwa pengawasan yang disiplin sejak minggu pertama menekan pekerjaan ulang hingga akhir masa pemeliharaan.",
+    ],
+  },
+  {
+    slug: "sertifikat-laik-fungsi-gedung",
+    judul:
+      "SLF Wajib untuk Gedung yang Sudah Berdiri: Apa yang Harus Disiapkan?",
+    ringkas:
+      "Bangunan yang tidak memiliki SLF berisiko sanksi administratif. Ketahui persyaratan dan proses pengurusannya.",
+    tanggal: "2 April 2026",
+    kategori: "Perizinan",
+    penulis: "Tim CV. AN NASR KONSULTAN",
+    gambar: "/images/annasr/proyek-bendungan.jpg",
+    isi: [
+      "Setelah bangunan berdiri dan sebelum difungsikan, pemilik wajib mengurus Sertifikat Laik Fungsi (SLF). Sertifikat ini merupakan pernyataan bahwa bangunan telah memenuhi persyaratan kelaikan teknis: keselamatan, kesehatan, kenyamanan, dan kemudahan.",
+      "Prosesnya melibatkan verifikasi kesesuaian pelaksanaan dengan PBG, pemeriksaan struktur, arsitektur, mekanikal-elektrikal, hingga proteksi kebakaran. Bangunan yang banyak melakukan perubahan dari izin awal biasanya memerlukan penyesuaian dokumen terlebih dahulu.",
+      "Untuk mempercepat proses, siapkan gambar as built, laporan struktur, dan bukti pemeliharaan bangunan. Konsultan dapat melakukan pemeriksaan pendahuluan untuk mendeteksi hal-hal yang berpotensi menjadi temuan sebelum verifikasi resmi.",
+      "Gedung perkantoran, ruko, dan bangunan umum yang telah beroperasi tanpa SLF dapat dikenai sanksi administratif. Menyiapkan pengurusan sejak masa pemeliharaan bangunan adalah langkah paling hemat.",
+    ],
+  },
+  {
+    slug: "kenalan-dengan-mutu-beton",
+    judul: "Kenali Mutu Beton dan Kaitannya dengan Struktur Bangunan",
+    ringkas:
+      "Memahami istilah K-225, K-300, dan fc-25 membantu Anda berkomunikasi dengan tepat bersama pelaksana konstruksi.",
+    tanggal: "18 Maret 2026",
+    kategori: "Konstruksi",
+    penulis: "Tim CV. AN NASR KONSULTAN",
+    gambar: "/images/annasr/layanan-konstruksi.jpg",
+    isi: [
+      "Saat proyek berjalan, Anda akan menemui istilah mutu beton seperti K-225, K-300, atau fc-21. Keduanya adalah cara mengukur kuat tekan beton — K menggunakan satuan kg/cm², sedangkan fc menggunakan MPa — dan keduanya sering disalahartikan.",
+      "Pemilihan mutu beton bergantung pada fungsi elemen: pondasi, kolom, balok, atau pelat, serta beban yang direncanakan. Struktur bertingkat umumnya membutuhkan mutu yang lebih tinggi pada elemen yang menahan beban besar, dengan proporsi campuran yang diverifikasi melalui uji laboratorium.",
+      "Yang lebih penting dari angka adalah konsistensi pelaksanaannya: penakaran yang benar, waktu pengadukan, pemadatan, hingga perawatan (curing) setelah pengecoran. Beton berkualitas akan gagal jika pelaksanaan tidak terkontrol.",
+      "Konsultan struktur menyusun spesifikasi mutu beton dan melakukan pengujian sampel. Ketika Anda memahami dasar ini, Anda bisa berdialog setara dengan pelaksana dan meminta bukti hasil uji, bukan sekadar janji.",
+    ],
   },
 ]
+
+export type Artikel = (typeof artikel)[number]

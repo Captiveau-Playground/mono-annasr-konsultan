@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next"
 
-import { layanan } from "@/data/perusahaan"
+import { artikel, layanan } from "@/data/perusahaan"
 import { getEnvVar } from "@/lib/env-vars"
 import { isDevelopment, isProduction } from "@/lib/general-helpers"
 import { createPublicFullPath } from "@/lib/navigation"
@@ -44,6 +44,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: tgl,
       changeFrequency: "monthly",
       priority: 0.7,
+    })
+  }
+
+  for (const a of artikel) {
+    urls.push({
+      url: createPublicFullPath(`/artikel/${a.slug}`, "en"),
+      lastModified: tgl,
+      changeFrequency: "monthly",
+      priority: 0.6,
     })
   }
 
