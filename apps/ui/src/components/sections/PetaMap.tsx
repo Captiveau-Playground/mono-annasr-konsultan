@@ -50,7 +50,7 @@ export function PetaMap() {
       L.tileLayer(polaTile, {
         attribution:
           '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: "abcd",
+        subdomains: ["a"],
         maxZoom: 20,
       }).addTo(map)
 
@@ -69,7 +69,14 @@ export function PetaMap() {
       })
 
       for (const kota of kotaProyek) {
-        L.marker([kota.lat, kota.lng], { icon: ikon })
+        // Decorative pins → keyboard: false (tanpa role/tabindex command),
+        // dan tanpa aria-label (dilarang pada div tanpa role). Nama lokasi
+        // sudah tersedia lewat tooltip/popup + aria-label pada container peta.
+        const marker = L.marker([kota.lat, kota.lng], {
+          icon: ikon,
+          keyboard: false,
+        })
+        marker
           .addTo(map)
           .bindTooltip(kota.nama, { direction: "top", offset: [0, -6] })
           .bindPopup(
@@ -89,10 +96,17 @@ export function PetaMap() {
   }, [])
 
   return (
-    <div
-      className="border-border bg-surface relative z-0 h-[24rem] w-full overflow-hidden rounded-xl border sm:h-[30rem]"
-      ref={containerRef}
-      aria-label="Peta persebaran lokasi proyek CV. AN NASR KONSULTAN di Indonesia"
-    />
+    <>
+      <link
+        rel="preconnect"
+        href="https://a.basemaps.cartocdn.com"
+        crossOrigin="anonymous"
+      />
+      <div
+        className="border-border bg-surface relative z-0 h-[24rem] w-full overflow-hidden rounded-xl border sm:h-[30rem]"
+        ref={containerRef}
+        aria-label="Peta persebaran lokasi proyek CV. AN NASR KONSULTAN di Indonesia"
+      />
+    </>
   )
 }

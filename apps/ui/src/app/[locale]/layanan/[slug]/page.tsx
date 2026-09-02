@@ -75,6 +75,7 @@ export default async function DetailLayanan({
                   width={1200}
                   height={800}
                   priority={i === 0}
+                  sizes={i === 0 ? "80vw" : "(min-width:640px) 40vw, 80vw"}
                   className={`border-border w-full rounded-[1.5rem] border object-cover shadow-[var(--shadow-soft)] ${
                     i === 0 ? "aspect-[16/7]" : "aspect-[4/3]"
                   }`}

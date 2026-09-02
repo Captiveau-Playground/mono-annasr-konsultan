@@ -80,6 +80,7 @@ export function Navbar() {
 
     return (
       segmen[0] === "crm" ||
+      segmen[0] === "tentang" ||
       (segmen[0] === "artikel" && segmen.length >= 2) ||
       (segmen[0] === "layanan" && segmen.length >= 2)
     )

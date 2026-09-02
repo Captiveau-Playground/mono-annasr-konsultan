@@ -68,6 +68,7 @@ export function ArtikelList() {
                 alt={ARTIKEL_UNGGULAN.judul}
                 width={1200}
                 height={760}
+                sizes="(min-width:1024px) 50vw, 100vw"
                 className="aspect-[16/10] h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 lg:aspect-auto"
               />
               <span className="bg-accent text-accent-foreground absolute top-4 left-4 rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase">

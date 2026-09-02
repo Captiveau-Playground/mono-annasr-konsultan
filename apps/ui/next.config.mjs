@@ -42,7 +42,7 @@ const nextConfig = {
 
     // Used only by Next's built-in optimizer, mainly StaticImage.
     // imgproxy/external services choose their own output format.
-    formats: ["image/webp"],
+    formats: ["image/avif", "image/webp"],
 
     // Cache TTL for images processed by Next's built-in optimizer.
     minimumCacheTTL: 60 * 60, // 1 hour

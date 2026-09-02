@@ -26,6 +26,7 @@ export function Founder() {
                     alt={`${founder.nama}, ${founder.jabatan} CV. AN NASR KONSULTAN`}
                     width={820}
                     height={1000}
+                    sizes="(min-width:1024px) 42vw, 100vw"
                     className="aspect-[4/5] w-full object-cover"
                   />
                 </div>

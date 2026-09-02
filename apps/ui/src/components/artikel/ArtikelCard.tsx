@@ -15,7 +15,8 @@ export function ArtikelCard({ item }: { item: Artikel }) {
           alt={item.judul}
           width={1200}
           height={800}
-          className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+          className="className aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </Link>
       <div className="flex flex-1 flex-col p-6">

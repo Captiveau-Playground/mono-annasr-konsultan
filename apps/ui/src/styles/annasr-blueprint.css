@@ -74,7 +74,7 @@
   --muted: oklch(0.975 0.005 80);
   --muted-foreground: oklch(0.53 0.03 257);
   --accent: oklch(0.68 0.185 47);
-  --accent-foreground: oklch(1 0 0);
+  --accent-foreground: oklch(0.29 0.03 258);
   --surface: oklch(0.972 0.008 75);
   --font-heading: var(--annasr-heading), "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-body: var(--annasr-body), "Inter", ui-sans-serif, system-ui, sans-serif;

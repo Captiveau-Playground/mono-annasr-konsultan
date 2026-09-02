@@ -29,6 +29,7 @@ export function LayananSection({ lengkap = false }: { lengkap?: boolean }) {
                           alt={item.alt}
                           width={1200}
                           height={800}
+                          sizes="(min-width:1024px) 50vw, 100vw"
                           className="aspect-[3/2] w-full object-cover"
                         />
                       </div>
@@ -40,6 +41,7 @@ export function LayananSection({ lengkap = false }: { lengkap?: boolean }) {
                             alt={g.alt}
                             width={400}
                             height={300}
+                            sizes="(min-width:1024px) 16vw, (min-width:640px) 25vw, 50vw"
                             className="border-border aspect-[4/3] w-full rounded-lg border object-cover"
                           />
                         ))}
@@ -101,6 +103,7 @@ export function LayananSection({ lengkap = false }: { lengkap?: boolean }) {
                 alt={item.alt}
                 width={1200}
                 height={800}
+                sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
                 className="aspect-[16/10] w-full object-cover"
               />
               <div className="flex flex-1 flex-col p-5">

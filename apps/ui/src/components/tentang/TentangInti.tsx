@@ -80,6 +80,7 @@ export function TentangInti() {
                   alt="Tim CV. AN NASR KONSULTAN — Jombang, Jawa Timur"
                   width={1000}
                   height={760}
+                  sizes="(min-width:1024px) 42vw, 100vw"
                   className="aspect-[4/3] w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
                 />
               </div>

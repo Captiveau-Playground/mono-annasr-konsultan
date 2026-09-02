@@ -94,6 +94,7 @@ export default async function DetailArtikel({
                 width={1400}
                 height={875}
                 priority
+                sizes="90vw"
                 className="border-border aspect-[16/9] w-full rounded-3xl border object-cover"
               />
               <figcaption className="text-muted-foreground mt-3 text-center text-xs">
