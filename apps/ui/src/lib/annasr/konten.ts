@@ -61,6 +61,10 @@ function medUrl(v: undefined | { url?: unknown }, fb: string): string {
   const url = v?.url
   if (!url || typeof url !== "string") return fb
   if (url.startsWith("http")) return url
+  // Hanya upload asli Strapi yang butuh prefix base. Path statis FE
+  // (/images/…) tetap dipakai relatif — lebih cepat & tidak kena
+  // blokir Next Image optimizer (SSRF private IP).
+  if (!url.startsWith("/uploads/")) return url
   const base = process.env.STRAPI_URL?.replace(/\/$/, "")
 
   return base ? `${base}${url}` : url
@@ -202,12 +206,45 @@ function artikelCms(daftar: Record<string, unknown>[]) {
   })
 }
 
+/**
+ * Field komponen per tipe konten yang dipakai `ambil()`.
+ *
+ * Plugin @notum-cz/strapi-plugin-smart-populate hanya menerima bentuk objek
+ * (`populate[hero]=smart`), bukan nilai string datar (`populate=smart`)
+ * yang ditolak Strapi dengan "Invalid key smart".
+ */
+const POPULATE_SMART: Record<string, Record<string, "smart">> = {
+  tentang: {
+    hero: "smart",
+    statistik: "smart",
+    founder: "smart",
+    perjalanan: "smart",
+    visiMisi: "smart",
+    tim: "smart",
+    alasan: "smart",
+    kotaProyek: "smart",
+  },
+  layanan: { layanan: "smart", proses: "smart" },
+  portfolio: { proyek: "smart" },
+  klien: { klien: "smart" },
+  karir: { posisi: "smart" },
+  kontak: {},
+  artikel: { artikel: "smart" },
+  situs: { navigasi: "smart" },
+}
+
 async function ambil(nama: string, locale: Locale): Promise<Raw> {
   try {
+    const populate = POPULATE_SMART[nama]
+    const params =
+      populate && Object.keys(populate).length > 0
+        ? { locale, populate }
+        : { locale }
+
     const result = (await PublicStrapiClient.fetchOne(
       uid(nama) as UID.ContentType,
       undefined,
-      { locale, populate: "smart" } as never,
+      params,
       {
         next: { revalidate: 120, tags: [strapiCacheTag(uid(nama))] },
       } as never

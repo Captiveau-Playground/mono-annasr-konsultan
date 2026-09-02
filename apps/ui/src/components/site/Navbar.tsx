@@ -63,9 +63,11 @@ const IKON_NAV: Record<string, LucideIcon> = {
 }
 
 export function Navbar({
+  brandNama,
   navigasiCms,
   tagline,
 }: {
+  brandNama?: string
   navigasiCms?: { label: string; href: string }[]
   tagline?: string
 }) {
@@ -80,15 +82,17 @@ export function Navbar({
   const pathname = usePathname()
 
   /**
-   * Rute yang bagian atasnya ber-latar terang → navbar wajib solid (tidak
-   * transparan ber-teks-putih yang jadi tak terlihat), mis. detail artikel,
-   * detail layanan, dan area CRM. Locale prefix (cs/en) ikut dibuang.
+   * Rute yang bagian atasnya ber-LATAR-TERANG → navbar wajib solid (tidak
+   * transparan ber-teks-putih yang jadi tak terlihat). Termasuk:
+   * beranda (hero kini putih/minimal), detail artikel & layanan, halaman
+   * tentang, dan area CRM. Locale prefix (cs/en) ikut dibuang.
    */
   const topTerang = (() => {
     const segmen = pathname.split("/").filter(Boolean)
     if (segmen[0] === "cs" || segmen[0] === "en") segmen.shift()
 
     return (
+      segmen.length === 0 ||
       segmen[0] === "crm" ||
       segmen[0] === "tentang" ||
       (segmen[0] === "artikel" && segmen.length >= 2) ||
@@ -176,7 +180,7 @@ export function Navbar({
                 terang ? "text-primary-foreground" : "text-foreground"
               }`}
             >
-              CV. An Nasr Konsultan
+              {brandNama?.trim() || "CV. An Nasr Konsultan"}
             </span>
             <span
               className={`block text-[11px] tracking-wide ${

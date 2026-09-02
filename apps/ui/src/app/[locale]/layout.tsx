@@ -23,19 +23,41 @@ export function generateStaticParams() {
   return locales
 }
 
-export const metadata: Metadata = {
-  title: {
-    default: "CV. AN NASR KONSULTAN — Konsultan Teknik Sipil Jombang",
-    template: "%s",
-  },
-  description:
-    "Jasa perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang, Jawa Timur.",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "16x16 32x32" },
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
-  },
+/**
+ * Judul tab & deskripsi SEO dari CMS (situs.brandNama / brandTagline),
+ * fallback ke nilai statis bila Strapi kosong / gagal.
+ */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+
+  if (!isValidLocale(locale)) {
+    return {}
+  }
+
+  const kontenSitus = await fetchKontenSitus(locale)
+  const brand = kontenSitus.situs.brandNama || "CV. AN NASR KONSULTAN"
+  const tagline =
+    kontenSitus.situs.brandTagline ||
+    "Konsultan Teknik Sipil & Konstruksi Jombang"
+
+  return {
+    title: {
+      default: `${brand} — ${tagline}`,
+      template: "%s",
+    },
+    description:
+      "Jasa perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang, Jawa Timur.",
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "16x16 32x32" },
+        { url: "/favicon.svg", type: "image/svg+xml" },
+      ],
+    },
+  }
 }
 
 export default async function RootLayout({
@@ -76,6 +98,7 @@ export default async function RootLayout({
           <ClientProviders>
             <SmoothScroll />
             <Navbar
+              brandNama={kontenSitus.situs.brandNama}
               navigasiCms={kontenSitus.situs.navigasi}
               tagline={kontenSitus.situs.brandTagline}
             />

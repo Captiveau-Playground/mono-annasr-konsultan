@@ -180,6 +180,62 @@
   background-size: 64px 64px;
 }
 
+/* ── Hero homepage ─────────────────────────────────────────────
+ * Vignette halus + animasi masuk murni CSS (tanpa JS/Framer)
+ * supaya LCP ringan dan tidak lag saat pertama kali render.
+ */
+@utility hero-vignette {
+  background: radial-gradient(
+    72% 58% at 50% 34%,
+    transparent 0%,
+    color-mix(in oklab, oklch(0.26 0.075 258) 28%, transparent) 100%
+  );
+}
+
+/* Halo lembut di puncak hero minimal — bukan gambar, bukan grid. */
+@utility hero-halo {
+  background: radial-gradient(
+    90% 70% at 50% -10%,
+    color-mix(in oklab, oklch(0.38 0.115 256) 10%, transparent),
+    transparent 70%
+  );
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility hero-anim-fade {
+  animation: hero-fade 1s ease-out both;
+}
+
+@utility hero-anim-fade-up {
+  animation: hero-fade-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-anim-fade,
+  .hero-anim-fade-up {
+    animation: none;
+  }
+}
+
 @keyframes marquee-x {
   from {
     transform: translateX(0);

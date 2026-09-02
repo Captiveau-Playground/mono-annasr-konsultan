@@ -25,9 +25,13 @@ export function SmoothScroll() {
       autoStart: true,
       lenisOptions: {
         smoothWheel: !kurangiGerak,
-        lerp: 0.09,
+        // Lerp moderat: terlalu rendah (0.09) terasa "berat"/tertinggal.
+        lerp: 0.12,
         wheelMultiplier: 1,
-        touchMultiplier: 1.2,
+        // Matikan smoothing saat sentuh — penyebab utama lag di mobile
+        // (Lenis menginterpolasi scroll sentuh per frame → jank).
+        touchMultiplier: 0,
+        syncTouch: false,
       },
     })
     lsRef.current = ls

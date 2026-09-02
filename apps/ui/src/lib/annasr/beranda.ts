@@ -103,6 +103,8 @@ const CTA_DEFAULT = {
 function resolvUrl(mungkin: unknown): string | undefined {
   if (!mungkin || typeof mungkin !== "string") return undefined
   if (mungkin.startsWith("http")) return mungkin
+  // Hanya upload asli Strapi yang butuh prefix base (lihat konten.ts).
+  if (!mungkin.startsWith("/uploads/")) return mungkin
   const base = process.env.STRAPI_URL?.replace(/\/$/, "")
 
   return base ? `${base}${mungkin}` : mungkin
