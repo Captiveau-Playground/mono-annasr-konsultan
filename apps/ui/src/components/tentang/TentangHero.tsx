@@ -22,8 +22,8 @@ export function TentangHero() {
         sizes="100vw"
         className="absolute inset-0 -z-20 object-cover"
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[oklch(0.16_0.05_266)] via-[oklch(0.24_0.06_266)] to-[oklch(0.35_0.08_258)]" />
-      <div className="bg-foreground/45 absolute inset-0 -z-10 mix-blend-multiply" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[oklch(0.15_0.05_266/0.95)] via-[oklch(0.24_0.06_266/0.82)] to-[oklch(0.32_0.075_258/0.5)]" />
+      {/*<div className="bg-foreground/25 absolute inset-0 -z-10 mix-blend-multiply" />*/}
 
       <div className="mx-auto w-full max-w-6xl px-6 py-24 lg:px-10">
         <div className="max-w-3xl">

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
+@import "locomotive-scroll/dist/locomotive-scroll.css";
 @import "@repo/design-system/theme.css";
 @import "@repo/design-system/custom-styles.css";
 @import "./annasr-blueprint.css";
@@ -45,7 +46,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     /* This is size of the navbar - 64px + some padding - change if needed */
     scroll-padding-top: 72px;
   }

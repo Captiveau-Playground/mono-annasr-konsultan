@@ -9,7 +9,7 @@ import type React from "react"
 import { ClientProviders } from "@/components/providers/ClientProviders"
 import { Footer } from "@/components/site/Footer"
 import { Navbar } from "@/components/site/Navbar"
-import { ScrollToTop } from "@/components/site/ScrollToTop"
+import { SmoothScroll } from "@/components/site/SmoothScroll"
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat"
 import { Toaster } from "@/components/ui/sonner"
 import { fontBody, fontHeading } from "@/lib/fonts"
@@ -71,7 +71,7 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale}>
           <ClientProviders>
-            <ScrollToTop />
+            <SmoothScroll />
             <Navbar />
             <main className="min-h-screen">{children}</main>
             <Footer />
