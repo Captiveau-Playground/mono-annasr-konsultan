@@ -11,6 +11,7 @@ import { TentangHero } from "@/components/tentang/TentangHero"
 import { TentangInti } from "@/components/tentang/TentangInti"
 import { TimTentang } from "@/components/tentang/TimTentang"
 import { VisiMisi } from "@/components/tentang/VisiMisi"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -35,16 +36,27 @@ export default async function TentangPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
+  const k = await fetchKontenSitus(locale)
+  const konten = k.tentang
+
   return (
     <>
-      <TentangHero />
-      <TentangInti />
-      <KisahPerusahaan />
-      <VisiMisi />
-      <Founder />
-      <TimTentang />
-      <KenapaKami />
-      <JangkauanTentang />
+      <TentangHero
+        judul={konten.hero.judul}
+        deskripsi={konten.hero.deskripsi}
+        keunggulan={konten.hero.keunggulan}
+      />
+      <TentangInti statistik={konten.statistik} />
+      <KisahPerusahaan perjalanan={konten.perjalanan} />
+      <VisiMisi kartu={konten.visiMisi} />
+      <Founder data={konten.founder} />
+      <TimTentang tim={konten.tim} />
+      <KenapaKami alasan={konten.alasan} />
+      <JangkauanTentang
+        judul={konten.jangkauanJudul}
+        deskripsi={konten.jangkauanDeskripsi}
+        kota={konten.kotaProyek}
+      />
       <CtaBanner />
     </>
   )

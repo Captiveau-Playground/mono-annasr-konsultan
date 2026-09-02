@@ -12,6 +12,7 @@ import { Navbar } from "@/components/site/Navbar"
 import { SmoothScroll } from "@/components/site/SmoothScroll"
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat"
 import { Toaster } from "@/components/ui/sonner"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { fontBody, fontHeading } from "@/lib/fonts"
 import { isValidLocale, routing } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
@@ -52,6 +53,8 @@ export default async function RootLayout({
   // Enable static rendering
   setRequestLocale(locale)
 
+  const kontenSitus = await fetchKontenSitus(locale)
+
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
@@ -72,9 +75,16 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale}>
           <ClientProviders>
             <SmoothScroll />
-            <Navbar />
+            <Navbar
+              navigasiCms={kontenSitus.situs.navigasi}
+              tagline={kontenSitus.situs.brandTagline}
+            />
             <main className="min-h-screen">{children}</main>
-            <Footer />
+            <Footer
+              navigasi={kontenSitus.situs.navigasi}
+              jam={kontenSitus.kontak.jamOperasional}
+              singkat={kontenSitus.kontak.domisili}
+            />
             <WhatsAppFloat />
             <Toaster position="top-center" />
           </ClientProviders>

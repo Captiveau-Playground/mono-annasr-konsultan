@@ -1,0 +1,36 @@
+{
+  "kind": "singleType",
+  "collectionName": "kontaks",
+  "info": {
+    "singularName": "kontak",
+    "pluralName": "kontaks",
+    "displayName": "6 Kontak"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroJudul": {
+      "type": "string"
+    },
+    "heroDeskripsi": {
+      "type": "text"
+    },
+    "domisili": {
+      "type": "text"
+    },
+    "kantor": {
+      "type": "text"
+    },
+    "telepon": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "jamOperasional": {
+      "type": "string"
+    }
+  }
+}

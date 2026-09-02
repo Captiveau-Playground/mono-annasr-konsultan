@@ -13,6 +13,14 @@ import type { Core } from "@strapi/strapi"
  */
 const SUBYEK_KONTEN = [
   "api::beranda.beranda",
+  "api::tentang.tentang",
+  "api::layanan.layanan",
+  "api::portfolio.portfolio",
+  "api::klien.klien",
+  "api::karir.karir",
+  "api::kontak.kontak",
+  "api::artikel.artikel",
+  "api::situs.situs",
   "api::page.page",
   "api::footer.footer",
   "api::navbar.navbar",

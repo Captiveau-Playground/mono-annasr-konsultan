@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_tim_members", "info": { "displayName": "Anggota Tim" },
+  "attributes": { "nama": { "type": "string" }, "jabatan": { "type": "string" }, "foto": { "type": "media", "allowedTypes": ["images"], "multiple": false }, "linkedin": { "type": "string" } } }

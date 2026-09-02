@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_visi_misis", "info": { "displayName": "Visi / Misi" },
+  "attributes": { "judul": { "type": "string" }, "teks": { "type": "text" } } }

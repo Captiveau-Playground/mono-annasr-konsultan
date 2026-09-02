@@ -11,20 +11,21 @@ import Image from "next/image"
 import { useMemo, useState } from "react"
 
 import { ArtikelCard } from "@/components/artikel/ArtikelCard"
-import { artikel } from "@/data/perusahaan"
+import { artikel, type Artikel } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
 
 const PER_HALAMAN = 6
 
-const ARTIKEL_UNGGULAN = artikel[0]
+export function ArtikelList({ items }: { items?: Artikel[] }) {
+  const daftar = items ?? artikel
+  const unggulan = daftar[0]
 
-const kategoriArtikel = [
-  "Semua",
-  ...Array.from(new Set(artikel.map((a) => a.kategori))),
-]
+  const kategoriArtikel = useMemo(
+    () => ["Semua", ...Array.from(new Set(daftar.map((a) => a.kategori)))],
+    [daftar]
+  )
 
-export function ArtikelList() {
   const [cari, setCari] = useState("")
   const [kategori, setKategori] = useState("Semua")
   const [halaman, setHalaman] = useState(1)
@@ -32,14 +33,14 @@ export function ArtikelList() {
   const hasil = useMemo(() => {
     const q = cari.trim().toLowerCase()
 
-    return artikel.filter((a) => {
+    return daftar.filter((a) => {
       const cocokKategori = kategori === "Semua" || a.kategori === kategori
       const cocokCari =
         !q || `${a.judul} ${a.ringkas} ${a.kategori}`.toLowerCase().includes(q)
 
       return cocokKategori && cocokCari
     })
-  }, [cari, kategori])
+  }, [daftar, cari, kategori])
 
   const totalHalaman = Math.max(1, Math.ceil(hasil.length / PER_HALAMAN))
   const halamanAman = Math.min(halaman, totalHalaman)
@@ -56,16 +57,13 @@ export function ArtikelList() {
   return (
     <div className="flex flex-col gap-8">
       {/* Artikel unggulan */}
-      {ARTIKEL_UNGGULAN ? (
-        <Link
-          href={`/artikel/${ARTIKEL_UNGGULAN.slug}`}
-          className="group block"
-        >
+      {unggulan ? (
+        <Link href={`/artikel/${unggulan.slug}`} className="group block">
           <article className="border-border bg-card grid overflow-hidden rounded-3xl border shadow-[var(--shadow-soft)] transition-shadow group-hover:shadow-[var(--shadow-lift)] lg:grid-cols-[1.05fr_1fr]">
             <div className="relative overflow-hidden">
               <Image
-                src={ARTIKEL_UNGGULAN.gambar}
-                alt={ARTIKEL_UNGGULAN.judul}
+                src={unggulan.gambar}
+                alt={unggulan.judul}
                 width={1200}
                 height={760}
                 sizes="(min-width:1024px) 50vw, 100vw"
@@ -78,18 +76,18 @@ export function ArtikelList() {
 
             <div className="flex flex-col justify-center p-8 lg:p-10">
               <p className="text-accent text-xs font-semibold tracking-[0.18em] uppercase">
-                {ARTIKEL_UNGGULAN.kategori}
+                {unggulan.kategori}
               </p>
               <h2 className="text-foreground mt-3 text-2xl leading-tight text-balance sm:text-3xl">
-                {ARTIKEL_UNGGULAN.judul}
+                {unggulan.judul}
               </h2>
               <p className="text-muted-foreground mt-3 text-sm leading-relaxed sm:text-base">
-                {ARTIKEL_UNGGULAN.ringkas}
+                {unggulan.ringkas}
               </p>
               <div className="text-muted-foreground mt-6 flex flex-wrap items-center gap-4 text-xs">
                 <span className="flex items-center gap-2">
                   <CalendarDays className="text-primary size-3.5" />
-                  {ARTIKEL_UNGGULAN.tanggal}
+                  {unggulan.tanggal}
                 </span>
                 <span className="text-primary inline-flex items-center gap-1.5 font-semibold">
                   Baca Artikel

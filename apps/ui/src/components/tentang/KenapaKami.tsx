@@ -2,7 +2,7 @@ import { Building2, Handshake, MapPin, ShieldCheck } from "lucide-react"
 
 import { Reveal } from "@/components/site/Reveal"
 
-const ALASAN = [
+const ALASAN_STATIS = [
   {
     ikon: Building2,
     judul: "Perencanaan hingga Konstruksi",
@@ -25,7 +25,19 @@ const ALASAN = [
   },
 ]
 
-export function KenapaKami() {
+export function KenapaKami({
+  alasan = [],
+}: {
+  alasan?: { judul: string; teks: string }[]
+}) {
+  const ALASAN =
+    alasan.length > 0
+      ? alasan.map((a, i) => ({
+          ...a,
+          ikon: [Building2, ShieldCheck, MapPin, Handshake][i % 4] ?? Building2,
+        }))
+      : ALASAN_STATIS
+
   return (
     <section className="bg-background py-[72px] lg:py-[120px]">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">

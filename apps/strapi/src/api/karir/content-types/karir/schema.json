@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "karirs",
+  "info": {
+    "singularName": "karir",
+    "pluralName": "karirs",
+    "displayName": "5 Karir"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroJudul": {
+      "type": "string"
+    },
+    "heroDeskripsi": {
+      "type": "text"
+    },
+    "posisi": {
+      "type": "component",
+      "component": "annasr.posisi",
+      "repeatable": true
+    }
+  }
+}

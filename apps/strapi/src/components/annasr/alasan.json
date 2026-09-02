@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_alasans", "info": { "displayName": "Alasan (Keunggulan)" },
+  "attributes": { "judul": { "type": "string" }, "teks": { "type": "text" } } }

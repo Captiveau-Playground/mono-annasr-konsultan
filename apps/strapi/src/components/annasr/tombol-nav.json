@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_tombol_navs", "info": { "displayName": "Item Navigasi" },
+  "attributes": { "label": { "type": "string" }, "href": { "type": "string" } } }

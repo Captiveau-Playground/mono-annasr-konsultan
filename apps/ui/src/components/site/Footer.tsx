@@ -3,7 +3,15 @@ import { Compass, Mail, MapPin, Phone } from "lucide-react"
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
-export function Footer() {
+export function Footer({
+  navigasi: navCms,
+  jam,
+  singkat,
+}: {
+  navigasi?: readonly { label: string; href: string }[]
+  jam?: string
+  singkat?: string
+}) {
   const today = new Date()
   const tahun = today.getFullYear()
 
@@ -27,10 +35,10 @@ export function Footer() {
               </span>
             </div>
             <p className="text-primary-foreground/65 mt-5 max-w-sm text-sm leading-relaxed">
-              {perusahaan.singkat}
+              {singkat ?? perusahaan.singkat}
             </p>
             <p className="text-primary-foreground/45 mt-5 text-xs tracking-[0.18em] uppercase">
-              {perusahaan.jamOperasional}
+              {jam ?? perusahaan.jamOperasional}
             </p>
           </div>
 
@@ -39,10 +47,13 @@ export function Footer() {
               Menu
             </h3>
             <ul className="mt-5 space-y-3">
-              {navigasi.map((item) => (
-                <li key={item.to}>
+              {(navCms && navCms.length > 0
+                ? navCms
+                : navigasi.map((n) => ({ label: n.label, href: n.to }))
+              ).map((item) => (
+                <li key={item.href}>
                   <Link
-                    href={item.to}
+                    href={item.href}
                     className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
                   >
                     {item.label}

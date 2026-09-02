@@ -4,7 +4,11 @@ import Image from "next/image"
 import { Reveal } from "@/components/site/Reveal"
 import { founder } from "@/data/perusahaan"
 
-export function Founder() {
+export function Founder({
+  data,
+}: {
+  data?: { nama?: string; jabatan?: string; teks?: string; kutipan?: string }
+}) {
   return (
     <section className="bg-secondary text-primary-foreground relative overflow-hidden py-[72px] lg:py-[120px]">
       <div
@@ -23,7 +27,7 @@ export function Founder() {
                 <div className="relative overflow-hidden rounded-[20px] shadow-[0_28px_64px_-26px_rgba(0,0,0,0.5)]">
                   <Image
                     src="/images/annasr/founder.jpg"
-                    alt={`${founder.nama}, ${founder.jabatan} CV. AN NASR KONSULTAN`}
+                    alt={`${data?.nama ?? founder.nama}, ${data?.jabatan ?? founder.jabatan} CV. AN NASR KONSULTAN`}
                     width={820}
                     height={1000}
                     sizes="(min-width:1024px) 42vw, 100vw"
@@ -44,7 +48,7 @@ export function Founder() {
                 {founder.nama}
               </h2>
               <p className="text-accent mt-3 text-lg font-semibold">
-                {founder.jabatan}
+                {data?.jabatan ?? founder.jabatan}
               </p>
               <div className="text-primary-foreground/80 mt-7 max-w-[42rem] space-y-4 text-lg leading-8">
                 <p>{founder.teks}</p>
@@ -57,7 +61,7 @@ export function Founder() {
                   secara teknis maupun moral.&rdquo;
                 </blockquote>
                 <figcaption className="text-primary-foreground/60 mt-3 text-sm">
-                  — {founder.nama}, {founder.jabatan}
+                  — {founder.nama}, {data?.jabatan ?? founder.jabatan}
                 </figcaption>
               </figure>
             </Reveal>

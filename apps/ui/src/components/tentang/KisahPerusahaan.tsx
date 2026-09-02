@@ -1,6 +1,6 @@
 import { Reveal } from "@/components/site/Reveal"
 
-const PERJALANAN = [
+const PERJALANAN_STATIS = [
   {
     tahun: "2014",
     judul: "Berdiri di Jombang",
@@ -28,7 +28,13 @@ const PERJALANAN = [
   },
 ]
 
-export function KisahPerusahaan() {
+export function KisahPerusahaan({
+  perjalanan = [],
+}: {
+  perjalanan?: { tahun: string; judul: string; teks: string }[]
+}) {
+  const PERJALANAN = perjalanan.length > 0 ? perjalanan : PERJALANAN_STATIS
+
   return (
     <section className="bg-surface py-[72px] lg:py-[120px]">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">

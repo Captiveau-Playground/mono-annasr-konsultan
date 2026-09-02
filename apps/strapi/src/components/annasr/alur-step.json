@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_alur_steps", "info": { "displayName": "Alur (Step)" },
+  "attributes": { "judul": { "type": "string" }, "teks": { "type": "text" } } }

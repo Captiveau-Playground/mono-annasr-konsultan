@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_posisis", "info": { "displayName": "Posisi (Lowongan)" },
+  "attributes": { "nama": { "type": "string" }, "tipe": { "type": "string" }, "lokasi": { "type": "string" }, "teks": { "type": "text" } } }

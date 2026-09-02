@@ -4,6 +4,7 @@ import { setRequestLocale } from "next-intl/server"
 
 import { ArtikelList } from "@/components/artikel/ArtikelList"
 import { PageHero } from "@/components/site/PageHero"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -28,17 +29,19 @@ export default async function ArtikelPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
+  const konten = await fetchKontenSitus(locale)
+
   return (
     <>
       <PageHero
         eyebrow="Artikel"
-        judul="Wawasan Teknik & Konstruksi"
+        judul={konten.artikelHero.judul}
         teks="Catatan praktis dari pengalaman kami menangani pekerjaan perencanaan, pengawasan, perizinan, dan konstruksi."
       />
 
       <section className="bg-background py-20 lg:py-24">
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
-          <ArtikelList />
+          <ArtikelList items={konten.artikel} />
         </div>
       </section>
     </>

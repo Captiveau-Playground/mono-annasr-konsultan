@@ -62,7 +62,17 @@ const IKON_NAV: Record<string, LucideIcon> = {
   "/kontak": Phone,
 }
 
-export function Navbar() {
+export function Navbar({
+  navigasiCms,
+  tagline,
+}: {
+  navigasiCms?: { label: string; href: string }[]
+  tagline?: string
+}) {
+  const navMobile =
+    navigasiCms && navigasiCms.length > 0
+      ? navigasiCms
+      : navigasi.map((n) => ({ label: n.label, href: n.to }))
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const [grupBuka, setGrupBuka] = useState<string | null>(null)
@@ -173,7 +183,7 @@ export function Navbar() {
                 terang ? "text-primary-foreground/70" : "text-muted-foreground"
               }`}
             >
-              Konsultan Teknik &amp; Konstruksi
+              {tagline ?? "Konsultan Teknik &amp; Konstruksi"}
             </span>
           </span>
         </Link>
@@ -309,14 +319,14 @@ export function Navbar() {
           className="border-border bg-background/95 border-t backdrop-blur-xl lg:hidden"
         >
           <ul className="mx-auto max-w-7xl space-y-1 px-5 py-4 lg:px-8">
-            {navigasi.map((item) => {
-              const Ikon = IKON_NAV[item.to] ?? Home
-              const isAktif = aktif(item.to)
+            {navMobile.map((item) => {
+              const Ikon = IKON_NAV[item.href] ?? Home
+              const isAktif = aktif(item.href)
 
               return (
-                <li key={item.to}>
+                <li key={item.href}>
                   <Link
-                    href={item.to}
+                    href={item.href}
                     onClick={() => setOpen(false)}
                     className={cn(
                       "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors",

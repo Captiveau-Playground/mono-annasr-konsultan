@@ -1,0 +1,29 @@
+{
+  "kind": "singleType",
+  "collectionName": "situss",
+  "info": {
+    "singularName": "situs",
+    "pluralName": "situss",
+    "displayName": "8 Pengaturan Global"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "brandNama": {
+      "type": "string"
+    },
+    "brandTagline": {
+      "type": "string"
+    },
+    "deskripsiLabel": {
+      "type": "string"
+    },
+    "navigasi": {
+      "type": "component",
+      "component": "annasr.tombol-nav",
+      "repeatable": true
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { Compass, Flag } from "lucide-react"
 
 import { Reveal } from "@/components/site/Reveal"
 
-const kartu = [
+const KARTU_STATIS = [
   {
     ikon: Compass,
     judul: "Visi",
@@ -15,7 +15,16 @@ const kartu = [
   },
 ]
 
-export function VisiMisi() {
+export function VisiMisi({
+  kartu = [],
+}: {
+  kartu?: { judul: string; teks: string }[]
+}) {
+  const daftar =
+    kartu.length > 0
+      ? kartu.map((k, i) => ({ ...k, ikon: [Compass, Flag][i % 2] ?? Compass }))
+      : KARTU_STATIS
+
   return (
     <section className="bg-background py-[72px] lg:py-[120px]">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
@@ -29,7 +38,7 @@ export function VisiMisi() {
         </Reveal>
 
         <div className="mx-auto mt-12 grid max-w-4xl gap-6 md:grid-cols-2">
-          {kartu.map((k, i) => {
+          {daftar.map((k, i) => {
             const Ikon = k.ikon
 
             return (

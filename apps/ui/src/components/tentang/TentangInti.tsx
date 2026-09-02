@@ -11,14 +11,20 @@ const POIN_PENDEK = [
   "Pendampingan perizinan PBG & SLF sampai terbit",
 ]
 
-const METRIK = [
+const METRIK_STATIS = [
   { nilai: "2014", label: "Berdiri" },
   { nilai: "100+", label: "Proyek Daerah" },
   { nilai: "20+", label: "Kota Dijangkau" },
   { nilai: "98%", label: "Kepuasan Klien" },
 ]
 
-export function TentangInti() {
+export function TentangInti({
+  statistik = [],
+}: {
+  statistik?: { nilai: string; label: string }[]
+}) {
+  const METRIK = statistik.length > 0 ? statistik : METRIK_STATIS
+
   return (
     <section className="bg-background py-[72px] lg:py-[120px]">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">

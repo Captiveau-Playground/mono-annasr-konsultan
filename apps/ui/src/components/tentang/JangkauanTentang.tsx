@@ -4,13 +4,23 @@ import { PetaMap } from "@/components/sections/PetaMap"
 import { Reveal } from "@/components/site/Reveal"
 import { kotaProyek } from "@/data/perusahaan"
 
-const RINGKAS = [
+const RINGKAS_STATIS = [
   { nilai: "20+", label: "Kota Dijangkau" },
   { nilai: "40+", label: "Proyek Selesai" },
   { nilai: "Jawa Timur", label: "Basis Operasi" },
 ]
 
-export function JangkauanTentang() {
+export function JangkauanTentang({
+  judul,
+  deskripsi,
+  kota = [],
+}: {
+  judul?: string
+  deskripsi?: string
+  kota?: { nama: string; lat: number; lng: number }[]
+}) {
+  const RINGKAS = RINGKAS_STATIS
+
   return (
     <section className="bg-surface py-[72px] lg:py-[120px]">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
@@ -21,7 +31,7 @@ export function JangkauanTentang() {
                 Jangkauan Proyek
               </p>
               <h2 className="text-foreground mt-4 max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
-                20+ kota di Indonesia telah kami kawal
+                {judul}
               </h2>
               <p className="text-muted-foreground mt-5 max-w-[42rem] text-lg leading-8">
                 Berbasis di Jombang, pekerjaan kami tersebar melintasi Jawa
@@ -50,7 +60,7 @@ export function JangkauanTentang() {
         </div>
 
         <Reveal className="mt-12">
-          <PetaMap />
+          <PetaMap kota={kota.length > 0 ? kota : undefined} />
         </Reveal>
 
         <div className="mt-10">
@@ -60,7 +70,7 @@ export function JangkauanTentang() {
               <ChevronDown className="size-4 transition-transform duration-200 group-open:rotate-180" />
             </summary>
             <ul className="mt-4 flex flex-wrap gap-2.5">
-              {kotaProyek.map((k) => (
+              {(kota.length > 0 ? kota : kotaProyek).map((k) => (
                 <li
                   key={k.nama}
                   className="border-border bg-card text-muted-foreground rounded-full border px-4 py-1.5 text-sm font-medium"

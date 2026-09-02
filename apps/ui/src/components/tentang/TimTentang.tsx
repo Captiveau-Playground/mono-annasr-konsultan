@@ -1,5 +1,15 @@
 import { Reveal } from "@/components/site/Reveal"
 
+function inisial(nama: string) {
+  return nama
+    .replace(/^(H\.\s+|Dr\.\s+|Ir\.\s+)/, "")
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((x) => x[0] ?? "")
+    .join("")
+    .toUpperCase()
+}
+
 function IkonLinkedin() {
   return (
     <svg
@@ -13,7 +23,7 @@ function IkonLinkedin() {
   )
 }
 
-const TIM = [
+const TIM_STATIS = [
   {
     nama: "H. Ahmad Nasrullah, S.T.",
     jabatan: "Founder & Direktur",
@@ -36,7 +46,16 @@ const TIM = [
   },
 ]
 
-export function TimTentang() {
+export function TimTentang({
+  tim = [],
+}: {
+  tim?: { nama: string; jabatan: string }[]
+}) {
+  const TIM =
+    tim.length > 0
+      ? tim.map((t) => ({ ...t, inisial: inisial(t.nama) }))
+      : TIM_STATIS
+
   return (
     <section className="bg-surface py-[72px] lg:py-[120px]">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">

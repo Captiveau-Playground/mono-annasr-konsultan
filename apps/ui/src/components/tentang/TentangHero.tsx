@@ -11,7 +11,17 @@ const KEUNGGULAN = [
   "Tim profesional bersertifikat",
 ]
 
-export function TentangHero() {
+export function TentangHero({
+  judul,
+  deskripsi,
+  keunggulan = [],
+}: {
+  judul?: string
+  deskripsi?: string
+  keunggulan?: string[]
+}) {
+  const trust = keunggulan.length > 0 ? keunggulan : KEUNGGULAN
+
   return (
     <section className="bg-background relative overflow-hidden py-20 lg:py-28">
       {/* Dekorasi halus biar tidak kosong, bukan overlay yang menutupi konten */}
@@ -32,11 +42,11 @@ export function TentangHero() {
             </p>
 
             <h1 className="text-foreground mt-6 max-w-2xl text-4xl leading-[1.08] font-bold text-balance sm:text-5xl lg:text-[3.4rem]">
-              Mitra teknik yang tumbuh bersama pembangunan daerah
+              {judul}
             </h1>
 
             <p className="text-muted-foreground mt-6 max-w-2xl text-lg leading-8">
-              {perusahaan.singkat}
+              {deskripsi ?? perusahaan.singkat}
             </p>
 
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -56,7 +66,7 @@ export function TentangHero() {
             </div>
 
             <ul className="border-border mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t pt-7">
-              {KEUNGGULAN.map((item) => (
+              {trust.map((item) => (
                 <li
                   key={item}
                   className="text-foreground/85 flex items-center gap-2.5 text-sm font-medium"

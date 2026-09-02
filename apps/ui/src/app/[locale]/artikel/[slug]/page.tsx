@@ -9,6 +9,7 @@ import { BagikanArtikel } from "@/components/artikel/BagikanArtikel"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { Reveal } from "@/components/site/Reveal"
 import { artikel } from "@/data/perusahaan"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale, Link } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -42,10 +43,11 @@ export default async function DetailArtikel({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
-  const item = artikel.find((a) => a.slug === slug)
+  const konten = await fetchKontenSitus(locale)
+  const item = konten.artikel.find((a) => a.slug === slug)
   if (!item) notFound()
 
-  const terkait = artikel.filter((a) => a.slug !== slug).slice(0, 3)
+  const terkait = konten.artikel.filter((a) => a.slug !== slug).slice(0, 3)
 
   return (
     <>

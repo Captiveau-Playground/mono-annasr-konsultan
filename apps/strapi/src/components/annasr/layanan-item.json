@@ -1,9 +1,52 @@
 {
   "collectionName": "components_annasr_layanan_items",
-  "info": { "displayName": "Layanan (Item)" },
+  "info": {
+    "displayName": "Layanan (Item)"
+  },
   "attributes": {
-    "judul": { "type": "string" },
-    "ringkas": { "type": "text" },
-    "gambar": { "type": "media", "allowedTypes": ["images"], "multiple": false }
+    "judul": {
+      "type": "string"
+    },
+    "ringkas": {
+      "type": "text"
+    },
+    "gambar": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": false
+    },
+    "slug": {
+      "type": "string"
+    },
+    "deskripsi": {
+      "type": "text"
+    },
+    "galeri": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": true
+    },
+    "manfaat": {
+      "type": "text",
+      "repeatable": true
+    },
+    "detail": {
+      "type": "text",
+      "repeatable": true
+    },
+    "alur": {
+      "type": "component",
+      "component": "annasr.alur-step",
+      "repeatable": true
+    },
+    "persyaratan": {
+      "type": "component",
+      "component": "annasr.persyaratan-kartu",
+      "repeatable": true
+    }
   }
 }

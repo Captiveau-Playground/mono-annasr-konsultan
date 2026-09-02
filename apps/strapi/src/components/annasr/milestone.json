@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_milestones", "info": { "displayName": "Tonggak Perjalanan" },
+  "attributes": { "tahun": { "type": "string" }, "judul": { "type": "string" }, "teks": { "type": "text" } } }

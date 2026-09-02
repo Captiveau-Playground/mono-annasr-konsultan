@@ -6,6 +6,7 @@ import { setRequestLocale } from "next-intl/server"
 import { PageHero } from "@/components/site/PageHero"
 import { Reveal } from "@/components/site/Reveal"
 import { perusahaan } from "@/data/perusahaan"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -57,12 +58,14 @@ export default async function KarirPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
+  const konten = await fetchKontenSitus(locale)
+
   return (
     <>
       <PageHero
         eyebrow="Karir"
-        judul="Tumbuh bersama tim teknik kami"
-        teks="Kami mencari orang-orang yang teliti, disiplin, dan senang belajar di dunia perencanaan dan konstruksi."
+        judul={konten.karirHero.judul}
+        teks={konten.karirHero.deskripsi}
       />
 
       <section className="bg-background py-20 lg:py-24">
@@ -81,7 +84,7 @@ export default async function KarirPage({
           </Reveal>
 
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
-            {posisi.map((p, i) => (
+            {(konten.karir.length > 0 ? konten.karir : posisi).map((p, i) => (
               <Reveal key={p.nama} delay={i * 0.05} className="h-full">
                 <article className="border-border bg-card hover:bg-surface/60 flex h-full flex-col rounded-2xl border p-6 transition-colors">
                   <div className="flex items-center justify-between gap-3">

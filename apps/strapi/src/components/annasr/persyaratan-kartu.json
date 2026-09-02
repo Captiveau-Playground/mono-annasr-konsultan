@@ -1,0 +1,2 @@
+{ "collectionName": "components_annasr_persyaratan_kartus", "info": { "displayName": "Persyaratan (Kartu)" },
+  "attributes": { "judul": { "type": "string" }, "deskripsi": { "type": "text" }, "daftar": { "type": "text", "repeatable": true } } }

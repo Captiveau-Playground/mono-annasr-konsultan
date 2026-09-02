@@ -6,6 +6,7 @@ import { LayananSection } from "@/components/sections/LayananSection"
 import { ProsesSection } from "@/components/sections/ProsesSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { PageHero } from "@/components/site/PageHero"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -30,6 +31,8 @@ export default async function LayananPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
+  const konten = await fetchKontenSitus(locale)
+
   return (
     <>
       <PageHero
@@ -37,8 +40,8 @@ export default async function LayananPage({
         judul="Layanan teknik yang lengkap dan terintegrasi"
         teks="Dari studi awal hingga serah terima pekerjaan, seluruh kebutuhan teknis proyek Anda dapat kami tangani dalam satu koordinasi."
       />
-      <LayananSection lengkap />
-      <ProsesSection />
+      <LayananSection lengkap items={konten.layanan} />
+      <ProsesSection items={konten.proses} />
       <CtaBanner />
     </>
   )

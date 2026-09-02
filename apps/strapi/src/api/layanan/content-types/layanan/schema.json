@@ -1,0 +1,31 @@
+{
+  "kind": "singleType",
+  "collectionName": "layanans",
+  "info": {
+    "singularName": "layanan",
+    "pluralName": "layanans",
+    "displayName": "2 Layanan"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "introJudul": {
+      "type": "string"
+    },
+    "introDeskripsi": {
+      "type": "text"
+    },
+    "layanan": {
+      "type": "component",
+      "component": "annasr.layanan-item",
+      "repeatable": true
+    },
+    "proses": {
+      "type": "component",
+      "component": "annasr.alur-step",
+      "repeatable": true
+    }
+  }
+}

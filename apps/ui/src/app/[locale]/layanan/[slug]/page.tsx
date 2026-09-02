@@ -8,6 +8,7 @@ import { CtaBanner } from "@/components/site/CtaBanner"
 import { Reveal } from "@/components/site/Reveal"
 import { Button } from "@/components/ui/button"
 import { layanan } from "@/data/perusahaan"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale, Link } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -43,7 +44,8 @@ export default async function DetailLayanan({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
-  const item = layanan.find((l) => l.slug === slug)
+  const konten = await fetchKontenSitus(locale)
+  const item = konten.layanan.find((l) => l.slug === slug)
   if (!item) notFound()
 
   const galeri = [{ src: item.gambar, alt: item.alt }, ...item.galeri]

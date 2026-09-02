@@ -1,0 +1,63 @@
+{
+  "kind": "singleType",
+  "collectionName": "tentangs",
+  "info": {
+    "singularName": "tentang",
+    "pluralName": "tentangs",
+    "displayName": "1 Tentang Kami"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "hero": {
+      "type": "component",
+      "component": "annasr.hero"
+    },
+    "statistik": {
+      "type": "component",
+      "component": "annasr.stat",
+      "repeatable": true
+    },
+    "tentang": {
+      "type": "component",
+      "component": "annasr.persyaratan-kartu"
+    },
+    "perjalanan": {
+      "type": "component",
+      "component": "annasr.milestone",
+      "repeatable": true
+    },
+    "visiMisi": {
+      "type": "component",
+      "component": "annasr.visi-misi",
+      "repeatable": true
+    },
+    "founder": {
+      "type": "component",
+      "component": "annasr.founder"
+    },
+    "tim": {
+      "type": "component",
+      "component": "annasr.tim-member",
+      "repeatable": true
+    },
+    "alasan": {
+      "type": "component",
+      "component": "annasr.alasan",
+      "repeatable": true
+    },
+    "jangkauanJudul": {
+      "type": "string"
+    },
+    "jangkauanDeskripsi": {
+      "type": "text"
+    },
+    "kotaProyek": {
+      "type": "component",
+      "component": "annasr.kota",
+      "repeatable": true
+    }
+  }
+}

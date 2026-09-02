@@ -1,0 +1,26 @@
+{
+  "kind": "singleType",
+  "collectionName": "artikels",
+  "info": {
+    "singularName": "artikel",
+    "pluralName": "artikels",
+    "displayName": "7 Artikel"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "heroJudul": {
+      "type": "string"
+    },
+    "heroDeskripsi": {
+      "type": "text"
+    },
+    "artikel": {
+      "type": "component",
+      "component": "annasr.artikel-item",
+      "repeatable": true
+    }
+  }
+}
