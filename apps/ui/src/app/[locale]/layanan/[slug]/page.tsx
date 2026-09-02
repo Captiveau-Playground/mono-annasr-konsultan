@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Sparkles } from "lucide-react"
+import { ArrowRight, Check, FileCheck2, Sparkles } from "lucide-react"
 import type { Metadata } from "next"
 import Image from "next/image"
 import { notFound } from "next/navigation"
@@ -129,7 +129,119 @@ export default async function DetailLayanan({
         </div>
       </section>
 
+      {item.alur ? <AlurLayanan nama={item.nama} alur={item.alur} /> : null}
+      {item.persyaratan ? (
+        <PersyaratanLayanan persyaratan={item.persyaratan} />
+      ) : null}
+
       <CtaBanner />
     </>
+  )
+}
+
+/** Alur pengerjaan bertahap — ditampilkan untuk layanan perencanaan & pengawasan. */
+function AlurLayanan({
+  nama,
+  alur,
+}: {
+  nama: string
+  alur: NonNullable<(typeof layanan)[number]["alur"]>
+}) {
+  return (
+    <section className="bg-background px-6 py-16 lg:px-8 lg:py-20">
+      <div className="mx-auto w-full max-w-5xl">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
+            Alur Pengerjaan
+          </p>
+          <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl">
+            Bagaimana {nama} dikerjakan
+          </h2>
+          <p className="text-muted-foreground mt-4 text-base leading-relaxed">
+            Enam langkah berurutan agar setiap tahap terukur dan hasilnya sesuai
+            standar.
+          </p>
+        </Reveal>
+
+        <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {alur.map((langkah, i) => (
+            <Reveal key={langkah.judul} delay={i * 0.04} className="h-full">
+              <li className="group border-border bg-card hover:border-primary/25 relative h-full rounded-2xl border p-5 transition-colors">
+                <span className="border-border bg-background text-primary flex size-11 items-center justify-center rounded-xl border font-[family-name:var(--font-heading)] text-sm font-bold">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h3 className="text-foreground mt-4 text-base leading-snug font-semibold">
+                  {langkah.judul}
+                </h3>
+                <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
+                  {langkah.teks}
+                </p>
+                {i < alur.length - 1 ? (
+                  <ArrowRight className="text-primary/30 pointer-events-none absolute top-1/2 -right-4 hidden size-4 -translate-y-1/2 lg:block" />
+                ) : null}
+              </li>
+            </Reveal>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+
+/** Kartu persyaratan PBG & SLF dengan daftar bernomor — khusus layanan perizinan. */
+function PersyaratanLayanan({
+  persyaratan,
+}: {
+  persyaratan: NonNullable<(typeof layanan)[number]["persyaratan"]>
+}) {
+  return (
+    <section className="bg-surface px-6 py-16 lg:px-8 lg:py-20">
+      <div className="mx-auto w-full max-w-5xl">
+        <Reveal className="mx-auto max-w-2xl text-center">
+          <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
+            Dokumen yang Perlu Disiapkan
+          </p>
+          <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl">
+            Persyaratan Pengurusan
+          </h2>
+          <p className="text-muted-foreground mt-4 text-base leading-relaxed">
+            Kami dampingi dari penyiapan berkas hingga dokumen terbit — lengkap
+            dan siap diajukan.
+          </p>
+        </Reveal>
+
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          {persyaratan.map((group, gi) => (
+            <Reveal key={group.judul} delay={gi * 0.06} className="h-full">
+              <div className="border-border bg-card flex h-full flex-col rounded-2xl border p-6 shadow-[var(--shadow-soft)]">
+                <div className="flex items-center gap-3">
+                  <span className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl">
+                    <FileCheck2 className="size-5" strokeWidth={1.6} />
+                  </span>
+                  <h3 className="text-foreground font-[family-name:var(--font-heading)] text-lg font-semibold">
+                    {group.judul}
+                  </h3>
+                </div>
+                <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+                  {group.deskripsi}
+                </p>
+                <ol className="mt-6 flex flex-col gap-3">
+                  {group.daftar.map((item, i) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="bg-primary/10 text-primary mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold">
+                        {i + 1}
+                      </span>
+                      <span className="text-foreground/85 text-sm leading-relaxed">
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }

@@ -75,6 +75,10 @@ export type Layanan = {
   galeri: { src: string; alt: string }[]
   deskripsi: string
   manfaat: string[]
+  /** Langkah-langkah alur pengerjaan (opsional, untuk layanan perencanaan & pengawasan). */
+  alur?: { judul: string; teks: string }[]
+  /** Kartu persyaratan pengurusan (opsional, untuk layanan perizinan). */
+  persyaratan?: { judul: string; deskripsi: string; daftar: string[] }[]
 }
 
 export const layanan: Layanan[] = [
@@ -117,6 +121,32 @@ export const layanan: Layanan[] = [
       "Penahan Tanah",
       "Bendungan",
     ],
+    alur: [
+      {
+        judul: "Konsultasi & Briefing",
+        teks: "Menggali kebutuhan, lingkup pekerjaan, dan anggaran yang direncanakan pemilik proyek.",
+      },
+      {
+        judul: "Survey & Pengukuran",
+        teks: "Pendataan kondisi eksisting, topografi, dan titik-titik acuan di lapangan.",
+      },
+      {
+        judul: "Perhitungan Struktur",
+        teks: "Analisis pembebanan dan dimensi elemen struktur sesuai standar SNI.",
+      },
+      {
+        judul: "Desain & Gambar Kerja",
+        teks: "Penyusunan denah, tampak, potongan, dan detail teknis yang siap dipakai pelaksana.",
+      },
+      {
+        judul: "RKS & RAB",
+        teks: "Spesifikasi teknis pekerjaan dan rencana anggaran biaya yang terukur.",
+      },
+      {
+        judul: "Finalisasi Dokumen",
+        teks: "Review akhir, pengesahan, dan serah terima berkas disertai asistensi perizinan.",
+      },
+    ],
   },
   {
     slug: "pengawasan",
@@ -156,6 +186,32 @@ export const layanan: Layanan[] = [
       "Pengawasan Penahan Tanah",
       "Pengawasan Bendungan",
     ],
+    alur: [
+      {
+        judul: "Penelaahan Kontrak",
+        teks: "Memahami gambar rencana, spesifikasi, dan jadwal pelaksanaan proyek.",
+      },
+      {
+        judul: "Rapat Persiapan",
+        teks: "Menyamakan pemahaman lingkup, metode kerja, dan prosedur keselamatan (K3).",
+      },
+      {
+        judul: "Pengawasan Pelaksanaan",
+        teks: "Pemeriksaan mutu bahan, dimensi, dan kesesuaian metode dengan gambar rencana.",
+      },
+      {
+        judul: "Pengendalian Volume",
+        teks: "Verifikasi progres dan realisasi pekerjaan sebagai dasar pembayaran termin.",
+      },
+      {
+        judul: "Pelaporan Berkala",
+        teks: "Laporan harian, mingguan, dan dokumentasi visual untuk pemberi tugas.",
+      },
+      {
+        judul: "Serah Terima",
+        teks: "Inspeksi akhir, penyusunan as built drawing, dan serah terima pekerjaan.",
+      },
+    ],
   },
   {
     slug: "perizinan",
@@ -186,6 +242,34 @@ export const layanan: Layanan[] = [
     detail: [
       "Persetujuan Bangunan Gedung (PBG)",
       "Sertifikat Laik Fungsi (SLF)",
+    ],
+    persyaratan: [
+      {
+        judul: "Persyaratan PBG",
+        deskripsi:
+          "Dokumen yang harus disiapkan untuk mengajukan Persetujuan Bangunan Gedung.",
+        daftar: [
+          "Formulir permohonan PBG dan bukti hak atas tanah",
+          "KTP serta NPWP pemohon",
+          "Gambar arsitektur (denah, tampak, potongan)",
+          "Gambar struktur beserta perhitungannya",
+          "Gambar instalasi mekanikal, elektrikal, dan proteksi kebakaran",
+          "Kesesuaian pemanfaatan lahan dengan rencana tata ruang (RTRW)",
+        ],
+      },
+      {
+        judul: "Persyaratan SLF",
+        deskripsi:
+          "Dokumen untuk memperoleh Sertifikat Laik Fungsi setelah bangunan berdiri.",
+        daftar: [
+          "Formulir permohonan SLF",
+          "Salinan PBG yang telah terbit",
+          "Denah dan foto bangunan sesuai kondisi as built",
+          "Laporan struktur dan konstruksi bangunan",
+          "Sertifikat K3 konstruksi serta bukti laik operasi instalasi listrik",
+          "Hasil pemeriksaan kelaikan teknis oleh tenaga ahli bersertifikat",
+        ],
+      },
     ],
   },
   {

@@ -44,8 +44,8 @@ export default async function BerandaPage({
       <PortfolioSection />
       <KlienSection />
       <PetaSection />
-      <FaqSection />
       <ArtikelSection />
+      <FaqSection />
       <CtaBanner />
     </>
   )
