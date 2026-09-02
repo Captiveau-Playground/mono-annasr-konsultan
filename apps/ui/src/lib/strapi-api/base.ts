@@ -18,9 +18,17 @@ export const API_ENDPOINTS: Partial<Record<UID.ContentType, string>> = {
   "api::page.page": "/pages",
   "api::footer.footer": "/footer",
   "api::navbar.navbar": "/navbar",
-  ["api::beranda.beranda" as UID.ContentType]: "/beranda",
+  "api::beranda.beranda": "/beranda",
   "api::subscriber.subscriber": "/subscribers",
   "api::redirect.redirect": "/redirects",
+  "api::tentang.tentang": "/tentang",
+  "api::layanan.layanan": "/layanan",
+  "api::portfolio.portfolio": "/portfolio",
+  "api::klien.klien": "/klien",
+  "api::karir.karir": "/karir",
+  "api::kontak.kontak": "/kontak",
+  "api::artikel.artikel": "/artikel",
+  "api::situs.situs": "/situs",
 } as const
 
 export default abstract class BaseStrapiClient {

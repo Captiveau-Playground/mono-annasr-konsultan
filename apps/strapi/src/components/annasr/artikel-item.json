@@ -30,8 +30,7 @@
       "type": "string"
     },
     "isi": {
-      "type": "text",
-      "repeatable": true
+      "type": "json"
     }
   }
 }

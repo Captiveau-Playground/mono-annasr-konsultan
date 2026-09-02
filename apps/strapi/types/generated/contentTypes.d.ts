@@ -1237,3 +1237,29 @@ declare module "@strapi/strapi" {
     }
   }
 }
+
+/**
+ * Skema An Nasr — ditambahkan manual karena `strapi generate:types` gagal
+ * dengan "e.charAt is not a function" (bug internal @strapi/typescript-utils
+ * di environment ini, pre-existing). Tipe longgar (AnyAttribute) cukup untuk
+ * menuntun UID; konsumen FE memakai tipe berpola sendiri (lib/annasr/*).
+ */
+export interface AnyAnnasrSchema extends Struct.SingleTypeSchema {
+  attributes: Record<string, Schema.Attribute.Any>
+}
+
+declare module "@strapi/strapi" {
+  export module Public {
+    export interface ContentTypeSchemas {
+      "api::beranda.beranda": AnyAnnasrSchema
+      "api::tentang.tentang": AnyAnnasrSchema
+      "api::layanan.layanan": AnyAnnasrSchema
+      "api::portfolio.portfolio": AnyAnnasrSchema
+      "api::klien.klien": AnyAnnasrSchema
+      "api::karir.karir": AnyAnnasrSchema
+      "api::kontak.kontak": AnyAnnasrSchema
+      "api::artikel.artikel": AnyAnnasrSchema
+      "api::situs.situs": AnyAnnasrSchema
+    }
+  }
+}

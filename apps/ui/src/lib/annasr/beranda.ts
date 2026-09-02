@@ -16,7 +16,7 @@ import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 
 // UID belum ada di strapi-types hasil generate (typegen env bermasalah) — cast aman.
-const UID_BERANDA = "api::beranda.beranda" as never
+const UID_BERANDA = "api::beranda.beranda" as UID.ContentType
 
 export type BerandaGambar = { url: string; alt?: string }
 

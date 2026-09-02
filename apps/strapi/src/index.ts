@@ -8,6 +8,7 @@ import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
 import { logger } from "./utils/logging"
 import { setupRbac } from "./utils/rbac"
+import { seedAnnasr } from "./utils/seed"
 
 export default {
   /**
@@ -35,6 +36,7 @@ export default {
     registerAutoRevalidateMiddleware({ strapi })
 
     await setupRbac({ strapi })
+    await seedAnnasr({ strapi })
 
     logger.info("Strapi bootstrap completed")
   },

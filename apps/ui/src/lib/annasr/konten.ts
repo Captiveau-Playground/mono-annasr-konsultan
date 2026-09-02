@@ -24,8 +24,7 @@ import type { BerandaKonten } from "@/lib/annasr/beranda"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 
-// UID belum ter-generate karena typegen env bermasalah — cast aman.
-const uid = (nama: string) => `api::${nama}.${nama}` as never
+const uid = (nama: string) => `api::${nama}.${nama}` as UID.ContentType
 
 const IKON_LAYANAN: LucideIcon[] = [
   Building2,

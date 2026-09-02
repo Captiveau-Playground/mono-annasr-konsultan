@@ -31,12 +31,10 @@
       "multiple": true
     },
     "manfaat": {
-      "type": "text",
-      "repeatable": true
+      "type": "json"
     },
     "detail": {
-      "type": "text",
-      "repeatable": true
+      "type": "json"
     },
     "alur": {
       "type": "component",
