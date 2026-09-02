@@ -46,7 +46,7 @@ export function SectionShell({
       <Kontainer>
         <Reveal className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
           <h2
-            className={`max-w-2xl text-3xl leading-[1.12] whitespace-pre-line sm:text-4xl lg:text-5xl ${
+            className={`max-w-2xl text-3xl leading-[1.12] text-balance whitespace-pre-line sm:text-4xl lg:text-5xl ${
               tone === "gelap" ? "text-primary-foreground" : "text-foreground"
             }`}
           >

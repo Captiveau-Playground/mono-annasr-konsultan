@@ -55,7 +55,7 @@ export default async function DetailLayanan({
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
             Layanan
           </p>
-          <h1 className="text-foreground mt-3 text-3xl leading-tight sm:text-4xl">
+          <h1 className="text-foreground mt-3 text-3xl leading-tight text-balance sm:text-4xl lg:text-5xl">
             {item.nama}
           </h1>
           <p className="text-muted-foreground mx-auto mt-4 max-w-2xl text-base leading-relaxed">

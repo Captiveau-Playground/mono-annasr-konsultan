@@ -39,7 +39,7 @@ export function Hero() {
             Jombang, Jawa Timur
           </p>
 
-          <h1 className="text-primary-foreground mt-7 max-w-3xl text-4xl leading-[1.1] sm:text-5xl lg:text-6xl">
+          <h1 className="text-primary-foreground mt-7 max-w-3xl text-4xl leading-[1.1] text-balance sm:text-5xl lg:text-6xl">
             Tepat Merencanakan, Tepat Mengawasi, Tepat Membangun
           </h1>
 

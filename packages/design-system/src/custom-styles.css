@@ -27,8 +27,7 @@
 .ck-editor__main .ck-content .typo-h1,
 .typo-h1,
 .tip-tap-editor-wrapper h1,
-.tip-tap-editor-wrapper .typo-h1,
-h1 {
+.tip-tap-editor-wrapper .typo-h1 {
   @apply mb-2 text-4xl md:text-5xl lg:text-6xl;
 }
 
@@ -38,8 +37,7 @@ h1 {
 .ck-editor__main .ck-content .typo-h2,
 .typo-h2,
 .tip-tap-editor-wrapper h2,
-.tip-tap-editor-wrapper .typo-h2,
-h2 {
+.tip-tap-editor-wrapper .typo-h2 {
   @apply mb-1.5 text-3xl md:text-4xl lg:text-5xl;
 }
 
@@ -49,8 +47,7 @@ h2 {
 .ck-editor__main .ck-content .typo-h3,
 .typo-h3,
 .tip-tap-editor-wrapper h3,
-.tip-tap-editor-wrapper .typo-h3,
-h3 {
+.tip-tap-editor-wrapper .typo-h3 {
   @apply mb-1 text-2xl md:text-3xl lg:text-4xl;
 }
 
@@ -60,8 +57,7 @@ h3 {
 .ck-editor__main .ck-content .typo-h4,
 .typo-h4,
 .tip-tap-editor-wrapper h4,
-.tip-tap-editor-wrapper .typo-h4,
-h4 {
+.tip-tap-editor-wrapper .typo-h4 {
   @apply mb-1 text-xl md:text-2xl lg:text-3xl;
 }
 
@@ -71,8 +67,7 @@ h4 {
 .ck-editor__main .ck-content .typo-h5,
 .typo-h5,
 .tip-tap-editor-wrapper h5,
-.tip-tap-editor-wrapper .typo-h5,
-h5 {
+.tip-tap-editor-wrapper .typo-h5 {
   @apply mb-1 text-lg md:text-xl lg:text-2xl;
 }
 
@@ -82,8 +77,7 @@ h5 {
 .ck-editor__main .ck-content .typo-h6,
 .typo-h6,
 .tip-tap-editor-wrapper h6,
-.tip-tap-editor-wrapper .typo-h6,
-h6 {
+.tip-tap-editor-wrapper .typo-h6 {
   @apply mb-1 text-base md:text-lg lg:text-xl;
 }
 

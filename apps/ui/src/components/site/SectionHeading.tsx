@@ -29,7 +29,7 @@ export function SectionHeading({
         </p>
       ) : null}
       <h2
-        className={`mt-3 text-3xl leading-tight sm:text-4xl lg:text-[2.75rem] ${
+        className={`mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl lg:text-5xl ${
           invert ? "text-primary-foreground" : "text-foreground"
         }`}
       >

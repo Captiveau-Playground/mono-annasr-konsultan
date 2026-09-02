@@ -14,7 +14,7 @@ export function PageHero({
         <p className="text-accent text-xs font-semibold tracking-[0.24em] uppercase">
           {eyebrow}
         </p>
-        <h1 className="text-primary-foreground mt-4 text-4xl leading-tight sm:text-5xl">
+        <h1 className="text-primary-foreground mt-4 text-3xl leading-tight text-balance sm:text-4xl lg:text-5xl">
           {judul}
         </h1>
         <p className="text-primary-foreground/80 mx-auto mt-5 max-w-2xl text-base leading-relaxed">

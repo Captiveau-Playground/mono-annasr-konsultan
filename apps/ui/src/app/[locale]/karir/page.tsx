@@ -74,7 +74,7 @@ export default async function KarirPage({
                   <span className="bg-primary/8 text-primary mx-auto flex size-10 items-center justify-center rounded-xl">
                     <Briefcase className="size-5" strokeWidth={1.6} />
                   </span>
-                  <h2 className="text-foreground mt-4 text-lg">{p.nama}</h2>
+                  <h3 className="text-foreground mt-4 text-lg">{p.nama}</h3>
                   <p className="text-muted-foreground mt-1.5 flex items-center justify-center gap-1.5 text-xs">
                     <MapPin className="text-primary size-3.5" />
                     {p.lokasi} · {p.tipe}

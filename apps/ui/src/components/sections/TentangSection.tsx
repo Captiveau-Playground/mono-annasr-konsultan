@@ -33,7 +33,7 @@ export function TentangSection() {
             <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
               Founder
             </p>
-            <h2 className="text-foreground mt-3 text-2xl leading-tight sm:text-3xl">
+            <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl lg:text-5xl">
               {founder.nama}
             </h2>
             <p className="text-accent-foreground mt-1.5 text-sm font-medium">
@@ -52,7 +52,7 @@ export function TentangSection() {
             <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
               Tentang Kami
             </p>
-            <h2 className="text-foreground mt-3 text-2xl leading-tight sm:text-3xl">
+            <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl lg:text-5xl">
               Tentang CV. AN NASR KONSULTAN
             </h2>
             <p className="text-muted-foreground mt-5 text-base leading-relaxed">
