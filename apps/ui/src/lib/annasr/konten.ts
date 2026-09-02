@@ -20,7 +20,7 @@ import {
   perusahaan,
   portfolio,
 } from "@/data/perusahaan"
-import { berandaFallback, type BerandaKonten } from "@/lib/annasr/beranda"
+import type { BerandaKonten } from "@/lib/annasr/beranda"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 
@@ -248,7 +248,6 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
     (await import("@/lib/annasr/beranda")).fetchBeranda(locale),
   ])
 
-  const fb = berandaFallback()
   const kota = Array.isArray(t.kotaProyek)
     ? (t.kotaProyek as { nama?: unknown; lat?: unknown; lng?: unknown }[])
         .map((k) => ({
@@ -265,15 +264,19 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
     beranda: home,
     tentang: {
       hero: {
-        judul: teks((t.hero as { judul?: unknown })?.judul, fb.hero!.judul),
+        judul: teks(
+          (t.hero as { judul?: unknown })?.judul,
+          "Mitra teknik yang tumbuh bersama pembangunan daerah"
+        ),
         deskripsi: teks(
           (t.hero as { deskripsi?: unknown })?.deskripsi,
-          fb.hero!.deskripsi
+          perusahaan.singkat
         ),
-        keunggulan: teksArr(
-          (t.hero as { keunggulan?: unknown })?.keunggulan,
-          fb.hero!.keunggulan
-        ),
+        keunggulan: teksArr((t.hero as { keunggulan?: unknown })?.keunggulan, [
+          "Berdiri sejak 2014",
+          "Puluhan proyek daerah",
+          "Tim profesional bersertifikat",
+        ]),
       },
       statistik:
         Array.isArray(t.statistik) && t.statistik.length > 0
