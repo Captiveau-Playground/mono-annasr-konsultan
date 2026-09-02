@@ -164,17 +164,27 @@ export function Navbar() {
                 onMouseEnter={() => setGrupBuka(grup.href)}
                 onMouseLeave={() => setGrupBuka(null)}
               >
-                <button
-                  type="button"
-                  aria-haspopup="true"
-                  aria-expanded={terbuka}
-                  onClick={() => setGrupBuka(terbuka ? null : grup.href)}
+                <Link
+                  href={grup.href}
+                  onClick={() => setGrupBuka(null)}
                   className={cn(
-                    "flex items-center gap-1 rounded-full px-3 py-2 text-sm font-medium transition-colors",
+                    "flex items-center gap-0.5 rounded-full px-3 py-2 text-sm font-medium transition-colors",
                     aktif(grup.href) ? teksAktif : teksNav
                   )}
                 >
                   {grup.label}
+                </Link>
+                <button
+                  type="button"
+                  aria-haspopup="true"
+                  aria-expanded={terbuka}
+                  aria-label={`Submenu ${grup.label}`}
+                  onClick={() => setGrupBuka(terbuka ? null : grup.href)}
+                  className={cn(
+                    "-ml-1.5 flex size-7 items-center justify-center rounded-full text-sm font-medium transition-colors",
+                    aktif(grup.href) ? teksAktif : teksNav
+                  )}
+                >
                   <ChevronDown
                     className={cn(
                       "size-3.5 transition-transform duration-200",
@@ -188,14 +198,6 @@ export function Navbar() {
                     role="menu"
                     className="border-border bg-background absolute top-full left-0 z-20 mt-2 w-64 rounded-2xl border p-2 shadow-[var(--shadow-soft)]"
                   >
-                    <Link
-                      role="menuitem"
-                      href={grup.href}
-                      onClick={() => setGrupBuka(null)}
-                      className="text-muted-foreground hover:bg-surface hover:text-foreground block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
-                    >
-                      {grup.label}
-                    </Link>
                     {grup.anak.map((anak) => (
                       <Link
                         key={anak.href}
