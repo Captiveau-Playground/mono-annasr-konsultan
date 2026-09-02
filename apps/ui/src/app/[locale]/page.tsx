@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
+import { ArtikelSection } from "@/components/sections/ArtikelSection"
 import { FaqSection } from "@/components/sections/FaqSection"
 import { FounderSection } from "@/components/sections/FounderSection"
 import { Hero } from "@/components/sections/Hero"
@@ -44,6 +45,7 @@ export default async function BerandaPage({
       <KlienSection />
       <PetaSection />
       <FaqSection />
+      <ArtikelSection />
       <CtaBanner />
     </>
   )

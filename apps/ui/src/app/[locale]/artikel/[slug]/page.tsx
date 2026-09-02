@@ -62,7 +62,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Kepala artikel */}
-          <Reveal className="mx-auto mt-8 max-w-4xl">
+          <Reveal className="mx-auto mt-8 max-w-6xl">
             <p className="text-accent text-xs font-semibold tracking-[0.22em] uppercase">
               {item.kategori}
             </p>
@@ -103,7 +103,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Isi artikel */}
-          <div className="mx-auto mt-12 max-w-3xl">
+          <div className="mx-auto mt-12 max-w-6xl">
             {item.isi.map((paragraf, i) => (
               <Reveal key={i} delay={i * 0.02}>
                 <p
@@ -122,17 +122,6 @@ export default async function DetailArtikel({
           <BagikanArtikel />
         </div>
       </article>
-
-      {/* Ringkasan singkat sebagai penutup */}
-      <section className="bg-surface px-6 py-14 lg:px-8">
-        <div className="mx-auto w-full max-w-3xl text-center">
-          <Reveal>
-            <p className="text-muted-foreground text-base leading-relaxed">
-              {item.ringkas}
-            </p>
-          </Reveal>
-        </div>
-      </section>
 
       <CtaBanner />
 
