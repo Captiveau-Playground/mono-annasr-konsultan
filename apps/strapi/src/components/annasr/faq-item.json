@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_annasr_faq_items",
+  "info": { "displayName": "FAQ (Item)" },
+  "attributes": {
+    "tanya": { "type": "text" },
+    "jawab": { "type": "text" }
+  }
+}

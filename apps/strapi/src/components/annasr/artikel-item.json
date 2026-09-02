@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_annasr_artikel_items",
+  "info": { "displayName": "Artikel (Item)" },
+  "attributes": {
+    "judul": { "type": "string" },
+    "ringkas": { "type": "text" },
+    "kategori": { "type": "string" },
+    "tanggal": { "type": "string" },
+    "gambar": { "type": "media", "allowedTypes": ["images"], "multiple": false }
+  }
+}

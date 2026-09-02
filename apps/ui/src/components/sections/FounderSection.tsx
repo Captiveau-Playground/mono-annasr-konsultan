@@ -5,9 +5,14 @@ import { Reveal } from "@/components/site/Reveal"
 import { SectionShell } from "@/components/site/SectionShell"
 import { Button } from "@/components/ui/button"
 import { founder } from "@/data/perusahaan"
+import type { BerandaKonten } from "@/lib/annasr/beranda"
 import { Link } from "@/lib/navigation"
 
-export function FounderSection() {
+export function FounderSection({
+  founder: founderData,
+}: {
+  founder?: BerandaKonten["founder"]
+}) {
   return (
     <SectionShell
       tone="krem"

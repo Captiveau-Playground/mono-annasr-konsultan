@@ -1,0 +1,23 @@
+{
+  "kind": "singleType",
+  "collectionName": "berandas",
+  "info": {
+    "singularName": "beranda",
+    "pluralName": "berandas",
+    "displayName": "Beranda (Halaman Depan)"
+  },
+  "options": { "draftAndPublish": true },
+  "pluginOptions": {},
+  "attributes": {
+    "hero": { "type": "component", "component": "annasr.hero", "required": false },
+    "statistik": { "type": "component", "component": "annasr.stat", "repeatable": true },
+    "founder": { "type": "component", "component": "annasr.founder", "required": false },
+    "layanan": { "type": "component", "component": "annasr.layanan-item", "repeatable": true },
+    "portfolio": { "type": "component", "component": "annasr.proyek", "repeatable": true },
+    "klien": { "type": "component", "component": "annasr.klien-item", "repeatable": true },
+    "kotaProyek": { "type": "component", "component": "annasr.kota", "repeatable": true },
+    "faq": { "type": "component", "component": "annasr.faq-item", "repeatable": true },
+    "artikel": { "type": "component", "component": "annasr.artikel-item", "repeatable": true },
+    "cta": { "type": "component", "component": "annasr.cta", "required": false }
+  }
+}

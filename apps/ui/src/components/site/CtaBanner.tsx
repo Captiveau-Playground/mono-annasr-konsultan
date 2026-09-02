@@ -6,7 +6,13 @@ import { Link } from "@/lib/navigation"
 import { Reveal } from "./Reveal"
 import { Kontainer } from "./SectionShell"
 
-export function CtaBanner() {
+export function CtaBanner({
+  judul = "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
+  deskripsi = "Sampaikan rencana pembangunan Anda, tim kami akan membantu menyusun solusi teknis yang tepat sasaran dan sesuai anggaran.",
+}: {
+  judul?: string
+  deskripsi?: string
+}) {
   return (
     <section className="bg-secondary py-20 lg:py-24">
       <Kontainer>

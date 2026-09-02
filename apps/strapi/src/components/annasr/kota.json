@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_annasr_kotas",
+  "info": { "displayName": "Kota Proyek (Pin Peta)" },
+  "attributes": {
+    "nama": { "type": "string" },
+    "lat": { "type": "decimal" },
+    "lng": { "type": "decimal" }
+  }
+}

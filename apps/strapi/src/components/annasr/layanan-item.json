@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_annasr_layanan_items",
+  "info": { "displayName": "Layanan (Item)" },
+  "attributes": {
+    "judul": { "type": "string" },
+    "ringkas": { "type": "text" },
+    "gambar": { "type": "media", "allowedTypes": ["images"], "multiple": false }
+  }
+}

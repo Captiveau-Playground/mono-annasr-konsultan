@@ -10,7 +10,11 @@ import { kotaProyek } from "@/data/perusahaan"
  * tile CARTO Voyager dan pin custom berwarna aksen brand. Diinisialisasi di
  * useEffect jadi aman untuk SSR (Leaflet hanya diload di sisi klien).
  */
-export function PetaMap() {
+export function PetaMap({
+  kota,
+}: {
+  kota?: { nama: string; lat: number; lng: number }[]
+}) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -54,7 +58,8 @@ export function PetaMap() {
         maxZoom: 20,
       }).addTo(map)
 
-      const koordinat: [number, number][] = kotaProyek.map((k) => [
+      const daftarKota = kota ?? kotaProyek
+      const koordinat: [number, number][] = daftarKota.map((k) => [
         k.lat,
         k.lng,
       ])
@@ -68,7 +73,7 @@ export function PetaMap() {
         popupAnchor: [0, -10],
       })
 
-      for (const kota of kotaProyek) {
+      for (const kota of daftarKota) {
         // Decorative pins → keyboard: false (tanpa role/tabindex command),
         // dan tanpa aria-label (dilarang pada div tanpa role). Nama lokasi
         // sudah tersedia lewat tooltip/popup + aria-label pada container peta.

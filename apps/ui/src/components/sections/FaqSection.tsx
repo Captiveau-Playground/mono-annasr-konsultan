@@ -5,6 +5,7 @@ import { useState } from "react"
 
 import { Reveal } from "@/components/site/Reveal"
 import { SectionHeading } from "@/components/site/SectionHeading"
+import type { BerandaKonten } from "@/lib/annasr/beranda"
 
 const faq = [
   {
@@ -39,7 +40,11 @@ const faq = [
   },
 ]
 
-export function FaqSection() {
+export function FaqSection({
+  items: itemsFaq,
+}: {
+  items?: BerandaKonten["faq"]
+}) {
   const [aktif, setAktif] = useState<number | null>(0)
 
   return (
@@ -57,7 +62,7 @@ export function FaqSection() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {faq.map((f, i) => {
+            {(itemsFaq ?? faq).map((f, i) => {
               const terbuka = aktif === i
 
               return (

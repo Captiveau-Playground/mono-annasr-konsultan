@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_annasr_founders",
+  "info": { "displayName": "Founder" },
+  "attributes": {
+    "nama": { "type": "string" },
+    "jabatan": { "type": "string" },
+    "teks": { "type": "text" }
+  }
+}

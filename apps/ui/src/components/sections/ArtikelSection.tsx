@@ -3,13 +3,13 @@ import { ArrowRight } from "lucide-react"
 import { ArtikelCard } from "@/components/artikel/ArtikelCard"
 import { Reveal } from "@/components/site/Reveal"
 import { SectionHeading } from "@/components/site/SectionHeading"
-import { artikel } from "@/data/perusahaan"
+import { artikel, type Artikel } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
-const TERBARU = artikel.slice(0, 3)
-
 /** Section ringkas artikel terbaru — diletakkan sebelum CTA banner. */
-export function ArtikelSection() {
+export function ArtikelSection({ items }: { items?: Artikel[] }) {
+  const terbaru = items ?? artikel.slice(0, 3)
+
   return (
     <section className="bg-background py-16 lg:py-20">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
@@ -30,7 +30,7 @@ export function ArtikelSection() {
         </Reveal>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {TERBARU.map((a, i) => (
+          {terbaru.map((a, i) => (
             <Reveal key={a.slug} delay={i * 0.05} className="h-full">
               <ArtikelCard item={a} />
             </Reveal>

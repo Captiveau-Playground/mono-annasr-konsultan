@@ -4,16 +4,23 @@ import Image from "next/image"
 import { Reveal } from "@/components/site/Reveal"
 import { SectionShell } from "@/components/site/SectionShell"
 import { Button } from "@/components/ui/button"
-import { layanan } from "@/data/perusahaan"
+import { layanan, type Layanan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
-export function LayananSection({ lengkap = false }: { lengkap?: boolean }) {
+export function LayananSection({
+  lengkap = false,
+  items,
+}: {
+  lengkap?: boolean
+  items?: Layanan[]
+}) {
+  const daftar = items ?? layanan
   if (lengkap) {
     return (
       <section className="bg-background py-20 lg:py-24">
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
           <div className="space-y-20">
-            {layanan.map((item, i) => {
+            {daftar.map((item, i) => {
               const Ikon = item.ikon
 
               return (
@@ -95,7 +102,7 @@ export function LayananSection({ lengkap = false }: { lengkap?: boolean }) {
       judul={"Layanan An Nasr dalam\nMendukung Proyek Anda"}
     >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {layanan.map((item, i) => (
+        {daftar.map((item, i) => (
           <Reveal key={item.slug} delay={i * 0.07} className="h-full">
             <article className="border-border bg-card flex h-full flex-col overflow-hidden rounded-xl border shadow-[var(--shadow-soft)]">
               <Image

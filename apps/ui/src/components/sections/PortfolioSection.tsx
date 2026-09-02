@@ -12,20 +12,31 @@ import { Link } from "@/lib/navigation"
 
 const PER_HALAMAN = 9
 
+type ProyekItem = {
+  nama: string
+  lokasi: string
+  kategori: string
+  gambar: string
+}
+
 export function PortfolioSection({
   filterAktif = true,
+  items,
 }: {
   filterAktif?: boolean
+  items?: ProyekItem[]
 }) {
   const [kategori, setKategori] = useState("Semua")
   const [halaman, setHalaman] = useState(1)
 
+  const dataSumber = items ?? portfolio
+
   const data = useMemo(
     () =>
       kategori === "Semua"
-        ? portfolio
-        : portfolio.filter((p) => p.kategori === kategori),
-    [kategori]
+        ? dataSumber
+        : dataSumber.filter((p) => p.kategori === kategori),
+    [kategori, dataSumber]
   )
 
   const totalHalaman = Math.max(1, Math.ceil(data.length / PER_HALAMAN))

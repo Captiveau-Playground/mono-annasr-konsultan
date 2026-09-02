@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_annasr_ctas",
+  "info": { "displayName": "CTA Banner" },
+  "attributes": {
+    "judul": { "type": "string" },
+    "deskripsi": { "type": "text" },
+    "telepon": { "type": "string" }
+  }
+}

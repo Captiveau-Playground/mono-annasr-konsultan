@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_annasr_heroes",
+  "info": { "displayName": "Hero Beranda", "description": "Judul, deskripsi, dan poin keunggulan hero halaman depan" },
+  "attributes": {
+    "judul": { "type": "string" },
+    "deskripsi": { "type": "text" },
+    "keunggulan": { "type": "string", "repeatable": true }
+  }
+}

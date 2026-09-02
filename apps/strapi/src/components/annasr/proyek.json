@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_annasr_proyeks",
+  "info": { "displayName": "Proyek Portfolio" },
+  "attributes": {
+    "nama": { "type": "string" },
+    "lokasi": { "type": "string" },
+    "kategori": { "type": "string" },
+    "gambar": { "type": "media", "allowedTypes": ["images"], "multiple": false }
+  }
+}

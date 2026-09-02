@@ -1,0 +1,7 @@
+{
+  "collectionName": "components_annasr_klien_items",
+  "info": { "displayName": "Klien (Item)" },
+  "attributes": {
+    "nama": { "type": "string" }
+  }
+}

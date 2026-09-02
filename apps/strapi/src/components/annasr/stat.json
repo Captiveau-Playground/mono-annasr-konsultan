@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_annasr_stats",
+  "info": { "displayName": "Metrik (Statistik)" },
+  "attributes": {
+    "nilai": { "type": "string" },
+    "label": { "type": "string" }
+  }
+}
