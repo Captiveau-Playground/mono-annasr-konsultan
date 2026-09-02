@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
 import { ArtikelCard } from "@/components/artikel/ArtikelCard"
+import { BagikanArtikel } from "@/components/artikel/BagikanArtikel"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { Reveal } from "@/components/site/Reveal"
 import { artikel } from "@/data/perusahaan"
@@ -49,7 +50,7 @@ export default async function DetailArtikel({
   return (
     <>
       <article className="bg-background px-6 pt-30 pb-16 lg:px-8 lg:pt-36 lg:pb-20">
-        <div className="mx-auto w-full max-w-4xl">
+        <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
           <Reveal>
             <Link
               href="/artikel"
@@ -61,7 +62,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Kepala artikel */}
-          <Reveal className="mt-8 max-w-3xl">
+          <Reveal className="mx-auto mt-8 max-w-3xl">
             <p className="text-accent text-xs font-semibold tracking-[0.22em] uppercase">
               {item.kategori}
             </p>
@@ -85,7 +86,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Gambar sampul */}
-          <Reveal arah="scale" className="mt-8">
+          <Reveal arah="scale" className="mx-auto mt-8 max-w-4xl">
             <figure>
               <Image
                 src={item.gambar}
@@ -117,6 +118,8 @@ export default async function DetailArtikel({
               </Reveal>
             ))}
           </div>
+
+          <BagikanArtikel />
         </div>
       </article>
 

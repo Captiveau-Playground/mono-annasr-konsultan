@@ -1,13 +1,23 @@
 "use client"
 
-import { ChevronLeft, ChevronRight, Search } from "lucide-react"
+import {
+  ArrowRight,
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  Search,
+} from "lucide-react"
+import Image from "next/image"
 import { useMemo, useState } from "react"
 
 import { ArtikelCard } from "@/components/artikel/ArtikelCard"
 import { artikel } from "@/data/perusahaan"
+import { Link } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
 
 const PER_HALAMAN = 6
+
+const ARTIKEL_UNGGULAN = artikel[0]
 
 const kategoriArtikel = [
   "Semua",
@@ -45,6 +55,51 @@ export function ArtikelList() {
 
   return (
     <div className="flex flex-col gap-8">
+      {/* Artikel unggulan */}
+      {ARTIKEL_UNGGULAN ? (
+        <Link
+          href={`/artikel/${ARTIKEL_UNGGULAN.slug}`}
+          className="group block"
+        >
+          <article className="border-border bg-card grid overflow-hidden rounded-3xl border shadow-[var(--shadow-soft)] transition-shadow group-hover:shadow-[var(--shadow-lift)] lg:grid-cols-[1.05fr_1fr]">
+            <div className="relative overflow-hidden">
+              <Image
+                src={ARTIKEL_UNGGULAN.gambar}
+                alt={ARTIKEL_UNGGULAN.judul}
+                width={1200}
+                height={760}
+                className="aspect-[16/10] h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 lg:aspect-auto"
+              />
+              <span className="bg-accent text-accent-foreground absolute top-4 left-4 rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase">
+                Artikel Unggulan
+              </span>
+            </div>
+
+            <div className="flex flex-col justify-center p-8 lg:p-10">
+              <p className="text-accent text-xs font-semibold tracking-[0.18em] uppercase">
+                {ARTIKEL_UNGGULAN.kategori}
+              </p>
+              <h2 className="text-foreground mt-3 text-2xl leading-tight text-balance sm:text-3xl">
+                {ARTIKEL_UNGGULAN.judul}
+              </h2>
+              <p className="text-muted-foreground mt-3 text-sm leading-relaxed sm:text-base">
+                {ARTIKEL_UNGGULAN.ringkas}
+              </p>
+              <div className="text-muted-foreground mt-6 flex flex-wrap items-center gap-4 text-xs">
+                <span className="flex items-center gap-2">
+                  <CalendarDays className="text-primary size-3.5" />
+                  {ARTIKEL_UNGGULAN.tanggal}
+                </span>
+                <span className="text-primary inline-flex items-center gap-1.5 font-semibold">
+                  Baca Artikel
+                  <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
+              </div>
+            </div>
+          </article>
+        </Link>
+      ) : null}
+
       {/* Pencarian + filter kategori */}
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <label className="relative block w-full max-w-sm">
