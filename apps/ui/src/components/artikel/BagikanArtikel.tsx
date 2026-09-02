@@ -80,7 +80,7 @@ export function BagikanArtikel() {
   }
 
   return (
-    <div className="border-border mx-auto mt-12 max-w-6xl border-t pt-8">
+    <div className="border-border mx-auto mt-12 max-w-xl border-t pt-8">
       <p className="text-foreground font-[family-name:var(--font-heading)] text-sm font-semibold">
         Bagikan artikel ini
       </p>
