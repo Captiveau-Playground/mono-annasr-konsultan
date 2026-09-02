@@ -62,7 +62,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Kepala artikel */}
-          <Reveal className="mx-auto mt-8 max-w-3xl">
+          <Reveal className="mx-auto mt-8 max-w-4xl">
             <p className="text-accent text-xs font-semibold tracking-[0.22em] uppercase">
               {item.kategori}
             </p>
@@ -86,7 +86,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Gambar sampul */}
-          <Reveal arah="scale" className="mx-auto mt-8 max-w-4xl">
+          <Reveal arah="scale" className="mt-10">
             <figure>
               <Image
                 src={item.gambar}

@@ -16,7 +16,7 @@ function IkonWhatsApp() {
   )
 }
 
-/** Baris share di bawah isi artikel: bagikan via WhatsApp atau salin link. */
+/** Baris share di bawah isi artikel — rata kiri, tombol brand WhatsApp + salin link. */
 export function BagikanArtikel() {
   const bagikanWa = () => {
     const url = window.location.href
@@ -37,24 +37,28 @@ export function BagikanArtikel() {
   }
 
   return (
-    <div className="mx-auto mt-12 flex max-w-3xl items-center justify-center gap-3">
-      <span className="text-muted-foreground text-sm">Bagikan:</span>
-      <button
-        type="button"
-        onClick={bagikanWa}
-        className="border-border bg-card text-foreground hover:border-primary/40 hover:text-primary inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
-      >
-        <IkonWhatsApp />
-        WhatsApp
-      </button>
-      <button
-        type="button"
-        onClick={salinLink}
-        className="border-border bg-card text-foreground hover:border-primary/40 hover:text-primary inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors"
-      >
-        <LinkIcon className="size-4" />
-        Salin Link
-      </button>
+    <div className="border-border mx-auto mt-12 max-w-3xl border-t pt-8">
+      <p className="text-foreground font-[family-name:var(--font-heading)] text-sm font-semibold">
+        Bagikan artikel ini
+      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={bagikanWa}
+          className="inline-flex items-center gap-2 rounded-full bg-[#25d366] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:brightness-105"
+        >
+          <IkonWhatsApp />
+          WhatsApp
+        </button>
+        <button
+          type="button"
+          onClick={salinLink}
+          className="border-border bg-card text-foreground hover:border-primary/40 hover:text-primary inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium shadow-sm transition-colors"
+        >
+          <LinkIcon className="size-4" />
+          Salin Link
+        </button>
+      </div>
     </div>
   )
 }
