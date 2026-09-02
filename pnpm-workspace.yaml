@@ -30,7 +30,7 @@ overrides:
   #               chains, which allow any ^8.4.
   #   dompurify - fixes hook removal, clone-guard bypass and DOM clobbering
   #               via `ownerDocument` during IN_PLACE sanitization (3.4.13).
-  #               Reached via mermaid in apps/docs.
+  #               Reached via mermaid tooling (removed apps/docs dependency).
   #   hono      - fixes cross-user SSR data disclosure in `memo()`, a Connection
   #               header leak in the proxy helper and ReDoS in the language and
   #               CORS middlewares (all patched in 4.12.34). Reached via

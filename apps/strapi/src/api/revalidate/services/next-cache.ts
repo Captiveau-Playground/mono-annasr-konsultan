@@ -31,7 +31,9 @@ export type RevalidationResponse = {
  * 20 minutes) is always slower than the affected route's `revalidate` TTL,
  * so the natural TTL refresh after `revalidateTag` wins. Operators can still
  * force a purge through the CDN cache widget on the Strapi homepage.
- * See `apps/docs/docs/reference/cache-revalidation.md` for the full reasoning.
+ * Cache revalidation wiring is described in the feature docs removed with
+ * `apps/docs`; the middleware contract lives in this file and in the UI
+ * `app/api/revalidate` route handler.
  */
 export async function revalidateNextCache({
   uid,

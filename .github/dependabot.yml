@@ -39,8 +39,8 @@ updates:
   - package-ecosystem: "npm"
     target-branch: "dev"
     versioning-strategy: "increase"
-    # apps/strapi and apps/docs are handled by a dedicated entry below
-    # (they must stay on React 18), so they are intentionally excluded here.
+    # apps/strapi is handled by a dedicated entry below
+    # (it must stay on React 18), so it is intentionally excluded here.
     directories:
       - "/"
       - "/apps/ui"
@@ -89,16 +89,15 @@ updates:
       - "ready-for-review"
 
   # ─────────────────────────────────────────────
-  # React-18-pinned apps (Strapi v5 admin + Docusaurus 3)
+  # React-18-pinned app (Strapi v5 admin)
   # Separate npm entry so the React-major ignore below is scoped ONLY to
-  # these apps — apps/ui (handled above) keeps receiving React 19+ updates.
+  # this app — apps/ui (handled above) keeps receiving React 19+ updates.
   # ─────────────────────────────────────────────
   - package-ecosystem: "npm"
     target-branch: "dev"
     versioning-strategy: "increase"
     directories:
       - "/apps/strapi"
-      - "/apps/docs"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 5

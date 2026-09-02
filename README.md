@@ -2,7 +2,7 @@
 
 Enterprise-ready monorepo starter for building content-driven websites with **Strapi v5**, **Next.js 16**, **React 19**, **TailwindCSS v4**, **shadcn/ui**, **Turborepo**, and **pnpm workspaces**.
 
-Build faster with a typed Strapi CMS page builder, smart population, page hierarchy, redirects, TypeScript API types, a shared design system, authentication, localization, preview, SEO helpers, media handling, browser-safe Strapi proxying, seed data, code-quality tooling, Docusaurus documentation, Playwright QA, deployment guides, and Dockerization ready.
+Build faster with a typed Strapi CMS page builder, smart population, page hierarchy, redirects, TypeScript API types, a shared design system, authentication, localization, preview, SEO helpers, media handling, browser-safe Strapi proxying, seed data, code-quality tooling, Playwright QA, Docker deployment, and CI/CD via GitHub Actions.
 
 ## Getting Started
 
