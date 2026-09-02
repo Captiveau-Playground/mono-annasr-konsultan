@@ -26,6 +26,23 @@ const SUBYEK_KONTEN = [
   "api::navbar.navbar",
 ]
 
+/**
+ * Tipe konten publik yang boleh dibaca website TANPA token (public role).
+ * Beranda sudah diizinkan sejak awal; daftar ini memperluasnya ke seluruh
+ * tipe halaman depan An Nasr supaya loop CMS → FE jalan tanpa API key.
+ */
+const PUBLIC_FIND = [
+  "beranda",
+  "tentang",
+  "layanan",
+  "portfolio",
+  "klien",
+  "karir",
+  "kontak",
+  "artikel",
+  "situs",
+]
+
 const AKSI_EXPLORER = [
   "plugin::content-manager.explorer.create",
   "plugin::content-manager.explorer.read",
@@ -39,25 +56,28 @@ export async function setupRbac({ strapi }: { strapi: Core.Strapi }) {
     return
   }
 
-  // 1) Public role -> find beranda (agar website bisa baca tanpa token)
+  // 1) Public role -> find semua tipe konten publik (agar website bisa baca tanpa token)
   try {
     const publicRole = await strapi.db
       .query("plugin::users-permissions.role")
       .findOne({ where: { type: "public" } })
     if (publicRole) {
-      const ada = await strapi.db
-        .query("plugin::users-permissions.permission")
-        .findOne({
-          where: { action: "api::beranda.beranda.find", role: publicRole.id },
-        })
-      if (!ada) {
-        await strapi.db.query("plugin::users-permissions.permission").create({
-          data: { action: "api::beranda.beranda.find", role: publicRole.id },
-        })
+      for (const nama of PUBLIC_FIND) {
+        const action = `api::${nama}.${nama}.find`
+        const ada = await strapi.db
+          .query("plugin::users-permissions.permission")
+          .findOne({
+            where: { action, role: publicRole.id },
+          })
+        if (!ada) {
+          await strapi.db.query("plugin::users-permissions.permission").create({
+            data: { action, role: publicRole.id },
+          })
+        }
       }
     }
   } catch (error) {
-    console.warn("[rbac] public(beranda.find) gagal dipasang:", error)
+    console.warn("[rbac] public find gagal dipasang:", error)
   }
 
   // 2) Admin role "Editor Konten"
