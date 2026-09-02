@@ -1,0 +1,87 @@
+# Build dan publish image Docker (apps/ui + apps/strapi) ke GHCR.
+#
+# Pemicu:
+#   - push ke branch `main`            → tag `latest` + `main` + `sha-<git>`
+#   - push tag `vX.Y.Z` (dan vX.Y)     → tag semver (v1.0.0, v1.0)
+#   - manual (Actions → workflow_dispatch)
+#
+# Image name: ghcr.io/<org>/<repo>-ui dan ghcr.io/<org>/<repo>-strapi
+# (contoh: ghcr.io/novinardianyulianto/strapi-next-monorepo-starter-strapi)
+#
+# Tidak ada env yang di-bake saat build (strategi "build once, deploy many"):
+# semua konfigurasi runtime lewat environment variable container.
+
+name: Build & Push Docker images (GHCR)
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*"]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - app: ui
+            image: ui
+            dockerfile: apps/ui/Dockerfile
+          - app: strapi
+            image: strapi
+            dockerfile: apps/strapi/Dockerfile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags & labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.image }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,prefix=sha-
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title=${{ matrix.app }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          # Konteks = root monorepo (Dockerfile memakai turbo prune dari root)
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=ghcr-${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=ghcr-${{ matrix.image }}
+          provenance: false

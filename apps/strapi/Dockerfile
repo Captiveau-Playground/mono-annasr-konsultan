@@ -75,7 +75,8 @@ RUN turbo run build
 # ---
 FROM node:24-alpine AS runner
 
-RUN apk add --no-cache vips-dev bash
+# curl untuk healthcheck; vips untuk sharp/media runtime
+RUN apk add --no-cache vips-dev bash curl
 
 ARG APP
 ARG NODE_ENV=production
@@ -93,4 +94,7 @@ ENV PATH=/app/apps/${APP}/node_modules/.bin:$PATH
 USER strapi
 WORKDIR /app/apps/${APP}
 EXPOSE ${PORT:-1337}
+# Healthcheck: route Strapi /api/health.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+  CMD curl -fsS http://localhost:${PORT:-1337}/api/health || exit 1
 CMD ["node", "scripts/seed-runner.mjs", "start"]

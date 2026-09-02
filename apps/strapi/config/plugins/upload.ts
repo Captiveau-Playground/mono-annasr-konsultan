@@ -66,6 +66,11 @@ const prepareAwsS3Config = (env: EnvGetter) => {
         baseUrl: env("CDN_URL"),
         rootPath: env("CDN_ROOT_PATH"),
         s3Options: {
+          // Endpoint kustom untuk storage S3-compatible (Cloudflare R2,
+          // Backblaze B2, DigitalOcean Spaces, MinIO). Kosongkan = AWS S3.
+          endpoint: env("AWS_ENDPOINT") || undefined,
+          // MinIO dan sebagian S3-compatible butuh path-style (<host>/bucket<key>)
+          forcePathStyle: env.bool("AWS_FORCE_PATH_STYLE", false) || undefined,
           credentials: {
             accessKeyId: awsAccessKeyId,
             secretAccessKey: awsAccessSecret,

@@ -1,0 +1,123 @@
+# ─────────────────────────────────────────────────────────────
+#  Runtime produksi (server): PostgreSQL + Strapi + UI
+#
+#  Cara pakai di server:
+#      cd deploy
+#      cp .env.example .env        # lalu isi (lihat README.md)
+#      docker login ghcr.io        # dengan token GITHUB (read:packages)
+#      docker compose up -d --pull always
+#
+#  Image di-build & di-push ke GHCR oleh workflow
+#  `.github/workflows/docker-publish.yml`.
+# ─────────────────────────────────────────────────────────────
+
+name: annasr
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  strapi:
+    image: ${IMAGE_STRAPI}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: "1337"
+      APP_URL: ${STRAPI_PUBLIC_URL}
+      CLIENT_URL: ${UI_PUBLIC_URL}
+
+      # Database
+      DATABASE_CLIENT: postgres
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      DATABASE_SSL: "false"
+
+      # Secret Strapi (wajib)
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${API_TOKEN_SALT}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+
+      # Revalidasi cache UI (harus sama dengan UI)
+      STRAPI_REVALIDATE_SECRET: ${STRAPI_REVALIDATE_SECRET}
+      STRAPI_CDN_PURGE_SECRET: ${STRAPI_CDN_PURGE_SECRET}
+
+      # Upload object storage — KOSONGKAN untuk pakai volume lokal (uploads)
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_ACCESS_SECRET: ${AWS_ACCESS_SECRET:-}
+      AWS_REGION: ${AWS_REGION:-}
+      AWS_BUCKET: ${AWS_BUCKET:-}
+      AWS_ENDPOINT: ${AWS_ENDPOINT:-}      # isi utk R2/B2/Spaces/MinIO
+      AWS_FORCE_PATH_STYLE: ${AWS_FORCE_PATH_STYLE:-false}
+
+      # Seed baseline saat DB kosong (first-boot). Matikan setelah sehat.
+      AUTO_SEED_ENABLED: ${AUTO_SEED_ENABLED:-false}
+      AUTO_SEED_MODE: ${AUTO_SEED_MODE:-empty}
+
+      # RBAC (Editor Konten + public read) dipasang otomatis saat boot
+      RBAC_AUTO_SETUP: "true"
+    volumes:
+      - uploads:/app/apps/strapi/public/uploads
+    ports:
+      - "1337:1337"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:1337/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+  ui:
+    image: ${IMAGE_UI}
+    restart: unless-stopped
+    depends_on:
+      strapi:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      APP_ENV: production
+      APP_PUBLIC_URL: ${UI_PUBLIC_URL}
+      # Akses server→server ke Strapi (dalam network compose).
+      # CATATAN: utk upload yg tampil lewat <Image> + optimizer Next,
+      # lebih aman set ke URL PUBLIK Strapi (lihat README.md).
+      STRAPI_URL: http://strapi:1337
+      STRAPI_REST_READONLY_API_KEY: ${STRAPI_REST_READONLY_API_KEY:-}
+      STRAPI_REST_CUSTOM_API_KEY: ${STRAPI_REST_CUSTOM_API_KEY:-}
+      STRAPI_REVALIDATE_SECRET: ${STRAPI_REVALIDATE_SECRET}
+      STRAPI_CDN_PURGE_SECRET: ${STRAPI_CDN_PURGE_SECRET}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-}
+      SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: "1"
+      SHOW_NON_BLOCKING_ERRORS: ${SHOW_NON_BLOCKING_ERRORS:-false}
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  pgdata:
+  uploads:
