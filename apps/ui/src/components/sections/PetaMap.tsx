@@ -90,7 +90,7 @@ export function PetaMap() {
 
   return (
     <div
-      className="border-border bg-surface h-[24rem] w-full overflow-hidden rounded-xl border sm:h-[30rem]"
+      className="border-border bg-surface relative z-0 h-[24rem] w-full overflow-hidden rounded-xl border sm:h-[30rem]"
       ref={containerRef}
       aria-label="Peta persebaran lokasi proyek CV. AN NASR KONSULTAN di Indonesia"
     />
