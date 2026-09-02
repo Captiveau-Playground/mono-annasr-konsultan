@@ -234,3 +234,52 @@
 @utility marquee-track-rev {
   animation: marquee-x 54s linear infinite reverse;
 }
+
+/* Leaflet map pins — brand accent dot with a soft ping ring. */
+.peta-pin {
+  position: relative;
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 9999px;
+  background-color: var(--accent);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 4px oklch(0.68 0.185 47 / 0.25);
+}
+
+.peta-pin::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 9999px;
+  background-color: oklch(0.68 0.185 47 / 0.35);
+  animation: peta-ping 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes peta-ping {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peta-pin::after {
+    animation: none;
+  }
+}
+
+/* Keep the Leaflet zoom controls in brand neutral colors. */
+.leaflet-control-zoom a {
+  color: var(--foreground);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  border-radius: 0.75rem;
+}

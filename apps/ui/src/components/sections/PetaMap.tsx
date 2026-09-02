@@ -1,0 +1,95 @@
+"use client"
+
+import type { Map as LeafletMap } from "leaflet"
+import { useEffect, useRef } from "react"
+
+import { kotaProyek } from "@/data/perusahaan"
+
+/**
+ * Peta interaktif jangkauan proyek — Leaflet (gratis, tanpa API key) dengan
+ * tile CARTO Voyager dan pin custom berwarna aksen brand. Diinisialisasi di
+ * useEffect jadi aman untuk SSR (Leaflet hanya diload di sisi klien).
+ */
+export function PetaMap() {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!containerRef.current) return
+
+    let map: LeafletMap | null = null
+    let dibatalkan = false
+
+    void (async () => {
+      // Idempotent: skip if cancelled OR the container already hosts a map
+      // (StrictMode re-runs effects in dev).
+      if (
+        dibatalkan ||
+        containerRef.current?.classList.contains("leaflet-container")
+      ) {
+        return
+      }
+      const L = await import("leaflet")
+
+      try {
+        map = L.map(containerRef.current!, {
+          scrollWheelZoom: false,
+          zoomControl: true,
+          attributionControl: true,
+        })
+      } catch {
+        // Container is already hosting a live map (dev StrictMode re-mount)
+        return
+      }
+
+      L.tileLayer(
+        "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",
+        {
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+          subdomains: "abcd",
+          maxZoom: 19,
+        }
+      ).addTo(map)
+
+      const koordinat: [number, number][] = kotaProyek.map((k) => [
+        k.lat,
+        k.lng,
+      ])
+      const bounds = L.latLngBounds(koordinat)
+
+      const ikon = L.divIcon({
+        className: "",
+        html: '<span class="peta-pin" aria-hidden="true"></span>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 8],
+        popupAnchor: [0, -10],
+      })
+
+      for (const kota of kotaProyek) {
+        L.marker([kota.lat, kota.lng], { icon: ikon })
+          .addTo(map)
+          .bindTooltip(kota.nama, { direction: "top", offset: [0, -6] })
+          .bindPopup(
+            `<strong>${kota.nama}</strong><br /><span style="font-size:12px">Kota proyek CV. AN NASR KONSULTAN</span>`
+          )
+      }
+
+      map.fitBounds(bounds.pad(0.12))
+    })()
+
+    return () => {
+      dibatalkan = true
+      map?.remove()
+      // Reset the container so a StrictMode re-mount can re-initialize cleanly.
+      containerRef.current?.classList.remove("leaflet-container")
+    }
+  }, [])
+
+  return (
+    <div
+      className="border-border bg-surface h-[24rem] w-full overflow-hidden rounded-xl border sm:h-[30rem]"
+      ref={containerRef}
+      aria-label="Peta persebaran lokasi proyek CV. AN NASR KONSULTAN di Indonesia"
+    />
+  )
+}

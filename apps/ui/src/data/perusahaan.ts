@@ -50,29 +50,18 @@ export const klien = [
 ]
 
 export const kotaProyek = [
-  { nama: "Jombang", atas: "76%", kiri: "36.5%" },
-  { nama: "Mojokerto", atas: "75%", kiri: "37.6%" },
-  { nama: "Kediri", atas: "78%", kiri: "35.8%" },
-  { nama: "Nganjuk", atas: "76%", kiri: "35%" },
-  { nama: "Surabaya", atas: "73.5%", kiri: "38.4%" },
-  { nama: "Lamongan", atas: "73%", kiri: "37%" },
-  { nama: "Malang", atas: "79.5%", kiri: "37%" },
-  { nama: "Semarang", atas: "73%", kiri: "31%" },
-  { nama: "Bandung", atas: "76%", kiri: "24%" },
-  { nama: "Balikpapan", atas: "47%", kiri: "44%" },
-  { nama: "Makassar", atas: "60%", kiri: "50%" },
-  { nama: "Denpasar", atas: "83%", kiri: "44%" },
-]
-
-export const sesiMingguan = [
-  { minggu: "M1", sesi: 210 },
-  { minggu: "M2", sesi: 268 },
-  { minggu: "M3", sesi: 245 },
-  { minggu: "M4", sesi: 312 },
-  { minggu: "M5", sesi: 356 },
-  { minggu: "M6", sesi: 330 },
-  { minggu: "M7", sesi: 398 },
-  { minggu: "M8", sesi: 441 },
+  { nama: "Jombang", lat: -7.5454, lng: 112.2424 },
+  { nama: "Mojokerto", lat: -7.4667, lng: 112.4333 },
+  { nama: "Kediri", lat: -7.8167, lng: 112.0167 },
+  { nama: "Nganjuk", lat: -7.6039, lng: 111.9035 },
+  { nama: "Surabaya", lat: -7.2575, lng: 112.7521 },
+  { nama: "Lamongan", lat: -7.1165, lng: 112.4181 },
+  { nama: "Malang", lat: -7.9777, lng: 112.6304 },
+  { nama: "Semarang", lat: -6.9667, lng: 110.4167 },
+  { nama: "Bandung", lat: -6.9175, lng: 107.6191 },
+  { nama: "Balikpapan", lat: -1.2379, lng: 116.8529 },
+  { nama: "Makassar", lat: -5.1477, lng: 119.4327 },
+  { nama: "Denpasar", lat: -8.6705, lng: 115.2126 },
 ]
 
 export type Layanan = {

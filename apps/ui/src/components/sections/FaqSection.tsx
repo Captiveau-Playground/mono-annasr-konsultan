@@ -1,6 +1,6 @@
 "use client"
 
-import { Minus, Plus } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useState } from "react"
 
 import { Reveal } from "@/components/site/Reveal"
@@ -44,7 +44,7 @@ export function FaqSection() {
 
   return (
     <SectionShell tone="krem" judul={"Pertanyaan yang\nSering Diajukan"}>
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="mx-auto flex max-w-3xl flex-col gap-3">
         {faq.map((f, i) => {
           const terbuka = aktif === i
 
@@ -55,30 +55,43 @@ export function FaqSection() {
                   type="button"
                   onClick={() => setAktif(terbuka ? null : i)}
                   aria-expanded={terbuka}
+                  aria-controls={`faq-panel-${i}`}
                   className="flex w-full items-center gap-4 px-5 py-4 text-left"
                 >
                   <span className="text-foreground min-w-0 flex-1 text-sm font-medium sm:text-base">
                     {f.tanya}
                   </span>
                   <span
-                    className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${
+                    className={`flex size-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
                       terbuka
                         ? "bg-accent text-accent-foreground"
                         : "bg-surface text-primary"
                     }`}
                   >
-                    {terbuka ? (
-                      <Minus className="size-4" />
-                    ) : (
-                      <Plus className="size-4" />
-                    )}
+                    <Plus
+                      className={`size-4 transition-transform duration-300 ${
+                        terbuka ? "rotate-45" : "rotate-0"
+                      }`}
+                    />
                   </span>
                 </button>
-                {terbuka ? (
-                  <p className="text-muted-foreground px-5 pb-5 text-sm leading-relaxed">
-                    {f.jawab}
-                  </p>
-                ) : null}
+
+                <div
+                  id={`faq-panel-${i}`}
+                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                    terbuka ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div
+                    className={`min-h-0 overflow-hidden transition-opacity duration-300 ${
+                      terbuka ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    <p className="text-muted-foreground px-5 pb-5 text-sm leading-relaxed">
+                      {f.jawab}
+                    </p>
+                  </div>
+                </div>
               </div>
             </Reveal>
           )

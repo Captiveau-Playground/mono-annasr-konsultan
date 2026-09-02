@@ -1,6 +1,6 @@
-import { Compass, Mail, MapPin, Phone, TrendingUp } from "lucide-react"
+import { Compass, Mail, MapPin, Phone } from "lucide-react"
 
-import { layanan, navigasi, perusahaan, sesiMingguan } from "@/data/perusahaan"
+import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
 export function Footer() {
@@ -88,10 +88,6 @@ export function Footer() {
                 <span>{perusahaan.email}</span>
               </li>
             </ul>
-
-            <div className="mt-8">
-              <SesiChart />
-            </div>
           </div>
         </div>
       </div>
@@ -105,35 +101,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
-}
-
-function SesiChart() {
-  const nilai = sesiMingguan.map((s) => s.sesi)
-  const maks = Math.max(...nilai)
-
-  return (
-    <div className="border-primary-foreground/10 bg-primary-foreground/5 rounded-xl border p-4">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
-        <p className="text-primary-foreground/70 flex min-w-0 items-center gap-2 text-[11px] font-semibold tracking-[0.16em] uppercase">
-          <TrendingUp className="text-accent size-3.5 shrink-0" />
-          <span className="truncate">Sesi / Minggu</span>
-        </p>
-        <span className="text-accent shrink-0 font-[family-name:var(--font-heading)] text-lg font-semibold">
-          {nilai.at(-1)?.toLocaleString("id-ID")}
-        </span>
-      </div>
-
-      <div className="mt-4 flex h-14 items-end gap-1.5">
-        {sesiMingguan.map((s) => (
-          <div
-            key={s.minggu}
-            title={`${s.minggu}: ${s.sesi} sesi`}
-            className="bg-accent/70 flex-1 rounded-t"
-            style={{ height: `${Math.max(10, (s.sesi / maks) * 100)}%` }}
-          />
-        ))}
-      </div>
-    </div>
   )
 }
