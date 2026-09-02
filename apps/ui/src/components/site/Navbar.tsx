@@ -68,7 +68,24 @@ export function Navbar() {
   const [grupBuka, setGrupBuka] = useState<string | null>(null)
   const navRef = useRef<HTMLElement>(null)
   const pathname = usePathname()
-  const terang = !scrolled && !open
+
+  /**
+   * Rute yang bagian atasnya ber-latar terang → navbar wajib solid (tidak
+   * transparan ber-teks-putih yang jadi tak terlihat), mis. detail artikel,
+   * detail layanan, dan area CRM. Locale prefix (cs/en) ikut dibuang.
+   */
+  const topTerang = (() => {
+    const segmen = pathname.split("/").filter(Boolean)
+    if (segmen[0] === "cs" || segmen[0] === "en") segmen.shift()
+
+    return (
+      segmen[0] === "crm" ||
+      (segmen[0] === "artikel" && segmen.length >= 2) ||
+      (segmen[0] === "layanan" && segmen.length >= 2)
+    )
+  })()
+
+  const terang = !topTerang && !scrolled && !open
   const teksNav = terang
     ? "text-primary-foreground/80 hover:text-primary-foreground"
     : "text-muted-foreground hover:text-primary"
@@ -122,7 +139,7 @@ export function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled
+        scrolled || topTerang
           ? "border-border bg-background/85 border-b py-2 shadow-[var(--shadow-soft)] backdrop-blur-xl"
           : "border-b border-transparent py-4"
       }`}
