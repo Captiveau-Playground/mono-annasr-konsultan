@@ -1,7 +1,6 @@
-import { ArrowRight, Phone } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
 import { Reveal } from "./Reveal"
@@ -37,15 +36,6 @@ export function CtaBanner() {
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>
-                <a
-                  href={`https://wa.me/${perusahaan.whatsapp}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-foreground/80 hover:text-primary inline-flex items-center justify-center gap-2 text-sm font-medium transition-colors"
-                >
-                  <Phone className="text-primary size-4" />
-                  {perusahaan.telepon}
-                </a>
               </div>
             </div>
           </div>
