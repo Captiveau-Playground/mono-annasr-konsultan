@@ -2,35 +2,32 @@ import "@/styles/globals.css"
 
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import Script from "next/script"
+import { NextIntlClientProvider } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
+import type React from "react"
 
-import { ErrorBoundary } from "@/components/elementary/ErrorBoundary"
-import StrapiPreviewListener from "@/components/elementary/StrapiPreviewListener"
-import { TailwindIndicator } from "@/components/elementary/TailwindIndicator"
-import StrapiFooter from "@/components/page-builder/single-types/footer/StrapiFooter"
-import StrapiNavbar from "@/components/page-builder/single-types/navbar/StrapiNavbar"
 import { ClientProviders } from "@/components/providers/ClientProviders"
-import { ServerProviders } from "@/components/providers/ServerProviders"
-import TrackingScripts from "@/components/providers/TrackingScripts"
+import { Footer } from "@/components/site/Footer"
+import { Navbar } from "@/components/site/Navbar"
+import { WhatsAppFloat } from "@/components/site/WhatsAppFloat"
 import { Toaster } from "@/components/ui/sonner"
-import { debugStaticParams } from "@/lib/build"
-import { fontRoboto } from "@/lib/fonts"
+import { fontBody, fontHeading } from "@/lib/fonts"
 import { isValidLocale, routing } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
 
 export function generateStaticParams() {
   const locales = routing.locales.map((locale) => ({ locale }))
-  debugStaticParams(locales, "[locale]")
 
   return locales
 }
 
 export const metadata: Metadata = {
   title: {
-    template: "%s / Notum Technologies",
-    default: "",
+    default: "CV. AN NASR KONSULTAN — Konsultan Teknik Sipil Jombang",
+    template: "%s",
   },
+  description:
+    "Jasa perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang, Jawa Timur.",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "16x16 32x32" },
@@ -42,84 +39,44 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
   params,
-}: LayoutProps<"/[locale]">) {
+}: {
+  children: React.ReactNode
+  params: Promise<{ locale: string }>
+}) {
   const { locale } = await params
 
   if (!isValidLocale(locale)) {
     notFound()
   }
   // Enable static rendering
-  // https://next-intl-docs.vercel.app/docs/getting-started/app-router/with-i18n-routing#static-rendering
   setRequestLocale(locale)
-
-  /**
-   * This allows you to make following env variables RUNTIME.
-   *
-   * Following variables aren't going to be embedded during the build-time. To avoid embedding,
-   * you must not use "NEXT_PUBLIC_" prefix for env variable that you want to keep
-   * private and dynamic at runtime.
-   *
-   * Instead, use this method to pass only the required env variables to the client side.
-   * To access them from CSR or SSR context, read them using `getEnvVar()` helper.
-   *
-   * Do not include "STRAPI_URL", we want to keep it private (hence why we use proxying).
-   */
-  const CSR_ENVs = [
-    "NODE_ENV",
-    "DEBUG_STRAPI_CLIENT_API_CALLS",
-    "SHOW_NON_BLOCKING_ERRORS",
-    "APP_PUBLIC_URL",
-    "IMGPROXY_URL",
-  ]
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
-        <Script id="csr-config" strategy="beforeInteractive">
-          {`
-         window.CSR_CONFIG = window.CSR_CONFIG || {};
-         window.CSR_CONFIG = ${JSON.stringify({
-           ...CSR_ENVs.reduce(
-             (acc, curr) => {
-               acc[curr] = process.env?.[curr]
-
-               return acc
-             },
-             {} as Record<string, string | undefined>
-           ),
-         })};
-       `}
-        </Script>
-      </head>
       <body
         className={cn(
-          "min-h-screen font-sans antialiased",
-          fontRoboto.variable
+          "min-h-screen antialiased",
+          fontHeading.variable,
+          fontBody.variable
         )}
+        style={
+          {
+            "--font-heading":
+              "var(--annasr-heading), 'Poppins', ui-sans-serif, system-ui, sans-serif",
+            "--font-body":
+              "var(--annasr-body), 'Inter', ui-sans-serif, system-ui, sans-serif",
+          } as React.CSSProperties
+        }
       >
-        <TrackingScripts />
-        <ServerProviders>
-          <StrapiPreviewListener />
+        <NextIntlClientProvider locale={locale}>
           <ClientProviders>
-            <div className="relative flex min-h-screen flex-col">
-              <ErrorBoundary showErrorMessage>
-                <StrapiNavbar locale={locale} />
-              </ErrorBoundary>
-
-              <div className="flex-1">
-                <div>{children}</div>
-              </div>
-
-              <TailwindIndicator />
-
-              <Toaster />
-
-              <ErrorBoundary hideFallback>
-                <StrapiFooter locale={locale} />
-              </ErrorBoundary>
-            </div>
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <WhatsAppFloat />
+            <Toaster position="top-center" />
           </ClientProviders>
-        </ServerProviders>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
