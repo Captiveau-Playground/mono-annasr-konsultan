@@ -2,9 +2,15 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
-import { TentangSection } from "@/components/sections/TentangSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
-import { PageHero } from "@/components/site/PageHero"
+import { Founder } from "@/components/tentang/Founder"
+import { JangkauanTentang } from "@/components/tentang/JangkauanTentang"
+import { KenapaKami } from "@/components/tentang/KenapaKami"
+import { KisahPerusahaan } from "@/components/tentang/KisahPerusahaan"
+import { TentangHero } from "@/components/tentang/TentangHero"
+import { TentangInti } from "@/components/tentang/TentangInti"
+import { TimTentang } from "@/components/tentang/TimTentang"
+import { VisiMisi } from "@/components/tentang/VisiMisi"
 import { isValidLocale } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -31,12 +37,14 @@ export default async function TentangPage({
 
   return (
     <>
-      <PageHero
-        eyebrow="Tentang Kami"
-        judul="Mitra teknik yang tumbuh bersama pembangunan daerah"
-        teks="Kami hadir untuk memastikan setiap rencana pembangunan berjalan dengan perhitungan yang matang dan pelaksanaan yang bertanggung jawab."
-      />
-      <TentangSection />
+      <TentangHero />
+      <TentangInti />
+      <KisahPerusahaan />
+      <VisiMisi />
+      <Founder />
+      <TimTentang />
+      <KenapaKami />
+      <JangkauanTentang />
       <CtaBanner />
     </>
   )
