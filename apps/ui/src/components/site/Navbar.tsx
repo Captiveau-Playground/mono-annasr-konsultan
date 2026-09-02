@@ -27,12 +27,13 @@ type ItemNav = {
   href: string
 }
 
-/** Link flat utama di desktop — layanan & profil dibuat grup agar muat tanpa numpuk. */
+/** Link flat utama di desktop — Kontak diletakkan paling belakang, setelah grup. */
 const FLAT_DESKTOP: ItemNav[] = [
   { label: "Beranda", href: "/" },
   { label: "Proyek", href: "/portfolio" },
-  { label: "Hubungi Kami", href: "/kontak" },
 ]
+
+const KONTAK: ItemNav = { label: "Kontak", href: "/kontak" }
 
 const GRUP_DESKTOP: { label: string; href: string; anak: ItemNav[] }[] = [
   {
@@ -241,6 +242,19 @@ export function Navbar() {
               </li>
             )
           })}
+
+          <li key={KONTAK.href}>
+            <Link
+              href={KONTAK.href}
+              onClick={() => setGrupBuka(null)}
+              className={cn(
+                "rounded-full px-3 py-2 text-sm font-medium transition-colors",
+                aktif(KONTAK.href) ? teksAktif : teksNav
+              )}
+            >
+              {KONTAK.label}
+            </Link>
+          </li>
         </ul>
 
         <div className="hidden shrink-0 lg:block">

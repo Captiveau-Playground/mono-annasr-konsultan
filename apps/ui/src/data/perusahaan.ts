@@ -348,7 +348,7 @@ export const navigasi = [
   { label: "Tentang Kami", to: "/tentang" },
   { label: "Artikel", to: "/artikel" },
   { label: "Karir", to: "/karir" },
-  { label: "Hubungi Kami", to: "/kontak" },
+  { label: "Kontak", to: "/kontak" },
 ] as const
 
 export const artikel = [
