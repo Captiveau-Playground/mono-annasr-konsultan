@@ -5,8 +5,6 @@ import { InstagramIcon } from "@/components/ui/icons"
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
-import { SocialLinks } from "./SocialLinks"
-
 export function Footer({
   brand,
   navigasi: navCms,
@@ -19,7 +17,6 @@ export function Footer({
   telepon,
   email,
   instagram,
-  whatsapp,
 }: {
   /** Dari CMS (situs.brandNama). */
   brand?: string
@@ -37,8 +34,6 @@ export function Footer({
   email?: string
   /** Dari CMS (kontak.instagram). */
   instagram?: string
-  /** Dari CMS (kontak.whatsapp). */
-  whatsapp?: string
   /** Kolom footer dari CT Footer (elements.footer-item). */
   sections?: readonly {
     title: string
@@ -113,72 +108,76 @@ export function Footer({
             <p className="text-primary-foreground/45 mt-5 text-xs tracking-[0.18em] uppercase">
               {jam ?? perusahaan.jamOperasional}
             </p>
-
-            {/* Kontak singkat: hp, email, alamat, instagram — satu grup ber-ikon. */}
-            <ul className="text-primary-foreground/75 mt-6 space-y-2.5 text-sm">
-              <li className="flex items-center gap-2.5">
-                <Phone className="text-accent size-4 shrink-0" />
-                <a
-                  href={`tel:${(telepon ?? perusahaan.telepon).replaceAll(/\s/g, "")}`}
-                  className="hover:text-accent transition-colors"
-                >
-                  {telepon ?? perusahaan.telepon}
-                </a>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <Mail className="text-accent size-4 shrink-0" />
-                <a
-                  href={`mailto:${email ?? perusahaan.email}`}
-                  className="hover:text-accent transition-colors"
-                >
-                  {email ?? perusahaan.email}
-                </a>
-              </li>
-              <li className="flex items-center gap-2.5">
-                <MapPin className="text-accent size-4 shrink-0" />
-                <span>{kantor ?? perusahaan.kantor}</span>
-              </li>
-              {(instagram ?? "").trim() ? (
-                <li className="flex items-center gap-2.5">
-                  <InstagramIcon className="size-4 shrink-0" />
-                  <a
-                    href={`https://instagram.com/${instagram
-                      ?.replace(/^@/, "")
-                      .trim()}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-accent transition-colors"
-                  >
-                    {instagram?.replace(/^@/, "").trim()}
-                  </a>
-                </li>
-              ) : null}
-            </ul>
-            <SocialLinks
-              instagram={instagram}
-              whatsapp={whatsapp ?? perusahaan.whatsapp}
-            />
           </div>
 
-          {kolom.map((k) => (
-            <div key={k.title}>
-              <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
-                {k.title}
-              </h3>
-              <ul className="mt-5 space-y-3">
-                {k.links.map((l) => (
-                  <li key={l.label}>
-                    <Link
-                      href={l.href}
-                      className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {kolom.map((k) => {
+            const isKontak = k.title === "Kontak"
+
+            return (
+              <div key={k.title}>
+                <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
+                  {k.title}
+                </h3>
+                {isKontak ? (
+                  <ul className="text-primary-foreground/75 mt-5 space-y-3.5 text-sm">
+                    <li className="flex items-center gap-2.5">
+                      <Phone className="text-accent size-4 shrink-0" />
+                      <a
+                        href={`tel:${(telepon ?? perusahaan.telepon).replaceAll(
+                          /\s/g,
+                          ""
+                        )}`}
+                        className="hover:text-accent transition-colors"
+                      >
+                        {telepon ?? perusahaan.telepon}
+                      </a>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <Mail className="text-accent size-4 shrink-0" />
+                      <a
+                        href={`mailto:${email ?? perusahaan.email}`}
+                        className="hover:text-accent transition-colors"
+                      >
+                        {email ?? perusahaan.email}
+                      </a>
+                    </li>
+                    <li className="flex items-center gap-2.5">
+                      <MapPin className="text-accent size-4 shrink-0" />
+                      <span>{kantor ?? perusahaan.kantor}</span>
+                    </li>
+                    {instagram?.trim() ? (
+                      <li className="flex items-center gap-2.5">
+                        <InstagramIcon className="size-4 shrink-0" />
+                        <a
+                          href={`https://instagram.com/${instagram
+                            .replace(/^@/, "")
+                            .trim()}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="hover:text-accent transition-colors"
+                        >
+                          {instagram.replace(/^@/, "").trim()}
+                        </a>
+                      </li>
+                    ) : null}
+                  </ul>
+                ) : (
+                  <ul className="mt-5 space-y-3">
+                    {k.links.map((l) => (
+                      <li key={l.label}>
+                        <Link
+                          href={l.href}
+                          className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
+                        >
+                          {l.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )
+          })}
         </div>
       </div>
 
