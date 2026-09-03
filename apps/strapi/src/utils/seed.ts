@@ -23,6 +23,76 @@ async function seedTunggal(strapi: Core.Strapi, uid: string, data: Dok) {
 }
 
 /** Seed koleksi rekanan — hanya bila tabel masih kosong (idempotent). */
+/**
+ * Perbarui CT Navbar & Footer (milik starter) dengan konten An Nasr bila
+ * masih berisi data demo — sehingga kolom "Navbar"/"Footer" di admin
+ * makesense dan UI yang membaca CT ini ikut tampil benar.
+ */
+async function seedNavbarFooter(strapi: Core.Strapi) {
+  const nav = strapi.documents("api::navbar.navbar" as never)
+  const foot = strapi.documents("api::footer.footer" as never)
+
+  const navbarAda = await nav.findFirst({
+    locale: "en",
+    populate: { navbarItems: { populate: { link: true } } },
+  } as never)
+
+  const navbarStarter =
+    navbarAda == null ||
+    (navbarAda as { navbarItems?: { link?: { label?: string } }[] })
+      .navbarItems?.[0]?.link?.label !== "Beranda"
+
+  if (navbarStarter) {
+    const data = {
+      navbarItems: NAV_WEB.map((n) => ({
+        isCategoryLink: true,
+        link: {
+          type: "external" as const,
+          label: n.label,
+          newTab: false,
+          href: n.href,
+        },
+        categoryItems: [],
+      })),
+    }
+    if (navbarAda != null) {
+      await nav.update({
+        documentId: (navbarAda as { documentId: string }).documentId,
+        locale: "en",
+        data: data as never,
+      } as never)
+    } else {
+      await nav.create({ data: data as never } as never)
+    }
+  }
+
+  const footerAda = await foot.findFirst({
+    locale: "en",
+    populate: { sections: { populate: { links: true } } },
+  } as never)
+
+  const footerStarter =
+    footerAda == null ||
+    (footerAda as { sections?: { title?: string }[] }).sections?.[0]?.title !==
+      "Menu"
+
+  if (footerStarter) {
+    const data = {
+      sections: FOOTER_SECTIONS,
+      copyRight: FOOTER_COPYRIGHT,
+    }
+    if (footerAda != null) {
+      await foot.update({
+        documentId: (footerAda as { documentId: string }).documentId,
+        locale: "en",
+        data: data as never,
+      } as never)
+    } else {
+      await foot.create({ data: data as never } as never)
+    }
+  }
+}
+
 async function seedKoleksiRekanan(strapi: Core.Strapi) {
   const dok = strapi.documents("api::rekanan.rekanan" as never)
   const ada = await dok.findFirst({})
@@ -190,6 +260,87 @@ const KLIEN = [
   "BUMDes Makmur",
   "PDAM Jombang",
 ]
+const NAV_WEB = [
+  { label: "Beranda", href: "/" },
+  { label: "Layanan", href: "/layanan" },
+  { label: "Proyek", href: "/portfolio" },
+  { label: "Tentang Kami", href: "/tentang" },
+  { label: "Rekanan", href: "/rekanan" },
+  { label: "Artikel", href: "/artikel" },
+  { label: "Karir", href: "/karir" },
+  { label: "Kontak", href: "/kontak" },
+]
+
+const FOOTER_SECTIONS = [
+  {
+    title: "Menu",
+    links: NAV_WEB.map((n) => ({
+      type: "external",
+      label: n.label,
+      newTab: false,
+      href: n.href,
+    })),
+  },
+  {
+    title: "Layanan",
+    links: [
+      {
+        type: "external",
+        label: "Jasa Perencanaan",
+        newTab: false,
+        href: "/layanan/perencanaan",
+      },
+      {
+        type: "external",
+        label: "Jasa Pengawasan",
+        newTab: false,
+        href: "/layanan/pengawasan",
+      },
+      {
+        type: "external",
+        label: "Jasa Perizinan",
+        newTab: false,
+        href: "/layanan/perizinan",
+      },
+      {
+        type: "external",
+        label: "Jasa Konstruksi",
+        newTab: false,
+        href: "/layanan/konstruksi",
+      },
+    ],
+  },
+  {
+    title: "Kontak",
+    links: [
+      {
+        type: "external",
+        label: "+62 812-0000-0000",
+        newTab: false,
+        href: "tel:+6281200000000",
+      },
+      {
+        type: "external",
+        label: "annasrkonsultan@email.com",
+        newTab: false,
+        href: "mailto:annasrkonsultan@email.com",
+      },
+      {
+        type: "external",
+        label: "Jombang, Jawa Timur",
+        newTab: false,
+        href: "https://www.google.com/maps/search/Jombang%2C+Jawa+Timur",
+      },
+    ],
+  },
+]
+
+const TAHUN_SEKARANG = new Date()
+const FOOTER_COPYRIGHT =
+  "© " +
+  TAHUN_SEKARANG.getFullYear() +
+  " CV. AN NASR KONSULTAN. Seluruh hak cipta dilindungi."
+
 const REKANAN: { nama: string; instansi: string; keterangan: string }[] = [
   {
     nama: "Pemerintah Kabupaten Jombang",
@@ -533,7 +684,10 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
       ],
     })
     await seedKoleksiRekanan(strapi)
-    console.log("[seed] Konten An Nasr berhasil di-seed (9 tipe + rekanan).")
+    await seedNavbarFooter(strapi)
+    console.log(
+      "[seed] Konten An Nasr berhasil di-seed (9 tipe + rekanan + navbar/footer)."
+    )
   } catch (error) {
     const e = error as {
       inner?: unknown[]
