@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_annasr_submenu_items",
+  "info": {
+    "displayName": "Item Submenu Navigasi"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "href": {
+      "type": "string"
+    },
+    "deskripsi": {
+      "type": "text"
+    }
+  }
+}

@@ -260,6 +260,91 @@ const KLIEN = [
   "BUMDes Makmur",
   "PDAM Jombang",
 ]
+/** Menu website An Nasr (kanonik) — item punya submenu (anak) bila bergrup. */
+const NAV_MENU = [
+  { label: "Beranda", href: "/" },
+  {
+    label: "Layanan",
+    href: "/layanan",
+    anak: [
+      {
+        label: "Jasa Perencanaan",
+        href: "/layanan/perencanaan",
+        deskripsi: "Desain, struktur, gambar kerja, RAB sesuai SNI.",
+      },
+      {
+        label: "Jasa Pengawasan",
+        href: "/layanan/pengawasan",
+        deskripsi: "Pengendalian mutu, biaya, dan waktu pelaksanaan.",
+      },
+      {
+        label: "Jasa Perizinan",
+        href: "/layanan/perizinan",
+        deskripsi: "Pendampingan PBG & SLF sampai dokumen terbit.",
+      },
+      {
+        label: "Jasa Konstruksi",
+        href: "/layanan/konstruksi",
+        deskripsi:
+          "Pelaksanaan bangunan & infrastruktur tepat mutu, biaya, waktu.",
+      },
+    ],
+  },
+  { label: "Proyek", href: "/portfolio" },
+  {
+    label: "Profil",
+    href: "/tentang",
+    anak: [
+      {
+        label: "Tentang Kami",
+        href: "/tentang",
+        deskripsi: "Perjalanan, visi, dan tim kami.",
+      },
+      {
+        label: "Rekanan",
+        href: "/rekanan",
+        deskripsi: "Sertifikat kerjasama & katalog rekanan.",
+      },
+      {
+        label: "Artikel",
+        href: "/artikel",
+        deskripsi: "Wawasan teknik & konstruksi dari lapangan.",
+      },
+      {
+        label: "Karir",
+        href: "/karir",
+        deskripsi: "Bergabunglah bersama tim teknik kami.",
+      },
+    ],
+  },
+  { label: "Kontak", href: "/kontak" },
+]
+
+/** Perbarui navigasi situs dari menu kanonik (idempotent per nilai, ganti total). */
+async function seedMenuSitus(strapi: Core.Strapi) {
+  const dok = strapi.documents("api::situs.situs" as never)
+  const ada = (await dok.findFirst({})) as null | {
+    documentId?: string
+    brandNama?: string
+    brandTagline?: string
+    deskripsiLabel?: string
+  }
+  if (!ada?.documentId) return
+
+  // Reset dokumen situs supaya versi published & draft sama (update biasa
+  // hanya menyentuh draft, API published tidak berubah).
+  await dok.delete({ documentId: ada.documentId } as never)
+  await dok.create({
+    status: "published",
+    data: {
+      brandNama: ada.brandNama ?? "CV. An Nasr Konsultan",
+      brandTagline: ada.brandTagline ?? "Konsultan Teknik & Konstruksi",
+      deskripsiLabel: ada.deskripsiLabel ?? "",
+      navigasi: NAV_MENU as unknown as Dok,
+    } as never,
+  } as never)
+}
+
 const NAV_WEB = [
   { label: "Beranda", href: "/" },
   { label: "Layanan", href: "/layanan" },
@@ -672,21 +757,13 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
     await seedTunggal(strapi, "api::situs.situs", {
       brandNama: "CV. An Nasr Konsultan",
       brandTagline: "Konsultan Teknik & Konstruksi",
-      navigasi: [
-        { label: "Beranda", href: "/" },
-        { label: "Layanan", href: "/layanan" },
-        { label: "Proyek", href: "/portfolio" },
-        { label: "Tentang Kami", href: "/tentang" },
-        { label: "Rekanan", href: "/rekanan" },
-        { label: "Artikel", href: "/artikel" },
-        { label: "Karir", href: "/karir" },
-        { label: "Kontak", href: "/kontak" },
-      ],
+      navigasi: NAV_MENU,
     })
     await seedKoleksiRekanan(strapi)
     await seedNavbarFooter(strapi)
+    await seedMenuSitus(strapi)
     console.log(
-      "[seed] Konten An Nasr berhasil di-seed (9 tipe + rekanan + navbar/footer)."
+      "[seed] Konten An Nasr berhasil di-seed (9 tipe + rekanan + navbar/footer/menu)."
     )
   } catch (error) {
     const e = error as {

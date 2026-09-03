@@ -1,2 +1,19 @@
-{ "collectionName": "components_annasr_tombol_navs", "info": { "displayName": "Item Navigasi" },
-  "attributes": { "label": { "type": "string" }, "href": { "type": "string" } } }
+{
+  "collectionName": "components_annasr_tombol_navs",
+  "info": {
+    "displayName": "Item Navigasi"
+  },
+  "attributes": {
+    "label": {
+      "type": "string"
+    },
+    "href": {
+      "type": "string"
+    },
+    "anak": {
+      "type": "component",
+      "component": "annasr.submenu-item",
+      "repeatable": true
+    }
+  }
+}
