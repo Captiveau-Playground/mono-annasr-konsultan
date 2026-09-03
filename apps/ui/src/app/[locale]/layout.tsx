@@ -213,7 +213,6 @@ export default async function RootLayout({
               telepon={kontenSitus.kontak.telepon}
               email={kontenSitus.kontak.email}
               instagram={kontenSitus.kontak.instagram}
-              whatsapp={kontenSitus.kontak.whatsapp}
             />
             <WhatsAppFloat />
             <Toaster position="top-center" />
