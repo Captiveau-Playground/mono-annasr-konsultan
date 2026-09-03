@@ -1,4 +1,4 @@
-import { Compass, Mail, MapPin, Phone } from "lucide-react"
+import { Compass } from "lucide-react"
 
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
@@ -9,6 +9,8 @@ export function Footer({
   brand,
   navigasi: navCms,
   layananCms,
+  sections,
+  copyRight,
   singkat,
   jam,
   kantor,
@@ -35,6 +37,13 @@ export function Footer({
   instagram?: string
   /** Dari CMS (kontak.whatsapp). */
   whatsapp?: string
+  /** Kolom footer dari CT Footer (elements.footer-item). */
+  sections?: readonly {
+    title: string
+    links: readonly { label: string; href: string }[]
+  }[]
+  /** Teks copyright dari CMS (footer.copyRight). */
+  copyRight?: string
 }) {
   const today = new Date()
   const tahun = today.getFullYear()
@@ -49,6 +58,30 @@ export function Footer({
       : layanan.map((l) => ({ label: l.nama, href: `/layanan/${l.slug}` }))
   const namaBrand = brand?.trim() || "CV. An Nasr Konsultan"
 
+  const kolomFallback: {
+    title: string
+    links: { label: string; href: string }[]
+  }[] = [
+    {
+      title: "Menu",
+      links: menu.map((m) => ({ label: m.label, href: m.href })),
+    },
+    {
+      title: "Layanan",
+      links: [...daftarLayanan],
+    },
+    {
+      title: "Kontak",
+      links: [
+        { label: kantor ?? perusahaan.kantor, href: "/kontak" },
+        { label: telepon ?? perusahaan.telepon, href: "/kontak" },
+        { label: email ?? perusahaan.email, href: "/kontak" },
+      ],
+    },
+  ]
+
+  const kolom = sections && sections.length > 0 ? sections : kolomFallback
+
   return (
     <footer className="bg-secondary text-primary-foreground relative overflow-hidden">
       <div
@@ -58,7 +91,7 @@ export function Footer({
       <div className="bg-accent/10 pointer-events-none absolute -top-32 -right-32 size-96 rounded-full blur-3xl" />
 
       <div className="relative mx-auto w-full max-w-6xl px-6 py-16 lg:px-10 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
+        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
           <div>
             <div className="flex items-center gap-3">
               <span className="bg-accent text-accent-foreground flex size-10 items-center justify-center rounded-xl">
@@ -80,68 +113,33 @@ export function Footer({
             />
           </div>
 
-          <div>
-            <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
-              Menu
-            </h3>
-            <ul className="mt-5 space-y-3">
-              {menu.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
-              Layanan
-            </h3>
-            <ul className="mt-5 space-y-3">
-              {daftarLayanan.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
-              Kontak
-            </h3>
-            <ul className="text-primary-foreground/65 mt-5 space-y-4 text-sm">
-              <li className="flex gap-3">
-                <MapPin className="text-accent mt-0.5 size-4 shrink-0" />
-                <span>{kantor ?? perusahaan.kantor}</span>
-              </li>
-              <li className="flex gap-3">
-                <Phone className="text-accent mt-0.5 size-4 shrink-0" />
-                <span>{telepon ?? perusahaan.telepon}</span>
-              </li>
-              <li className="flex gap-3">
-                <Mail className="text-accent mt-0.5 size-4 shrink-0" />
-                <span>{email ?? perusahaan.email}</span>
-              </li>
-            </ul>
-          </div>
+          {kolom.map((k) => (
+            <div key={k.title}>
+              <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
+                {k.title}
+              </h3>
+              <ul className="mt-5 space-y-3">
+                {k.links.map((l) => (
+                  <li key={l.label}>
+                    <Link
+                      href={l.href}
+                      className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="border-primary-foreground/10 relative border-t">
         <div className="text-primary-foreground/50 mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <span>
-            © {tahun} {namaBrand}. Seluruh hak cipta dilindungi.
+            {copyRight?.trim() ||
+              `© ${tahun} ${namaBrand}. Seluruh hak cipta dilindungi.`}
           </span>
           <span>Jombang, Jawa Timur — Indonesia</span>
         </div>

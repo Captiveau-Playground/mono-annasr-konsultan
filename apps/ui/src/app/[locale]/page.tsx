@@ -19,6 +19,7 @@ import { PetaSection } from "@/components/sections/PetaSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
+import { KenapaKami } from "@/components/tentang/KenapaKami"
 import { fetchBeranda, type BerandaKonten } from "@/lib/annasr/beranda"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
@@ -134,10 +135,11 @@ export default async function BerandaPage({
         tagline={kontenSitus.situs.brandTagline}
         layanan={kontenSitus.layanan.map((l) => l.nama)}
       />
+      <KlienSection items={konten.klien} />
       <FounderSection founder={konten.founder} />
+      <KenapaKami alasan={kontenSitus.tentang.alasan} />
       <LayananSection items={layananKeItem(konten.layanan)} />
       <PortfolioSection items={konten.portfolio} />
-      <KlienSection />
       <PetaSection kota={konten.kotaProyek} />
       <ArtikelSection items={artikelKeItem(konten.artikel)} />
       <FaqSection items={konten.faq} />

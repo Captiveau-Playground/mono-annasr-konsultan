@@ -17,6 +17,7 @@ import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { fontBody, fontHeading } from "@/lib/fonts"
 import { isValidLocale, routing } from "@/lib/navigation"
 import { publicBaseUrl } from "@/lib/seo/urls"
+import { fetchFooter, fetchNavbar } from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
 
 export function generateStaticParams() {
@@ -93,6 +94,21 @@ export async function generateMetadata({
   }
 }
 
+type LinkCms = {
+  label?: string
+  type?: string
+  href?: string
+  page?: null | { fullPath?: string }
+}
+
+/** Resolve href dari utilities.link (external vs relasi page). */
+function resolveHrefCms(link?: LinkCms | null): string {
+  if (!link) return "/"
+  if (link.type === "page") return link.page?.fullPath ?? "/"
+
+  return link.href ?? "/"
+}
+
 export default async function RootLayout({
   children,
   params,
@@ -108,7 +124,50 @@ export default async function RootLayout({
   // Enable static rendering
   setRequestLocale(locale)
 
-  const kontenSitus = await fetchKontenSitus(locale)
+  const [kontenSitus, navbarRaw, footerRaw] = await Promise.all([
+    fetchKontenSitus(locale),
+    fetchNavbar(locale),
+    fetchFooter(locale),
+  ])
+
+  // Navbar & Footer CT (starter) → struktur yang dipakai UI; fallback situs.
+  const navbarData = (navbarRaw as { data?: { navbarItems?: unknown[] } })?.data
+  const navCms =
+    (navbarData?.navbarItems ?? [])
+      .map((item) => {
+        const it = item as {
+          isCategoryLink?: boolean
+          link?: LinkCms | null
+        }
+        if (!it.isCategoryLink || !it.link?.label) return null
+
+        return { label: it.link.label, href: resolveHrefCms(it.link) }
+      })
+      .filter((x): x is { label: string; href: string } => Boolean(x)) ?? []
+
+  const footerData = (
+    footerRaw as {
+      data?: {
+        sections?: {
+          title?: string
+          links?: { label?: string; link?: LinkCms }[]
+        }[]
+        copyRight?: string
+      }
+    }
+  )?.data
+  const footerSections =
+    (footerData?.sections ?? [])
+      .filter((k) => typeof k.title === "string" && k.title.trim())
+      .map((k) => ({
+        title: k.title as string,
+        links: (k.links ?? [])
+          .map((l) => ({
+            label: l.label ?? "",
+            href: resolveHrefCms(l as LinkCms),
+          }))
+          .filter((l) => l.label),
+      })) ?? []
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -133,7 +192,9 @@ export default async function RootLayout({
             <SmoothScroll />
             <Navbar
               brandNama={kontenSitus.situs.brandNama}
-              navigasiCms={kontenSitus.situs.navigasi}
+              navigasiCms={
+                navCms.length > 0 ? navCms : kontenSitus.situs.navigasi
+              }
               tagline={kontenSitus.situs.brandTagline}
               whatsapp={kontenSitus.kontak.whatsapp}
             />
@@ -141,10 +202,14 @@ export default async function RootLayout({
             <Footer
               brand={kontenSitus.situs.brandNama}
               navigasi={kontenSitus.situs.navigasi}
-              layananCms={kontenSitus.layanan.map((l) => ({
-                label: l.nama,
-                href: `/layanan/${l.slug}`,
-              }))}
+              layananCms={kontenSitus.layanan.map(
+                (l: { nama: string; slug: string }) => ({
+                  label: l.nama,
+                  href: `/layanan/${l.slug}`,
+                })
+              )}
+              sections={footerSections}
+              copyRight={footerData?.copyRight}
               jam={kontenSitus.kontak.jamOperasional}
               kantor={kontenSitus.kontak.kantor}
               telepon={kontenSitus.kontak.telepon}

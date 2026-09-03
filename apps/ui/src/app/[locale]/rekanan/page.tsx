@@ -1,4 +1,4 @@
-import { BadgeCheck, Handshake } from "lucide-react"
+import { Handshake } from "lucide-react"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
@@ -125,11 +125,6 @@ export default async function RekananPage({
               <KartuRekanan key={item.nama} item={item} />
             ))}
           </div>
-          <p className="text-muted-foreground/80 mt-12 flex items-center justify-center gap-2 text-center text-sm">
-            <BadgeCheck className="text-accent size-4" />
-            {daftar.length} rekanan tercatat — sertifikat asli dapat
-            ditampilkan/diperbarui lewat CMS.
-          </p>
         </div>
       </section>
     </>
