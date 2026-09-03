@@ -2,6 +2,7 @@
 
 import {
   Briefcase,
+  ChevronDown,
   FolderKanban,
   Handshake,
   Home,
@@ -47,13 +48,18 @@ const IKON_NAV: Record<string, LucideIcon> = {
   "/kontak": Phone,
 }
 
-/** Halaman "Profil" yang dikelompokkan di dropdown. */
+/** Halaman yang dikelompokkan dalam dropdown "Profil". */
 const HALAMAN_PROFIL: Set<string> = new Set([
   "/tentang",
   "/rekanan",
   "/artikel",
   "/karir",
 ])
+
+type EntryMenu =
+  | { type: "link"; item: ItemNav }
+  | { type: "layanan" }
+  | { type: "profil" }
 
 export function Navbar({
   brandNama,
@@ -76,18 +82,30 @@ export function Navbar({
       ? navigasiCms
       : navigasi.map((n) => ({ label: n.label, href: n.to }))
 
-  /** Flat (tanpa grup): semua item minus /layanan & halaman Profil. */
-  const flat = daftar.filter(
-    (i) => i.href !== "/layanan" && !HALAMAN_PROFIL.has(i.href)
-  )
-  /** Anak grup Profil, urutan tetap. */
-  const profil = daftar.filter((i) => HALAMAN_PROFIL.has(i.href))
   const lini =
     layananCms && layananCms.length > 0
       ? layananCms
       : layanan.map((l) => ({ nama: l.nama, slug: l.slug }))
-
+  const profil = daftar.filter((i) => HALAMAN_PROFIL.has(i.href))
   const nomorWa = whatsapp?.trim() || perusahaan.whatsapp
+
+  // Menu desktop satu sumber: tiap entri muncul sekali (grup dijadikan satu).
+  const menu: EntryMenu[] = []
+  {
+    let profilDipakai = false
+    for (const item of daftar) {
+      if (item.href === "/layanan") {
+        menu.push({ type: "layanan" })
+      } else if (HALAMAN_PROFIL.has(item.href)) {
+        if (!profilDipakai) {
+          menu.push({ type: "profil" })
+          profilDipakai = true
+        }
+      } else {
+        menu.push({ type: "link", item })
+      }
+    }
+  }
 
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
@@ -108,9 +126,6 @@ export function Navbar({
   })()
 
   const terang = !topTerang && !scrolled && !open
-  const teksNav = terang
-    ? "text-primary-foreground/80 hover:text-primary-foreground"
-    : "text-muted-foreground hover:text-primary"
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -123,7 +138,18 @@ export function Navbar({
   const aktif = (to: string) =>
     to === "/" ? pathname === "/" : pathname.startsWith(to)
 
-  const teksAktif = terang ? "text-accent" : "text-primary"
+  /**
+   * Gaya item pill konsisten — hover diberi latar (bukan sekadar warna),
+   * aktif ditandai teks + titik kecil aksen.
+   */
+  const kelasItem = (to: string) =>
+    cn(
+      "inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+      terang
+        ? "text-primary-foreground/80 hover:bg-white/10 hover:text-white"
+        : "text-muted-foreground hover:bg-surface hover:text-primary",
+      aktif(to) && (terang ? "text-white" : "text-primary")
+    )
 
   return (
     <header
@@ -169,97 +195,129 @@ export function Navbar({
           </span>
         </Link>
 
-        {/* Navigasi desktop — grup Layanan & Profil + item flat (urutan CMS). */}
+        {/* Navigasi desktop — tanpa duplikasi, grup hanya sekali. */}
         <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuList>
-            {daftar.map((item) => {
-              if (item.href === "/layanan") {
+          <NavigationMenuList className="gap-1.5">
+            {menu.map((entry) => {
+              if (entry.type === "layanan") {
+                const gAktif = aktif("/layanan")
+
                 return (
-                  <NavigationMenuItem key="grup-layanan">
+                  <NavigationMenuItem key="menu-layanan">
                     <NavigationMenuTrigger
                       className={cn(
-                        "h-9 gap-1 rounded-full px-3 py-2 text-sm font-medium",
-                        aktif("/layanan") ? teksAktif : teksNav
+                        "h-9 gap-1 rounded-full px-3.5 text-sm font-medium transition-colors",
+                        terang
+                          ? "text-primary-foreground/80 hover:bg-white/10 hover:text-white data-[state=open]:bg-white/10 data-[state=open]:text-white"
+                          : "text-muted-foreground hover:bg-surface hover:text-primary data-[state=open]:bg-surface data-[state=open]:text-primary",
+                        gAktif && (terang ? "text-white" : "text-primary")
                       )}
                     >
-                      {item.label}
+                      Layanan
+                      <ChevronDown className="size-3.5 opacity-60 transition-transform data-[state=open]:rotate-180" />
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid w-[19rem] grid-cols-1 gap-1 p-2">
-                        {lini.map((l) => (
-                          <li key={l.slug}>
-                            <NavigationMenuLink
-                              href={`/layanan/${l.slug}`}
-                              className={cn(
-                                "flex items-center gap-3 rounded-xl p-2.5 transition-colors",
-                                aktif(`/layanan/${l.slug}`)
-                                  ? "bg-primary/10 text-primary"
-                                  : "hover:bg-surface"
-                              )}
-                            >
-                              <span
+                      <ul className="border-border bg-popover grid w-[20rem] gap-1 rounded-2xl border p-2 shadow-[var(--shadow-soft)]">
+                        {lini.map((l) => {
+                          const aktifL = aktif(`/layanan/${l.slug}`)
+
+                          return (
+                            <li key={l.slug}>
+                              <NavigationMenuLink
+                                href={`/layanan/${l.slug}`}
                                 className={cn(
-                                  "flex size-8 shrink-0 items-center justify-center rounded-lg",
-                                  aktif(`/layanan/${l.slug}`)
-                                    ? "bg-primary text-primary-foreground"
-                                    : "bg-surface text-primary"
+                                  "flex items-center gap-3 rounded-xl p-2.5 transition-colors",
+                                  aktifL
+                                    ? "bg-primary/10 text-primary"
+                                    : "hover:bg-surface"
                                 )}
                               >
-                                <PanelsTopLeft
-                                  className="size-4"
-                                  strokeWidth={1.8}
-                                />
-                              </span>
-                              <span>
-                                <span className="text-foreground block text-sm font-medium">
-                                  {l.nama}
+                                <span
+                                  className={cn(
+                                    "flex size-8 shrink-0 items-center justify-center rounded-lg",
+                                    aktifL
+                                      ? "bg-accent text-accent-foreground"
+                                      : "bg-surface text-primary"
+                                  )}
+                                >
+                                  <PanelsTopLeft
+                                    className="size-4"
+                                    strokeWidth={1.8}
+                                  />
                                 </span>
-                                <span className="text-muted-foreground block text-xs">
-                                  Lihat detail &amp; persyaratan
+                                <span>
+                                  <span className="text-foreground block text-sm font-medium">
+                                    {l.nama}
+                                  </span>
+                                  <span className="text-muted-foreground block text-xs">
+                                    Detail layanan &amp; persyaratan
+                                  </span>
                                 </span>
-                              </span>
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
+                              </NavigationMenuLink>
+                            </li>
+                          )
+                        })}
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                 )
               }
 
-              if (HALAMAN_PROFIL.has(item.href)) {
+              if (entry.type === "profil") {
+                const gAktif = profil.some((p) => aktif(p.href))
+
                 return (
-                  <NavigationMenuItem key="grup-profil">
+                  <NavigationMenuItem key="menu-profil">
                     <NavigationMenuTrigger
                       className={cn(
-                        "h-9 gap-1 rounded-full px-3 py-2 text-sm font-medium",
-                        profil.some((p) => aktif(p.href)) ? teksAktif : teksNav
+                        "h-9 gap-1 rounded-full px-3.5 text-sm font-medium transition-colors",
+                        terang
+                          ? "text-primary-foreground/80 hover:bg-white/10 hover:text-white data-[state=open]:bg-white/10 data-[state=open]:text-white"
+                          : "text-muted-foreground hover:bg-surface hover:text-primary data-[state=open]:bg-surface data-[state=open]:text-primary",
+                        gAktif && (terang ? "text-white" : "text-primary")
                       )}
                     >
                       Profil
+                      <ChevronDown className="size-3.5 opacity-60 transition-transform data-[state=open]:rotate-180" />
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="flex w-56 flex-col p-2">
-                        {profil.map((p) => (
-                          <li key={p.href}>
-                            <NavigationMenuLink
-                              href={p.href}
-                              className={cn(
-                                "flex items-center gap-2.5 rounded-xl p-2.5 text-sm font-medium transition-colors",
-                                aktif(p.href)
-                                  ? "bg-primary/10 text-primary"
-                                  : "text-foreground hover:bg-surface"
-                              )}
-                            >
-                              {p.label}
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
+                      <ul className="border-border bg-popover flex w-56 flex-col rounded-2xl border p-2 shadow-[var(--shadow-soft)]">
+                        {profil.map((p) => {
+                          const Ikon = IKON_NAV[p.href] ?? Users
+
+                          return (
+                            <li key={p.href}>
+                              <NavigationMenuLink
+                                href={p.href}
+                                className={cn(
+                                  "flex items-center gap-2.5 rounded-xl p-2.5 text-sm font-medium transition-colors",
+                                  aktif(p.href)
+                                    ? "bg-primary/10 text-primary"
+                                    : "text-foreground hover:bg-surface"
+                                )}
+                              >
+                                <span
+                                  className={cn(
+                                    "flex size-7 shrink-0 items-center justify-center rounded-lg",
+                                    aktif(p.href)
+                                      ? "bg-accent text-accent-foreground"
+                                      : "bg-surface text-primary"
+                                  )}
+                                >
+                                  <Ikon className="size-4" strokeWidth={1.8} />
+                                </span>
+                                {p.label}
+                              </NavigationMenuLink>
+                            </li>
+                          )
+                        })}
                       </ul>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
                 )
               }
+
+              const item = entry.item
 
               return (
                 <NavigationMenuItem key={item.href}>
@@ -272,10 +330,7 @@ export function Navbar({
                         })
                       }
                     }}
-                    className={cn(
-                      "h-9 items-center rounded-full px-3 py-2 text-sm font-medium transition-colors",
-                      aktif(item.href) ? teksAktif : teksNav
-                    )}
+                    className={kelasItem(item.href)}
                   >
                     {item.label}
                   </NavigationMenuLink>
@@ -325,7 +380,6 @@ export function Navbar({
           className="border-border bg-background/95 max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t shadow-[var(--shadow-lift)] backdrop-blur-xl lg:hidden"
         >
           <div className="mx-auto max-w-7xl px-5 py-4 lg:px-8">
-            {/* Grup Layanan */}
             {lini.length > 0 ? (
               <div className="mb-4">
                 <p className="text-muted-foreground px-4 pb-1 text-[10px] font-semibold tracking-widest uppercase">
@@ -355,7 +409,6 @@ export function Navbar({
               </div>
             ) : null}
 
-            {/* Grup Profil */}
             {profil.length > 0 ? (
               <div className="mb-4">
                 <p className="text-muted-foreground px-4 pb-1 text-[10px] font-semibold tracking-widest uppercase">
@@ -396,39 +449,42 @@ export function Navbar({
               </div>
             ) : null}
 
-            {/* Item flat (Beranda, Proyek, Kontak) */}
             <ul className="space-y-0.5">
-              {flat.map((item) => {
-                const Ikon = IKON_NAV[item.href] ?? Home
-                const isAktif = aktif(item.href)
+              {daftar
+                .filter(
+                  (i) => i.href !== "/layanan" && !HALAMAN_PROFIL.has(i.href)
+                )
+                .map((item) => {
+                  const Ikon = IKON_NAV[item.href] ?? Home
+                  const isAktif = aktif(item.href)
 
-                return (
-                  <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      onClick={() => setOpen(false)}
-                      className={cn(
-                        "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
-                        isAktif
-                          ? "bg-primary/10 text-primary"
-                          : "text-foreground hover:bg-surface"
-                      )}
-                    >
-                      <span
+                  return (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        onClick={() => setOpen(false)}
                         className={cn(
-                          "flex size-8 shrink-0 items-center justify-center rounded-lg",
+                          "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
                           isAktif
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-surface text-primary"
+                            ? "bg-primary/10 text-primary"
+                            : "text-foreground hover:bg-surface"
                         )}
                       >
-                        <Ikon className="size-4" strokeWidth={1.8} />
-                      </span>
-                      <span className="flex-1">{item.label}</span>
-                    </Link>
-                  </li>
-                )
-              })}
+                        <span
+                          className={cn(
+                            "flex size-8 shrink-0 items-center justify-center rounded-lg",
+                            isAktif
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-surface text-primary"
+                          )}
+                        >
+                          <Ikon className="size-4" strokeWidth={1.8} />
+                        </span>
+                        <span className="flex-1">{item.label}</span>
+                      </Link>
+                    </li>
+                  )
+                })}
             </ul>
 
             <div className="mt-4">
