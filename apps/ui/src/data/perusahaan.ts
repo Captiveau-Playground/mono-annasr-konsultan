@@ -430,6 +430,7 @@ export const navigasi = [
   { label: "Layanan", to: "/layanan" },
   { label: "Proyek", to: "/portfolio" },
   { label: "Tentang Kami", to: "/tentang" },
+  { label: "Rekanan", to: "/rekanan" },
   { label: "Artikel", to: "/artikel" },
   { label: "Karir", to: "/karir" },
   { label: "Kontak", to: "/kontak" },

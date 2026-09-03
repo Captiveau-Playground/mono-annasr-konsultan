@@ -502,6 +502,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
               { label: "Layanan", href: "/layanan" },
               { label: "Proyek", href: "/portfolio" },
               { label: "Tentang Kami", href: "/tentang" },
+              { label: "Rekanan", href: "/rekanan" },
               { label: "Artikel", href: "/artikel" },
               { label: "Karir", href: "/karir" },
               { label: "Kontak", href: "/kontak" },

@@ -5,6 +5,7 @@ import {
   ChevronDown,
   Compass,
   FolderKanban,
+  Handshake,
   Home,
   Menu,
   Newspaper,
@@ -47,6 +48,7 @@ const GRUP_DESKTOP: { label: string; href: string; anak: ItemNav[] }[] = [
     href: "/tentang",
     anak: [
       { label: "Tentang Kami", href: "/tentang" },
+      { label: "Rekanan", href: "/rekanan" },
       { label: "Artikel", href: "/artikel" },
       { label: "Karir", href: "/karir" },
     ],
@@ -58,6 +60,7 @@ const IKON_NAV: Record<string, LucideIcon> = {
   "/layanan": PanelsTopLeft,
   "/portfolio": FolderKanban,
   "/tentang": Users,
+  "/rekanan": Handshake,
   "/artikel": Newspaper,
   "/karir": Briefcase,
   "/kontak": Phone,

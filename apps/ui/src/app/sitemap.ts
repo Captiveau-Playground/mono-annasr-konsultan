@@ -17,6 +17,7 @@ const rute = [
   "/karir",
   "/kontak",
   "/artikel",
+  "/rekanan",
 ]
 
 /**
