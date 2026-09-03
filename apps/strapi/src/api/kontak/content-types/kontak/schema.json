@@ -35,6 +35,10 @@
     "instagram": {
       "type": "string",
       "default": "annasrkonsultan"
+    },
+    "whatsapp": {
+      "type": "string",
+      "default": "6281200000000"
     }
   }
 }
