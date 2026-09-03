@@ -200,6 +200,21 @@ export function Footer({
           <span>Jombang, Jawa Timur — Indonesia</span>
         </div>
       </div>
+
+      <div className="border-primary-foreground/10 relative border-t">
+        <p className="text-primary-foreground/40 mx-auto max-w-6xl px-6 py-4 text-xs lg:px-10">
+          Built with care by{" "}
+          <a
+            href="https://captiveau.id"
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary-foreground/70 hover:text-accent transition-colors"
+          >
+            Captiveau
+          </a>
+          .
+        </p>
+      </div>
     </footer>
   )
 }

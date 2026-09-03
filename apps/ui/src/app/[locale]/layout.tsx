@@ -17,7 +17,7 @@ import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { fontBody, fontHeading } from "@/lib/fonts"
 import { isValidLocale, routing } from "@/lib/navigation"
 import { publicBaseUrl } from "@/lib/seo/urls"
-import { fetchFooter, fetchNavbar } from "@/lib/strapi-api/content/server"
+import { fetchFooter } from "@/lib/strapi-api/content/server"
 import { cn } from "@/lib/styles"
 
 export function generateStaticParams() {
@@ -94,6 +94,22 @@ export async function generateMetadata({
   }
 }
 
+type ItemNavCms = { label: string; href: string }
+
+/** Flat-kan navigasi utk footer: item tanpa anak + anak dari grup. */
+function flattenNavigasi(nav: ItemNavCms[]): ItemNavCms[] {
+  const hasil: ItemNavCms[] = []
+  for (const item of nav) {
+    if ("anak" in item && Array.isArray((item as { anak?: unknown }).anak)) {
+      for (const a of (item as { anak: ItemNavCms[] }).anak) hasil.push(a)
+    } else {
+      hasil.push(item)
+    }
+  }
+
+  return hasil
+}
+
 type LinkCms = {
   label?: string
   type?: string
@@ -124,26 +140,10 @@ export default async function RootLayout({
   // Enable static rendering
   setRequestLocale(locale)
 
-  const [kontenSitus, navbarRaw, footerRaw] = await Promise.all([
+  const [kontenSitus, footerRaw] = await Promise.all([
     fetchKontenSitus(locale),
-    fetchNavbar(locale),
     fetchFooter(locale),
   ])
-
-  // Navbar & Footer CT (starter) → struktur yang dipakai UI; fallback situs.
-  const navbarData = (navbarRaw as { data?: { navbarItems?: unknown[] } })?.data
-  const navCms =
-    (navbarData?.navbarItems ?? [])
-      .map((item) => {
-        const it = item as {
-          isCategoryLink?: boolean
-          link?: LinkCms | null
-        }
-        if (!it.isCategoryLink || !it.link?.label) return null
-
-        return { label: it.link.label, href: resolveHrefCms(it.link) }
-      })
-      .filter((x): x is { label: string; href: string } => Boolean(x)) ?? []
 
   const footerData = (
     footerRaw as {
@@ -192,20 +192,14 @@ export default async function RootLayout({
             <SmoothScroll />
             <Navbar
               brandNama={kontenSitus.situs.brandNama}
-              navigasiCms={
-                navCms.length > 0 ? navCms : kontenSitus.situs.navigasi
-              }
+              navigasiCms={kontenSitus.situs.navigasi}
               tagline={kontenSitus.situs.brandTagline}
               whatsapp={kontenSitus.kontak.whatsapp}
-              layananCms={kontenSitus.layanan.map((l) => ({
-                nama: l.nama,
-                slug: l.slug,
-              }))}
             />
             <main className="min-h-screen">{children}</main>
             <Footer
               brand={kontenSitus.situs.brandNama}
-              navigasi={kontenSitus.situs.navigasi}
+              navigasi={flattenNavigasi(kontenSitus.situs.navigasi)}
               layananCms={kontenSitus.layanan.map(
                 (l: { nama: string; slug: string }) => ({
                   label: l.nama,

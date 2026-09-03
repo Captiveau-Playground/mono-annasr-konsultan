@@ -135,6 +135,13 @@ export function layananCms(
   })
 }
 
+export type ItemNavigasi = {
+  label: string
+  href: string
+  /** Submenu (dropdown) — diisikan CMS bila item bergrup. */
+  anak?: { label: string; href: string; deskripsi?: string }[]
+}
+
 export type KontenSitus = {
   beranda: BerandaKonten
   tentang: {
@@ -179,7 +186,7 @@ export type KontenSitus = {
   situs: {
     brandNama: string
     brandTagline: string
-    navigasi: { label: string; href: string }[]
+    navigasi: ItemNavigasi[]
   }
 }
 
@@ -496,12 +503,30 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
       navigasi:
         Array.isArray(sit.navigasi) &&
         (sit.navigasi as Record<string, unknown>[]).length
-          ? (sit.navigasi as { label?: unknown; href?: unknown }[]).map(
-              (n) => ({
-                label: teks(n.label, ""),
-                href: teks(n.href, "/"),
-              })
-            )
+          ? (
+              sit.navigasi as {
+                label?: unknown
+                href?: unknown
+                anak?: {
+                  label?: unknown
+                  href?: unknown
+                  deskripsi?: unknown
+                }[]
+              }[]
+            ).map((n) => ({
+              label: teks(n.label, ""),
+              href: teks(n.href, "/"),
+              anak:
+                Array.isArray(n.anak) && n.anak.length > 0
+                  ? n.anak
+                      .map((a) => ({
+                        label: teks(a.label, ""),
+                        href: teks(a.href, "/"),
+                        deskripsi: teks(a.deskripsi, ""),
+                      }))
+                      .filter((a) => a.label)
+                  : undefined,
+            }))
           : [
               { label: "Beranda", href: "/" },
               { label: "Layanan", href: "/layanan" },
