@@ -34,8 +34,15 @@ function InstagramIcon({ className }: { className?: string }) {
  * Ikon media sosial footer — Instagram diambil dari CMS (kontak.instagram),
  * WhatsApp dari data kontak statis. Posisi "location" dilacak utk analytics.
  */
-export function SocialLinks({ instagram }: { instagram?: string }) {
+export function SocialLinks({
+  instagram,
+  whatsapp,
+}: {
+  instagram?: string
+  whatsapp?: string
+}) {
   const handle = instagram?.replace(/^@/, "").trim() || ""
+  const nomorWa = whatsapp?.trim() || perusahaan.whatsapp
 
   return (
     <div className="mt-6 flex items-center gap-3">
@@ -57,7 +64,7 @@ export function SocialLinks({ instagram }: { instagram?: string }) {
         </a>
       ) : null}
       <a
-        href={`https://wa.me/${perusahaan.whatsapp}`}
+        href={`https://wa.me/${nomorWa}`}
         target="_blank"
         rel="noreferrer"
         aria-label="WhatsApp"

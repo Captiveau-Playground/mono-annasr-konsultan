@@ -6,19 +6,48 @@ import { Link } from "@/lib/navigation"
 import { SocialLinks } from "./SocialLinks"
 
 export function Footer({
+  brand,
   navigasi: navCms,
-  jam,
+  layananCms,
   singkat,
+  jam,
+  kantor,
+  telepon,
+  email,
   instagram,
+  whatsapp,
 }: {
+  /** Dari CMS (situs.brandNama). */
+  brand?: string
   navigasi?: readonly { label: string; href: string }[]
-  jam?: string
+  /** Dari CMS (layanan) — kolom Layanan footer. */
+  layananCms?: readonly { label: string; href: string }[]
   singkat?: string
-  /** Dari CMS (kontak.instagram) — dipakai ikon Instagram di footer. */
+  /** Dari CMS (kontak.jamOperasional). */
+  jam?: string
+  /** Dari CMS (kontak.kantor). */
+  kantor?: string
+  /** Dari CMS (kontak.telepon). */
+  telepon?: string
+  /** Dari CMS (kontak.email). */
+  email?: string
+  /** Dari CMS (kontak.instagram). */
   instagram?: string
+  /** Dari CMS (kontak.whatsapp). */
+  whatsapp?: string
 }) {
   const today = new Date()
   const tahun = today.getFullYear()
+
+  const menu =
+    navCms && navCms.length > 0
+      ? navCms
+      : navigasi.map((n) => ({ label: n.label, href: n.to }))
+  const daftarLayanan =
+    layananCms && layananCms.length > 0
+      ? layananCms
+      : layanan.map((l) => ({ label: l.nama, href: `/layanan/${l.slug}` }))
+  const namaBrand = brand?.trim() || "CV. An Nasr Konsultan"
 
   return (
     <footer className="bg-secondary text-primary-foreground relative overflow-hidden">
@@ -36,7 +65,7 @@ export function Footer({
                 <Compass className="size-5" />
               </span>
               <span className="font-[family-name:var(--font-heading)] text-sm font-semibold">
-                CV. An Nasr Konsultan
+                {namaBrand}
               </span>
             </div>
             <p className="text-primary-foreground/65 mt-5 max-w-sm text-sm leading-relaxed">
@@ -45,7 +74,10 @@ export function Footer({
             <p className="text-primary-foreground/45 mt-5 text-xs tracking-[0.18em] uppercase">
               {jam ?? perusahaan.jamOperasional}
             </p>
-            <SocialLinks instagram={instagram} />
+            <SocialLinks
+              instagram={instagram}
+              whatsapp={whatsapp ?? perusahaan.whatsapp}
+            />
           </div>
 
           <div>
@@ -53,10 +85,7 @@ export function Footer({
               Menu
             </h3>
             <ul className="mt-5 space-y-3">
-              {(navCms && navCms.length > 0
-                ? navCms
-                : navigasi.map((n) => ({ label: n.label, href: n.to }))
-              ).map((item) => (
+              {menu.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -74,13 +103,13 @@ export function Footer({
               Layanan
             </h3>
             <ul className="mt-5 space-y-3">
-              {layanan.map((l) => (
-                <li key={l.slug}>
+              {daftarLayanan.map((l) => (
+                <li key={l.href}>
                   <Link
-                    href={`/layanan/${l.slug}`}
+                    href={l.href}
                     className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
                   >
-                    {l.nama}
+                    {l.label}
                   </Link>
                 </li>
               ))}
@@ -94,15 +123,15 @@ export function Footer({
             <ul className="text-primary-foreground/65 mt-5 space-y-4 text-sm">
               <li className="flex gap-3">
                 <MapPin className="text-accent mt-0.5 size-4 shrink-0" />
-                <span>{perusahaan.kantor}</span>
+                <span>{kantor ?? perusahaan.kantor}</span>
               </li>
               <li className="flex gap-3">
                 <Phone className="text-accent mt-0.5 size-4 shrink-0" />
-                <span>{perusahaan.telepon}</span>
+                <span>{telepon ?? perusahaan.telepon}</span>
               </li>
               <li className="flex gap-3">
                 <Mail className="text-accent mt-0.5 size-4 shrink-0" />
-                <span>{perusahaan.email}</span>
+                <span>{email ?? perusahaan.email}</span>
               </li>
             </ul>
           </div>
@@ -112,7 +141,7 @@ export function Footer({
       <div className="border-primary-foreground/10 relative border-t">
         <div className="text-primary-foreground/50 mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <span>
-            © {tahun} {perusahaan.nama}. Seluruh hak cipta dilindungi.
+            © {tahun} {namaBrand}. Seluruh hak cipta dilindungi.
           </span>
           <span>Jombang, Jawa Timur — Indonesia</span>
         </div>

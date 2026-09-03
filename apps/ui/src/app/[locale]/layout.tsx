@@ -135,13 +135,22 @@ export default async function RootLayout({
               brandNama={kontenSitus.situs.brandNama}
               navigasiCms={kontenSitus.situs.navigasi}
               tagline={kontenSitus.situs.brandTagline}
+              whatsapp={kontenSitus.kontak.whatsapp}
             />
             <main className="min-h-screen">{children}</main>
             <Footer
+              brand={kontenSitus.situs.brandNama}
               navigasi={kontenSitus.situs.navigasi}
+              layananCms={kontenSitus.layanan.map((l) => ({
+                label: l.nama,
+                href: `/layanan/${l.slug}`,
+              }))}
               jam={kontenSitus.kontak.jamOperasional}
-              singkat={kontenSitus.kontak.domisili}
+              kantor={kontenSitus.kontak.kantor}
+              telepon={kontenSitus.kontak.telepon}
+              email={kontenSitus.kontak.email}
               instagram={kontenSitus.kontak.instagram}
+              whatsapp={kontenSitus.kontak.whatsapp}
             />
             <WhatsAppFloat />
             <Toaster position="top-center" />
