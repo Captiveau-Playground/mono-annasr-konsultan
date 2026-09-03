@@ -8,7 +8,7 @@ import { Link } from "@/lib/navigation"
 
 /** Section ringkas artikel terbaru — diletakkan sebelum CTA banner. */
 export function ArtikelSection({ items }: { items?: Artikel[] }) {
-  const terbaru = items ?? artikel.slice(0, 3)
+  const terbaru = (items ?? artikel).slice(0, 3)
 
   return (
     <section className="bg-background py-16 lg:py-20">

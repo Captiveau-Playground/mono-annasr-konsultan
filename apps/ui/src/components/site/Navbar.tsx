@@ -2,7 +2,6 @@
 
 import {
   Briefcase,
-  Compass,
   FolderKanban,
   Handshake,
   Home,
@@ -14,6 +13,7 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 
@@ -114,9 +114,22 @@ export function Navbar({
           className="flex shrink-0 items-center gap-3"
           onClick={() => setOpen(false)}
         >
-          <span className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl">
-            <Compass className="size-5" />
-          </span>
+          {/*
+            Logo 3 versi sesuai latar: gelap (transparan di hero/latar gelap)
+            → logo-white; latar terang (solid/scrolled) → logo-blue.
+          */}
+          <Image
+            src={
+              terang
+                ? "/images/logo/logo-white.png"
+                : "/images/logo/logo-blue.png"
+            }
+            alt={brandNama?.trim() || "CV. An Nasr Konsultan"}
+            width={40}
+            height={40}
+            priority
+            className="size-10 shrink-0 object-contain"
+          />
           <span className="leading-tight">
             <span
               className={`block font-[family-name:var(--font-heading)] text-sm font-semibold ${

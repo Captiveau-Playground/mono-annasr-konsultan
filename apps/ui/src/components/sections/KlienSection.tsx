@@ -52,7 +52,7 @@ export function KlienSection({
             {[daftar, daftar].flat().map((nama, i) => (
               <li
                 key={`${nama}-${i}`}
-                className="border-border bg-card flex aspect-[3/2] w-44 shrink-0 items-center justify-center rounded-lg border px-4 text-center shadow-[var(--shadow-soft)]"
+                className="border-border bg-card flex min-h-16 w-52 shrink-0 items-center justify-center rounded-xl border px-5 text-center shadow-[var(--shadow-soft)]"
               >
                 <span className="text-foreground text-sm font-semibold">
                   {nama}

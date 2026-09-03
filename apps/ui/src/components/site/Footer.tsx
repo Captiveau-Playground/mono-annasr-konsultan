@@ -1,5 +1,7 @@
-import { Compass } from "lucide-react"
+import { Mail, MapPin, Phone } from "lucide-react"
+import Image from "next/image"
 
+import { InstagramIcon } from "@/components/ui/icons"
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
@@ -94,9 +96,13 @@ export function Footer({
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
           <div>
             <div className="flex items-center gap-3">
-              <span className="bg-accent text-accent-foreground flex size-10 items-center justify-center rounded-xl">
-                <Compass className="size-5" />
-              </span>
+              <Image
+                src="/images/logo/logo-white.png"
+                alt={namaBrand}
+                width={40}
+                height={40}
+                className="size-10 shrink-0 object-contain"
+              />
               <span className="font-[family-name:var(--font-heading)] text-sm font-semibold">
                 {namaBrand}
               </span>
@@ -107,6 +113,47 @@ export function Footer({
             <p className="text-primary-foreground/45 mt-5 text-xs tracking-[0.18em] uppercase">
               {jam ?? perusahaan.jamOperasional}
             </p>
+
+            {/* Kontak singkat: hp, email, alamat, instagram — satu grup ber-ikon. */}
+            <ul className="text-primary-foreground/75 mt-6 space-y-2.5 text-sm">
+              <li className="flex items-center gap-2.5">
+                <Phone className="text-accent size-4 shrink-0" />
+                <a
+                  href={`tel:${(telepon ?? perusahaan.telepon).replaceAll(/\s/g, "")}`}
+                  className="hover:text-accent transition-colors"
+                >
+                  {telepon ?? perusahaan.telepon}
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Mail className="text-accent size-4 shrink-0" />
+                <a
+                  href={`mailto:${email ?? perusahaan.email}`}
+                  className="hover:text-accent transition-colors"
+                >
+                  {email ?? perusahaan.email}
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <MapPin className="text-accent size-4 shrink-0" />
+                <span>{kantor ?? perusahaan.kantor}</span>
+              </li>
+              {(instagram ?? "").trim() ? (
+                <li className="flex items-center gap-2.5">
+                  <InstagramIcon className="size-4 shrink-0" />
+                  <a
+                    href={`https://instagram.com/${instagram
+                      ?.replace(/^@/, "")
+                      .trim()}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-accent transition-colors"
+                  >
+                    {instagram?.replace(/^@/, "").trim()}
+                  </a>
+                </li>
+              ) : null}
+            </ul>
             <SocialLinks
               instagram={instagram}
               whatsapp={whatsapp ?? perusahaan.whatsapp}
