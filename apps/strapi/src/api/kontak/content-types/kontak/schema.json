@@ -31,6 +31,10 @@
     },
     "jamOperasional": {
       "type": "string"
+    },
+    "instagram": {
+      "type": "string",
+      "default": "annasrkonsultan"
     }
   }
 }

@@ -435,6 +435,7 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
       telepon: "+62 812-0000-0000",
       email: "annasrkonsultan@email.com",
       jamOperasional: "Senin – Sabtu, 08.00 – 17.00 WIB",
+      instagram: "annasrkonsultan",
     })
     await seedTunggal(strapi, "api::artikel.artikel", {
       heroJudul: "Wawasan Teknik & Konstruksi",
