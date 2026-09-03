@@ -1258,6 +1258,8 @@ declare module "@strapi/strapi" {
       "api::klien.klien": AnyAnnasrSchema
       "api::karir.karir": AnyAnnasrSchema
       "api::kontak.kontak": AnyAnnasrSchema
+      "api::rekanan.rekanan": AnyAnnasrSchema
+      "api::rekanan.rekanan": AnyAnnasrSchema
       "api::artikel.artikel": AnyAnnasrSchema
       "api::situs.situs": AnyAnnasrSchema
     }

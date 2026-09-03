@@ -22,6 +22,19 @@ async function seedTunggal(strapi: Core.Strapi, uid: string, data: Dok) {
   } as never)
 }
 
+/** Seed koleksi rekanan — hanya bila tabel masih kosong (idempotent). */
+async function seedKoleksiRekanan(strapi: Core.Strapi) {
+  const dok = strapi.documents("api::rekanan.rekanan" as never)
+  const ada = await dok.findFirst({})
+  if (ada) return
+  for (const item of REKANAN) {
+    await dok.create({
+      data: item as unknown as Dok,
+      status: "published",
+    } as never)
+  }
+}
+
 const LAYANAN = [
   {
     slug: "perencanaan",
@@ -176,6 +189,68 @@ const KLIEN = [
   "RSU Amanah",
   "BUMDes Makmur",
   "PDAM Jombang",
+]
+const REKANAN: { nama: string; instansi: string; keterangan: string }[] = [
+  {
+    nama: "Pemerintah Kabupaten Jombang",
+    instansi: "Pemerintah Daerah",
+    keterangan: "Kerja sama perencanaan dan pengawasan infrastruktur daerah.",
+  },
+  {
+    nama: "Dinas PUPR Jombang",
+    instansi: "Dinas / Instansi",
+    keterangan: "Perencanaan jalan, jembatan, dan irigasi daerah.",
+  },
+  {
+    nama: "Desa Bedahlawak",
+    instansi: "Pemerintah Desa",
+    keterangan: "Pembangunan dan rehabilitasi fasilitas desa.",
+  },
+  {
+    nama: "Desa Candi Mulyo",
+    instansi: "Pemerintah Desa",
+    keterangan: "Pembangunan jalan desa dan gedung serbaguna.",
+  },
+  {
+    nama: "Kecamatan Tembelang",
+    instansi: "Kecamatan",
+    keterangan: "Pendampingan teknis pembangunan kecamatan.",
+  },
+  {
+    nama: "Kecamatan Ploso",
+    instansi: "Kecamatan",
+    keterangan: "Pengerjaan jalan dan jembatan penghubung.",
+  },
+  {
+    nama: "Kecamatan Megaluh",
+    instansi: "Kecamatan",
+    keterangan: "Rehabilitasi saluran irigasi primer.",
+  },
+  {
+    nama: "Yayasan Al Hikmah",
+    instansi: "Yayasan / Lembaga",
+    keterangan: "Pembangunan gedung pendidikan dan pondok.",
+  },
+  {
+    nama: "Ponpes Darul Ulum",
+    instansi: "Pesantren",
+    keterangan: "Perencanaan dan renovasi gedung pesantren.",
+  },
+  {
+    nama: "RSU Amanah",
+    instansi: "Rumah Sakit",
+    keterangan: "Pemeliharaan dan pengawasan gedung rumah sakit.",
+  },
+  {
+    nama: "BUMDes Makmur",
+    instansi: "Badan Usaha",
+    keterangan: "Pendampingan teknis usaha desa dan sarana publik.",
+  },
+  {
+    nama: "PDAM Jombang",
+    instansi: "BUMD",
+    keterangan: "Pekerjaan sarana air bersih dan jaringan perpipaan.",
+  },
 ]
 
 const FAQ = [
@@ -450,12 +525,14 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
         { label: "Layanan", href: "/layanan" },
         { label: "Proyek", href: "/portfolio" },
         { label: "Tentang Kami", href: "/tentang" },
+        { label: "Rekanan", href: "/rekanan" },
         { label: "Artikel", href: "/artikel" },
         { label: "Karir", href: "/karir" },
         { label: "Kontak", href: "/kontak" },
       ],
     })
-    console.log("[seed] Konten An Nasr berhasil di-seed ke 9 tipe.")
+    await seedKoleksiRekanan(strapi)
+    console.log("[seed] Konten An Nasr berhasil di-seed (9 tipe + rekanan).")
   } catch (error) {
     const e = error as {
       inner?: unknown[]

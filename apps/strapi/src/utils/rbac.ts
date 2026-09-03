@@ -21,6 +21,7 @@ const SUBYEK_KONTEN = [
   "api::kontak.kontak",
   "api::artikel.artikel",
   "api::situs.situs",
+  "api::rekanan.rekanan",
   "api::page.page",
   "api::footer.footer",
   "api::navbar.navbar",
@@ -41,6 +42,7 @@ const PUBLIC_FIND = [
   "kontak",
   "artikel",
   "situs",
+  "rekanan",
 ]
 
 const AKSI_EXPLORER = [

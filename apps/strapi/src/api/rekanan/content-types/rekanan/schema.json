@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rekanans",
+  "info": {
+    "singularName": "rekanan",
+    "pluralName": "rekanans",
+    "displayName": "Rekanan"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nama": {
+      "type": "string",
+      "required": true
+    },
+    "instansi": {
+      "type": "string"
+    },
+    "keterangan": {
+      "type": "text"
+    },
+    "sertifikat": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}
