@@ -1,11 +1,19 @@
 "use client"
 
-import { Menu, X } from "lucide-react"
+import { ChevronDown, Menu, X } from "lucide-react"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu"
 import { navigasi, perusahaan } from "@/data/perusahaan"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { Link } from "@/lib/navigation"
@@ -14,8 +22,13 @@ import { cn } from "@/lib/styles"
 type ItemNav = {
   label: string
   href: string
-  anak?: unknown[]
+  /** Submenu — item ber-anak menjadi dropdown (dari CMS). */
+  anak?: { label: string; href: string }[]
 }
+
+type EntryMenu =
+  | { type: "link"; item: ItemNav }
+  | { type: "grup"; item: ItemNav }
 
 export function Navbar({
   brandNama,
@@ -23,7 +36,7 @@ export function Navbar({
   whatsapp,
 }: {
   brandNama?: string
-  /** Navigasi level atas dari CMS (grup diwakili item induknya saja). */
+  /** Navigasi level atas dari CMS — item dengan `anak` jadi dropdown. */
   navigasiCms?: ItemNav[]
   /** Nomor WhatsApp dari CMS (kontak.whatsapp). */
   whatsapp?: string
@@ -35,10 +48,17 @@ export function Navbar({
 
   const nomorWa = whatsapp?.trim() || perusahaan.whatsapp
   const [open, setOpen] = useState(false)
+  const [bukaMobile, setBukaMobile] = useState<string | null>(null)
   const pathname = usePathname()
 
   const aktif = (to: string) =>
     to === "/" ? pathname === "/" : pathname.startsWith(to)
+
+  const menu: EntryMenu[] = daftar.map((item) =>
+    item.anak && item.anak.length > 0
+      ? { type: "grup", item }
+      : { type: "link", item }
+  )
 
   const kelasLink = (href: string) =>
     cn(
@@ -46,9 +66,15 @@ export function Navbar({
       aktif(href) ? "text-primary" : "text-muted-foreground hover:text-primary"
     )
 
+  const kelasTrigger = (aktifGrup: boolean) =>
+    cn(
+      "h-10 gap-1 px-3 text-sm font-medium transition-colors rounded-full",
+      aktifGrup ? "text-primary" : "text-muted-foreground hover:text-primary"
+    )
+
   return (
     <header className="border-border bg-background/95 sticky top-0 z-50 border-b backdrop-blur">
-      <nav className="mx-auto flex h-16 max-w-[80rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2.5"
@@ -67,28 +93,68 @@ export function Navbar({
           </span>
         </Link>
 
-        {/* Item sederhana — teks polos, tanpa dropdown. */}
-        <ul className="hidden items-center gap-1 lg:flex">
-          {daftar.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                onClick={() => {
-                  if (item.href === "/kontak") {
-                    trackEvent(ANALYTICS_EVENTS.ctaClicked, {
-                      cta: "nav_kontak",
-                    })
-                  }
-                }}
-                className={kelasLink(item.href)}
-              >
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {/* Navigasi desktop — item flat + grup yang bisa di-expand. */}
+        <NavigationMenu className="hidden justify-self-center lg:flex">
+          <NavigationMenuList className="gap-1">
+            {menu.map((entry) => {
+              if (entry.type === "grup") {
+                const item = entry.item
+                const gAktif =
+                  aktif(item.href) ||
+                  (item.anak ?? []).some((a) => aktif(a.href))
 
-        <div className="flex shrink-0 items-center gap-2">
+                return (
+                  <NavigationMenuItem key={item.href}>
+                    <NavigationMenuTrigger className={kelasTrigger(gAktif)}>
+                      {item.label}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="border-border bg-popover flex w-60 flex-col gap-0.5 rounded-xl border p-1.5 shadow-[var(--shadow-soft)]">
+                        {(item.anak ?? []).map((sub) => (
+                          <li key={sub.href}>
+                            <NavigationMenuLink
+                              href={sub.href}
+                              className={cn(
+                                "block rounded-lg px-3 py-2 text-sm transition-colors",
+                                aktif(sub.href)
+                                  ? "bg-primary/10 text-primary"
+                                  : "text-foreground hover:bg-muted"
+                              )}
+                            >
+                              {sub.label}
+                            </NavigationMenuLink>
+                          </li>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                )
+              }
+
+              const item = entry.item
+
+              return (
+                <NavigationMenuItem key={item.href}>
+                  <NavigationMenuLink
+                    href={item.href}
+                    onClick={() => {
+                      if (item.href === "/kontak") {
+                        trackEvent(ANALYTICS_EVENTS.ctaClicked, {
+                          cta: "nav_kontak",
+                        })
+                      }
+                    }}
+                    className={kelasLink(item.href)}
+                  >
+                    {item.label}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              )
+            })}
+          </NavigationMenuList>
+        </NavigationMenu>
+
+        <div className="flex shrink-0 items-center gap-2 justify-self-end">
           <Button
             asChild
             size="sm"
@@ -116,39 +182,83 @@ export function Navbar({
         </div>
       </nav>
 
+      {/* Mobile — grup bisa di-expand, tanpa animasi. */}
       {open ? (
         <div
           id="menu-mobile"
           className="border-border bg-background border-t lg:hidden"
         >
-          <ul className="mx-auto max-w-[80rem] space-y-1 px-4 py-4">
-            {daftar.map((item) => (
-              <li key={item.href}>
+          <div className="mx-auto max-w-[80rem] px-4 py-4">
+            {menu.map((entry) => {
+              if (entry.type === "grup") {
+                const item = entry.item
+                const terbuka = bukaMobile === item.href
+
+                return (
+                  <div key={item.href} className="border-b last:border-0">
+                    <button
+                      type="button"
+                      onClick={() => setBukaMobile(terbuka ? null : item.href)}
+                      className="text-foreground flex w-full items-center justify-between px-3 py-3 text-sm font-medium"
+                      aria-expanded={terbuka}
+                    >
+                      {item.label}
+                      <ChevronDown
+                        className={cn(
+                          "text-muted-foreground size-4 transition-transform",
+                          terbuka && "rotate-180"
+                        )}
+                      />
+                    </button>
+                    {terbuka ? (
+                      <ul className="pb-2">
+                        {(item.anak ?? []).map((sub) => (
+                          <li key={sub.href}>
+                            <Link
+                              href={sub.href}
+                              onClick={() => setOpen(false)}
+                              className="text-muted-foreground hover:text-primary block rounded-lg px-3 py-2.5 text-sm"
+                            >
+                              {sub.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                )
+              }
+
+              const item = entry.item
+
+              return (
                 <Link
+                  key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "block rounded-lg px-3 py-2.5 text-sm font-medium",
+                    "block border-b px-3 py-3 text-sm font-medium last:border-0",
                     aktif(item.href)
-                      ? "bg-primary/10 text-primary"
+                      ? "text-primary"
                       : "text-foreground hover:text-primary"
                   )}
                 >
                   {item.label}
                 </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="mx-auto max-w-[80rem] px-4 pb-5">
-            <Button asChild className="w-full rounded-full" size="sm">
-              <a
-                href={`https://wa.me/${nomorWa}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Konsultasi Sekarang
-              </a>
-            </Button>
+              )
+            })}
+
+            <div className="pt-4">
+              <Button asChild className="w-full rounded-full" size="sm">
+                <a
+                  href={`https://wa.me/${nomorWa}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Konsultasi Sekarang
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       ) : null}
