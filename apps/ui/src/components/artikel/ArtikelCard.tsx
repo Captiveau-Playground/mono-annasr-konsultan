@@ -4,6 +4,7 @@ import { CalendarDays } from "lucide-react"
 import Image from "next/image"
 
 import type { Artikel } from "@/data/perusahaan"
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { Link } from "@/lib/navigation"
 
 export function ArtikelCard({ item }: { item: Artikel }) {
@@ -25,6 +26,12 @@ export function ArtikelCard({ item }: { item: Artikel }) {
         </span>
         <Link
           href={`/artikel/${item.slug}`}
+          onClick={() =>
+            trackEvent(ANALYTICS_EVENTS.ctaClicked, {
+              cta: "artikel_card",
+              slug: item.slug,
+            })
+          }
           className="hover:text-primary text-foreground mt-3 text-lg leading-snug transition-colors"
         >
           {item.judul}

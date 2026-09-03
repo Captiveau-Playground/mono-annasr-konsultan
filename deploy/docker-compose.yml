@@ -62,7 +62,7 @@ services:
       AWS_ACCESS_SECRET: ${AWS_ACCESS_SECRET:-}
       AWS_REGION: ${AWS_REGION:-}
       AWS_BUCKET: ${AWS_BUCKET:-}
-      AWS_ENDPOINT: ${AWS_ENDPOINT:-}      # isi utk R2/B2/Spaces/MinIO
+      AWS_ENDPOINT: ${AWS_ENDPOINT:-} # isi utk R2/B2/Spaces/MinIO
       AWS_FORCE_PATH_STYLE: ${AWS_FORCE_PATH_STYLE:-false}
 
       # Seed baseline saat DB kosong (first-boot). Matikan setelah sehat.
@@ -100,6 +100,9 @@ services:
       STRAPI_REST_CUSTOM_API_KEY: ${STRAPI_REST_CUSTOM_API_KEY:-}
       STRAPI_REVALIDATE_SECRET: ${STRAPI_REVALIDATE_SECRET}
       STRAPI_CDN_PURGE_SECRET: ${STRAPI_CDN_PURGE_SECRET}
+      # SEO & Analytics (runtime server — aman untuk deploy banyak env)
+      GTM_ID: ${GTM_ID:-}
+      MS_CLARITY_ID: ${MS_CLARITY_ID:-}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-}
       SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: "1"
       SHOW_NON_BLOCKING_ERRORS: ${SHOW_NON_BLOCKING_ERRORS:-false}

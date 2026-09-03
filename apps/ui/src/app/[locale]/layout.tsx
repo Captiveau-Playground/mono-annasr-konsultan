@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from "next-intl"
 import { setRequestLocale } from "next-intl/server"
 import type React from "react"
 
+import { Analytics } from "@/components/analytics/Analytics"
 import { ClientProviders } from "@/components/providers/ClientProviders"
 import { Footer } from "@/components/site/Footer"
 import { Navbar } from "@/components/site/Navbar"
@@ -15,6 +16,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { fontBody, fontHeading } from "@/lib/fonts"
 import { isValidLocale, routing } from "@/lib/navigation"
+import { publicBaseUrl } from "@/lib/seo/urls"
 import { cn } from "@/lib/styles"
 
 export function generateStaticParams() {
@@ -44,13 +46,44 @@ export async function generateMetadata({
     kontenSitus.situs.brandTagline ||
     "Konsultan Teknik Sipil & Konstruksi Jombang"
 
+  const baseUrl = publicBaseUrl()
+  const deskripsi =
+    "Jasa perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang, Jawa Timur."
+  const ogImage = `${baseUrl.replace(/\/$/, "")}/images/annasr/hero-konstruksi.jpg`
+
   return {
+    ...(baseUrl && { metadataBase: new URL(baseUrl) }),
     title: {
       default: `${brand} — ${tagline}`,
       template: "%s",
     },
-    description:
-      "Jasa perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang, Jawa Timur.",
+    description: deskripsi,
+    applicationName: brand,
+    alternates: {
+      canonical: locale === routing.defaultLocale ? "/" : `/${locale}`,
+    },
+    openGraph: {
+      type: "website",
+      locale: locale === "cs" ? "cs_CZ" : "id_ID",
+      url: baseUrl,
+      siteName: brand,
+      title: `${brand} — ${tagline}`,
+      description: deskripsi,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: brand,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${brand} — ${tagline}`,
+      description: deskripsi,
+      images: [ogImage],
+    },
     icons: {
       icon: [
         { url: "/favicon.ico", sizes: "16x16 32x32" },
@@ -94,6 +127,7 @@ export default async function RootLayout({
           } as React.CSSProperties
         }
       >
+        <Analytics />
         <NextIntlClientProvider locale={locale}>
           <ClientProviders>
             <SmoothScroll />

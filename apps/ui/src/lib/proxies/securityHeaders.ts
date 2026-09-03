@@ -65,9 +65,11 @@ function buildCsp({
     [
       "script-src 'self' 'unsafe-inline'",
       ...(isDevelopment ? ["'unsafe-eval'"] : []),
-      // Example — Google Tag Manager / Analytics / Ads (uncomment if used):
-      // "https://www.googletagmanager.com",
-      // "https://www.google-analytics.com",
+      // Google Tag Manager / GA4 / Microsoft Clarity
+      "https://www.googletagmanager.com",
+      "https://www.google-analytics.com",
+      "https://*.clarity.ms",
+      // Google Ads (jika dipakai nanti):
       // "https://www.googleadservices.com",
       // "https://pagead2.googlesyndication.com",
       // "https://googleads.g.doubleclick.net",
@@ -81,18 +83,20 @@ function buildCsp({
     "font-src 'self' data:",
     [
       "connect-src 'self'",
-      // Example — Google Analytics / Ads (uncomment if used):
-      // "https://*.google-analytics.com",
-      // "https://*.analytics.google.com",
-      // "https://*.googletagmanager.com",
+      // GA4 + GTM + MS Clarity
+      "https://*.google-analytics.com",
+      "https://*.analytics.google.com",
+      "https://*.googletagmanager.com",
+      "https://*.clarity.ms",
+      "https://www.google.com",
+      "https://www.google.co.id",
+      // Google Ads (jika dipakai nanti):
       // "https://www.googleadservices.com",
       // "https://pagead2.googlesyndication.com",
       // "https://*.doubleclick.net",
-      // "https://www.google.com",
     ].join(" "),
-    // Example — add framed third parties (e.g. tag manager preview) here:
-    // "frame-src 'self' https://www.googletagmanager.com https://bid.g.doubleclick.net https://td.doubleclick.net",
-    "frame-src 'self'",
+    // GTM preview / GA4 DebugView (iframe Google)
+    "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net",
     "worker-src 'self' blob:",
     [
       "media-src 'self' blob: https:",

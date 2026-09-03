@@ -1,6 +1,9 @@
+"use client"
+
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { Link } from "@/lib/navigation"
 
 import { Reveal } from "./Reveal"
@@ -37,7 +40,14 @@ export function CtaBanner({
                   size="xl"
                   className="bg-accent text-accent-foreground hover:bg-accent/90"
                 >
-                  <Link href="/kontak">
+                  <Link
+                    href="/kontak"
+                    onClick={() =>
+                      trackEvent(ANALYTICS_EVENTS.ctaClicked, {
+                        cta: "cta_banner",
+                      })
+                    }
+                  >
                     Hubungi Kami
                     <ArrowRight className="size-4" />
                   </Link>

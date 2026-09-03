@@ -4,10 +4,13 @@ import { setRequestLocale } from "next-intl/server"
 
 import { LayananSection } from "@/components/sections/LayananSection"
 import { ProsesSection } from "@/components/sections/ProsesSection"
+import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { PageHero } from "@/components/site/PageHero"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
+import { breadcrumbLd, serviceListLd } from "@/lib/seo/structured-data"
+import { publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -32,9 +35,33 @@ export default async function LayananPage({
   setRequestLocale(locale)
 
   const konten = await fetchKontenSitus(locale)
+  const baseUrl = publicBaseUrl()
 
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? breadcrumbLd({
+                url: baseUrl,
+                items: [
+                  { name: "Beranda", path: "/" },
+                  { name: "Layanan", path: "/layanan" },
+                ],
+              })
+            : null,
+          baseUrl
+            ? serviceListLd({
+                url: baseUrl,
+                layanan: konten.layanan.map((l) => ({
+                  nama: l.nama,
+                  ringkas: l.ringkas,
+                  slug: l.slug,
+                })),
+              })
+            : null,
+        ]}
+      />
       <PageHero
         eyebrow="Layanan"
         judul="Layanan teknik yang lengkap dan terintegrasi"

@@ -4,13 +4,17 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
+import { TrackArticleRead } from "@/components/analytics/TrackArticleRead"
 import { ArtikelCard } from "@/components/artikel/ArtikelCard"
 import { BagikanArtikel } from "@/components/artikel/BagikanArtikel"
+import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { Reveal } from "@/components/site/Reveal"
 import { artikel } from "@/data/perusahaan"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale, Link } from "@/lib/navigation"
+import { articleLd, breadcrumbLd } from "@/lib/seo/structured-data"
+import { publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   const locales = ["en", "cs"]
@@ -48,9 +52,37 @@ export default async function DetailArtikel({
   if (!item) notFound()
 
   const terkait = konten.artikel.filter((a) => a.slug !== slug).slice(0, 3)
+  const baseUrl = publicBaseUrl()
 
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? breadcrumbLd({
+                url: baseUrl,
+                items: [
+                  { name: "Beranda", path: "/" },
+                  { name: "Artikel", path: "/artikel" },
+                  { name: item.judul, path: `/artikel/${item.slug}` },
+                ],
+              })
+            : null,
+          baseUrl
+            ? articleLd({
+                url: (() => {
+                  const u = new URL(`/artikel/${item.slug}`, baseUrl)
+
+                  return u.href
+                })(),
+                judul: item.judul,
+                ringkas: item.ringkas,
+                kategori: item.kategori,
+              })
+            : null,
+        ]}
+      />
+      <TrackArticleRead slug={item.slug} />
       <article className="bg-background px-6 pt-30 pb-16 lg:px-8 lg:pt-36 lg:pb-20">
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
           <Reveal>

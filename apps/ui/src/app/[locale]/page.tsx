@@ -17,10 +17,13 @@ import { KlienSection } from "@/components/sections/KlienSection"
 import { LayananSection } from "@/components/sections/LayananSection"
 import { PetaSection } from "@/components/sections/PetaSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
+import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { fetchBeranda, type BerandaKonten } from "@/lib/annasr/beranda"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
+import { faqLd, localBusinessLd, websiteLd } from "@/lib/seo/structured-data"
+import { publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -106,8 +109,25 @@ export default async function BerandaPage({
     fetchKontenSitus(locale),
   ])
 
+  const baseUrl = publicBaseUrl()
+  const ogImage = `${baseUrl}/images/annasr/hero-konstruksi.jpg`
+
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? localBusinessLd({
+                url: baseUrl,
+                situs: kontenSitus.situs,
+                kontak: kontenSitus.kontak,
+                image: ogImage,
+              })
+            : null,
+          baseUrl ? websiteLd(baseUrl) : null,
+          faqLd(konten.faq),
+        ]}
+      />
       <Hero
         hero={konten.hero}
         brand={kontenSitus.situs.brandNama}

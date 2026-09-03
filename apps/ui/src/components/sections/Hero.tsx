@@ -3,6 +3,7 @@
 import { ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import type { BerandaKonten } from "@/lib/annasr/beranda"
 import { Link } from "@/lib/navigation"
 
@@ -73,13 +74,29 @@ export function Hero({
 
           <div className="mt-9 flex flex-col items-start gap-3 sm:flex-row">
             <Button asChild variant="default" size="xl">
-              <Link href="/kontak">
+              <Link
+                href="/kontak"
+                onClick={() =>
+                  trackEvent(ANALYTICS_EVENTS.ctaClicked, {
+                    cta: "hero_konsultasi",
+                  })
+                }
+              >
                 Konsultasi Sekarang
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="xl">
-              <a href="#layanan">Lihat Layanan</a>
+              <a
+                href="#layanan"
+                onClick={() =>
+                  trackEvent(ANALYTICS_EVENTS.ctaClicked, {
+                    cta: "hero_layanan",
+                  })
+                }
+              >
+                Lihat Layanan
+              </a>
             </Button>
           </div>
 

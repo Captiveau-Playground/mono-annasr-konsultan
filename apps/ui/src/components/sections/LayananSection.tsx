@@ -1,11 +1,11 @@
 import { ArrowRight, Check } from "lucide-react"
 import Image from "next/image"
 
+import { CtaLink } from "@/components/analytics/CtaLink"
 import { Reveal } from "@/components/site/Reveal"
 import { SectionShell } from "@/components/site/SectionShell"
 import { Button } from "@/components/ui/button"
 import { layanan, type Layanan } from "@/data/perusahaan"
-import { Link } from "@/lib/navigation"
 
 export function LayananSection({
   lengkap = false,
@@ -78,10 +78,14 @@ export function LayananSection({
                       </ul>
                       <div className="mt-8">
                         <Button asChild size="pill">
-                          <Link href={`/layanan/${item.slug}`}>
+                          <CtaLink
+                            cta="layanan_detail"
+                            params={{ layanan: item.nama }}
+                            href={`/layanan/${item.slug}`}
+                          >
                             Lihat Detail {item.nama}
                             <ArrowRight className="size-4" />
-                          </Link>
+                          </CtaLink>
                         </Button>
                       </div>
                     </div>
@@ -126,10 +130,15 @@ export function LayananSection({
                     size="pill"
                     className="bg-accent text-accent-foreground hover:bg-accent w-full transition-none"
                   >
-                    <Link href={`/layanan/${item.slug}`}>
+                    <CtaLink
+                      cta="layanan_card"
+                      params={{ layanan: item.nama }}
+                      href={`/layanan/${item.slug}`}
+                      className="font-medium"
+                    >
                       Lihat Detail
                       <ArrowRight className="size-4" />
-                    </Link>
+                    </CtaLink>
                   </Button>
                 </div>
               </div>

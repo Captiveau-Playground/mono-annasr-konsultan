@@ -19,6 +19,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { Link } from "@/lib/navigation"
 import { cn } from "@/lib/styles"
 
@@ -278,7 +279,12 @@ export function Navbar({
           <li key={KONTAK.href}>
             <Link
               href={KONTAK.href}
-              onClick={() => setGrupBuka(null)}
+              onClick={() => {
+                setGrupBuka(null)
+                trackEvent(ANALYTICS_EVENTS.ctaClicked, {
+                  cta: "nav_kontak",
+                })
+              }}
               className={cn(
                 "rounded-full px-3 py-2 text-sm font-medium transition-colors",
                 aktif(KONTAK.href) ? teksAktif : teksNav
@@ -295,6 +301,12 @@ export function Navbar({
               href={`https://wa.me/${perusahaan.whatsapp}`}
               target="_blank"
               rel="noreferrer"
+              onClick={() =>
+                trackEvent(ANALYTICS_EVENTS.contactChannel, {
+                  channel: "whatsapp",
+                  location: "nav_cta",
+                })
+              }
             >
               Konsultasi Sekarang
             </a>

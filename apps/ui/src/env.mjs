@@ -54,6 +54,11 @@ export const env = createEnv({
     BASIC_AUTH_USERNAME: z.string().optional(),
     BASIC_AUTH_PASSWORD: z.string().optional(),
 
+    // SEO & Analytics — dibaca runtime oleh server (tidak di-bake saat build),
+    // diteruskan ke komponen client sebagai prop.
+    GTM_ID: z.string().optional(),
+    MS_CLARITY_ID: z.string().optional(),
+
     IMGPROXY_URL: z.string().url().optional(),
   },
 

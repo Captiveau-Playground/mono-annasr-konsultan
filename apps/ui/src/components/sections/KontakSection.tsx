@@ -1,6 +1,6 @@
 "use client"
 
-import { Clock, Mail, MapPin, Phone, Send } from "lucide-react"
+import { Clock, Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { layanan, perusahaan } from "@/data/perusahaan"
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { simpanLeadPublik } from "@/lib/crm/crm-store"
 
 type FormPesan = {
@@ -41,6 +42,14 @@ export function KontakSection() {
       whatsapp: data.hp,
       layanan: data.jenisLayanan,
       kebutuhan: data.pesan,
+    })
+    trackEvent(ANALYTICS_EVENTS.formSubmitted, {
+      form: "kontak",
+      layanan: data.jenisLayanan,
+    })
+    trackEvent(ANALYTICS_EVENTS.contactChannel, {
+      channel: "whatsapp",
+      location: "form_kontak",
     })
     reset()
   })
@@ -183,9 +192,18 @@ export function KontakSection() {
                   <span className="text-foreground block text-sm font-semibold">
                     Telepon
                   </span>
-                  <span className="text-muted-foreground mt-1 block text-sm">
+                  <a
+                    href={`tel:${perusahaan.telepon}`}
+                    onClick={() =>
+                      trackEvent(ANALYTICS_EVENTS.contactChannel, {
+                        channel: "phone",
+                        location: "kontak_page",
+                      })
+                    }
+                    className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
+                  >
                     {perusahaan.telepon}
-                  </span>
+                  </a>
                 </span>
               </li>
               <li className="flex gap-4">
@@ -196,9 +214,42 @@ export function KontakSection() {
                   <span className="text-foreground block text-sm font-semibold">
                     Email
                   </span>
-                  <span className="text-muted-foreground mt-1 block text-sm">
+                  <a
+                    href={`mailto:${perusahaan.email}`}
+                    onClick={() =>
+                      trackEvent(ANALYTICS_EVENTS.contactChannel, {
+                        channel: "email",
+                        location: "kontak_page",
+                      })
+                    }
+                    className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
+                  >
                     {perusahaan.email}
+                  </a>
+                </span>
+              </li>
+              <li className="flex gap-4">
+                <span className="bg-primary/8 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
+                  <MessageCircle className="size-5" strokeWidth={1.6} />
+                </span>
+                <span>
+                  <span className="text-foreground block text-sm font-semibold">
+                    WhatsApp
                   </span>
+                  <a
+                    href={`https://wa.me/${perusahaan.whatsapp}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() =>
+                      trackEvent(ANALYTICS_EVENTS.contactChannel, {
+                        channel: "whatsapp",
+                        location: "kontak_page",
+                      })
+                    }
+                    className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
+                  >
+                    +{perusahaan.whatsapp}
+                  </a>
                 </span>
               </li>
               <li className="flex gap-4">
