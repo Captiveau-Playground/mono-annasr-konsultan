@@ -197,6 +197,10 @@ export default async function RootLayout({
               }
               tagline={kontenSitus.situs.brandTagline}
               whatsapp={kontenSitus.kontak.whatsapp}
+              layananCms={kontenSitus.layanan.map((l) => ({
+                nama: l.nama,
+                slug: l.slug,
+              }))}
             />
             <main className="min-h-screen">{children}</main>
             <Footer
@@ -215,6 +219,7 @@ export default async function RootLayout({
               telepon={kontenSitus.kontak.telepon}
               email={kontenSitus.kontak.email}
               instagram={kontenSitus.kontak.instagram}
+              whatsapp={kontenSitus.kontak.whatsapp}
             />
             <WhatsAppFloat />
             <Toaster position="top-center" />

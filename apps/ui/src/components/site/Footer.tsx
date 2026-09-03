@@ -5,6 +5,8 @@ import { InstagramIcon } from "@/components/ui/icons"
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
+import { FooterSocials } from "./FooterSocials"
+
 export function Footer({
   brand,
   navigasi: navCms,
@@ -17,6 +19,7 @@ export function Footer({
   telepon,
   email,
   instagram,
+  whatsapp,
 }: {
   /** Dari CMS (situs.brandNama). */
   brand?: string
@@ -34,6 +37,8 @@ export function Footer({
   email?: string
   /** Dari CMS (kontak.instagram). */
   instagram?: string
+  /** Dari CMS (kontak.whatsapp) — tombol sosial WhatsApp. */
+  whatsapp?: string
   /** Kolom footer dari CT Footer (elements.footer-item). */
   sections?: readonly {
     title: string
@@ -108,6 +113,11 @@ export function Footer({
             <p className="text-primary-foreground/45 mt-5 text-xs tracking-[0.18em] uppercase">
               {jam ?? perusahaan.jamOperasional}
             </p>
+
+            <FooterSocials
+              instagram={instagram}
+              whatsapp={whatsapp ?? perusahaan.whatsapp}
+            />
           </div>
 
           {kolom.map((k) => {
