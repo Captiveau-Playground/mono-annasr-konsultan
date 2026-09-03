@@ -6,7 +6,7 @@
 #   - manual (Actions → workflow_dispatch)
 #
 # Image name: ghcr.io/<org>/<repo>-ui dan ghcr.io/<org>/<repo>-strapi
-# (contoh: ghcr.io/novinardianyulianto/strapi-next-monorepo-starter-strapi)
+# (contoh: ghcr.io/novinardianyulianto/mono-annasr-konsultan-strapi)
 #
 # Tidak ada env yang di-bake saat build (strategi "build once, deploy many"):
 # semua konfigurasi runtime lewat environment variable container.

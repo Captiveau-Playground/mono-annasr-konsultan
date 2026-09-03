@@ -1,4 +1,4 @@
-# Strapi Next Monorepo Starter
+# mono-annasr-konsultan
 
 Enterprise-ready monorepo starter for building content-driven websites with **Strapi v5**, **Next.js 16**, **React 19**, **TailwindCSS v4**, **shadcn/ui**, **Turborepo**, and **pnpm workspaces**.
 
@@ -9,16 +9,10 @@ Build faster with a typed Strapi CMS page builder, smart population, page hierar
 Start locally with a short setup flow: clone the repository, install dependencies, and run the UI and Strapi apps from the monorepo root.
 
 ```bash
-git clone https://github.com/notum-cz/strapi-next-monorepo-starter
-cd strapi-next-monorepo-starter
+git clone https://github.com/novinardianyulianto/mono-annasr-konsultan
+cd mono-annasr-konsultan
 
 pnpm install
 pnpm dev:strapi
 pnpm dev:ui
 ```
-
-For the full setup flow, see the [Quick Start guide](https://strapinextjs.docs.notum.tech/docs/getting-started/quick-start).
-
-## Documentation
-
-Visit the [full documentation](https://strapinextjs.docs.notum.tech) for architecture, setup, and workflow guides.

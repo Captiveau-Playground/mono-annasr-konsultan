@@ -14,7 +14,7 @@ const data = {
       id: 1,
       type: "external",
       label: "Get the code on github",
-      href: "https://github.com/notum-cz/strapi-next-monorepo-starter",
+      href: "https://github.com/novinardianyulianto/mono-annasr-konsultan",
       newTab: true,
       decorations: null,
     },
