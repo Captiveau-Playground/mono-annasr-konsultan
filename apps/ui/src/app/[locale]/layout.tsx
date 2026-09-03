@@ -141,6 +141,7 @@ export default async function RootLayout({
               navigasi={kontenSitus.situs.navigasi}
               jam={kontenSitus.kontak.jamOperasional}
               singkat={kontenSitus.kontak.domisili}
+              instagram={kontenSitus.kontak.instagram}
             />
             <WhatsAppFloat />
             <Toaster position="top-center" />

@@ -171,6 +171,7 @@ export type KontenSitus = {
     telepon: string
     email: string
     jamOperasional: string
+    instagram?: string
   }
   artikel: ReturnType<typeof artikelCms>
   artikelHero: { judul: string; deskripsi: string }
@@ -474,6 +475,10 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
       telepon: teks(kon.telepon, perusahaan.telepon),
       email: teks(kon.email, perusahaan.email),
       jamOperasional: teks(kon.jamOperasional, perusahaan.jamOperasional),
+      instagram:
+        typeof kon.instagram === "string" && kon.instagram.trim()
+          ? kon.instagram.trim()
+          : undefined,
     },
     artikel: artikelCms((art.artikel as Record<string, unknown>[]) ?? []),
     artikelHero: {

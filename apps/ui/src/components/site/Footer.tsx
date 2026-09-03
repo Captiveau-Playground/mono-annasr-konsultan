@@ -3,14 +3,19 @@ import { Compass, Mail, MapPin, Phone } from "lucide-react"
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
+import { SocialLinks } from "./SocialLinks"
+
 export function Footer({
   navigasi: navCms,
   jam,
   singkat,
+  instagram,
 }: {
   navigasi?: readonly { label: string; href: string }[]
   jam?: string
   singkat?: string
+  /** Dari CMS (kontak.instagram) — dipakai ikon Instagram di footer. */
+  instagram?: string
 }) {
   const today = new Date()
   const tahun = today.getFullYear()
@@ -40,6 +45,7 @@ export function Footer({
             <p className="text-primary-foreground/45 mt-5 text-xs tracking-[0.18em] uppercase">
               {jam ?? perusahaan.jamOperasional}
             </p>
+            <SocialLinks instagram={instagram} />
           </div>
 
           <div>
