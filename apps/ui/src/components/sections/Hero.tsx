@@ -1,6 +1,6 @@
 "use client"
 
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
@@ -22,9 +22,8 @@ const LINI_DEFAULT = [
 ]
 
 /**
- * Hero homepage — profesional, rata kiri, lapang.
- * Latar terang + halo halus, badge, tesis, CTA, trust line, dan strip
- * layanan sebagai penutup; dekorasi vertikal tipis di desktop.
+ * Hero homepage — latar navy gradient (konsisten dengan hero halaman
+ * proyek), teks terang, rata kiri & lapang.
  */
 export function Hero({
   hero,
@@ -46,53 +45,39 @@ export function Hero({
   const lini = layanan.length > 0 ? layanan : LINI_DEFAULT
 
   return (
-    <section className="bg-background relative isolate overflow-hidden">
-      {/* Halo sangat halus — kedalaman tanpa gambar. */}
+    <section className="cta-gradient relative isolate overflow-hidden">
       <div
-        className="hero-halo absolute inset-x-0 top-0 -z-10 h-72"
+        className="blueprint-grid pointer-events-none absolute inset-0 opacity-[0.18]"
         aria-hidden
       />
       <div
-        className="via-border absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent"
+        className="bg-accent/10 pointer-events-none absolute -top-24 -right-24 size-96 rounded-full blur-3xl"
         aria-hidden
       />
 
-      {/* Dekorasi vertikal editorial (desktop) — tanda harga diri, bukan isi. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-1/2 right-8 hidden -translate-y-1/2 lg:block"
-      >
-        <span
-          className="text-muted-foreground/35 block text-[10px] font-semibold tracking-[0.45em] whitespace-nowrap uppercase"
-          style={{ transform: "rotate(90deg)", transformOrigin: "center" }}
-        >
-          Sejak 2014 — Konsultan Teknik &amp; Konstruksi
-        </span>
-      </div>
-
-      <div className="mx-auto w-full max-w-6xl px-6 pt-24 pb-20 sm:pt-32 sm:pb-24 lg:px-10">
+      <div className="relative mx-auto w-full max-w-6xl px-6 pt-28 pb-20 sm:pt-36 sm:pb-24 lg:px-10">
         <div className="hero-anim-fade-up max-w-3xl">
-          <span className="border-border bg-muted/50 text-muted-foreground inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-semibold tracking-[0.18em] uppercase">
+          <span className="border-primary-foreground/20 text-primary-foreground/90 inline-flex items-center gap-2 rounded-full border bg-white/10 px-4 py-1.5 text-[11px] font-semibold tracking-[0.18em] uppercase backdrop-blur-sm">
             <span className="bg-accent size-1.5 rounded-full" />
             {namaBrand}
-            <span className="text-border" aria-hidden>
+            <span className="text-primary-foreground/50" aria-hidden>
               •
             </span>
             {taglineBrand}
           </span>
 
-          <h1 className="text-foreground mt-7 text-[2.6rem] leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
+          <h1 className="text-primary-foreground mt-7 text-[2.6rem] leading-[1.05] font-semibold tracking-tight text-balance sm:text-6xl lg:text-7xl">
             {kontenHero.judul}
           </h1>
 
           {kontenHero.deskripsi ? (
-            <p className="text-muted-foreground mt-6 max-w-xl text-base leading-relaxed text-pretty sm:text-lg">
+            <p className="text-primary-foreground/80 mt-6 max-w-xl text-base leading-relaxed text-pretty sm:text-lg">
               {kontenHero.deskripsi}
             </p>
           ) : null}
 
           <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row">
-            <Button asChild size="xl">
+            <Button asChild size="xl" className="rounded-full">
               <Link
                 href="/kontak"
                 onClick={() =>
@@ -105,8 +90,12 @@ export function Hero({
                 <ArrowRight className="size-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="xl">
-              <a
+            <Button
+              asChild
+              size="xl"
+              className="border-primary-foreground/30 text-primary-foreground rounded-full bg-transparent hover:bg-white/10"
+            >
+              <Link
                 href="#layanan"
                 onClick={() =>
                   trackEvent(ANALYTICS_EVENTS.ctaClicked, {
@@ -115,17 +104,23 @@ export function Hero({
                 }
               >
                 Lihat Layanan
-              </a>
+              </Link>
             </Button>
           </div>
 
           {kontenHero.keunggulan.length > 0 ? (
-            <p className="text-muted-foreground/80 mt-7 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] font-medium">
+            <p className="text-primary-foreground/80 mt-7 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] font-medium">
               {kontenHero.keunggulan.map((item, i) => (
                 <span key={item} className="flex items-center gap-2">
-                  {i > 0 && (
+                  {i > 0 ? (
                     <span
-                      className="bg-border size-1 rounded-full"
+                      className="bg-primary-foreground/30 size-1 rounded-full"
+                      aria-hidden
+                    />
+                  ) : (
+                    <Check
+                      className="text-accent size-3.5"
+                      strokeWidth={3}
                       aria-hidden
                     />
                   )}
@@ -135,13 +130,13 @@ export function Hero({
             </p>
           ) : null}
 
-          {/* Strip lini layanan — penutup professional, bukan isi yang ramai. */}
-          <div className="border-border/70 mt-14 border-t pt-5">
+          {/* Strip lini layanan — penutup tenang. */}
+          <div className="border-primary-foreground/15 mt-14 border-t pt-5">
             <ul className="flex flex-wrap items-center gap-x-7 gap-y-2.5">
               {lini.map((nama, i) => (
                 <li
                   key={nama}
-                  className="text-muted-foreground flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase"
+                  className="text-primary-foreground/65 flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase"
                 >
                   {i > 0 && (
                     <span

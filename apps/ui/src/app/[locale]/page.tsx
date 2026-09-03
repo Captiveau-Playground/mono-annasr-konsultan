@@ -141,7 +141,7 @@ export default async function BerandaPage({
       <LayananSection items={layananKeItem(konten.layanan)} />
       <PortfolioSection items={konten.portfolio} />
       <PetaSection kota={konten.kotaProyek} />
-      <ArtikelSection items={artikelKeItem(konten.artikel)} />
+      <ArtikelSection items={artikelKeItem(kontenSitus.artikel)} />
       <FaqSection items={konten.faq} />
       <CtaBanner judul={konten.cta?.judul} deskripsi={konten.cta?.deskripsi} />
     </>

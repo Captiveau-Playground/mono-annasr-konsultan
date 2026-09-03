@@ -77,7 +77,7 @@ export function Navbar({
 
   return (
     <header className="border-border bg-background/95 sticky top-0 z-50 border-b backdrop-blur">
-      <nav className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center gap-4 px-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center gap-0 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2.5"
@@ -89,7 +89,7 @@ export function Navbar({
             width={40}
             height={40}
             priority
-            className="size-10 shrink-0 rounded-lg object-contain"
+            className="size-10 shrink-0 object-contain"
           />
           <span className="leading-tight">
             <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold">
@@ -117,7 +117,7 @@ export function Navbar({
                       {item.label}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="border-border bg-popover flex w-60 flex-col gap-0.5 rounded-xl border p-1.5 shadow-[var(--shadow-soft)]">
+                      <ul className="border-border bg-popover flex w-60 flex-col gap-0.5 border p-1.5 shadow-[var(--shadow-soft)]">
                         {(item.anak ?? []).map((sub) => (
                           <li key={sub.href}>
                             <NavigationMenuLink

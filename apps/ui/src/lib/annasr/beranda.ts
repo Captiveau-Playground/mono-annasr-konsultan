@@ -31,7 +31,7 @@ export type BerandaKonten = {
     kategori: string
     gambar: string
   }[]
-  klien: string[]
+  klien: { nama: string; logo?: string }[]
   kotaProyek: { nama: string; lat: number; lng: number }[]
   faq: { tanya: string; jawab: string }[]
   artikel: {
@@ -143,7 +143,7 @@ export function berandaFallback(): BerandaKonten {
       kategori: p.kategori,
       gambar: p.gambar,
     })),
-    klien: [...klien],
+    klien: klien.map((nama) => ({ nama })),
     kotaProyek: [...kotaProyek],
     faq: FAQ_DEFAULT,
     artikel: artikel.map((a) => ({
@@ -172,7 +172,7 @@ type RawBeranda = {
     kategori?: unknown
     gambar?: { url?: unknown }
   }[]
-  klien?: { nama?: unknown }[]
+  klien?: { nama?: unknown; logo?: { url?: unknown } }[]
   kotaProyek?: { nama?: unknown; lat?: unknown; lng?: unknown }[]
   faq?: { tanya?: unknown; jawab?: unknown }[]
   artikel?: {
@@ -274,7 +274,12 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
           : fallback.portfolio,
       klien:
         data.klien && data.klien.length > 0
-          ? data.klien.map((k) => str(k.nama, "")).filter(Boolean)
+          ? data.klien
+              .map((k) => ({
+                nama: str(k.nama, ""),
+                logo: resolvUrl((k.logo as undefined | { url?: unknown })?.url),
+              }))
+              .filter((k) => k.nama)
           : fallback.klien,
       kotaProyek:
         data.kotaProyek && data.kotaProyek.length > 0

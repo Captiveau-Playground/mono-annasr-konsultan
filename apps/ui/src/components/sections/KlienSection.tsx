@@ -1,67 +1,85 @@
 import { SectionShell } from "@/components/site/SectionShell"
 
+type ItemKlien = { nama: string; logo?: string }
+
+const ITEM_PER_BARIS = 8
+const MAKS_BARIS = 4
+
 /**
  * Section "Dipercaya oleh Berbagai Klien".
  *
- * Kondisional sesuai jumlah data (dari CMS beranda.klien):
- * - <= 12 item → marquee (looping infinit) satu baris nama klien
- * - > 12 item  → grid dinamis maksimal 3 baris (kolom mengikuti jumlah)
+ * - Logo client (dari CMS beranda.klien.logo), fallback teks nama bila belum
+ *   diisi.
+ * - Tinggi DINAMIS: jumlah baris marquee mengikuti banyaknya data
+ *   (rows = ceil(n / 8), maks 4) — tidak ada tinggi fix.
  */
-function kolomGrid(jumlah: number): string {
-  const cols = Math.min(6, Math.max(3, Math.ceil(jumlah / 3)))
-  const kelas: Record<number, string> = {
-    3: "grid-cols-1 sm:grid-cols-3",
-    4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
-    5: "grid-cols-1 sm:grid-cols-3 lg:grid-cols-5",
-    6: "grid-cols-1 sm:grid-cols-3 lg:grid-cols-6",
+function potongBaris(daftar: ItemKlien[], baris: number): ItemKlien[][] {
+  if (baris <= 1) return [daftar]
+
+  const hasil: ItemKlien[][] = []
+  const perBaris = Math.ceil(daftar.length / baris)
+
+  for (let i = 0; i < baris; i += 1) {
+    hasil.push(daftar.slice(i * perBaris, (i + 1) * perBaris))
   }
 
-  return kelas[cols] ?? "grid-cols-1 sm:grid-cols-3 lg:grid-cols-6"
+  return hasil.filter((b) => b.length > 0)
 }
 
-const AMBANG_MARQUEE = 12
-
-export function KlienSection({
-  items = [],
+function BarisMarquee({
+  items,
+  indeks,
 }: {
-  /** Nama klien dari CMS (beranda.klien). */
-  items?: string[]
+  items: ItemKlien[]
+  indeks: number
 }) {
-  const daftar = items.filter(Boolean)
-  const banyak = daftar.length > AMBANG_MARQUEE
+  const kelas = ["marquee-track", "marquee-track-rev", "marquee-track-slow"][
+    indeks % 3
+  ]
+
+  return (
+    <ul className={`${kelas} flex w-max items-center gap-4`}>
+      {/* Duplikasi 2x agar loop mulus (animasi geser -50%). */}
+      {[items, items].flat().map((item, i) => (
+        <li
+          key={`${item.nama}-${i}`}
+          aria-hidden={i >= items.length}
+          className="border-border bg-card flex min-h-14 shrink-0 items-center justify-center rounded-xl border px-6 shadow-[var(--shadow-soft)]"
+        >
+          {item.logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={item.logo}
+              alt={`${item.nama} — logo`}
+              loading="lazy"
+              className="max-h-9 w-auto object-contain"
+            />
+          ) : (
+            <span className="text-foreground text-sm font-semibold">
+              {item.nama}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+export function KlienSection({ items = [] }: { items?: ItemKlien[] }) {
+  const daftar = items.filter((k) => k.nama)
+  const baris = Math.min(
+    MAKS_BARIS,
+    Math.max(1, Math.ceil(daftar.length / ITEM_PER_BARIS))
+  )
+  const barisPotong = potongBaris(daftar, baris)
 
   return (
     <SectionShell tone="krem" judul={"Dipercaya oleh\nBerbagai Klien"}>
-      {banyak ? (
-        <div className={`grid gap-4 ${kolomGrid(daftar.length)}`}>
-          {daftar.map((nama) => (
-            <div
-              key={nama}
-              className="border-border bg-card flex h-full items-center justify-center rounded-xl border px-5 py-6 text-center shadow-[var(--shadow-soft)]"
-            >
-              <span className="text-foreground text-sm font-semibold tracking-wide">
-                {nama}
-              </span>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="marquee-mask overflow-hidden" aria-hidden="true">
-          <ul className="marquee-track flex w-max items-center gap-4">
-            {/* Duplikasi 2x agar loop mulus (animasi geser -50%). */}
-            {[daftar, daftar].flat().map((nama, i) => (
-              <li
-                key={`${nama}-${i}`}
-                className="border-border bg-card flex min-h-12 w-44 shrink-0 items-center justify-center rounded-lg border px-4 text-center shadow-[var(--shadow-soft)]"
-              >
-                <span className="text-foreground text-xs font-semibold sm:text-sm">
-                  {nama}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="marquee-mask space-y-5">
+        {barisPotong.map((b, i) => (
+          <BarisMarquee key={i} items={b} indeks={i} />
+        ))}
+      </div>
     </SectionShell>
   )
 }

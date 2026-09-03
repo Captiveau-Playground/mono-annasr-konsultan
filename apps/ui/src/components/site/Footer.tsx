@@ -5,8 +5,6 @@ import { InstagramIcon } from "@/components/ui/icons"
 import { layanan, navigasi, perusahaan } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
-import { FooterSocials } from "./FooterSocials"
-
 export function Footer({
   brand,
   navigasi: navCms,
@@ -37,7 +35,7 @@ export function Footer({
   email?: string
   /** Dari CMS (kontak.instagram). */
   instagram?: string
-  /** Dari CMS (kontak.whatsapp) — tombol sosial WhatsApp. */
+  /** Dari CMS (kontak.whatsapp). */
   whatsapp?: string
   /** Kolom footer dari CT Footer (elements.footer-item). */
   sections?: readonly {
@@ -106,6 +104,9 @@ export function Footer({
               <span className="font-[family-name:var(--font-heading)] text-sm font-semibold">
                 {namaBrand}
               </span>
+              <span className="text-muted-foreground hidden text-[11px] tracking-wide sm:block">
+                Konsultan Teknik &amp; Konstruksi
+              </span>
             </div>
             <p className="text-primary-foreground/65 mt-5 max-w-sm text-sm leading-relaxed">
               {singkat ?? perusahaan.singkat}
@@ -114,80 +115,67 @@ export function Footer({
               {jam ?? perusahaan.jamOperasional}
             </p>
 
-            <FooterSocials
-              instagram={instagram}
-              whatsapp={whatsapp ?? perusahaan.whatsapp}
-            />
+            {/* Kontak singkat: hp, email, alamat, instagram — satu grup ber-ikon. */}
+            <ul className="text-primary-foreground/75 mt-6 space-y-2.5 text-sm">
+              <li className="flex items-center gap-2.5">
+                <Phone className="text-accent size-4 shrink-0" />
+                <a
+                  href={`tel:${(telepon ?? perusahaan.telepon).replaceAll(/\s/g, "")}`}
+                  className="hover:text-accent transition-colors"
+                >
+                  {telepon ?? perusahaan.telepon}
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Mail className="text-accent size-4 shrink-0" />
+                <a
+                  href={`mailto:${email ?? perusahaan.email}`}
+                  className="hover:text-accent transition-colors"
+                >
+                  {email ?? perusahaan.email}
+                </a>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <MapPin className="text-accent size-4 shrink-0" />
+                <span>{kantor ?? perusahaan.kantor}</span>
+              </li>
+              {(instagram ?? "").trim() ? (
+                <li className="flex items-center gap-2.5">
+                  <InstagramIcon className="size-4 shrink-0" />
+                  <a
+                    href={`https://instagram.com/${instagram
+                      ?.replace(/^@/, "")
+                      .trim()}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-accent transition-colors"
+                  >
+                    {instagram?.replace(/^@/, "").trim()}
+                  </a>
+                </li>
+              ) : null}
+            </ul>
           </div>
 
-          {kolom.map((k) => {
-            const isKontak = k.title === "Kontak"
-
-            return (
-              <div key={k.title}>
-                <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
-                  {k.title}
-                </h3>
-                {isKontak ? (
-                  <ul className="text-primary-foreground/75 mt-5 space-y-3.5 text-sm">
-                    <li className="flex items-center gap-2.5">
-                      <Phone className="text-accent size-4 shrink-0" />
-                      <a
-                        href={`tel:${(telepon ?? perusahaan.telepon).replaceAll(
-                          /\s/g,
-                          ""
-                        )}`}
-                        className="hover:text-accent transition-colors"
-                      >
-                        {telepon ?? perusahaan.telepon}
-                      </a>
-                    </li>
-                    <li className="flex items-center gap-2.5">
-                      <Mail className="text-accent size-4 shrink-0" />
-                      <a
-                        href={`mailto:${email ?? perusahaan.email}`}
-                        className="hover:text-accent transition-colors"
-                      >
-                        {email ?? perusahaan.email}
-                      </a>
-                    </li>
-                    <li className="flex items-center gap-2.5">
-                      <MapPin className="text-accent size-4 shrink-0" />
-                      <span>{kantor ?? perusahaan.kantor}</span>
-                    </li>
-                    {instagram?.trim() ? (
-                      <li className="flex items-center gap-2.5">
-                        <InstagramIcon className="size-4 shrink-0" />
-                        <a
-                          href={`https://instagram.com/${instagram
-                            .replace(/^@/, "")
-                            .trim()}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="hover:text-accent transition-colors"
-                        >
-                          {instagram.replace(/^@/, "").trim()}
-                        </a>
-                      </li>
-                    ) : null}
-                  </ul>
-                ) : (
-                  <ul className="mt-5 space-y-3">
-                    {k.links.map((l) => (
-                      <li key={l.label}>
-                        <Link
-                          href={l.href}
-                          className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
-                        >
-                          {l.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )
-          })}
+          {kolom.map((k) => (
+            <div key={k.title}>
+              <h3 className="text-accent text-xs font-semibold tracking-[0.2em] uppercase">
+                {k.title}
+              </h3>
+              <ul className="mt-5 space-y-3">
+                {k.links.map((l) => (
+                  <li key={l.label}>
+                    <Link
+                      href={l.href}
+                      className="text-primary-foreground/65 hover:text-accent text-sm transition-colors"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </div>
 
@@ -199,21 +187,6 @@ export function Footer({
           </span>
           <span>Jombang, Jawa Timur — Indonesia</span>
         </div>
-      </div>
-
-      <div className="border-primary-foreground/10 relative border-t">
-        <p className="text-primary-foreground/40 mx-auto max-w-6xl px-6 py-4 text-xs lg:px-10">
-          Built with care by{" "}
-          <a
-            href="https://captiveau.id"
-            target="_blank"
-            rel="noreferrer"
-            className="text-primary-foreground/70 hover:text-accent transition-colors"
-          >
-            Captiveau
-          </a>
-          .
-        </p>
       </div>
     </footer>
   )
