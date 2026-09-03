@@ -20,7 +20,7 @@ import { PortfolioSection } from "@/components/sections/PortfolioSection"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { KenapaKami } from "@/components/tentang/KenapaKami"
-import { fetchBeranda, type BerandaKonten } from "@/lib/annasr/beranda"
+import { fetchBeranda } from "@/lib/annasr/beranda"
 import { fetchKontenSitus, type KontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 import { faqLd, localBusinessLd, websiteLd } from "@/lib/seo/structured-data"
@@ -68,24 +68,42 @@ const slugify = (teks: string) =>
     .replaceAll(/[^a-z0-9]+/g, "-")
     .replaceAll(/^-|-$/g, "")
 
-function layananKeItem(konten: BerandaKonten["layanan"]) {
-  return konten.map((l, i) => ({
-    slug: slugify(l.judul) || `layanan-${i + 1}`,
-    nama: l.judul,
-    ikon: IKON_LAYANAN[i % IKON_LAYANAN.length] ?? Building2,
-    ringkas: l.ringkas,
-    detail: [l.ringkas],
-    gambar: l.gambar,
-    alt: l.judul,
-    galeri: [],
-    deskripsi: l.ringkas,
-    manfaat: [],
-  }))
+function layananKeItem(
+  konten: {
+    slug?: string
+    nama?: string
+    judul?: string
+    ringkas: string
+    gambar: string
+  }[]
+) {
+  return konten.map((l, i) => {
+    const nama = l.nama ?? l.judul ?? `Layanan ${i + 1}`
+
+    return {
+      // Slug asli dari API bila ada (jangan re-slugify judul — bisa beda & 404).
+      slug:
+        (l.slug && l.slug.length > 0 ? l.slug : slugify(nama)) ||
+        `layanan-${i + 1}`,
+      nama,
+      ikon: IKON_LAYANAN[i % IKON_LAYANAN.length] ?? Building2,
+      ringkas: l.ringkas,
+      detail: [l.ringkas],
+      gambar: l.gambar,
+      alt: nama,
+      galeri: [],
+      deskripsi: l.ringkas,
+      manfaat: [],
+    }
+  })
 }
 
 function artikelKeItem(konten: KontenSitus["artikel"]) {
   return konten.map((a) => ({
-    slug: slugify(a.judul) || "artikel",
+    // Pakai slug asli dari API (jangan re-slugify judul — judul panjang
+    // menghasilkan slug beda & 404).
+    slug:
+      (a.slug && a.slug.length > 0 ? a.slug : slugify(a.judul)) || "artikel",
     judul: a.judul,
     ringkas: a.ringkas,
     tanggal: a.tanggal,
@@ -138,7 +156,7 @@ export default async function BerandaPage({
       <KlienSection items={konten.klien} />
       <FounderSection founder={konten.founder} />
       <KenapaKami alasan={kontenSitus.tentang.alasan} />
-      <LayananSection items={layananKeItem(konten.layanan)} />
+      <LayananSection items={layananKeItem(kontenSitus.layanan)} />
       <PortfolioSection items={konten.portfolio} />
       <PetaSection kota={konten.kotaProyek} />
       <ArtikelSection items={artikelKeItem(kontenSitus.artikel)} />
