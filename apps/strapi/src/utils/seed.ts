@@ -586,7 +586,6 @@ const berandaData: Dok = {
   klien: KLIEN.map((nama) => ({ nama })),
   kotaProyek: KOTA,
   faq: FAQ,
-  artikel: ARTIKEL,
   cta: {
     judul: "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
     deskripsi:

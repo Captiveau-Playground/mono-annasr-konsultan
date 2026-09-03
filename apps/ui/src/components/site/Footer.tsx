@@ -98,11 +98,13 @@ export function Footer({
                 height={40}
                 className="size-10 shrink-0 object-contain"
               />
-              <span className="font-[family-name:var(--font-heading)] text-sm font-semibold">
-                {namaBrand}
-              </span>
-              <span className="text-muted-foreground hidden text-[11px] tracking-wide sm:block">
-                Konsultan Teknik &amp; Konstruksi
+              <span className="leading-tight">
+                <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold">
+                  {namaBrand?.trim() || "CV. An Nasr Konsultan"}
+                </span>
+                <span className="text-muted-foreground hidden text-[11px] tracking-wide sm:block">
+                  Konsultan Teknik &amp; Konstruksi
+                </span>
               </span>
             </div>
             <p className="text-primary-foreground/65 mt-5 max-w-sm text-sm leading-relaxed">

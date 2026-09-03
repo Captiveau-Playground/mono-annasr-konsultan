@@ -5,7 +5,6 @@ import type { UID } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
 
 import {
-  artikel,
   founder,
   klien,
   kotaProyek,
@@ -34,13 +33,6 @@ export type BerandaKonten = {
   klien: { nama: string; logo?: string }[]
   kotaProyek: { nama: string; lat: number; lng: number }[]
   faq: { tanya: string; jawab: string }[]
-  artikel: {
-    judul: string
-    ringkas: string
-    kategori: string
-    tanggal: string
-    gambar: string
-  }[]
   cta?: { judul: string; deskripsi: string }
 }
 
@@ -146,13 +138,6 @@ export function berandaFallback(): BerandaKonten {
     klien: klien.map((nama) => ({ nama })),
     kotaProyek: [...kotaProyek],
     faq: FAQ_DEFAULT,
-    artikel: artikel.map((a) => ({
-      judul: a.judul,
-      ringkas: a.ringkas,
-      kategori: a.kategori,
-      tanggal: a.tanggal,
-      gambar: a.gambar,
-    })),
     cta: { ...CTA_DEFAULT },
   }
 }
@@ -175,13 +160,6 @@ type RawBeranda = {
   klien?: { nama?: unknown; logo?: { url?: unknown } }[]
   kotaProyek?: { nama?: unknown; lat?: unknown; lng?: unknown }[]
   faq?: { tanya?: unknown; jawab?: unknown }[]
-  artikel?: {
-    judul?: unknown
-    ringkas?: unknown
-    kategori?: unknown
-    tanggal?: unknown
-    gambar?: { url?: unknown }
-  }[]
   cta?: { judul?: unknown; deskripsi?: unknown }
 }
 
@@ -204,7 +182,6 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
         klien: "smart",
         kotaProyek: "smart",
         faq: "smart",
-        artikel: "smart",
         cta: "smart",
       },
     } as never
@@ -304,20 +281,6 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
               jawab: str(f.jawab, ""),
             }))
           : fallback.faq,
-      artikel:
-        data.artikel && data.artikel.length > 0
-          ? data.artikel.map((a, i) => ({
-              judul: str(
-                a.judul,
-                fallback.artikel[i]?.judul ?? `Artikel ${i + 1}`
-              ),
-              ringkas: str(a.ringkas, ""),
-              kategori: str(a.kategori, "Artikel"),
-              tanggal: str(a.tanggal, ""),
-              gambar:
-                resolvUrl(a.gambar?.url) ?? fallback.artikel[i]?.gambar ?? "",
-            }))
-          : fallback.artikel,
       cta: data.cta
         ? {
             judul: str(data.cta.judul, CTA_DEFAULT.judul),

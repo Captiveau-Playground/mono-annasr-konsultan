@@ -21,7 +21,7 @@ import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { KenapaKami } from "@/components/tentang/KenapaKami"
 import { fetchBeranda, type BerandaKonten } from "@/lib/annasr/beranda"
-import { fetchKontenSitus } from "@/lib/annasr/konten"
+import { fetchKontenSitus, type KontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 import { faqLd, localBusinessLd, websiteLd } from "@/lib/seo/structured-data"
 import { publicBaseUrl } from "@/lib/seo/urls"
@@ -83,7 +83,7 @@ function layananKeItem(konten: BerandaKonten["layanan"]) {
   }))
 }
 
-function artikelKeItem(konten: BerandaKonten["artikel"]) {
+function artikelKeItem(konten: KontenSitus["artikel"]) {
   return konten.map((a) => ({
     slug: slugify(a.judul) || "artikel",
     judul: a.judul,
