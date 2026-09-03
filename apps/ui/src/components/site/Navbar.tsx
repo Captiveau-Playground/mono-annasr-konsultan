@@ -33,11 +33,14 @@ type EntryMenu =
 export function Navbar({
   brandNama,
   navigasiCms,
+  tagline,
   whatsapp,
 }: {
   brandNama?: string
   /** Navigasi level atas dari CMS — item dengan `anak` jadi dropdown. */
   navigasiCms?: ItemNav[]
+  /** Tagline dari CMS (situs.brandTagline) — di bawah nama brand. */
+  tagline?: string
   /** Nomor WhatsApp dari CMS (kontak.whatsapp). */
   whatsapp?: string
 }) {
@@ -88,8 +91,13 @@ export function Navbar({
             priority
             className="size-10 shrink-0 rounded-lg object-contain"
           />
-          <span className="font-[family-name:var(--font-heading)] text-sm font-semibold">
-            {brandNama?.trim() || "CV. An Nasr Konsultan"}
+          <span className="leading-tight">
+            <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold">
+              {brandNama?.trim() || "CV. An Nasr Konsultan"}
+            </span>
+            <span className="text-muted-foreground hidden text-[11px] tracking-wide sm:block">
+              {tagline ?? "Konsultan Teknik &amp; Konstruksi"}
+            </span>
           </span>
         </Link>
 
@@ -186,7 +194,7 @@ export function Navbar({
       {open ? (
         <div
           id="menu-mobile"
-          className="border-border bg-background border-t lg:hidden"
+          className="border-border bg-background absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t shadow-[var(--shadow-lift)] lg:hidden"
         >
           <div className="mx-auto max-w-[80rem] px-4 py-4">
             {menu.map((entry) => {

@@ -193,6 +193,7 @@ export default async function RootLayout({
             <Navbar
               brandNama={kontenSitus.situs.brandNama}
               navigasiCms={kontenSitus.situs.navigasi}
+              tagline={kontenSitus.situs.brandTagline}
               whatsapp={kontenSitus.kontak.whatsapp}
             />
             <main className="min-h-screen">{children}</main>
