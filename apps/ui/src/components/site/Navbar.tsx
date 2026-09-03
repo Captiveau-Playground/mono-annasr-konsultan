@@ -1,9 +1,7 @@
 "use client"
 
 import {
-  ArrowUpRight,
   Briefcase,
-  ChevronDown,
   FolderKanban,
   Handshake,
   Home,
@@ -103,7 +101,7 @@ export function Navbar({
   const terang = !topTerang && !scrolled && !open
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => setScrolled(window.scrollY > 40)
     onScroll()
     window.addEventListener("scroll", onScroll, { passive: true })
 
@@ -113,36 +111,39 @@ export function Navbar({
   const aktif = (to: string) =>
     to === "/" ? pathname === "/" : pathname.startsWith(to)
 
-  const kelasItem = (to: string) =>
-    cn(
-      "inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
-      terang
-        ? "text-primary-foreground/80 hover:bg-white/10 hover:text-white"
-        : "text-muted-foreground hover:bg-surface hover:text-primary",
-      aktif(to) && (terang ? "text-white" : "text-primary")
-    )
+  /** Poin aktif kecil di bawah item aktif. */
+  const indikatorAktif = (aktifYa: boolean) =>
+    aktifYa ? (
+      <span
+        className="bg-accent absolute inset-x-3 -bottom-[7px] h-0.5 rounded-full"
+        aria-hidden="true"
+      />
+    ) : null
 
-  const kelasTrigger = (aktifGrup: boolean) =>
+  /** Gaya pill item & trigger — seragam, hover ber-latar, tinggi sama. */
+  const kelasPill = (aktifYa: boolean) =>
     cn(
-      "h-9 gap-1 rounded-full px-3.5 text-sm font-medium transition-colors",
+      "relative inline-flex h-10 items-center rounded-full px-4 text-sm font-medium transition-colors",
       terang
-        ? "text-primary-foreground/80 hover:bg-white/10 hover:text-white data-[state=open]:bg-white/10 data-[state=open]:text-white"
-        : "text-muted-foreground hover:bg-surface hover:text-primary data-[state=open]:bg-surface data-[state=open]:text-primary",
-      aktifGrup && (terang ? "text-white" : "text-primary")
+        ? "text-primary-foreground/90 hover:bg-white/10 hover:text-white"
+        : "text-muted-foreground hover:bg-surface hover:text-primary",
+      aktifYa && (terang ? "text-white" : "text-primary")
     )
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 h-16 transition-all duration-300",
         scrolled || topTerang
-          ? "border-border bg-background/85 border-b py-2 shadow-[var(--shadow-soft)] backdrop-blur-xl"
-          : "border-b border-transparent py-4"
-      }`}
+          ? "border-border bg-background/90 border-b shadow-[var(--shadow-soft)] backdrop-blur-xl"
+          : "border-b border-transparent"
+      )}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 lg:px-8">
+      <nav className="flex h-full max-w-[80rem] items-center justify-between gap-6 px-4 sm:px-5 lg:px-8">
+        {/* Branding */}
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-3"
+          className="flex shrink-0 items-center gap-2.5"
           onClick={() => setOpen(false)}
         >
           <Image
@@ -155,44 +156,48 @@ export function Navbar({
             width={40}
             height={40}
             priority
-            className="size-10 shrink-0 rounded-xl object-contain"
+            className="size-9 shrink-0 rounded-lg object-contain sm:size-10"
           />
           <span className="leading-tight">
             <span
-              className={`block font-[family-name:var(--font-heading)] text-sm font-semibold ${
+              className={cn(
+                "block font-[family-name:var(--font-heading)] text-sm font-semibold",
                 terang ? "text-primary-foreground" : "text-foreground"
-              }`}
+              )}
             >
               {brandNama?.trim() || "CV. An Nasr Konsultan"}
             </span>
             <span
-              className={`block text-[11px] tracking-wide ${
+              className={cn(
+                "hidden text-[11px] tracking-wide sm:block",
                 terang ? "text-primary-foreground/70" : "text-muted-foreground"
-              }`}
+              )}
             >
               {tagline ?? "Konsultan Teknik &amp; Konstruksi"}
             </span>
           </span>
         </Link>
 
-        {/* Navigasi desktop — tree dari CMS (grup utk item ber-anak). */}
+        {/* Navigasi desktop — tree dari CMS, tanpa duplikasi. */}
         <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuList className="gap-1">
+          <NavigationMenuList className="gap-0.5">
             {menu.map((entry) => {
               if (entry.type === "grup") {
                 const { item } = entry
                 const gAktif =
-                  (item.anak ?? []).some((a) => aktif(a.href)) ||
-                  aktif(item.href)
+                  aktif(item.href) ||
+                  (item.anak ?? []).some((a) => aktif(a.href))
 
                 return (
                   <NavigationMenuItem key={item.href}>
-                    <NavigationMenuTrigger className={kelasTrigger(gAktif)}>
+                    <NavigationMenuTrigger
+                      className={cn(kelasPill(gAktif), "gap-1.5")}
+                    >
                       {item.label}
-                      <ChevronDown className="size-3.5 opacity-60 transition-transform data-[state=open]:rotate-180" />
+                      {indikatorAktif(gAktif)}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="border-border bg-popover flex w-[21rem] flex-col gap-1 rounded-2xl border p-2 shadow-[var(--shadow-soft)]">
+                      <ul className="border-border bg-popover w-80 rounded-2xl border p-2 shadow-[var(--shadow-soft)]">
                         {(item.anak ?? []).map((sub) => {
                           const Ikon = IKON_NAV[sub.href] ?? Users
                           const gSub = aktif(sub.href)
@@ -202,39 +207,38 @@ export function Navbar({
                               <NavigationMenuLink
                                 href={sub.href}
                                 className={cn(
-                                  "flex items-center gap-3 rounded-xl p-2.5 transition-colors",
-                                  gSub ? "bg-primary/10" : "hover:bg-surface"
+                                  "group/item flex items-center gap-3.5 rounded-xl px-3 py-3 transition-colors",
+                                  gSub ? "bg-primary/10" : "hover:bg-muted/70"
                                 )}
                               >
                                 <span
                                   className={cn(
-                                    "flex size-9 shrink-0 items-center justify-center rounded-lg",
+                                    "flex size-10 shrink-0 items-center justify-center rounded-lg",
                                     gSub
                                       ? "bg-accent text-accent-foreground"
                                       : "bg-surface text-primary"
                                   )}
                                 >
-                                  <Ikon className="size-4" strokeWidth={1.8} />
+                                  <Ikon
+                                    className="size-[18px]"
+                                    strokeWidth={1.8}
+                                  />
                                 </span>
                                 <span className="min-w-0">
                                   <span
                                     className={cn(
-                                      "text-sm font-medium",
+                                      "block text-sm font-semibold",
                                       gSub ? "text-primary" : "text-foreground"
                                     )}
                                   >
                                     {sub.label}
                                   </span>
                                   {sub.deskripsi ? (
-                                    <span className="text-muted-foreground block truncate text-xs">
+                                    <span className="text-muted-foreground mt-0.5 block truncate text-xs">
                                       {sub.deskripsi}
                                     </span>
                                   ) : null}
                                 </span>
-                                <ArrowUpRight
-                                  className="text-muted-foreground/40 ml-auto size-3.5 shrink-0"
-                                  aria-hidden="true"
-                                />
                               </NavigationMenuLink>
                             </li>
                           )
@@ -258,9 +262,10 @@ export function Navbar({
                         })
                       }
                     }}
-                    className={kelasItem(item.href)}
+                    className={kelasPill(aktif(item.href))}
                   >
                     {item.label}
+                    {indikatorAktif(aktif(item.href))}
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               )
@@ -268,8 +273,13 @@ export function Navbar({
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="hidden shrink-0 lg:block">
-          <Button asChild size="pill" variant={terang ? "hero" : "default"}>
+        {/* CTA + toggle mobile */}
+        <div className="flex shrink-0 items-center gap-2">
+          <Button
+            asChild
+            size="sm"
+            className="hidden rounded-full px-5 lg:inline-flex"
+          >
             <a
               href={`https://wa.me/${nomorWa}`}
               target="_blank"
@@ -284,41 +294,39 @@ export function Navbar({
               Konsultasi Sekarang
             </a>
           </Button>
+          <button
+            type="button"
+            aria-label="Buka menu"
+            aria-expanded={open}
+            aria-controls="menu-mobile"
+            onClick={() => setOpen((v) => !v)}
+            className={cn(
+              "flex size-10 shrink-0 items-center justify-center rounded-full border transition-colors lg:hidden",
+              terang
+                ? "border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground"
+                : "border-border bg-background text-foreground"
+            )}
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
         </div>
-
-        <button
-          type="button"
-          aria-label="Buka menu"
-          aria-expanded={open}
-          aria-controls="menu-mobile"
-          onClick={() => setOpen((v) => !v)}
-          className={`flex size-10 shrink-0 items-center justify-center rounded-xl border lg:hidden ${
-            terang
-              ? "border-primary-foreground/30 bg-primary-foreground/10 text-primary-foreground"
-              : "border-border bg-background text-foreground"
-          }`}
-        >
-          {open ? <X className="size-5" /> : <Menu className="size-5" />}
-        </button>
       </nav>
 
+      {/* Panel mobile — hasilkan dari tree yang sama. */}
       {open ? (
         <div
           id="menu-mobile"
-          className="border-border bg-background/95 max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t shadow-[var(--shadow-lift)] backdrop-blur-xl lg:hidden"
+          className="border-border bg-background/95 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t shadow-[var(--shadow-lift)] backdrop-blur-xl lg:hidden"
         >
-          <div className="mx-auto max-w-7xl px-5 py-4 lg:px-8">
+          <div className="mx-auto max-w-[80rem] px-4 py-4 sm:px-5">
             {menu.map((entry) => {
               if (entry.type === "grup") {
-                const IkonGrup = IKON_NAV[entry.item.href] ?? Users
-
                 return (
-                  <div key={entry.item.href} className="mb-3">
-                    <p className="text-muted-foreground flex items-center gap-2 px-4 pb-1 text-[10px] font-semibold tracking-widest uppercase">
-                      <IkonGrup className="size-3.5" />
+                  <div key={entry.item.href} className="mb-2">
+                    <p className="text-muted-foreground px-3 pb-1.5 text-[10px] font-semibold tracking-widest uppercase">
                       {entry.item.label}
                     </p>
-                    <ul className="space-y-0.5">
+                    <ul className="space-y-1">
                       {(entry.item.anak ?? []).map((sub) => {
                         const Ikon = IKON_NAV[sub.href] ?? Users
                         const isAktif = aktif(sub.href)
@@ -329,7 +337,7 @@ export function Navbar({
                               href={sub.href}
                               onClick={() => setOpen(false)}
                               className={cn(
-                                "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
+                                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                                 isAktif
                                   ? "bg-primary/10 text-primary"
                                   : "text-foreground hover:bg-surface"
@@ -345,14 +353,7 @@ export function Navbar({
                               >
                                 <Ikon className="size-4" strokeWidth={1.8} />
                               </span>
-                              <span className="min-w-0">
-                                <span className="block">{sub.label}</span>
-                                {sub.deskripsi ? (
-                                  <span className="text-muted-foreground block truncate text-xs">
-                                    {sub.deskripsi}
-                                  </span>
-                                ) : null}
-                              </span>
+                              {sub.label}
                             </Link>
                           </li>
                         )
@@ -371,7 +372,7 @@ export function Navbar({
                   href={entry.item.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    "flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium transition-colors",
+                    "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                     isAktif
                       ? "bg-primary/10 text-primary"
                       : "text-foreground hover:bg-surface"
@@ -393,7 +394,7 @@ export function Navbar({
             })}
 
             <div className="mt-4">
-              <Button asChild className="w-full" size="pill">
+              <Button asChild className="w-full rounded-full" size="sm">
                 <a
                   href={`https://wa.me/${nomorWa}`}
                   target="_blank"
