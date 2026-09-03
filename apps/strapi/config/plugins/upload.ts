@@ -70,7 +70,10 @@ const prepareAwsS3Config = (env: EnvGetter) => {
           // Backblaze B2, DigitalOcean Spaces, MinIO). Kosongkan = AWS S3.
           endpoint: env("AWS_ENDPOINT") || undefined,
           // MinIO dan sebagian S3-compatible butuh path-style (<host>/bucket<key>)
-          forcePathStyle: env.bool("AWS_FORCE_PATH_STYLE", false) || undefined,
+          forcePathStyle:
+            ["true", "1"].includes(
+              (env("AWS_FORCE_PATH_STYLE") ?? "").toLowerCase()
+            ) || undefined,
           credentials: {
             accessKeyId: awsAccessKeyId,
             secretAccessKey: awsAccessSecret,
