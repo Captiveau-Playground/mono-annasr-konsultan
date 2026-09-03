@@ -73,7 +73,7 @@
   --secondary-foreground: oklch(1 0 0);
   --muted: oklch(0.975 0.005 80);
   --muted-foreground: oklch(0.53 0.03 257);
-  --accent: oklch(0.68 0.185 47);
+  --accent: #FF8D28;
   --accent-foreground: oklch(0.29 0.03 258);
   --surface: oklch(0.972 0.008 75);
   --font-heading: var(--annasr-heading), "Poppins", ui-sans-serif, system-ui, sans-serif;
@@ -120,7 +120,7 @@
   --secondary-foreground: oklch(0.984 0.003 247.858);
   --muted: oklch(0.279 0.041 260.031);
   --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
+  --accent: #FF8D28;
   --accent-foreground: oklch(0.984 0.003 247.858);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.984 0.003 247.858);
@@ -258,7 +258,7 @@
   background-image:
     radial-gradient(
       circle at 18% 22%,
-      color-mix(in oklab, oklch(0.68 0.185 47) 16%, transparent),
+      color-mix(in oklab, var(--accent) 16%, transparent),
       transparent 55%
     ),
     radial-gradient(
@@ -297,7 +297,7 @@
   border-radius: 9999px;
   background-color: var(--accent);
   border: 3px solid #fff;
-  box-shadow: 0 0 0 4px oklch(0.68 0.185 47 / 0.25);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 25%, transparent);
 }
 
 .peta-pin::after {
@@ -305,7 +305,7 @@
   position: absolute;
   inset: -9px;
   border-radius: 9999px;
-  background-color: oklch(0.68 0.185 47 / 0.35);
+  background-color: color-mix(in oklab, var(--accent) 35%, transparent);
   animation: peta-ping 2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 }
 
