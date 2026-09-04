@@ -1,9 +1,10 @@
-import { ArrowUpRight, Check, ListChecks, Sparkles } from "lucide-react"
+import { Check, ListChecks, Sparkles } from "lucide-react"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
-import { CtaLink } from "@/components/analytics/CtaLink"
+import { ApplyKarirButton } from "@/components/karir/ApplyKarirButton"
+import { ShareKarir } from "@/components/karir/ShareKarir"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { PageHero } from "@/components/site/PageHero"
 import { Button } from "@/components/ui/button"
@@ -128,7 +129,7 @@ export default async function DetailKarir({
             </div>
           ) : null}
 
-          {/* Apply CTA */}
+          {/* Apply CTA — kirim lamaran via email (mailto) */}
           <div className="mt-16">
             {tutup ? (
               <Button
@@ -140,17 +141,17 @@ export default async function DetailKarir({
                 Lowongan Ditutup
               </Button>
             ) : (
-              <Button asChild size="lg" className="w-full rounded-full">
-                <CtaLink
-                  cta="karir_apply"
-                  params={{ posisi: item.nama }}
-                  href="/kontak"
-                >
-                  Lamar Sekarang
-                  <ArrowUpRight className="size-4" />
-                </CtaLink>
-              </Button>
+              <ApplyKarirButton
+                email={konten.kontak.email}
+                posisi={item.nama}
+              />
             )}
+            <div className="mt-8">
+              <ShareKarir
+                url={`${baseUrl}/karir/${item.slug}`}
+                judul={item.nama}
+              />
+            </div>
             <p className="text-muted-foreground mt-4 flex items-center justify-center gap-1.5 text-center text-sm">
               <Sparkles className="text-accent size-4" />
               Kirimkan CV &amp; portofolio Anda — tim kami segera merespons.

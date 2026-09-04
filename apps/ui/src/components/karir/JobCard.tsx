@@ -31,7 +31,7 @@ export function JobCard({ item }: { item: ItemKarir }) {
             alt="CV. An Nasr Konsultan"
             width={40}
             height={40}
-            className="size-10 shrink-0 rounded-lg bg-white/10 object-contain"
+            className="size-10 shrink-0 bg-white/10 object-contain"
           />
           <span
             className={cn(
@@ -102,7 +102,7 @@ export function JobCard({ item }: { item: ItemKarir }) {
             <Button
               asChild
               size="sm"
-              className="bg-accent text-accent-foreground w-full rounded-full hover:brightness-105"
+              className="bg-accent text-accent-foreground w-full rounded-full"
             >
               <CtaLink
                 cta="karir_open"
