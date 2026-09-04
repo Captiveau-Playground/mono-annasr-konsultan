@@ -83,7 +83,7 @@ export default async function DetailArtikel({
         ]}
       />
       <TrackArticleRead slug={item.slug} />
-      <article className="bg-background px-6 pt-30 pb-16 lg:px-8 lg:pt-36 lg:pb-20">
+      <article className="bg-background px-6 pt-24 pb-16 lg:px-8 lg:pt-28 lg:pb-20">
         <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
           <Reveal>
             <Link

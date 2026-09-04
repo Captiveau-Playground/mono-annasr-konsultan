@@ -26,7 +26,7 @@ export function TentangInti({
   const METRIK = statistik.length > 0 ? statistik : METRIK_STATIS
 
   return (
-    <section className="bg-background py-[72px] lg:py-[120px]">
+    <section className="bg-background py-20 lg:py-24">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           {/* 7/12 — teks */}

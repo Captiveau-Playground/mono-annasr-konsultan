@@ -10,7 +10,7 @@ export function Founder({
   data?: { nama?: string; jabatan?: string; teks?: string; kutipan?: string }
 }) {
   return (
-    <section className="bg-secondary text-primary-foreground relative overflow-hidden py-[72px] lg:py-[120px]">
+    <section className="bg-secondary text-primary-foreground relative overflow-hidden py-20 lg:py-24">
       <div
         className="blueprint-grid pointer-events-none absolute inset-0 opacity-[0.08]"
         aria-hidden

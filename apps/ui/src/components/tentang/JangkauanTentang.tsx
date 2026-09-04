@@ -22,7 +22,7 @@ export function JangkauanTentang({
   const RINGKAS = RINGKAS_STATIS
 
   return (
-    <section className="bg-surface py-[72px] lg:py-[120px]">
+    <section className="bg-surface py-20 lg:py-24">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-16">
           <div className="lg:col-span-7">

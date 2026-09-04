@@ -39,7 +39,7 @@ export function KenapaKami({
       : ALASAN_STATIS
 
   return (
-    <section className="bg-background py-[72px] lg:py-[120px]">
+    <section className="bg-background py-20 lg:py-24">
       <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">

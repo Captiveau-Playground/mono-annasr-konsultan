@@ -41,7 +41,7 @@ export function SectionShell({
   return (
     <section
       id={id}
-      className={`flex min-h-screen scroll-mt-20 flex-col justify-center overflow-hidden py-20 lg:py-24 ${bg} ${className}`}
+      className={`flex scroll-mt-20 flex-col justify-center overflow-hidden py-20 lg:py-24 ${bg} ${className}`}
     >
       <Kontainer>
         <Reveal className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">

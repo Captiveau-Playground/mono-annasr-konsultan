@@ -23,7 +23,7 @@ export function TentangHero({
   const trust = keunggulan.length > 0 ? keunggulan : KEUNGGULAN
 
   return (
-    <section className="bg-background relative overflow-hidden py-20 lg:py-28">
+    <section className="bg-background relative overflow-hidden py-20 lg:py-24">
       {/* Dekorasi halus biar tidak kosong, bukan overlay yang menutupi konten */}
       <div
         className="blueprint-grid pointer-events-none absolute inset-0 opacity-[0.5]"

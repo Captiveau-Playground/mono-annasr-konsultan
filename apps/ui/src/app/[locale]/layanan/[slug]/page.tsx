@@ -52,7 +52,7 @@ export default async function DetailLayanan({
 
   return (
     <>
-      <section className="px-6 pt-32 pb-14 lg:px-8 lg:pt-36">
+      <section className="px-6 pt-24 pb-16 lg:px-8 lg:pt-28 lg:pb-20">
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
             Layanan

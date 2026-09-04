@@ -55,7 +55,7 @@ export function KontakSection() {
   })
 
   return (
-    <section className="px-5 py-20 lg:px-8 lg:py-28">
+    <section className="px-6 py-20 lg:px-8 lg:py-24">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:gap-16">
         <Reveal arah="left">
           <div className="border-border bg-card rounded-[2rem] border p-8 shadow-[var(--shadow-soft)] lg:p-10">

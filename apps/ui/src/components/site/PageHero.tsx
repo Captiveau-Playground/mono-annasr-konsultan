@@ -8,7 +8,7 @@ export function PageHero({
   teks: string
 }) {
   return (
-    <section className="cta-gradient relative overflow-hidden px-5 pt-36 pb-20 lg:px-8 lg:pt-44 lg:pb-28">
+    <section className="cta-gradient relative overflow-hidden px-6 pt-28 pb-16 lg:px-8 lg:pt-32 lg:pb-20">
       <div className="blueprint-grid absolute inset-0 opacity-25" aria-hidden />
       <div className="relative mx-auto max-w-4xl text-center">
         <p className="text-accent text-xs font-semibold tracking-[0.24em] uppercase">
