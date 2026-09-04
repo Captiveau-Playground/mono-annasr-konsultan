@@ -70,6 +70,11 @@ jobs:
           REMOTE=$(cat <<'RMT'
           set -e
           cd "$DEPLOY_DIR" || { echo "FOLDER TIDAK ADA: $DEPLOY_DIR"; ls -la /opt; exit 1; }
+          if [ ! -f docker-compose.yml ]; then
+            echo "GAGAL: docker-compose.yml belum ada di $DEPLOY_DIR"
+            ls -la
+            exit 1
+          fi
           if [ -n "$GHCR_USER" ]; then
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
           fi
