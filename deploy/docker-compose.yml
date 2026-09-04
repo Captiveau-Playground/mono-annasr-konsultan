@@ -72,7 +72,8 @@ services:
       # RBAC (Editor Konten + public read) dipasang otomatis saat boot
       RBAC_AUTO_SETUP: "true"
     volumes:
-      - uploads:/app/apps/strapi/public/uploads
+      # Bind mount host — di server: chown 1001:1001 ./uploads
+      - ./uploads:/app/apps/strapi/public/uploads
     ports:
       - "1337:1337"
     healthcheck:
@@ -124,4 +125,3 @@ services:
 
 volumes:
   pgdata:
-  uploads:
