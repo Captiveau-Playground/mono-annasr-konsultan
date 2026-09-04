@@ -55,7 +55,7 @@ export function Hero({
         aria-hidden
       />
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:px-10 lg:pt-32 lg:pb-24">
+      <div className="relative mx-auto w-full max-w-7xl px-6 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:px-10 lg:pt-32 lg:pb-24">
         <div className="hero-anim-fade-up max-w-3xl">
           <span className="border-primary-foreground/20 text-primary-foreground/90 inline-flex items-center gap-2 rounded-full border bg-white/10 px-4 py-1.5 text-[11px] font-semibold tracking-[0.18em] uppercase backdrop-blur-sm">
             <span className="bg-accent size-1.5 rounded-full" />

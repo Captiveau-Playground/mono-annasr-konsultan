@@ -87,7 +87,7 @@ export function Footer({
       />
       <div className="bg-accent/10 pointer-events-none absolute -top-32 -right-32 size-96 rounded-full blur-3xl" />
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 py-16 lg:px-10 lg:py-20">
+      <div className="relative mx-auto w-full max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
           <div>
             <div className="flex items-center gap-3">
@@ -187,7 +187,7 @@ export function Footer({
       </div>
 
       <div className="border-primary-foreground/10 relative border-t">
-        <div className="text-primary-foreground/50 mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between lg:px-10">
+        <div className="text-primary-foreground/50 mx-auto flex max-w-7xl flex-col gap-2 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between lg:px-10">
           <span>
             {copyRight?.trim() ||
               `© ${tahun} ${namaBrand}. Seluruh hak cipta dilindungi.`}

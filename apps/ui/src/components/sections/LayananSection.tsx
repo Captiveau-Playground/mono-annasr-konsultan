@@ -18,7 +18,7 @@ export function LayananSection({
   if (lengkap) {
     return (
       <section className="bg-background py-20 lg:py-24">
-        <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
           <div className="space-y-20">
             {daftar.map((item, i) => {
               const Ikon = item.ikon

@@ -49,7 +49,7 @@ export function FaqSection({
 
   return (
     <section className="bg-surface scroll-mt-20 py-16 lg:py-24">
-      <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         {/* 2 kolom dalam 1 baris: judul kiri (sticky), daftar FAQ kanan (rata atas) */}
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-start">
           <div className="lg:sticky lg:top-24">

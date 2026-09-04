@@ -27,7 +27,7 @@ export function TentangInti({
 
   return (
     <section className="bg-background py-20 lg:py-24">
-      <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           {/* 7/12 — teks */}
           <div className="lg:col-span-7">

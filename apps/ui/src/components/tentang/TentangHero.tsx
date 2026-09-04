@@ -32,7 +32,7 @@ export function TentangHero({
       <div className="bg-accent/10 pointer-events-none absolute -top-24 -right-24 size-96 rounded-full blur-3xl" />
       <div className="bg-primary/8 pointer-events-none absolute -bottom-32 left-1/3 size-96 rounded-full blur-3xl" />
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 lg:px-10">
+      <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-10">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
           {/* 7/12 — konten di atas latar putih yang terbaca */}
           <div className="lg:col-span-7">

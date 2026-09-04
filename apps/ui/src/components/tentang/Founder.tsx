@@ -17,7 +17,7 @@ export function Founder({
       />
       <div className="bg-accent/10 pointer-events-none absolute -top-24 right-0 size-96 rounded-full blur-3xl" />
 
-      <div className="relative mx-auto w-full max-w-6xl px-6 lg:px-10">
+      <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-10">
         <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
           {/* 5/12 — foto founder */}
           <div className="lg:col-span-5">

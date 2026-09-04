@@ -12,7 +12,7 @@ export function ArtikelSection({ items }: { items?: Artikel[] }) {
 
   return (
     <section className="bg-background py-16 lg:py-20">
-      <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
+      <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
             eyebrow="Artikel"

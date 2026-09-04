@@ -84,7 +84,7 @@ export default async function DetailArtikel({
       />
       <TrackArticleRead slug={item.slug} />
       <article className="bg-background px-6 pt-24 pb-16 lg:px-8 lg:pt-28 lg:pb-20">
-        <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
           <Reveal>
             <Link
               href="/artikel"
@@ -96,7 +96,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Kepala artikel */}
-          <Reveal className="mx-auto mt-8 max-w-6xl">
+          <Reveal className="mx-auto mt-8 max-w-7xl">
             <p className="text-accent text-xs font-semibold tracking-[0.22em] uppercase">
               {item.kategori}
             </p>
@@ -138,7 +138,7 @@ export default async function DetailArtikel({
           </Reveal>
 
           {/* Isi artikel */}
-          <div className="mx-auto mt-12 max-w-6xl">
+          <div className="mx-auto mt-12 max-w-7xl">
             {item.isi.map((paragraf, i) => (
               <Reveal key={i} delay={i * 0.02}>
                 <p
@@ -162,7 +162,7 @@ export default async function DetailArtikel({
 
       {terkait.length > 0 ? (
         <section className="bg-background py-20 lg:py-24">
-          <div className="mx-auto w-full max-w-6xl px-6 lg:px-10">
+          <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
             <Reveal className="flex items-end justify-between gap-6">
               <h2 className="text-foreground text-3xl leading-[1.12] text-balance sm:text-4xl">
                 Artikel Lainnya
