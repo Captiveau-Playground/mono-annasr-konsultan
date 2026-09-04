@@ -25,7 +25,7 @@ export function JobCard({ item }: { item: ItemKarir }) {
         )}
       >
         {/* Header: logo + label status */}
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <Image
             src="/images/logo/logo-white.png"
             alt="CV. An Nasr Konsultan"
@@ -33,6 +33,16 @@ export function JobCard({ item }: { item: ItemKarir }) {
             height={40}
             className="size-10 shrink-0 bg-white/10 object-contain"
           />
+          <span className="leading-tight">
+            <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold">
+              CV. An Nasr Konsultan
+            </span>
+            <span className="hidden text-[11px] tracking-wide sm:block">
+              Konsultan Teknik &amp; Konstruksi
+            </span>
+          </span>
+        </div>
+        <div className="pt-4">
           <span
             className={cn(
               "rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide uppercase",

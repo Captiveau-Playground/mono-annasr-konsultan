@@ -192,7 +192,7 @@ export function Footer({
             {copyRight?.trim() ||
               `© ${tahun} ${namaBrand}. Seluruh hak cipta dilindungi.`}
           </span>
-          <span>Jombang, Jawa Timur — Indonesia</span>
+          <span>Dibuat oleh Captiveau</span>
         </div>
       </div>
     </footer>
