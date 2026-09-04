@@ -47,27 +47,44 @@ jobs:
           test -n "$KEY" || { echo "::error::Secret SSH_KEY belum diset"; exit 1; }
           echo "OK: host=$HOST user=$USER key-len=${#KEY}"
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT || '22' }}
-          script: |
-            set -e
-            cd "$DEPLOY_DIR"
-
-            # Login GHCR bila image private (GHCR_USER + GHCR_TOKEN diisi).
-            if [ -n "$GHCR_USER" ] && [ -n "$GHCR_TOKEN" ]; then
-              echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
-            fi
-
-            # Tarik image terbaru dan restar layanan dengan image baru.
-            docker compose pull ui strapi
-            docker compose up -d --remove-orphans
-            docker image prune -f
+      - name: Deploy via SSH (ssh polos)
         env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_PORT: ${{ secrets.SSH_PORT || '22' }}
           DEPLOY_DIR: /opt/mono-annasr-konsultan/deploy
           GHCR_USER: ${{ secrets.GHCR_USER }}
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Tulis private key & konek langsung via ssh (tanpa action pihak ketiga)
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_app
+          chmod 600 ~/.ssh/id_app
+
+          export TARGET="$SSH_USER@$SSH_HOST"
+
+          # Command jarak jauh — jalankan kalau folder deploy tersedia.
+          REMOTE=$(cat <<'RMT'
+          set -e
+          cd "$DEPLOY_DIR" || { echo "FOLDER TIDAK ADA: $DEPLOY_DIR"; ls -la /opt; exit 1; }
+          if [ -n "$GHCR_USER" ]; then
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+          fi
+          docker compose pull ui strapi
+          docker compose up -d --remove-orphans
+          docker image prune -f
+          RMT
+          )
+
+          # Kirim env GHCR ke remote secara eksplisit (tanpa heredoc env leak).
+          REMOTE="export DEPLOY_DIR='$DEPLOY_DIR'; export GHCR_USER='$GHCR_USER'; export GHCR_TOKEN='$GHCR_TOKEN'; $REMOTE"
+
+          ssh -i ~/.ssh/id_app \
+            -o StrictHostKeyChecking=accept-new \
+            -o ConnectTimeout=20 \
+            -p "$SSH_PORT" "$TARGET" "bash -s" <<EOF
+          $REMOTE
+          EOF
