@@ -271,10 +271,11 @@ export function KontakSection() {
           <div className="border-border overflow-hidden rounded-[2rem] border">
             <iframe
               title="Peta lokasi kantor CV. AN NASR KONSULTAN"
-              src="https://www.google.com/maps?q=Jombang%2C%20Jawa%20Timur&output=embed"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3955.3881674058966!2d112.24281717614731!3d-7.532573074348289!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7815867acfbd3b%3A0x6538e8e0e6f9e8a7!2sCV.%20AN%20NASR%20KONSULTAN!5e0!3m2!1sen!2sid!4v1788529309004!5m2!1sen!2sid"
+              allowFullScreen
               loading="lazy"
               className="h-72 w-full border-0"
-              referrerPolicy="no-referrer-when-downgrade"
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           </div>
         </Reveal>
