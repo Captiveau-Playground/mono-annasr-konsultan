@@ -66,13 +66,17 @@ export function Navbar({
   const kelasLink = (href: string) =>
     cn(
       "px-3 py-2 text-sm font-medium transition-colors",
-      aktif(href) ? "text-primary" : "text-muted-foreground hover:text-primary"
+      aktif(href)
+        ? "text-primary"
+        : "text-muted-foreground hover:bg-primary hover:text-primary-foreground"
     )
 
   const kelasTrigger = (aktifGrup: boolean) =>
     cn(
       "h-10 gap-1 px-3 text-sm font-medium rounded-full",
-      aktifGrup ? "text-primary" : "text-muted-foreground"
+      aktifGrup
+        ? "text-primary"
+        : "text-muted-foreground hover:bg-primary hover:text-primary-foreground"
     )
 
   return (
