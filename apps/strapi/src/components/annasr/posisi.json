@@ -1,2 +1,53 @@
-{ "collectionName": "components_annasr_posisis", "info": { "displayName": "Posisi (Lowongan)" },
-  "attributes": { "nama": { "type": "string" }, "tipe": { "type": "string" }, "lokasi": { "type": "string" }, "teks": { "type": "text" } } }
+{
+  "collectionName": "components_annasr_posisis",
+  "info": {
+    "displayName": "Posisi (Lowongan)"
+  },
+  "attributes": {
+    "nama": {
+      "type": "string"
+    },
+    "tipe": {
+      "type": "string"
+    },
+    "lokasi": {
+      "type": "string"
+    },
+    "teks": {
+      "type": "text"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "nama"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "terbuka",
+        "ditutup"
+      ],
+      "default": "terbuka"
+    },
+    "ringkas": {
+      "type": "text"
+    },
+    "deskripsi": {
+      "type": "text"
+    },
+    "tanggungJawab": {
+      "type": "component",
+      "component": "annasr.baris-teks",
+      "repeatable": true
+    },
+    "kualifikasi": {
+      "type": "component",
+      "component": "annasr.baris-teks",
+      "repeatable": true
+    },
+    "manfaat": {
+      "type": "component",
+      "component": "annasr.baris-teks",
+      "repeatable": true
+    }
+  }
+}

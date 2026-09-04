@@ -142,6 +142,19 @@ export type ItemNavigasi = {
   anak?: { label: string; href: string; deskripsi?: string }[]
 }
 
+export type ItemKarir = {
+  nama: string
+  tipe: string
+  lokasi: string
+  slug: string
+  status: "terbuka" | "ditutup"
+  ringkas: string
+  deskripsi: string
+  tanggungJawab: string[]
+  kualifikasi: string[]
+  manfaat: string[]
+}
+
 export type KontenSitus = {
   beranda: BerandaKonten
   tentang: {
@@ -168,7 +181,7 @@ export type KontenSitus = {
   portfolioHero: { judul: string; deskripsi: string }
   klien: string[]
   klienHero: { judul: string; deskripsi: string }
-  karir: { nama: string; tipe: string; lokasi: string; teks: string }[]
+  karir: ItemKarir[]
   karirHero: { judul: string; deskripsi: string }
   kontak: {
     judul: string
@@ -462,14 +475,36 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
               nama?: unknown
               tipe?: unknown
               lokasi?: unknown
-              teks?: unknown
+              slug?: unknown
+              status?: unknown
+              ringkas?: unknown
+              deskripsi?: unknown
+              tanggungJawab?: { teks?: unknown }[]
+              kualifikasi?: { teks?: unknown }[]
+              manfaat?: { teks?: unknown }[]
             }[]
-          ).map((p) => ({
-            nama: teks(p.nama, "Posisi"),
-            tipe: teks(p.tipe, "Penuh Waktu"),
-            lokasi: teks(p.lokasi, "Jombang"),
-            teks: teks(p.teks, ""),
-          }))
+          )
+            .map(
+              (p): ItemKarir => ({
+                nama: teks(p.nama, "Posisi"),
+                tipe: teks(p.tipe, "Penuh Waktu"),
+                lokasi: teks(p.lokasi, "Jombang"),
+                slug: teks(p.slug, ""),
+                status: p.status === "ditutup" ? "ditutup" : "terbuka",
+                ringkas: teks(p.ringkas, ""),
+                deskripsi: teks(p.deskripsi, ""),
+                tanggungJawab: (p.tanggungJawab ?? [])
+                  .map((t) => teks(t.teks, ""))
+                  .filter(Boolean),
+                kualifikasi: (p.kualifikasi ?? [])
+                  .map((t) => teks(t.teks, ""))
+                  .filter(Boolean),
+                manfaat: (p.manfaat ?? [])
+                  .map((t) => teks(t.teks, ""))
+                  .filter(Boolean),
+              })
+            )
+            .filter((p) => p.nama)
         : [],
     karirHero: {
       judul: teks(kar.heroJudul, "Tumbuh bersama tim teknik kami"),

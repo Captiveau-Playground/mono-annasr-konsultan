@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_annasr_baris_teks",
+  "info": {
+    "displayName": "Baris Teks"
+  },
+  "options": {},
+  "attributes": {
+    "teks": {
+      "type": "text"
+    }
+  }
+}
