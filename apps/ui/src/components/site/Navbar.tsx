@@ -71,8 +71,8 @@ export function Navbar({
 
   const kelasTrigger = (aktifGrup: boolean) =>
     cn(
-      "h-10 gap-1 px-3 text-sm font-medium transition-colors rounded-full",
-      aktifGrup ? "text-primary" : "text-muted-foreground hover:text-primary"
+      "h-10 gap-1 px-3 text-sm font-medium rounded-full",
+      aktifGrup ? "text-primary" : "text-muted-foreground"
     )
 
   return (

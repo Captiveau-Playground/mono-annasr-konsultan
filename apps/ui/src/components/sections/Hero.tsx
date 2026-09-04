@@ -1,11 +1,14 @@
 "use client"
 
 import { ArrowRight, Check } from "lucide-react"
+import Image from "next/image"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import type { BerandaKonten } from "@/lib/annasr/beranda"
 import { Link } from "@/lib/navigation"
+import { cn } from "@/lib/styles"
 
 const HERO_DEFAULT = {
   judul: "Tepat Merencanakan, Tepat Mengawasi, Tepat Membangun",
@@ -25,6 +28,79 @@ const LINI_DEFAULT = [
  * Hero homepage — latar navy gradient (konsisten dengan hero halaman
  * proyek), teks terang, rata kiri & lapang.
  */
+
+const GAMBAR_SLIDER = [
+  {
+    src: "/images/annasr/hero-konstruksi.jpg",
+    alt: "Proyek konstruksi infrastruktur",
+  },
+  {
+    src: "/images/annasr/layanan-perencanaan.jpg",
+    alt: "Perencanaan teknis proyek",
+  },
+  { src: "/images/annasr/proyek-gedung.jpg", alt: "Pembangunan gedung" },
+  { src: "/images/annasr/tim-engineer.jpg", alt: "Tim konsultan di lapangan" },
+]
+
+/** Kotak gambar hero — auto slider (crossfade), tanpa interaksi tambahan. */
+function SliderGambar() {
+  const [indeks, setIndeks] = useState(0)
+  const [kurangiGerak] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  )
+
+  useEffect(() => {
+    if (kurangiGerak) return
+    const t = setInterval(
+      () => setIndeks((x) => (x + 1) % GAMBAR_SLIDER.length),
+      4200
+    )
+
+    return () => clearInterval(t)
+  }, [kurangiGerak])
+
+  return (
+    <div className="relative hidden shrink-0 lg:block" aria-hidden="true">
+      <div className="relative aspect-[4/5] w-[400px] overflow-hidden rounded-3xl border border-white/15 shadow-[var(--shadow-lift)]">
+        {GAMBAR_SLIDER.map((g, i) => (
+          <Image
+            key={g.src}
+            src={g.src}
+            alt={g.alt}
+            fill
+            priority={i === 0}
+            sizes="400px"
+            className={cn(
+              "object-cover transition-opacity duration-1000",
+              kurangiGerak
+                ? i === 0
+                  ? "opacity-100"
+                  : "opacity-0"
+                : i === indeks
+                  ? "opacity-100"
+                  : "opacity-0"
+            )}
+          />
+        ))}
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent" />
+      </div>
+      <div className="absolute -bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+        {GAMBAR_SLIDER.map((g, i) => (
+          <span
+            key={g.src}
+            className={cn(
+              "size-1.5 rounded-full transition-colors duration-300",
+              i === indeks ? "bg-accent" : "bg-white/40"
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function Hero({
   hero,
   brand,
@@ -55,7 +131,7 @@ export function Hero({
         aria-hidden
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:px-10 lg:pt-32 lg:pb-24">
+      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-12 px-6 pt-24 pb-16 sm:pt-28 sm:pb-20 lg:flex-row lg:items-center lg:justify-between lg:px-10 lg:pt-32 lg:pb-24">
         <div className="hero-anim-fade-up max-w-3xl">
           <span className="border-primary-foreground/20 text-primary-foreground/90 inline-flex items-center gap-2 rounded-full border bg-white/10 px-4 py-1.5 text-[11px] font-semibold tracking-[0.18em] uppercase backdrop-blur-sm">
             <span className="bg-accent size-1.5 rounded-full" />
@@ -150,6 +226,7 @@ export function Hero({
             </ul>
           </div>
         </div>
+        <SliderGambar />
       </div>
     </section>
   )
