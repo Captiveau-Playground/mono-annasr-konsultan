@@ -1,0 +1,61 @@
+# Deploy otomatis ke VPS setelah image dipublish ke GHCR.
+#
+# Trigger:
+#   - otomatis setelah workflow docker-publish.yml sukses (push main / tag)
+#   - manual (workflow_dispatch)
+#
+# Di server: pull image GHCR + `docker compose up -d --pull always`.
+#
+# Secrets yang harus diset di GitHub (Settings → Secrets → Actions):
+#   SSH_HOST      — IP/domain VPS
+#   SSH_USER      — user SSH (mis. root/deployer)
+#   SSH_KEY       — private key SSH (PEM) utk user di atas
+#   SSH_PORT      — [opsional] default 22
+#   GHCR_USER     — username GitHub (utk docker login, bila image private)
+#   GHCR_TOKEN    — PAT scope read:packages (bila image private)
+#
+# Bila image di GHCR dibuat PUBLIC, cukup SSH_HOST/USER/KEY (login tidak perlu).
+
+name: Deploy to VPS
+
+on:
+  workflow_run:
+    workflows: ["Build & Push Docker images (GHCR)"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-vps
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
+          script: |
+            set -e
+            cd "$DEPLOY_DIR"
+
+            # Login GHCR bila image private (GHCR_USER + GHCR_TOKEN diisi).
+            if [ -n "$GHCR_USER" ] && [ -n "$GHCR_TOKEN" ]; then
+              echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            fi
+
+            # Tarik image terbaru dan restar layanan dengan image baru.
+            docker compose pull ui strapi
+            docker compose up -d --remove-orphans
+            docker image prune -f
+        env:
+          DEPLOY_DIR: /opt/mono-annasr-konsultan/deploy
+          GHCR_USER: ${{ secrets.GHCR_USER }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
