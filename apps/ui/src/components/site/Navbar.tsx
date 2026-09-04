@@ -74,9 +74,10 @@ export function Navbar({
   const kelasTrigger = (aktifGrup: boolean) =>
     cn(
       "h-10 gap-1 px-3 text-sm font-medium rounded-full",
-      aktifGrup
-        ? "text-primary"
-        : "text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+      // Override hover/state bawaan shadcn (hover:bg-accent oranye) -> invert
+      // biru; pakai important agar menang atas utility bawaan trigger.
+      "hover:bg-primary! hover:text-primary-foreground! data-[state=open]:bg-primary! data-[state=open]:text-primary-foreground! hover:[&_svg]:text-primary-foreground! data-[state=open]:[&_svg]:text-primary-foreground!",
+      aktifGrup ? "text-primary" : "text-muted-foreground"
     )
 
   return (
