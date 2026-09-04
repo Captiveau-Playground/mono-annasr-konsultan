@@ -35,7 +35,7 @@ docker compose ps     # db, strapi, ui → healthy
 
 | Service | Health                                                           |
 | ------- | ---------------------------------------------------------------- |
-| UI      | `curl http://localhost:3000/api/health` → `{"data":"OK"}`        |
+| UI      | `curl http://localhost:3006/api/health` → `{"data":"OK"}`        |
 | Strapi  | `curl http://localhost:1337/api/health` → JSON health            |
 | Admin   | buka `http://localhost:1337/admin`, daftarkan user admin pertama |
 
@@ -43,14 +43,14 @@ docker compose ps     # db, strapi, ui → healthy
 
 Expose hanya port 80/443; arahkan:
 
-- `www.domain-anda.com` → `localhost:3000` (UI)
+- `www.domain-anda.com` → `localhost:3006` (UI)
 - `cms.domain-anda.com` → `localhost:1337` (admin + API Strapi)
 
 Contoh Caddyfile:
 
 ```caddy
 www.domain-anda.com {
-    reverse_proxy localhost:3000
+    reverse_proxy localhost:3006
 }
 cms.domain-anda.com {
     reverse_proxy localhost:1337

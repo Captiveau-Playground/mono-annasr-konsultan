@@ -107,7 +107,8 @@ services:
       SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: "1"
       SHOW_NON_BLOCKING_ERRORS: ${SHOW_NON_BLOCKING_ERRORS:-false}
     ports:
-      - "3000:3000"
+      # Host 3006 (dipakai reverse proxy) -> container 3000 (ENV PORT image)
+      - "3006:3000"
     healthcheck:
       test:
         [
