@@ -67,6 +67,8 @@ function BarisMarquee({
 
 export function KlienSection({ items = [] }: { items?: ItemKlien[] }) {
   const daftar = items.filter((k) => k.nama)
+  if (daftar.length === 0) return null
+
   const baris = Math.min(
     MAKS_BARIS,
     Math.max(1, Math.ceil(daftar.length / ITEM_PER_BARIS))

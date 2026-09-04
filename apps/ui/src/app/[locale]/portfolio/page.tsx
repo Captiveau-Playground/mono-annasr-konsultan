@@ -7,6 +7,7 @@ import { PetaSection } from "@/components/sections/PetaSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { PageHero } from "@/components/site/PageHero"
+import { fetchBeranda } from "@/lib/annasr/beranda"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
@@ -32,7 +33,10 @@ export default async function PortfolioPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
-  const konten = await fetchKontenSitus(locale)
+  const [konten, beranda] = await Promise.all([
+    fetchKontenSitus(locale),
+    fetchBeranda(locale),
+  ])
 
   return (
     <>
@@ -42,8 +46,8 @@ export default async function PortfolioPage({
         teks={konten.portfolioHero.deskripsi}
       />
       <PortfolioSection items={konten.portfolio} />
-      <KlienSection />
-      <PetaSection />
+      <KlienSection items={beranda.klien} />
+      <PetaSection kota={beranda.kotaProyek} />
       <CtaBanner />
     </>
   )
