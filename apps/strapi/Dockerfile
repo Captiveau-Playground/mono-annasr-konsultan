@@ -17,6 +17,7 @@ RUN apk update && apk add --no-cache build-base gcc autoconf automake zlib-dev l
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
 RUN corepack enable && corepack prepare pnpm@11.1.1 --activate
+RUN pnpm config set verify-deps-before-run false
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -69,8 +70,10 @@ COPY turbo.json turbo.json
 
 RUN turbo run build
 
-# Remove devDependencies after build to reduce image size
-# RUN pnpm prune --prod
+# Remove devDependencies after build to reduce image size; lalu link-kan ulang
+# symlink workspace (.bin) yang ikut terhapus oleh prune.
+RUN pnpm prune --prod --ignore-scripts --config.confirmModulesPurge=false \
+    && pnpm install --prod --frozen-lockfile --offline --ignore-scripts
 
 # ---
 FROM node:24-alpine AS runner
@@ -88,6 +91,8 @@ RUN adduser --system --uid 1001 strapi
 
 WORKDIR /app
 COPY --from=builder --chown=strapi:strapi /app /app
+# Bersihkan cache ringan saja — dist/build (admin) dan source dibiarkan.
+RUN rm -rf /app/node_modules/.pnpm-store /app/apps/strapi/.cache /app/apps/strapi/.tmp 2>/dev/null || true
 
 ENV PATH=/app/apps/${APP}/node_modules/.bin:$PATH
 
