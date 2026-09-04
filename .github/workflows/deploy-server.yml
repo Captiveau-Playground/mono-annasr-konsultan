@@ -19,11 +19,12 @@
 name: Deploy to VPS
 
 on:
+  # Manual — untuk tes SSH / deploy tanpa build ulang (pakai image latest).
+  workflow_dispatch:
+  # Otomatis setelah docker-publish sukses (mis. push tag v*).
   workflow_run:
     workflows: ["Build & Push Docker images (GHCR)"]
     types: [completed]
-    branches: [main]
-  workflow_dispatch:
 
 concurrency:
   group: deploy-vps

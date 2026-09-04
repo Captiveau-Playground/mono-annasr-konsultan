@@ -1,9 +1,12 @@
 # Build dan publish image Docker (apps/ui + apps/strapi) ke GHCR.
 #
-# Pemicu:
-#   - push ke branch `main`            → tag `latest` + `main` + `sha-<git>`
-#   - push tag `vX.Y.Z` (dan vX.Y)     → tag semver (v1.0.0, v1.0)
+# Pemicu (diubah agar push biasa TIDAK memicu build 16 menit):
+#   - push tag `vX.Y.Z` (dan vX.Y)     → tag semver (v1.0.0, v1.0) + latest
 #   - manual (Actions → workflow_dispatch)
+#
+# Kalau ingin auto per-push lagi, tambahkan kembali:
+#     branches: ["main"]
+#     paths: ["apps/ui/**","apps/strapi/**","packages/**","pnpm-lock.yaml","turbo.json","deploy/**"]
 #
 # Image name: ghcr.io/<org>/<repo>-ui dan ghcr.io/<org>/<repo>-strapi
 # (contoh: ghcr.io/novinardianyulianto/mono-annasr-konsultan-strapi)
@@ -15,21 +18,7 @@ name: Build & Push Docker images (GHCR)
 
 on:
   push:
-    branches: ["main"]
     tags: ["v*"]
-    # Hanya build saat kode yang memengaruhi image berubah — push yang hanya
-    # menyentuh docs/CI/README tidak memicu build mahal.
-    paths:
-      - "apps/ui/**"
-      - "apps/strapi/**"
-      - "packages/**"
-      - "pnpm-lock.yaml"
-      - "pnpm-workspace.yaml"
-      - "turbo.json"
-      - "package.json"
-      - "Dockerfile*"
-      - "deploy/**"
-      - ".github/workflows/docker-publish.yml"
   workflow_dispatch:
 
 env:
