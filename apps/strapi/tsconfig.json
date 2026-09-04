@@ -35,8 +35,11 @@
 
     // Do not include admin files in the server compilation
     "src/admin/",
-    // Do not include test files
+    // Do not include test files & konfigurasi tes (vitest/cypress dll)
     "**/*.test.*",
+    "vitest.config.*",
+    "vitest.setup.*",
+    "tests/**",
     // Do not include plugins in the server compilation
     "src/plugins/**",
     // https://docs.strapi.io/dev-docs/typescript/development#fix-build-issues-with-the-generated-types

@@ -92,7 +92,7 @@ RUN adduser --system --uid 1001 strapi
 WORKDIR /app
 COPY --from=builder --chown=strapi:strapi /app /app
 # Bersihkan cache ringan saja — dist/build (admin) dan source dibiarkan.
-RUN rm -rf /app/node_modules/.pnpm-store /app/apps/strapi/.cache /app/apps/strapi/.tmp 2>/dev/null || true
+RUN rm -rf /app/node_modules/.pnpm-store /app/apps/strapi/.cache /app/apps/strapi/.tmp /app/apps/strapi/tests /app/apps/strapi/vitest.config.* 2>/dev/null || true
 
 ENV PATH=/app/apps/${APP}/node_modules/.bin:$PATH
 
