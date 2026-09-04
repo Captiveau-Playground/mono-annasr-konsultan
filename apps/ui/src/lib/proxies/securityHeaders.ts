@@ -95,8 +95,8 @@ function buildCsp({
       // "https://pagead2.googlesyndication.com",
       // "https://*.doubleclick.net",
     ].join(" "),
-    // GTM preview / GA4 DebugView (iframe Google)
-    "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net",
+    // GTM preview / GA4 DebugView (iframe Google) + Google Maps embed
+    "frame-src 'self' https://www.googletagmanager.com https://td.doubleclick.net https://www.google.com https://maps.google.com https://*.google.com",
     "worker-src 'self' blob:",
     [
       "media-src 'self' blob: https:",
