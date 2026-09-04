@@ -82,6 +82,11 @@ RUN turbo run build
 # ---
 FROM node:24-alpine AS runner
 ARG APP
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+# Next standalone memerlukan HOSTNAME 0.0.0.0 agar mengikat semua antarmuka container.
+ENV HOSTNAME=0.0.0.0
+ENV PORT=3000
 
 # Don't run production as root for security reasons
 RUN addgroup --system --gid 1001 nextjs
