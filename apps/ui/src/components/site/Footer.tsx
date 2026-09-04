@@ -152,7 +152,7 @@ export function Footer({
                     </li>
                     {instagram?.trim() ? (
                       <li className="flex items-center gap-2.5">
-                        <InstagramIcon className="size-4 shrink-0" />
+                        <InstagramIcon className="text-accent size-4 shrink-0" />
                         <a
                           href={`https://instagram.com/${instagram
                             .replace(/^@/, "")
