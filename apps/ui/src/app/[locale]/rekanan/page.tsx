@@ -4,9 +4,10 @@ import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
 import { JsonLd } from "@/components/seo/JsonLd"
+import { EmptyState } from "@/components/site/EmptyState"
 import { PageHero } from "@/components/site/PageHero"
 import { fetchRekanan, type RekananItem } from "@/lib/annasr/rekanan"
-import { isValidLocale } from "@/lib/navigation"
+import { isValidLocale, Link } from "@/lib/navigation"
 import { breadcrumbLd } from "@/lib/seo/structured-data"
 import { publicBaseUrl } from "@/lib/seo/urls"
 
@@ -93,9 +94,6 @@ export default async function RekananPage({
 
   const daftar = await fetchRekanan(locale)
 
-  // Belum ada data di CMS → halaman ini tidak ada (404).
-  if (daftar.length === 0) notFound()
-
   const baseUrl = publicBaseUrl()
 
   return (
@@ -120,11 +118,27 @@ export default async function RekananPage({
       />
       <section className="bg-background px-5 py-16 lg:px-8 lg:py-24">
         <div className="mx-auto w-full max-w-7xl">
-          <div className={`grid gap-6 ${kolomGrid(daftar.length)} mx-auto`}>
-            {daftar.map((item) => (
-              <KartuRekanan key={item.nama} item={item} />
-            ))}
-          </div>
+          {daftar.length === 0 ? (
+            <EmptyState
+              ikon={Handshake}
+              judul="Belum ada data rekanan"
+              deskripsi="Sertifikat kerjasama dengan rekanan akan muncul di halaman ini setelah dikelola di CMS An Nasr. Silakan kembali lagi nanti atau hubungi kami untuk informasi kerja sama."
+              aksi={
+                <Link
+                  href="/kontak"
+                  className="bg-accent text-accent-foreground hover:bg-accent/90 inline-flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-medium transition-colors"
+                >
+                  Hubungi Kami
+                </Link>
+              }
+            />
+          ) : (
+            <div className={`grid gap-6 ${kolomGrid(daftar.length)} mx-auto`}>
+              {daftar.map((item) => (
+                <KartuRekanan key={item.nama} item={item} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </>

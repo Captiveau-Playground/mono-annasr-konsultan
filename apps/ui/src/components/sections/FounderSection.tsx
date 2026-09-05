@@ -27,13 +27,13 @@ export function FounderSection({
       }
     >
       <div className="grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
-        <Reveal arah="left">
+        <Reveal arah="left" className="h-full">
           <Image
             src="/images/annasr/founder.jpg"
             alt={`${founder.nama}, ${founder.jabatan} CV. AN NASR KONSULTAN`}
             width={900}
             height={1100}
-            className="h-full max-h-[26rem] w-full rounded-xl object-cover"
+            className="h-full w-full rounded-xl object-cover"
           />
         </Reveal>
 

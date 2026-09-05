@@ -136,6 +136,9 @@ export default async function DetailLayanan({
       {item.persyaratan ? (
         <PersyaratanLayanan persyaratan={item.persyaratan} />
       ) : null}
+      {item.dokumenClient ? (
+        <DokumenClientLayanan dokumen={item.dokumenClient} />
+      ) : null}
 
       <CtaBanner />
     </>
@@ -244,6 +247,64 @@ function PersyaratanLayanan({
             </Reveal>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
+
+/**
+ * Blok "dokumen yang diterima client" — dirender di bagian paling bawah
+ * halaman detail layanan. Data dikelola lewat CMS
+ * (layanan-item.dokumenClient): 2 kolom — foto proyek di kiri,
+ * judul + deskripsi + daftar bernomor di kanan.
+ */
+function DokumenClientLayanan({
+  dokumen,
+}: {
+  dokumen: NonNullable<(typeof layanan)[number]["dokumenClient"]>
+}) {
+  return (
+    <section className="bg-background px-6 py-16 lg:px-8 lg:py-20">
+      <div className="mx-auto w-full max-w-5xl">
+        <Reveal className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+          <div className="border-border overflow-hidden rounded-2xl border shadow-[var(--shadow-lift)]">
+            <Image
+              src={dokumen.gambar}
+              alt={dokumen.judul}
+              width={1200}
+              height={860}
+              sizes="(min-width:1024px) 46vw, 100vw"
+              className="aspect-[4/3] w-full object-cover"
+            />
+          </div>
+
+          <div>
+            <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
+              Dokumen yang Diterima Client
+            </p>
+            <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl">
+              {dokumen.judul}
+            </h2>
+            {dokumen.deskripsi ? (
+              <p className="text-muted-foreground mt-4 text-base leading-relaxed">
+                {dokumen.deskripsi}
+              </p>
+            ) : null}
+
+            <ol className="mt-8 space-y-4">
+              {dokumen.daftar.map((item, i) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="bg-primary/10 text-primary mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold">
+                    {i + 1}
+                  </span>
+                  <span className="text-foreground/85 text-sm leading-relaxed">
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Reveal>
       </div>
     </section>
   )

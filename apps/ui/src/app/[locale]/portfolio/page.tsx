@@ -45,7 +45,7 @@ export default async function PortfolioPage({
         judul={konten.portfolioHero.judul}
         teks={konten.portfolioHero.deskripsi}
       />
-      <PortfolioSection items={konten.portfolio} />
+      <PortfolioSection items={konten.portfolio} showAllButton={false} />
       <KlienSection items={beranda.klien} />
       <PetaSection kota={beranda.kotaProyek} />
       <CtaBanner />

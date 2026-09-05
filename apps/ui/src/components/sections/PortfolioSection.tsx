@@ -14,6 +14,7 @@ const PER_HALAMAN = 9
 
 type ProyekItem = {
   nama: string
+  instansi?: string
   lokasi: string
   kategori: string
   gambar: string
@@ -21,9 +22,12 @@ type ProyekItem = {
 
 export function PortfolioSection({
   filterAktif = true,
+  showAllButton = true,
   items,
 }: {
   filterAktif?: boolean
+  /** Tampilkan tombol "Lihat Semua Proyek" di header section (dimatikan di halaman Portfolio). */
+  showAllButton?: boolean
   items?: ProyekItem[]
 }) {
   const [kategori, setKategori] = useState("Semua")
@@ -57,12 +61,14 @@ export function PortfolioSection({
       tone="gelap"
       judul={"Ratusan Proyek yang\nTelah Kami Kawal"}
       aksi={
-        <Button asChild size="pill" variant="hero">
-          <Link href="/portfolio">
-            Lihat Semua Proyek
-            <ArrowRight className="size-4" />
-          </Link>
-        </Button>
+        showAllButton ? (
+          <Button asChild size="pill" variant="hero">
+            <Link href="/portfolio">
+              Lihat Semua Proyek
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        ) : undefined
       }
     >
       {filterAktif ? (
@@ -98,9 +104,16 @@ export function PortfolioSection({
               />
               <div className="from-secondary via-secondary/25 pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <span className="text-accent text-[11px] font-semibold tracking-[0.18em] uppercase">
-                  {p.kategori}
-                </span>
+                <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                  <span className="text-accent text-[11px] font-semibold tracking-[0.18em] uppercase">
+                    {p.kategori}
+                  </span>
+                  {p.instansi ? (
+                    <span className="text-primary-foreground/55 text-[11px] tracking-wide uppercase">
+                      {p.instansi}
+                    </span>
+                  ) : null}
+                </div>
                 <h3 className="text-primary-foreground mt-1.5 text-base leading-snug">
                   {p.nama}
                 </h3>

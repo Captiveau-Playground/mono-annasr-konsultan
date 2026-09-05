@@ -6,6 +6,7 @@ import { toast } from "sonner"
 
 import { Reveal } from "@/components/site/Reveal"
 import { Button } from "@/components/ui/button"
+import { InstagramIcon } from "@/components/ui/icons"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -249,6 +250,27 @@ export function KontakSection() {
                     className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
                   >
                     +{perusahaan.whatsapp}
+                  </a>
+                </span>
+              </li>
+              <li className="flex gap-4">
+                <span className="bg-primary/8 text-accent flex size-11 shrink-0 items-center justify-center rounded-xl">
+                  <InstagramIcon className="size-5" />
+                </span>
+                <span>
+                  <span className="text-foreground block text-sm font-semibold">
+                    Instagram
+                  </span>
+                  <a
+                    href={`https://instagram.com/${perusahaan.instagram.replace(
+                      /^@/,
+                      ""
+                    )}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-muted-foreground hover:text-accent mt-1 block text-sm transition-colors"
+                  >
+                    @{perusahaan.instagram.replace(/^@/, "")}
                   </a>
                 </span>
               </li>

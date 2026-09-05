@@ -116,7 +116,7 @@ export function Footer({
           </div>
 
           {kolom.map((k) => {
-            const isKontak = k.title === "Kontak"
+            const isKontak = /^kontak/i.test(k.title)
 
             return (
               <div key={k.title}>

@@ -4,6 +4,7 @@ import type { Map as LeafletMap } from "leaflet"
 import { useEffect, useRef } from "react"
 
 import { kotaProyek } from "@/data/perusahaan"
+import { getEnvVar } from "@/lib/env-vars"
 
 /**
  * Peta interaktif jangkauan proyek — Leaflet (gratis, tanpa API key) dengan
@@ -45,17 +46,21 @@ export function PetaMap({
         return
       }
 
-      const kartokunci = process.env.NEXT_PUBLIC_CARTO_BASEMAPS_KEY
+      const kartokunci = getEnvVar("NEXT_PUBLIC_CARTO_BASEMAPS_KEY")
+      // Dengan key CARTO → tile Voyager tanpa watermark. Tanpa key → tile
+      // OpenStreetMap standar (tetap wajib atribusi, tapi tanpa watermark
+      // tile seperti gratis-an CARTO).
       const polaTile = kartokunci
         ? "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=" +
           kartokunci
-        : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        : "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 
       L.tileLayer(polaTile, {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: ["a"],
-        maxZoom: 20,
+        attribution: kartokunci
+          ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: kartokunci ? ["a"] : ["a", "b", "c"],
+        maxZoom: kartokunci ? 20 : 19,
       }).addTo(map)
 
       const daftarKota = kota ?? kotaProyek
@@ -105,6 +110,11 @@ export function PetaMap({
       <link
         rel="preconnect"
         href="https://a.basemaps.cartocdn.com"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="preconnect"
+        href="https://tile.openstreetmap.org"
         crossOrigin="anonymous"
       />
       <div

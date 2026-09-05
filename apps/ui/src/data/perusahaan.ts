@@ -18,6 +18,7 @@ export const perusahaan = {
     "Jl. Raya Tembelang RT.001 RW.003, Desa Bedahlawak, Kecamatan Tembelang, Kabupaten Jombang",
   kantor:
     "Perumahan Candi Regency No. A10, Desa Candi Mulyo, Kecamatan Jombang, Kabupaten Jombang",
+  instagram: "annasrkonsultan",
 }
 
 export const founder = {
@@ -79,6 +80,13 @@ export type Layanan = {
   alur?: { judul: string; teks: string }[]
   /** Kartu persyaratan pengurusan (opsional, untuk layanan perizinan). */
   persyaratan?: { judul: string; deskripsi: string; daftar: string[] }[]
+  /** Blok "dokumen yang diterima client" (opsional) — dirender di bagian bawah halaman detail layanan. */
+  dokumenClient?: {
+    judul: string
+    deskripsi: string
+    gambar: string
+    daftar: string[]
+  }
 }
 
 export const layanan: Layanan[] = [
@@ -147,6 +155,19 @@ export const layanan: Layanan[] = [
         teks: "Review akhir, pengesahan, dan serah terima berkas disertai asistensi perizinan.",
       },
     ],
+    dokumenClient: {
+      judul: "Apa saja yang didapatkan client",
+      deskripsi:
+        "Dokumen perencanaan yang lengkap, siap dipakai pelaksana, dan menjadi dasar pengendalian proyek Anda.",
+      gambar: "/images/annasr/proyek-gedung.jpg",
+      daftar: [
+        "Laporan survey dan data kondisi lapangan",
+        "Perhitungan struktur sesuai standar SNI",
+        "Gambar rencana lengkap (denah, tampak, potongan, detail)",
+        "RKS dan RAB yang terukur",
+        "Dokumen as built setelah pekerjaan selesai",
+      ],
+    },
   },
   {
     slug: "pengawasan",
@@ -212,6 +233,19 @@ export const layanan: Layanan[] = [
         teks: "Inspeksi akhir, penyusunan as built drawing, dan serah terima pekerjaan.",
       },
     ],
+    dokumenClient: {
+      judul: "Apa saja yang didapatkan client",
+      deskripsi:
+        "Dokumentasi pengawasan yang transparan sebagai dasar pelaporan dan pembayaran pekerjaan.",
+      gambar: "/images/annasr/proyek-jalan.jpg",
+      daftar: [
+        "Laporan harian, mingguan, dan bulanan",
+        "Dokumentasi foto progres pekerjaan",
+        "Berita acara pemeriksaan pekerjaan",
+        "Laporan pengendalian volume pekerjaan",
+        "Rekomendasi teknis dan catatan penyimpangan",
+      ],
+    },
   },
   {
     slug: "perizinan",
@@ -271,6 +305,19 @@ export const layanan: Layanan[] = [
         ],
       },
     ],
+    dokumenClient: {
+      judul: "Apa saja yang didapatkan client",
+      deskripsi:
+        "Dokumen perizinan diterbitkan secara lengkap dan legal, dengan pendampingan sampai terbit.",
+      gambar: "/images/annasr/layanan-perizinan.jpg",
+      daftar: [
+        "Berkas permohonan yang disiapkan lengkap",
+        "Dokumen teknis pendukung (gambar, struktur, ME)",
+        "Nomor registrasi dan bukti pengajuan",
+        "Persetujuan Bangunan Gedung (PBG) atau Sertifikat Laik Fungsi (SLF)",
+        "Arsip pemantauan proses sampai dokumen terbit",
+      ],
+    },
   },
   {
     slug: "konstruksi",
@@ -315,6 +362,19 @@ export const layanan: Layanan[] = [
       "Penahan Tanah",
       "Bendungan",
     ],
+    dokumenClient: {
+      judul: "Apa saja yang didapatkan client",
+      deskripsi:
+        "Dokumen pelaksanaan yang rapi untuk serah terima dan pemeliharaan pasca konstruksi.",
+      gambar: "/images/annasr/proyek-jembatan.jpg",
+      daftar: [
+        "Gambar kerja dan spesifikasi teknis pelaksanaan",
+        "Laporan progres dan dokumentasi foto pekerjaan",
+        "Sertifikat mutu material dan hasil pengujian",
+        "Gambar as built sesuai kondisi lapangan",
+        "Serah terima pekerjaan beserta masa pemeliharaan",
+      ],
+    },
   },
 ]
 
@@ -364,6 +424,7 @@ export const portfolio = [
     nama: "Pembangunan Gedung Serbaguna",
     lokasi: "Kecamatan Jombang, Jombang",
     kategori: "Gedung",
+    instansi: "Pemkab Jombang",
     gambar: "/images/annasr/proyek-gedung.jpg",
     tinggi: "tall",
   },
@@ -371,6 +432,7 @@ export const portfolio = [
     nama: "Peningkatan Jalan Beton Desa",
     lokasi: "Kecamatan Tembelang, Jombang",
     kategori: "Jalan",
+    instansi: "Desa Bedahlawak",
     gambar: "/images/annasr/proyek-jalan.jpg",
     tinggi: "short",
   },
@@ -378,6 +440,7 @@ export const portfolio = [
     nama: "Pembangunan Jembatan Penghubung Desa",
     lokasi: "Kecamatan Ploso, Jombang",
     kategori: "Jembatan",
+    instansi: "Pemkab Jombang",
     gambar: "/images/annasr/proyek-jembatan.jpg",
     tinggi: "tall",
   },
@@ -385,6 +448,7 @@ export const portfolio = [
     nama: "Rehabilitasi Saluran Irigasi Primer",
     lokasi: "Kecamatan Megaluh, Jombang",
     kategori: "Irigasi",
+    instansi: "Dinas PUPR",
     gambar: "/images/annasr/proyek-irigasi.jpg",
     tinggi: "short",
   },
@@ -392,6 +456,7 @@ export const portfolio = [
     nama: "Renovasi Rumah Tinggal Dua Lantai",
     lokasi: "Candi Mulyo, Jombang",
     kategori: "Renovasi",
+    instansi: "Perorangan",
     gambar: "/images/annasr/proyek-renovasi.jpg",
     tinggi: "short",
   },
@@ -399,6 +464,7 @@ export const portfolio = [
     nama: "Pengawasan Bangunan Penahan Air",
     lokasi: "Kabupaten Jombang",
     kategori: "Bangunan",
+    instansi: "Pemkab Jombang",
     gambar: "/images/annasr/proyek-bendungan.jpg",
     tinggi: "short",
   },
@@ -406,6 +472,7 @@ export const portfolio = [
     nama: "Pembangunan Gedung Sekolah Dua Lantai",
     lokasi: "Kecamatan Diwek, Jombang",
     kategori: "Gedung",
+    instansi: "Yayasan Al Hikmah",
     gambar: "/images/annasr/proyek-gedung.jpg",
     tinggi: "short",
   },
@@ -413,6 +480,7 @@ export const portfolio = [
     nama: "Peningkatan Jalan Lingkungan Perumahan",
     lokasi: "Kecamatan Peterongan, Jombang",
     kategori: "Jalan",
+    instansi: "PT. Sarana Bangun",
     gambar: "/images/annasr/proyek-jalan.jpg",
     tinggi: "short",
   },
@@ -420,6 +488,7 @@ export const portfolio = [
     nama: "Normalisasi Saluran Irigasi Sekunder",
     lokasi: "Kecamatan Kesamben, Jombang",
     kategori: "Irigasi",
+    instansi: "Dinas PUPR",
     gambar: "/images/annasr/proyek-irigasi.jpg",
     tinggi: "short",
   },

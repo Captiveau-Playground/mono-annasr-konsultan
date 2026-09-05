@@ -66,9 +66,10 @@ export function Navbar({
   const kelasLink = (href: string) =>
     cn(
       "px-3 py-2 text-sm font-medium transition-colors",
-      aktif(href)
-        ? "text-primary"
-        : "text-muted-foreground hover:bg-primary hover:text-primary-foreground"
+      // Override hover bawaan shadcn (hover:bg-accent oranye) dengan biru navy,
+      // TERMASUK pada link aktif — twMerge menimpa hover:bg-accent dasar.
+      "hover:bg-primary hover:text-primary-foreground",
+      aktif(href) ? "text-primary" : "text-muted-foreground"
     )
 
   const kelasTrigger = (aktifGrup: boolean) =>

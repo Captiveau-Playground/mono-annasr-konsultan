@@ -14,7 +14,7 @@ export const env = createEnv({
    * require them to be present at build time, which is not always desired or possible (see README).
    */
   server: {
-    APP_PUBLIC_URL: z.string().url().optional(),
+    APP_PUBLIC_URL: httpUrl().optional(),
     DEBUG_STATIC_PARAMS_GENERATION: optionalZodBoolean(),
     SHOW_NON_BLOCKING_ERRORS: optionalZodBoolean(),
     DEBUG_STRAPI_CLIENT_API_CALLS: optionalZodBoolean(),
@@ -74,6 +74,10 @@ export const env = createEnv({
     NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: z.string().optional(),
     NEXT_PUBLIC_PREVENT_UNUSED_FUNCTIONS_ERROR_LOGS: optionalZodBoolean(),
+    // CARTO basemaps API key — tanpa key, tile gratis menampilkan watermark
+    // CARTO di atas peta (Leaflet di PetaMap). Key di-bake saat build karena
+    // dipakai di komponen client (harus diawali NEXT_PUBLIC_).
+    NEXT_PUBLIC_CARTO_BASEMAPS_KEY: z.string().optional(),
   },
 
   shared: {
@@ -137,6 +141,7 @@ export const env = createEnv({
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
     NEXT_PUBLIC_PREVENT_UNUSED_FUNCTIONS_ERROR_LOGS:
       process.env.NEXT_PUBLIC_PREVENT_UNUSED_FUNCTIONS_ERROR_LOGS,
+    NEXT_PUBLIC_CARTO_BASEMAPS_KEY: process.env.NEXT_PUBLIC_CARTO_BASEMAPS_KEY,
 
     // shared
     NODE_ENV: process.env.NODE_ENV,
@@ -145,6 +150,19 @@ export const env = createEnv({
 })
 
 // Helpers
+
+// Reject near-miss schemes like "htttps://" that parses as a valid URL but
+// would only blow up later inside BetterAuth ("Invalid base URL"). Fail fast
+// at boot with a clear message instead.
+function httpUrl() {
+  return z
+    .string()
+    .url()
+    .refine((value) => /^https?:\/\//i.test(value), {
+      message:
+        "APP_PUBLIC_URL must start with http:// or https:// (got a URL with an unexpected scheme)",
+    })
+}
 
 function optionalZodBoolean() {
   return z

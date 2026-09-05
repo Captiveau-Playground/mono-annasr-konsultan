@@ -1,4 +1,4 @@
-import { ArrowRight, Check, Compass } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
@@ -36,12 +36,7 @@ export function TentangHero({
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
           {/* 7/12 — konten di atas latar putih yang terbaca */}
           <div className="lg:col-span-7">
-            <p className="bg-primary/8 text-primary inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold tracking-[0.2em] uppercase">
-              <Compass className="size-3.5" />
-              Tentang Kami
-            </p>
-
-            <h1 className="text-foreground mt-6 max-w-2xl text-4xl leading-[1.08] font-bold text-balance sm:text-5xl lg:text-[3.4rem]">
+            <h1 className="text-foreground mt-0 max-w-2xl text-4xl leading-[1.08] font-bold text-balance sm:text-5xl lg:text-[3.4rem]">
               {judul}
             </h1>
 

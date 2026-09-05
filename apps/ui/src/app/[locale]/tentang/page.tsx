@@ -5,7 +5,6 @@ import { setRequestLocale } from "next-intl/server"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { Founder } from "@/components/tentang/Founder"
 import { JangkauanTentang } from "@/components/tentang/JangkauanTentang"
-import { KenapaKami } from "@/components/tentang/KenapaKami"
 import { KisahPerusahaan } from "@/components/tentang/KisahPerusahaan"
 import { TentangHero } from "@/components/tentang/TentangHero"
 import { TentangInti } from "@/components/tentang/TentangInti"
@@ -51,7 +50,6 @@ export default async function TentangPage({
       <VisiMisi kartu={konten.visiMisi} />
       <Founder data={konten.founder} />
       <TimTentang tim={konten.tim} />
-      <KenapaKami alasan={konten.alasan} />
       <JangkauanTentang
         judul={konten.jangkauanJudul}
         deskripsi={konten.jangkauanDeskripsi}
