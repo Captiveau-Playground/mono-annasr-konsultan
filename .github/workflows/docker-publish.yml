@@ -84,6 +84,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            NEXT_PUBLIC_CARTO_BASEMAPS_KEY=${{ vars.NEXT_PUBLIC_CARTO_BASEMAPS_KEY }}
           cache-from: type=gha,scope=ghcr-${{ matrix.image }}
           cache-to: type=gha,mode=max,scope=ghcr-${{ matrix.image }}
           provenance: false

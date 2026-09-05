@@ -93,6 +93,9 @@ services:
       NODE_ENV: production
       APP_ENV: production
       APP_PUBLIC_URL: ${UI_PUBLIC_URL}
+      # CARTO basemaps — di-bake saat build image (komponen client);
+      # variabel ini hanya dokumentasi runtime (nilai efektif dari build arg).
+      NEXT_PUBLIC_CARTO_BASEMAPS_KEY: ${NEXT_PUBLIC_CARTO_BASEMAPS_KEY:-}
       # Akses server→server ke Strapi (dalam network compose).
       # CATATAN: utk upload yg tampil lewat <Image> + optimizer Next,
       # lebih aman set ke URL PUBLIK Strapi (lihat README.md).
