@@ -13,9 +13,9 @@ import { ArtikelSection } from "@/components/sections/ArtikelSection"
 import { FaqSection } from "@/components/sections/FaqSection"
 import { FounderSection } from "@/components/sections/FounderSection"
 import { Hero } from "@/components/sections/Hero"
+import { JangkauanSection } from "@/components/sections/JangkauanSection"
 import { KlienSection } from "@/components/sections/KlienSection"
 import { LayananSection } from "@/components/sections/LayananSection"
-import { PetaSection } from "@/components/sections/PetaSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
@@ -158,7 +158,11 @@ export default async function BerandaPage({
       <KenapaKami alasan={kontenSitus.tentang.alasan} />
       <LayananSection items={layananKeItem(kontenSitus.layanan)} />
       <PortfolioSection items={konten.portfolio} />
-      <PetaSection kota={konten.kotaProyek} />
+      <JangkauanSection
+        judul={kontenSitus.tentang.jangkauanJudul}
+        deskripsi={kontenSitus.tentang.jangkauanDeskripsi}
+        kota={kontenSitus.tentang.kotaProyek}
+      />
       <ArtikelSection items={artikelKeItem(kontenSitus.artikel)} />
       <FaqSection items={konten.faq} />
       <CtaBanner judul={konten.cta?.judul} deskripsi={konten.cta?.deskripsi} />

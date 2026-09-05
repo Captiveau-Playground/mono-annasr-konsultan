@@ -10,7 +10,12 @@ const RINGKAS_STATIS = [
   { nilai: "Jawa Timur", label: "Basis Operasi" },
 ]
 
-export function JangkauanTentang({
+/**
+ * Section peta jangkauan proyek — dipakai di Beranda, Proyek, dan Tentang
+ * Kami. Komposisi: judul + deskripsi, kartu statistik, peta Leaflet
+ * interaktif, dan daftar kota yang bisa dibuka.
+ */
+export function JangkauanSection({
   judul,
   deskripsi,
   kota = [],
@@ -19,7 +24,7 @@ export function JangkauanTentang({
   deskripsi?: string
   kota?: { nama: string; lat: number; lng: number }[]
 }) {
-  const RINGKAS = RINGKAS_STATIS
+  const daftarKota = kota.length > 0 ? kota : kotaProyek
 
   return (
     <section className="bg-surface py-20 lg:py-24">
@@ -33,17 +38,17 @@ export function JangkauanTentang({
               <h2 className="text-foreground mt-4 max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
                 {judul}
               </h2>
-              <p className="text-muted-foreground mt-5 max-w-[42rem] text-lg leading-8">
-                Berbasis di Jombang, pekerjaan kami tersebar melintasi Jawa
-                hingga Indonesia Timur — dengan standar mutu yang sama di setiap
-                lokasi.
-              </p>
+              {deskripsi ? (
+                <p className="text-muted-foreground mt-5 max-w-[42rem] text-lg leading-8">
+                  {deskripsi}
+                </p>
+              ) : null}
             </Reveal>
           </div>
 
           <div className="lg:col-span-5">
             <div className="grid grid-cols-3 gap-4">
-              {RINGKAS.map((r, i) => (
+              {RINGKAS_STATIS.map((r, i) => (
                 <Reveal key={r.label} delay={i * 0.05}>
                   <div className="border-border bg-card rounded-[20px] border p-5 text-center transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)]">
                     <p className="text-foreground text-xl font-bold sm:text-2xl">
@@ -60,7 +65,7 @@ export function JangkauanTentang({
         </div>
 
         <Reveal className="mt-12">
-          <PetaMap kota={kota.length > 0 ? kota : undefined} />
+          <PetaMap kota={daftarKota} />
         </Reveal>
 
         <div className="mt-10">
@@ -70,7 +75,7 @@ export function JangkauanTentang({
               <ChevronDown className="size-4 transition-transform duration-200 group-open:rotate-180" />
             </summary>
             <ul className="mt-4 flex flex-wrap gap-2.5">
-              {(kota.length > 0 ? kota : kotaProyek).map((k) => (
+              {daftarKota.map((k) => (
                 <li
                   key={k.nama}
                   className="border-border bg-card text-muted-foreground rounded-full border px-4 py-1.5 text-sm font-medium"

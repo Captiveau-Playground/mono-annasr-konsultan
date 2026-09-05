@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
+import { JangkauanSection } from "@/components/sections/JangkauanSection"
 import { KlienSection } from "@/components/sections/KlienSection"
-import { PetaSection } from "@/components/sections/PetaSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { PageHero } from "@/components/site/PageHero"
@@ -47,7 +47,11 @@ export default async function PortfolioPage({
       />
       <PortfolioSection items={konten.portfolio} showAllButton={false} />
       <KlienSection items={beranda.klien} />
-      <PetaSection kota={beranda.kotaProyek} />
+      <JangkauanSection
+        judul={konten.tentang.jangkauanJudul}
+        deskripsi={konten.tentang.jangkauanDeskripsi}
+        kota={konten.tentang.kotaProyek}
+      />
       <CtaBanner />
     </>
   )

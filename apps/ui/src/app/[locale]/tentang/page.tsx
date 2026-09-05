@@ -2,9 +2,9 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
+import { JangkauanSection } from "@/components/sections/JangkauanSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { Founder } from "@/components/tentang/Founder"
-import { JangkauanTentang } from "@/components/tentang/JangkauanTentang"
 import { KisahPerusahaan } from "@/components/tentang/KisahPerusahaan"
 import { TentangHero } from "@/components/tentang/TentangHero"
 import { TentangInti } from "@/components/tentang/TentangInti"
@@ -50,7 +50,7 @@ export default async function TentangPage({
       <VisiMisi kartu={konten.visiMisi} />
       <Founder data={konten.founder} />
       <TimTentang tim={konten.tim} />
-      <JangkauanTentang
+      <JangkauanSection
         judul={konten.jangkauanJudul}
         deskripsi={konten.jangkauanDeskripsi}
         kota={konten.kotaProyek}
