@@ -3,6 +3,7 @@
   "info": { "displayName": "Proyek Portfolio" },
   "attributes": {
     "nama": { "type": "string" },
+    "instansi": { "type": "string" },
     "lokasi": { "type": "string" },
     "kategori": { "type": "string" },
     "gambar": { "type": "media", "allowedTypes": ["images"], "multiple": false }

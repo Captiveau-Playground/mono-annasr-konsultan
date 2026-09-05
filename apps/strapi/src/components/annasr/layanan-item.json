@@ -45,6 +45,10 @@
       "type": "component",
       "component": "annasr.persyaratan-kartu",
       "repeatable": true
+    },
+    "dokumenClient": {
+      "type": "component",
+      "component": "annasr.dokumen-client"
     }
   }
 }

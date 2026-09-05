@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_annasr_dokumen_clients",
+  "info": {
+    "displayName": "Dokumen yang Diterima Client"
+  },
+  "options": {},
+  "attributes": {
+    "judul": {
+      "type": "string",
+      "default": "Apa saja yang didapatkan client"
+    },
+    "deskripsi": {
+      "type": "text"
+    },
+    "gambar": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": false
+    },
+    "daftar": {
+      "type": "json"
+    }
+  }
+}
