@@ -71,6 +71,9 @@ services:
 
       # RBAC (Editor Konten + public read) dipasang otomatis saat boot
       RBAC_AUTO_SETUP: "true"
+      # Seed konten compro An Nasr (beranda/tentang/layanan/dst + gambar)
+      # saat boot. Idempotent; matikan lagi setelah sukses.
+      RUN_ANNASR_SEED: ${RUN_ANNASR_SEED:-false}
     volumes:
       # Bind mount host — di server: chown 1001:1001 ./uploads
       - ./uploads:/app/apps/strapi/public/uploads
@@ -102,6 +105,8 @@ services:
       STRAPI_URL: http://strapi:1337
       STRAPI_REST_READONLY_API_KEY: ${STRAPI_REST_READONLY_API_KEY:-}
       STRAPI_REST_CUSTOM_API_KEY: ${STRAPI_REST_CUSTOM_API_KEY:-}
+      # TTL Data Cache ISR (default 120). Set kecil (10) untuk testing/QA.
+      STRAPI_CACHE_TTL: ${STRAPI_CACHE_TTL:-120}
       STRAPI_REVALIDATE_SECRET: ${STRAPI_REVALIDATE_SECRET}
       STRAPI_CDN_PURGE_SECRET: ${STRAPI_CDN_PURGE_SECRET}
       # SEO & Analytics (runtime server — aman untuk deploy banyak env)

@@ -79,7 +79,23 @@ Ganti tag di `.env` (`latest` / `sha-…` / `v1.2.3`) untuk pin versi.
 - **Seed:** `AUTO_SEED_ENABLED=false` default saat produksi. Untuk
   first-boot dengan DB kosong, set `AUTO_SEED_ENABLED=true`
   `AUTO_SEED_MODE=empty` sekali (impor baseline Page/Navbar/Footer),
-  tunggu healthy, lalu matikan lagi.
+  tunggu healthy, lalu matikan lagi. Catatan: `AUTO_SEED` hanya mengimpor
+  demo starter — **bukan** data compro.
+- **Seed konten compro An Nasr:** set `RUN_ANNASR_SEED=true` di `.env`
+  (sudah diteruskan ke container oleh compose), hapus entry `tentang` yang
+  masih kosong bila ada, lalu `docker compose up -d --force-recreate strapi`.
+  Bootstrap mengisi `beranda/tentang/layanan/portfolio/klien/karir/kontak/
+artikel/situs/rekanan` + navbar/footer, dan mengunggah gambar ke Media
+  Library. Idempotent (hanya tipe yang masih kosong). Setelah berhasil,
+  kembalikan ke `false`.
+- **Realtime saat edit di CMS:** publish content-type An Nasr memicu
+  auto-revalidate (`/api/strapi-revalidate`) via document middleware,
+  sehingga perubahan tampil di UI tanpa nunggu TTL cache.
+  Pastikan `STRAPI_REVALIDATE_SECRET` sama di `.env` untuk strapi dan ui,
+  dan `CLIENT_URL` = URL publik UI. Simpan draft tidak memicu revalidate
+  (hanya publish/unpublish/delete). TTL Data Cache ISR (`STRAPI_CACHE_TTL`,
+  default 120 detik) hanya safety-net; kecilkan (mis. 10) di lingkungan
+  testing/QA supaya perubahan cepat terlihat.
 - **Strapi admin:** tidak ada user admin bawaan — buat lewat
   `/admin` (halaman daftar) di deploy pertama. Role "Editor Konten"
   dibuat otomatis oleh `RBAC_AUTO_SETUP`.

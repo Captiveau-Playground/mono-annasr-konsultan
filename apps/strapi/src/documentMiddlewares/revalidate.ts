@@ -26,9 +26,18 @@ const REVALIDATE_COLLECTIONS: RevalidateCollectionConfig[] = [
     mode: "path-revalidate",
     pathField: "source",
   },
-  // Add your own collections here, e.g.:
-  // { uid: "api::blog-article.blog-article", mode: "path-revalidate", pathField: "fullPath" },
-  // { uid: "api::announcement.announcement", mode: "tag-revalidate" },
+  // Konten An Nasr (compro) — di-publish → cache UI di-invalidate via tag
+  // (fetch UI memakai `strapiCacheTag` yang sama di tiap halaman).
+  { uid: "api::beranda.beranda", mode: "tag-revalidate" },
+  { uid: "api::tentang.tentang", mode: "tag-revalidate" },
+  { uid: "api::layanan.layanan", mode: "tag-revalidate" },
+  { uid: "api::portfolio.portfolio", mode: "tag-revalidate" },
+  { uid: "api::klien.klien", mode: "tag-revalidate" },
+  { uid: "api::karir.karir", mode: "tag-revalidate" },
+  { uid: "api::kontak.kontak", mode: "tag-revalidate" },
+  { uid: "api::artikel.artikel", mode: "tag-revalidate" },
+  { uid: "api::situs.situs", mode: "tag-revalidate" },
+  { uid: "api::rekanan.rekanan", mode: "tag-revalidate" },
 ]
 
 const REVALIDATE_BY_UID = new Map(

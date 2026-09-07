@@ -48,7 +48,13 @@
     "AZURE_FRONT_DOOR_PROFILE",
     "AZURE_MI_CLIENT_ID",
     "IDENTITY_ENDPOINT",
-    "IDENTITY_HEADER"
+    "IDENTITY_HEADER",
+    "RUN_ANNASR_SEED",
+    "E2E_STRAPI_URL",
+    "E2E_STRAPI_TOKEN",
+    "CMS_AUDIT_LOCALE",
+    "CMS_AUDIT_CT",
+    "STRAPI_CACHE_TTL"
   ],
   "tasks": {
     "build": {

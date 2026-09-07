@@ -11,6 +11,7 @@ import {
   layanan,
   portfolio,
 } from "@/data/perusahaan"
+import { STRAPI_CACHE_TTL } from "@/lib/annasr/config"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 
@@ -187,7 +188,7 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
     } as never
     const init = {
       next: {
-        revalidate: 120,
+        revalidate: STRAPI_CACHE_TTL,
         tags: [strapiCacheTag("api::beranda.beranda")],
       },
     } as never

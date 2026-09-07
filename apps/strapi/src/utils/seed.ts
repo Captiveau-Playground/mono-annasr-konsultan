@@ -1,9 +1,13 @@
+import { existsSync } from "node:fs"
+import path from "node:path"
+
 import type { Core } from "@strapi/strapi"
 
 /**
  * Seed awal konten An Nasr bila entry belum ada. Idempotent: lewati bila tipe
  * sudah punya entry. Dipicu env RUN_ANNASR_SEED=true saat bootstrap.
- * (Gambar/media sengaja dikosongkan — FE memakai fallback gambar statis.)
+ * Gambar diunggah dari `apps/strapi/public/images/annasr/` ke Media Library
+ * Strapi agar bisa dikelola di CMS (FE fallback ke gambar statis bila kosong).
  */
 
 type Dok = Record<string, unknown>
@@ -12,15 +16,161 @@ function santinain(v: unknown): unknown {
   return v
 }
 
+/** True bila nilai dianggap "kosong" (null / string kosong / array kosong / objek kosong). */
+function isEmptyValue(v: unknown): boolean {
+  if (v == null) return true
+  if (typeof v === "string") return v.trim().length === 0
+  if (Array.isArray(v)) return v.length === 0
+  if (typeof v === "object") {
+    // Media/relation { id: n } dianggap terisi; objek kosong dianggap kosong.
+    return (v as { id?: unknown }).id == null && Object.keys(v).length === 0
+  }
+
+  return false
+}
+
+/**
+ * Seed single-type: create bila belum ada; bila entry sudah ada tapi nyaris
+ * kosong (semua field seed masih kosong), isi ulang — supaya entry kosong
+ * seperti "Tentang" yang dibuat manual tidak memblokir seeder.
+ * Seed tidak menimpa entry yang sudah terisi (idempotent, aman).
+ */
 async function seedTunggal(strapi: Core.Strapi, uid: string, data: Dok) {
   const dok = strapi.documents(uid as never)
-  const ada = await dok.findFirst({})
-  if (ada) return
-  await dok.create({
+  const ada = (await dok.findFirst({})) as
+    | null
+    | (Dok & { documentId?: string })
+  if (ada == null) {
+    await dok.create({
+      data: santinain(data) as Dok,
+      status: "published",
+    } as never)
+
+    return
+  }
+
+  const kunciSeed = Object.keys(data).filter(
+    (k) => !["publishedAt", "createdAt", "updatedAt"].includes(k)
+  )
+  const entryKosong = kunciSeed.every((k) => isEmptyValue(ada[k]))
+  if (!entryKosong) return
+
+  console.log(
+    `[seed] isi ulang entry kosong: ${uid} (documentId ${ada.documentId})`
+  )
+  await dok.update({
+    documentId: ada.documentId,
     data: santinain(data) as Dok,
     status: "published",
   } as never)
 }
+
+/** Cache unggahan per run (nama file → id) agar tidak duplikat di Media Library. */
+const MEDIA_TERUPLOAD = new Map<string, number>()
+
+const MIME_ALAM = new Map<string, string>([
+  [".jpg", "image/jpeg"],
+  [".jpeg", "image/jpeg"],
+  [".png", "image/png"],
+  [".webp", "image/webp"],
+  [".svg", "image/svg+xml"],
+])
+
+/**
+ * Unggah satu gambar dari `public/images/annasr/` ke Media Library Strapi.
+ * Kembalikan `{ id }` (format relation media Strapi v5) atau undefined
+ * bila file hilang / gagal diunggah → field gambar dibiarkan kosong.
+ */
+async function unggahMedia(
+  strapi: Core.Strapi,
+  namaFile: string
+): Promise<undefined | { id: number }> {
+  const terCache = MEDIA_TERUPLOAD.get(namaFile)
+  if (terCache != null) return { id: terCache }
+
+  const filePath = path.join(
+    process.cwd(),
+    "public",
+    "images",
+    "annasr",
+    namaFile
+  )
+  if (!existsSync(filePath)) {
+    console.warn(`[seed] gambar tidak ditemukan, dilewati: ${namaFile}`)
+
+    return undefined
+  }
+
+  const mimetype =
+    MIME_ALAM.get(path.extname(namaFile).toLowerCase()) ??
+    "application/octet-stream"
+
+  try {
+    const svc = strapi.plugin("upload").service("upload")
+    const [f] = await svc.upload({
+      data: {},
+      files: [{ filepath: filePath, originalFilename: namaFile, mimetype }],
+    })
+
+    if (f?.id == null) return undefined
+    MEDIA_TERUPLOAD.set(namaFile, f.id)
+
+    return { id: f.id }
+  } catch (error) {
+    console.warn(
+      `[seed] gagal unggah gambar ${namaFile}:`,
+      error instanceof Error ? error.message : error
+    )
+
+    return undefined
+  }
+}
+
+/** Lampirkan media `gambar` ke tiap item sesuai daftar nama file (urunan). */
+async function lampirkanGambar(
+  strapi: Core.Strapi,
+  items: Dok[],
+  namaFiles: (string | undefined)[]
+): Promise<Dok[]> {
+  return Promise.all(
+    items.map(async (item, i) => {
+      const namaFile = namaFiles[i]
+      if (namaFile) {
+        return { ...item, gambar: await unggahMedia(strapi, namaFile) }
+      }
+
+      return item
+    })
+  )
+}
+
+/** Mapping gambar seeding (urutan sama dengan data seed). */
+const GAMBAR_LAYANAN = [
+  "layanan-perencanaan.jpg",
+  "layanan-pengawasan.jpg",
+  "layanan-perizinan.jpg",
+  "layanan-konstruksi.jpg",
+]
+const GAMBAR_PROYEK = [
+  "proyek-gedung.jpg",
+  "proyek-jalan.jpg",
+  "proyek-jembatan.jpg",
+  "proyek-irigasi.jpg",
+  "proyek-renovasi.jpg",
+  "proyek-bendungan.jpg",
+]
+const GAMBAR_ARTIKEL = [
+  "layanan-perizinan.jpg",
+  "layanan-perencanaan.jpg",
+  "layanan-pengawasan.jpg",
+  "layanan-konstruksi.jpg",
+]
+const GALERI_LAYANAN = [
+  ["proyek-gedung.jpg", "proyek-jembatan.jpg"],
+  ["proyek-bendungan.jpg", "proyek-jalan.jpg"],
+  ["proyek-gedung.jpg"],
+  ["proyek-renovasi.jpg", "proyek-irigasi.jpg"],
+]
 
 /** Seed koleksi rekanan — hanya bila tabel masih kosong (idempotent). */
 /**
@@ -716,8 +866,48 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
   const sekarang = new Date()
   const tgl = () => sekarang.toISOString()
   try {
-    await seedTunggal(strapi, "api::beranda.beranda", {
+    const beranda = {
       ...berandaData,
+      layanan: await lampirkanGambar(
+        strapi,
+        berandaData.layanan as Dok[],
+        GAMBAR_LAYANAN
+      ),
+      portfolio: await lampirkanGambar(
+        strapi,
+        berandaData.portfolio as Dok[],
+        GAMBAR_PROYEK
+      ),
+    }
+    const timSeed = [
+      {
+        nama: "H. Ahmad Nasrullah, S.T.",
+        jabatan: "Founder & Direktur",
+        foto: await unggahMedia(strapi, "founder.jpg"),
+      },
+      { nama: "Rizky Pratama, S.T.", jabatan: "Project Manager" },
+      { nama: "Siti Maulida, S.T., M.T.", jabatan: "Structural Engineer" },
+      { nama: "Bagus Setiawan", jabatan: "Site Inspector" },
+    ]
+    const layananSeed = await Promise.all(
+      LAYANAN.map(async (l, i) => ({
+        slug: l.slug,
+        judul: l.judul,
+        ringkas: l.ringkas,
+        deskripsi: l.deskripsi,
+        detail: l.detail,
+        manfaat: l.manfaat,
+        gambar: await unggahMedia(strapi, GAMBAR_LAYANAN[i]),
+        galeri: (
+          await Promise.all(
+            (GALERI_LAYANAN[i] ?? []).map((g) => unggahMedia(strapi, g))
+          )
+        ).filter((x): x is { id: number } => x != null),
+      }))
+    )
+
+    await seedTunggal(strapi, "api::beranda.beranda", {
+      ...beranda,
       publishedAt: tgl(),
     })
     await seedTunggal(strapi, "api::tentang.tentang", {
@@ -756,12 +946,7 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
           teks: "Perencanaan akurat, pengawasan disiplin, dan konstruksi tepat mutu, biaya, waktu.",
         },
       ],
-      tim: [
-        { nama: "H. Ahmad Nasrullah, S.T.", jabatan: "Founder & Direktur" },
-        { nama: "Rizky Pratama, S.T.", jabatan: "Project Manager" },
-        { nama: "Siti Maulida, S.T., M.T.", jabatan: "Structural Engineer" },
-        { nama: "Bagus Setiawan", jabatan: "Site Inspector" },
-      ],
+      tim: timSeed,
       alasan: [
         {
           judul: "Perencanaan hingga Konstruksi",
@@ -786,14 +971,7 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
       introJudul: "Layanan teknik yang lengkap dan terintegrasi",
       introDeskripsi:
         "Dari studi awal hingga serah terima, seluruh kebutuhan teknis proyek ditangani dalam satu koordinasi.",
-      layanan: LAYANAN.map((l) => ({
-        slug: l.slug,
-        judul: l.judul,
-        ringkas: l.ringkas,
-        deskripsi: l.deskripsi,
-        detail: l.detail,
-        manfaat: l.manfaat,
-      })),
+      layanan: layananSeed,
       proses: [
         {
           judul: "Konsultasi",
@@ -814,7 +992,7 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
       heroJudul: "Pekerjaan yang berbicara melalui hasilnya",
       heroDeskripsi:
         "Dokumentasi komitmen terhadap mutu dan ketepatan pelaksanaan.",
-      proyek: berandaData.portfolio as Dok[],
+      proyek: beranda.portfolio as Dok[],
     })
     await seedTunggal(strapi, "api::klien.klien", {
       heroJudul: "Kepercayaan yang terjalin di banyak pintu",
@@ -949,7 +1127,11 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
     await seedTunggal(strapi, "api::artikel.artikel", {
       heroJudul: "Wawasan Teknik & Konstruksi",
       heroDeskripsi: "Catatan praktis dari pengalaman kami di lapangan.",
-      artikel: ARTIKEL,
+      artikel: await lampirkanGambar(
+        strapi,
+        ARTIKEL as unknown as Dok[],
+        GAMBAR_ARTIKEL
+      ),
     })
     await seedTunggal(strapi, "api::situs.situs", {
       brandNama: "CV. An Nasr Konsultan",

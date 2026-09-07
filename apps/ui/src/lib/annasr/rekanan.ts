@@ -4,6 +4,7 @@ import { strapiCacheTag } from "@repo/shared-data"
 import type { UID } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
 
+import { STRAPI_CACHE_TTL } from "@/lib/annasr/config"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 
@@ -52,7 +53,7 @@ export async function fetchRekanan(_locale: Locale): Promise<RekananItem[]> {
       } as never,
       {
         next: {
-          revalidate: 120,
+          revalidate: STRAPI_CACHE_TTL,
           tags: [strapiCacheTag("api::rekanan.rekanan")],
         },
       } as never,

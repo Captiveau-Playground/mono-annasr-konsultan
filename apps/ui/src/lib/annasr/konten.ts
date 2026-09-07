@@ -21,6 +21,7 @@ import {
   portfolio,
 } from "@/data/perusahaan"
 import type { BerandaKonten } from "@/lib/annasr/beranda"
+import { STRAPI_CACHE_TTL } from "@/lib/annasr/config"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
 
@@ -291,7 +292,10 @@ async function ambil(nama: string, locale: Locale): Promise<Raw> {
       undefined,
       params,
       {
-        next: { revalidate: 120, tags: [strapiCacheTag(uid(nama))] },
+        next: {
+          revalidate: STRAPI_CACHE_TTL,
+          tags: [strapiCacheTag(uid(nama))],
+        },
       } as never
     )) as undefined | { data?: Raw }
 
