@@ -88,8 +88,11 @@ function ambilNilai(obj, pathSegments) {
 
 function cekField(data, spec) {
   const segmen = spec.split(".")
-  const isArray = segmen.at(-1) === "[]"
-  const finalSegments = isArray ? segmen.slice(0, -1) : segmen
+  const segmenAkhir = segmen[segmen.length - 1]
+  const isArray = segmenAkhir.endsWith("[]")
+  const finalSegments = isArray
+    ? [...segmen.slice(0, -1), segmenAkhir.slice(0, -2)]
+    : segmen
   const nilai = ambilNilai(data, finalSegments)
   if (isArray) {
     return Array.isArray(nilai) && nilai.length > 0

@@ -102,7 +102,7 @@ services:
       # Akses server→server ke Strapi (dalam network compose).
       # CATATAN: utk upload yg tampil lewat <Image> + optimizer Next,
       # lebih aman set ke URL PUBLIK Strapi (lihat README.md).
-      STRAPI_URL: http://strapi:1337
+      STRAPI_URL: ${STRAPI_URL:-http://strapi:1337}
       STRAPI_REST_READONLY_API_KEY: ${STRAPI_REST_READONLY_API_KEY:-}
       STRAPI_REST_CUSTOM_API_KEY: ${STRAPI_REST_CUSTOM_API_KEY:-}
       # TTL Data Cache ISR (default 120). Set kecil (10) untuk testing/QA.
