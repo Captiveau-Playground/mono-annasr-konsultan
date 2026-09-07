@@ -321,6 +321,8 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       deskripsi: "QA intro deskripsi",
     })
     const l = r.layanan[0]
+    if (!l) throw new Error("seharusnya ada data layanan dari CMS")
+
     expect(l.slug).toBe("qa-layanan")
     expect(l.nama).toBe("QA layanan n")
     expect(l.alt).toBe("QA layanan n")
