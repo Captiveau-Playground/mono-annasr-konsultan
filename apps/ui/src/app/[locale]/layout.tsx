@@ -27,6 +27,14 @@ export function generateStaticParams() {
 }
 
 /**
+ * Halaman compro harus selalu server-render saat request, bukan snapshot
+ * static hasil build — konten berasal dari CMS dan berubah kapan saja.
+ * (Tanpa ini, `generateStaticParams` mengunci halaman ke hasil build-time
+ * fetch — saat build tidak ada Strapi jadi tersimpan versi fallback.)
+ */
+export const dynamic = "force-dynamic"
+
+/**
  * Judul tab & deskripsi SEO dari CMS (situs.brandNama / brandTagline),
  * fallback ke nilai statis bila Strapi kosong / gagal.
  */
