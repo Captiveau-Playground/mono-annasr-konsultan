@@ -1,116 +1,73 @@
-# Rekap QA Compro An Nasr — Semua Temuan & Aksi Perbaikan
+# Rekap QA Compro An Nasr — 1 Tabel (per Module)
 
 Tanggal rekap: 2026-09-10 · Status: ✅ selesai di kode · ⏳ butuh isi data CMS/retest · 📋 dokumentasi/konfirmasi.
+Total: **57 baris · 56 issue nyata** (1 baris #20 kosong).
 
-## Total Issue
-
-| Group                                            | Jumlah                           |
-| ------------------------------------------------ | -------------------------------- |
-| Batch 1 — Beranda                                | 11                               |
-| Batch 2 — Layanan                                | 9                                |
-| Batch 2 — Proyek                                 | 6                                |
-| Batch 2 — Profil (Tentang/Artikel/Rekanan/Karir) | 23 (1 baris `#20 search` kosong) |
-| Batch 2 — Kontak                                 | 6                                |
-| Batch 2 — Footer                                 | 2                                |
-| **Total**                                        | **57 baris · 56 issue nyata**    |
-
----
-
-## Batch 1 — Beranda (11)
-
-| #   | Issue                                     | Aksi                                                                      |
-| --- | ----------------------------------------- | ------------------------------------------------------------------------- |
-| 1   | Icon hero tidak konsisten                 | Semua poin keunggulan pakai `<Check>` seragam (`Hero.tsx`)                |
-| 2   | Keunggulan hero di CMS tampil code editor | `keunggulan` `json`→`text` (textarea) + migrasi                           |
-| 3   | Logo klien tidak tampil                   | Media `/uploads`→`/api/asset` (host `strapi:1337` tidak bocor)            |
-| 4   | Founder tidak sesuai CMS                  | `FounderSection` bind nama/jabatan/teks/foto dari CMS Beranda             |
-| 5   | Keunggulan tak bisa di-manage di Beranda  | Field `keunggulan` (repeatable `annasr.alasan`) di Beranda                |
-| 6   | Layanan ambil dari Beranda/menu Layanan?  | Homepage pakai **Beranda.layanan**                                        |
-| 7   | Gambar proyek tidak tampil                | Perbaikan media global                                                    |
-| 8   | Proyek ambil dari Beranda/menu portfolio? | Tetap **Beranda.portfolio**                                               |
-| 9   | Jangkauan beda dengan CMS                 | Pakai `beranda.kotaProyek` + `jangkauanJudul/Deskripsi` + stat di Beranda |
-| 10  | Artikel tak bisa di-manage di Beranda     | Field `artikel` (repeatable `annasr.artikel-item`) di Beranda             |
-| 11  | FAQ tak punya title di admin              | `tanya` `text`→`string` + migrasi                                         |
-
-## Batch 2 — Layanan (9)
-
-| #   | Issue                                          | Aksi                                                                   |
-| --- | ---------------------------------------------- | ---------------------------------------------------------------------- |
-| 1   | Jasa baru tak muncul di dropdown, hanya footer | Dropdown Navbar "Layanan" pakai daftar layanan live CMS (`layananNav`) |
-| 2   | Gambar & galeri tidak tampil                   | Media proxy fix                                                        |
-| 3   | Galeri maksimal berapa?                        | Tampilan dibatasi maks 8 foto                                          |
-| 4   | Manfaat & detail lingkup code editor           | `detail`/`manfaat` `json`→`text` + migrasi                             |
-| 5   | Alur input 2, wording tampil 6                 | Wording dinamis `{jumlah langkah}`                                     |
-| 6   | Persyaratan code editor                        | `persyaratan.daftar` `json`→`text` + migrasi                           |
-| 7   | Gambar "diterima klien" tak muncul             | Media proxy fix                                                        |
-| 8   | Daftar "diterima klien" code editor            | `dokumenClient.daftar` `json`→`text` + migrasi                         |
-| 9   | Alur mobile tanpa panah                        | Panah vertikal di mobile                                               |
-
-## Batch 2 — Proyek (6)
-
-| #   | Issue                                     | Aksi                                                |
-| --- | ----------------------------------------- | --------------------------------------------------- |
-| 1   | Title "portfolio" tidak baku              | → **"Portofolio"**                                  |
-| 2   | Kategori baru tak jadi filter             | Filter dicek dari data proyek (bukan daftar statis) |
-| 3   | Gambar proyek tidak tampil                | Media proxy fix                                     |
-| 4   | Pagination maksimal berapa?               | Tetap 9/halaman (📋)                                |
-| 5   | "Dipercaya berbagai klien" manage di mana | Data = **CMS Beranda → klien** (📋)                 |
-| 6   | Jangkauan proyek manage di mana           | Kelola di **Tentang**; kartu stat dari CMS (📋)     |
-
-## Batch 2 — Profil (22 issue nyata dari 23 baris)
-
-| #   | Group   | Issue                             | Aksi                                                                      |
-| --- | ------- | --------------------------------- | ------------------------------------------------------------------------- |
-| 1   | Tentang | Keunggulan code editor            | `annasr.hero.keunggulan` `json`→`text` (komponen bersama) + migrasi       |
-| 2   | Tentang | "Tentang kami" tak bisa di-manage | `TentangInti` konsumsi CMS **Tentang → tentang** (judul/deskripsi/daftar) |
-| 3   | Tentang | Button "Portfolio"                | → **"Portofolio"**                                                        |
-| 4   | Tentang | Perjalanan manage di mana         | Field `perjalanan` (`Tonggak Perjalanan`) sudah ada (📋)                  |
-| 5   | Tentang | Title visi misi manage            | Field `visiMisi` sudah ada (📋)                                           |
-| 6   | Tentang | Founder tidak sinkron             | `Founder.tsx` pakai `data.nama/teks/kutipan` CMS                          |
-| 7   | Tentang | Foto founder tak bisa di-manage   | Field `foto` di `annasr.founder` + dirender                               |
-| 8   | Tentang | Wording tim miring (web)          | ⏳ butuh retest + evidence                                                |
-| 9   | Tentang | Foto tim tidak tampil             | `TimTentang` render foto bila ada + media fix                             |
-| 10  | Tentang | Button LinkedIn tanpa data/href   | Tombol hanya muncul bila `linkedin` terisi → URL LinkedIn                 |
-| 11  | Tentang | Kotak jangkauan size tak sinkron  | Kartu stat dari CMS `statistik`                                           |
-| 12  | Tentang | Kotak mobile tak rapi             | `grid-cols-1 sm:grid-cols-3`                                              |
-| 13  | Rekanan | Foto sertifikat tak tampil        | Media proxy fix (`rekanan.ts`)                                            |
-| 14  | Rekanan | Wording rekanan manage            | Field `rekananIntroJudul/Deskripsi` di Pengaturan Global                  |
-| 15  | Artikel | Wording artikel tak sinkron       | `teks` hero dari `artikelHero.deskripsi`                                  |
-| 16  | Artikel | Artikel unggulan manage           | Boolean `unggulan` di `artikel-item`                                      |
-| 17  | Artikel | Gambar list artikel tak muncul    | Media proxy fix                                                           |
-| 18  | Artikel | Gambar detail artikel tak muncul  | Media proxy fix                                                           |
-| 19  | Artikel | Field isi seperti code editor     | `isi` `json`→`text` + migrasi (+ `unggulan`)                              |
-| 20  | —       | _(baris kosong "search")_         | N/A                                                                       |
-| 21  | Karir   | Lowongan ditutup masih tampil     | Posisi `ditutup` disembunyikan dari daftar                                |
-| 22  | Karir   | Deskripsi justify                 | `text-justify`                                                            |
-| 23  | Karir   | Icon bintang tak lurus (mobile)   | `items-start` + `shrink-0`                                                |
-
-## Batch 2 — Kontak (6)
-
-| #   | Issue                       | Aksi                                                     |
-| --- | --------------------------- | -------------------------------------------------------- |
-| 1–5 | Telepon/email/WA/IG dummy   | Halaman + form WA baca **CMS Kontak** (⏳ isi data asli) |
-| 6   | Update CMS cuma kena footer | Hero + `KontakSection` ambil dari **CMS Kontak**         |
-
-## Batch 2 — Footer (2)
-
-| #   | Issue                                 | Aksi                                                                                  |
-| --- | ------------------------------------- | ------------------------------------------------------------------------------------- |
-| 1   | List jasa tak sinkron menu vs layanan | Menu & footer sama-sama pakai daftar layanan CMS                                      |
-| 2   | Wording & kontak footer manage        | Kelola: Footer (sections/copyRight) · Pengaturan Global (brand/tagline) · Kontak (📋) |
+| #   | Module  | Issue                                           | Expected            | Actual                 | Aksi                                                                              | Status |
+| --- | ------- | ----------------------------------------------- | ------------------- | ---------------------- | --------------------------------------------------------------------------------- | ------ |
+| 1   | Beranda | Tampilan icon tidak konsisten                   | icon konsisten      | icon berbeda           | Semua poin keunggulan pakai `<Check>` seragam                                     | ✅     |
+| 2   | Beranda | Field keunggulan hero tampil code editor        | bukan code editor   | code editor JSON       | `keunggulan` `json`→`text` (textarea) + migrasi                                   | ✅     |
+| 3   | Beranda | Logo klien tidak tampil                         | logo tampil         | tidak tampil           | Media `/uploads`→`/api/asset` (host `strapi:1337` tidak bocor)                    | ✅     |
+| 4   | Beranda | Founder tidak sesuai CMS                        | sesuai CMS          | tidak sesuai           | `FounderSection` bind nama/jabatan/teks/foto dari CMS Beranda                     | ✅     |
+| 5   | Beranda | Keunggulan manage di CMS bagian mana?           | ada field           | tidak ada field        | Tambah field `keunggulan` (repeatable `annasr.alasan`) di Beranda                 | ✅ ⏳  |
+| 6   | Beranda | Layanan ambil dari beranda atau menu layanan?   | perlu konfirmasi    | dari Layanan           | Homepage pakai **Beranda.layanan**                                                | ✅ ⏳  |
+| 7   | Beranda | Gambar proyek tidak tampil                      | gambar tampil       | tidak tampil           | Perbaikan media global                                                            | ✅     |
+| 8   | Beranda | Proyek ambil dari portfolio beranda atau menu?  | perlu konfirmasi    | dari beranda           | Dikonfirmasi tetap **Beranda.portfolio**                                          | ✅     |
+| 9   | Beranda | Jangkauan proyek beda dengan CMS                | sesuai CMS          | tidak sesuai           | Pakai `beranda.kotaProyek` + `jangkauanJudul/Deskripsi` + stat dari Beranda       | ✅ ⏳  |
+| 10  | Beranda | Artikel manage dari mana? (tak ada di Beranda)  | ada field           | tidak ada field        | Tambah field `artikel` (repeatable `annasr.artikel-item`) di Beranda              | ✅ ⏳  |
+| 11  | Beranda | Field FAQ diberi title                          | ada title           | tidak ada title        | `tanya` `text`→`string` + migrasi                                                 | ✅     |
+| 12  | Layanan | Jasa baru tak muncul di dropdown (hanya footer) | muncul di dropdown  | tidak muncul           | Dropdown Navbar "Layanan" pakai daftar layanan live CMS                           | ✅     |
+| 13  | Layanan | Gambar & galeri tidak tampil                    | tampil              | tidak tampil           | Media proxy fix                                                                   | ✅     |
+| 14  | Layanan | Galeri maksimal berapa foto?                    | perlu konfirmasi    | 10 foto, memanjang     | Tampilan dibatasi maks 8 foto (1 besar + grid)                                    | ✅     |
+| 15  | Layanan | Manfaat & detail lingkup code editor            | bukan code editor   | code editor            | `detail`/`manfaat` `json`→`text` + migrasi                                        | ✅     |
+| 16  | Layanan | Alur input 2, wording tampil 6                  | sesuai input        | wording "Enam langkah" | Wording dinamis mengikuti jumlah alur CMS                                         | ✅     |
+| 17  | Layanan | Persyaratan code editor                         | bukan code editor   | code editor            | `persyaratan.daftar` `json`→`text` + migrasi                                      | ✅     |
+| 18  | Layanan | Gambar "diterima klien" tak muncul              | tampil              | tidak tampil           | Media proxy fix                                                                   | ✅     |
+| 19  | Layanan | Daftar "diterima klien" code editor             | bukan code editor   | code editor            | `dokumenClient.daftar` `json`→`text` + migrasi                                    | ✅     |
+| 20  | Layanan | Alur mobile tanpa panah (web ada)               | perlu konfirmasi    | panah hanya web        | Panah vertikal ditambahkan utk mobile                                             | ✅     |
+| 21  | Proyek  | Title "portfolio" bukan baku Indonesia          | portofolio          | portfolio              | Dijadikan **"Portofolio"**                                                        | ✅     |
+| 22  | Proyek  | Kategori baru tak tampil di filter              | kategori CMS muncul | tidak muncul           | Filter kategori di-derive dari data proyek                                        | ✅     |
+| 23  | Proyek  | Gambar proyek tidak tampil                      | tampil              | tidak tampil           | Media proxy fix                                                                   | ✅     |
+| 24  | Proyek  | Pagination maksimal berapa per page?            | perlu konfirmasi    | per evidence           | Dikonfirmasi tetap 9/halaman                                                      | 📋     |
+| 25  | Proyek  | "Dipercaya berbagai klien" manage di mana?      | perlu konfirmasi    | per evidence           | Data = **CMS Beranda → klien**                                                    | 📋     |
+| 26  | Proyek  | Jangkauan proyek manage di mana?                | perlu konfirmasi    | per evidence           | Kelola di **Tentang** (jangkauan\*/kota/statistik); kartu stat dari CMS           | ✅ 📋  |
+| 27  | Tentang | Keunggulan di CMS tampil code editor            | bukan code editor   | code editor            | `annasr.hero.keunggulan` `json`→`text` (komponen bersama) + migrasi               | ✅     |
+| 28  | Tentang | "Tentang kami" manage di mana?                  | ada field           | tidak ditemukan        | `TentangInti` konsumsi CMS **Tentang → tentang** (judul/deskripsi/daftar)         | ✅ ⏳  |
+| 29  | Tentang | Button "Portfolio" tidak baku                   | Portofolio          | Portfolio              | Dijadikan **"Portofolio"**                                                        | ✅     |
+| 30  | Tentang | "Perjalanan kami" manage di mana?               | perlu konfirmasi    | tidak ditemukan        | Field `perjalanan` (`Tonggak Perjalanan`) sudah ada di CMS                        | 📋     |
+| 31  | Tentang | Title visi misi manage di mana?                 | perlu konfirmasi    | tidak ditemukan        | Field `visiMisi` sudah ada (judul kartu dari CMS)                                 | 📋     |
+| 32  | Tentang | Section founder tak sinkron CMS                 | sinkron             | tidak sinkron          | `Founder.tsx` pakai `data.nama/teks/kutipan` CMS                                  | ✅     |
+| 33  | Tentang | Foto founder manage di mana?                    | ada field foto      | tidak ada field        | Field `foto` di `annasr.founder` + dirender                                       | ✅ ⏳  |
+| 34  | Tentang | Wording tim kami miring (web)                   | lurus               | miring                 | ⏳ butuh retest + evidence                                                        | ⏳     |
+| 35  | Tentang | Foto tim tidak tampil                           | tampil              | tidak tampil           | `TimTentang` render foto bila ada + media fix                                     | ✅     |
+| 36  | Tentang | Button LinkedIn belum ada data/href             | ada data & mengarah | belum                  | Tombol muncul hanya bila `linkedin` terisi → URL LinkedIn                         | ✅ ⏳  |
+| 37  | Tentang | Kotak jangkauan ukuran tak sinkron + manage?    | sinkron + ada field | tidak sinkron          | Kartu statistik dari CMS **statistik**                                            | ✅ ⏳  |
+| 38  | Tentang | Kotak jangkauan mobile tidak rapi               | rapi                | tidak rapi             | `grid-cols-3`→`grid-cols-1 sm:grid-cols-3`                                        | ✅     |
+| 39  | Rekanan | Foto sertifikat tidak tampil                    | tampil              | tidak tampil           | Media proxy fix (`rekanan.ts`)                                                    | ✅     |
+| 40  | Rekanan | Wording rekanan manage di mana?                 | perlu konfirmasi    | tidak ditemukan        | Field `rekananIntroJudul/Deskripsi` di **Pengaturan Global**                      | ✅ ⏳  |
+| 41  | Artikel | Wording artikel tak sinkron CMS                 | sinkron             | tidak sinkron          | `teks` hero dari `artikelHero.deskripsi` (CMS)                                    | ✅ ⏳  |
+| 42  | Artikel | Artikel unggulan manage di mana?                | ada feature         | tidak ada              | Boolean **`unggulan`** di `artikel-item`                                          | ✅ ⏳  |
+| 43  | Artikel | Gambar list artikel tak muncul                  | tampil              | tidak tampil           | Media proxy fix                                                                   | ✅     |
+| 44  | Artikel | Gambar detail artikel tak muncul                | tampil              | tidak tampil           | Media proxy fix                                                                   | ✅     |
+| 45  | Artikel | Field isi tampil text editor, harus JSON        | bukan code editor   | code editor            | `isi` `json`→`text` + migrasi (+ field `unggulan`)                                | ✅     |
+| 46  | Karir   | Lowongan ditutup masih tampil & bisa akses      | perlu konfirmasi    | masih tampil           | Posisi `ditutup` disembunyikan dari daftar                                        | ✅     |
+| 47  | Karir   | Deskripsi pekerjaan justify                     | rapi                | kurang rapi            | `text-justify`                                                                    | ✅     |
+| 48  | Karir   | Icon bintang tak lurus (mobile)                 | sejajar             | tidak sejajar          | `items-start` + icon `shrink-0`                                                   | ✅     |
+| 49  | Kontak  | Nomor telepon dummy                             | valid               | dummy                  | Halaman + tombol baca **CMS Kontak** (isi data asli)                              | ✅ ⏳  |
+| 50  | Kontak  | Email dummy                                     | perlu konfirmasi    | @email.com             | Baca **CMS Kontak** (isi data asli)                                               | ✅ ⏳  |
+| 51  | Kontak  | Nomor WhatsApp dummy                            | valid               | dummy                  | Baca **CMS Kontak** (isi data asli)                                               | ✅ ⏳  |
+| 52  | Kontak  | Username Instagram tidak tersedia               | valid               | not found              | Baca **CMS Kontak** (isi data asli)                                               | ✅ ⏳  |
+| 53  | Kontak  | Button konsultasi/chat masih WA dummy           | valid               | dummy                  | Baca **CMS Kontak** (isi data asli)                                               | ✅ ⏳  |
+| 54  | Kontak  | Update CMS cuma kena footer, halaman tidak      | halaman update      | hanya footer           | Hero + `KontakSection` kini ambil dari **CMS Kontak**                             | ✅     |
+| 55  | Footer  | List jasa tak sinkron menu vs layanan           | sinkron             | tidak sinkron          | Menu & footer sama-sama pakai daftar layanan CMS                                  | ✅     |
+| 56  | Footer  | Wording & kontak footer manage di mana?         | ada field           | tidak ada field        | Kelola: **Footer** (sections/copyRight) · **Global** (brand/tagline) · **Kontak** | 📋     |
 
 ---
 
-## Fix Infrastruktur
+## Catatan
 
-1. **Media global** — `/uploads` → proxy `/api/asset` di `beranda.ts`, `konten.ts`, `rekanan.ts` (memperbaiki semua "gambar tidak tampil").
-2. **6 file migrasi DB** (`apps/strapi/database/migrations/`): `detail`, `manfaat`, `persyaratan.daftar`, `dokumenClient.daftar`, `artikel.isi`, `hero.keunggulan` (`json`→`text`) + `faq.tanya` (`text`→`string`) + konversi data.
-3. **CI** — build tag kini publish `:latest`.
-4. **Verifikasi** — typecheck UI & Strapi ✅, tes 72/72 ✅, lint 0 error.
-
-## Status Deploy
-
-`v3.7.8` → build ✅ → deploy VPS ✅ → **live masih kode lama** karena `.env` server mem-pin image lama. Langkah terakhir di server:
+- **Fix infrastruktur**: media `/uploads`→`/api/asset` (beranda/konten/rekanan) · 6 migrasi DB (`detail`, `manfaat`, `persyaratan.daftar`, `dokumenClient.daftar`, `artikel.isi`, `hero.keunggulan` `json`→`text`; `faq.tanya` `text`→`string`) · CI tag build kini publish `:latest` · verifikasi typecheck + tes **72/72** + lint 0 error.
+- **Deploy**: `v3.7.8` build ✅ → deploy VPS ✅ → live masih kode lama karena `.env` server mem-pin image lama. Langkah terakhir di server:
 
 ```bash
 cd /opt/mono-annasr-konsultan/deploy
