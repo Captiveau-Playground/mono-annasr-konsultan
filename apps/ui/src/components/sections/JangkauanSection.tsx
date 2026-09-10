@@ -19,12 +19,20 @@ export function JangkauanSection({
   judul,
   deskripsi,
   kota = [],
+  statistik = [],
 }: {
   judul?: string
   deskripsi?: string
   kota?: { nama: string; lat: number; lng: number }[]
+  /** Kartu ringkas (diambil dari beranda.statistik bila tersedia). */
+  statistik?: { nilai: string; label: string }[]
 }) {
   const daftarKota = kota.length > 0 ? kota : kotaProyek
+  const kartuStat = (
+    statistik.some((s) => s.nilai && s.label)
+      ? statistik.filter((s) => s.nilai && s.label)
+      : RINGKAS_STATIS
+  ).slice(0, 3)
 
   return (
     <section className="bg-surface py-20 lg:py-24">
@@ -48,7 +56,7 @@ export function JangkauanSection({
 
           <div className="lg:col-span-5">
             <div className="grid grid-cols-3 gap-4">
-              {RINGKAS_STATIS.map((r, i) => (
+              {kartuStat.map((r, i) => (
                 <Reveal key={r.label} delay={i * 0.05}>
                   <div className="border-border bg-card rounded-[20px] border p-5 text-center transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)]">
                     <p className="text-foreground text-xl font-bold sm:text-2xl">

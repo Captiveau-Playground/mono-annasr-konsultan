@@ -797,7 +797,7 @@ const berandaData: Dok = {
       "Berdiri sejak 2014",
       "Puluhan proyek daerah",
       "Tim profesional bersertifikat",
-    ],
+    ].join("\n"),
   },
   statistik: [
     { nilai: "15+", label: "Tahun Pengalaman" },
@@ -812,6 +812,21 @@ const berandaData: Dok = {
     kutipan:
       "Setiap pekerjaan harus dapat dipertanggungjawabkan secara teknis maupun moral.",
   },
+  keunggulan: [
+    {
+      judul: "Perencanaan hingga Konstruksi",
+      teks: "Empat lini layanan dalam satu koordinasi.",
+    },
+    {
+      judul: "Tenaga Ahli Bersertifikat",
+      teks: "Pengalaman struktur dan infrastruktur.",
+    },
+    { judul: "Jangkauan Luas", teks: "Proyek tersebar di berbagai kota." },
+    {
+      judul: "Transparan & Tepat Waktu",
+      teks: "Laporan berkala yang jelas.",
+    },
+  ],
   layanan: LAYANAN.map((l) => ({
     slug: l.slug,
     judul: l.judul,
@@ -853,6 +868,10 @@ const berandaData: Dok = {
   ],
   klien: KLIEN.map((nama) => ({ nama })),
   kotaProyek: KOTA,
+  jangkauanJudul: "20+ kota di Indonesia telah kami kawal",
+  jangkauanDeskripsi:
+    "Berbasis di Jombang, pekerjaan kami tersebar melintasi Jawa hingga Indonesia Timur.",
+  artikel: ARTIKEL.map((a) => ({ ...a })),
   faq: FAQ,
   cta: {
     judul: "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
@@ -878,6 +897,15 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
         berandaData.portfolio as Dok[],
         GAMBAR_PROYEK
       ),
+      artikel: await lampirkanGambar(
+        strapi,
+        berandaData.artikel as Dok[],
+        GAMBAR_ARTIKEL
+      ),
+      founder: {
+        ...(berandaData.founder as Dok),
+        foto: await unggahMedia(strapi, "founder.jpg"),
+      },
     }
     const timSeed = [
       {

@@ -186,20 +186,13 @@ export function Hero({
 
           {kontenHero.keunggulan.length > 0 ? (
             <p className="text-primary-foreground/80 mt-7 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[13px] font-medium">
-              {kontenHero.keunggulan.map((item, i) => (
+              {kontenHero.keunggulan.map((item) => (
                 <span key={item} className="flex items-center gap-2">
-                  {i > 0 ? (
-                    <span
-                      className="bg-primary-foreground/30 size-1 rounded-full"
-                      aria-hidden
-                    />
-                  ) : (
-                    <Check
-                      className="text-accent size-3.5"
-                      strokeWidth={3}
-                      aria-hidden
-                    />
-                  )}
+                  <Check
+                    className="text-accent size-3.5"
+                    strokeWidth={3}
+                    aria-hidden
+                  />
                   {item}
                 </span>
               ))}

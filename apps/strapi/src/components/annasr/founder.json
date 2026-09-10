@@ -15,6 +15,13 @@
     },
     "kutipan": {
       "type": "text"
+    },
+    "foto": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": false
     }
   }
 }

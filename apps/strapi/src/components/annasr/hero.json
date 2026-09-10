@@ -12,7 +12,8 @@
       "type": "text"
     },
     "keunggulan": {
-      "type": "json"
+      "type": "text",
+      "description": "Satu baris = satu poin keunggulan. Dulu JSON (code editor), sekarang textarea biasa."
     }
   }
 }

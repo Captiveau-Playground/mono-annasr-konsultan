@@ -21,7 +21,7 @@ import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { KenapaKami } from "@/components/tentang/KenapaKami"
 import { fetchBeranda } from "@/lib/annasr/beranda"
-import { fetchKontenSitus, type KontenSitus } from "@/lib/annasr/konten"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 import { faqLd, localBusinessLd, websiteLd } from "@/lib/seo/structured-data"
 import { publicBaseUrl } from "@/lib/seo/urls"
@@ -98,22 +98,6 @@ function layananKeItem(
   })
 }
 
-function artikelKeItem(konten: KontenSitus["artikel"]) {
-  return konten.map((a) => ({
-    // Pakai slug asli dari API (jangan re-slugify judul — judul panjang
-    // menghasilkan slug beda & 404).
-    slug:
-      (a.slug && a.slug.length > 0 ? a.slug : slugify(a.judul)) || "artikel",
-    judul: a.judul,
-    ringkas: a.ringkas,
-    tanggal: a.tanggal,
-    kategori: a.kategori,
-    penulis: "Tim CV. AN NASR KONSULTAN",
-    gambar: a.gambar,
-    isi: [a.ringkas],
-  }))
-}
-
 export default async function BerandaPage({
   params,
 }: {
@@ -151,19 +135,20 @@ export default async function BerandaPage({
         hero={konten.hero}
         brand={kontenSitus.situs.brandNama}
         tagline={kontenSitus.situs.brandTagline}
-        layanan={kontenSitus.layanan.map((l) => l.nama)}
+        layanan={konten.layanan.map((l) => l.judul)}
       />
       <KlienSection items={konten.klien} />
       <FounderSection founder={konten.founder} />
-      <KenapaKami alasan={kontenSitus.tentang.alasan} />
-      <LayananSection items={layananKeItem(kontenSitus.layanan)} />
+      <KenapaKami alasan={konten.keunggulan} />
+      <LayananSection items={layananKeItem(konten.layanan)} />
       <PortfolioSection items={konten.portfolio} />
       <JangkauanSection
-        judul={kontenSitus.tentang.jangkauanJudul}
-        deskripsi={kontenSitus.tentang.jangkauanDeskripsi}
-        kota={kontenSitus.tentang.kotaProyek}
+        judul={konten.jangkauanJudul}
+        deskripsi={konten.jangkauanDeskripsi}
+        kota={konten.kotaProyek}
+        statistik={konten.statistik}
       />
-      <ArtikelSection items={artikelKeItem(kontenSitus.artikel)} />
+      <ArtikelSection items={konten.artikel} />
       <FaqSection items={konten.faq} />
       <CtaBanner judul={konten.cta?.judul} deskripsi={konten.cta?.deskripsi} />
     </>

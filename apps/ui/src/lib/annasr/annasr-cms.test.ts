@@ -53,16 +53,19 @@ describe("beranda (fetchBeranda)", () => {
     hero: {
       judul: "QA hero judul",
       deskripsi: "QA hero deskripsi",
-      keunggulan: ["QA-ke1", "QA-ke2"],
+      keunggulan: "QA-ke1\nQA-ke2",
     },
     statistik: [{ nilai: "QA99", label: "QA stat label" }],
     founder: {
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
       teks: "QA teks founder",
+      foto: { url: "/uploads/qa-founder.jpg" },
     },
+    keunggulan: [{ judul: "QA alasan 1", teks: "QA alasan teks" }],
     layanan: [
       {
+        slug: "qa-layanan",
         judul: "QA layanan 1",
         ringkas: "QA ringkas 1",
         gambar: { url: "/uploads/qa-layanan-1.jpg" },
@@ -78,6 +81,20 @@ describe("beranda (fetchBeranda)", () => {
     ],
     klien: [{ nama: "QA klien 1", logo: { url: "/uploads/qa-logo-1.jpg" } }],
     kotaProyek: [{ nama: "QA kota", lat: 1.5, lng: 2.5 }],
+    jangkauanJudul: "QA jangkauan judul",
+    jangkauanDeskripsi: "QA jangkauan deskripsi",
+    artikel: [
+      {
+        slug: "qa-artikel-beranda",
+        judul: "QA artikel beranda",
+        ringkas: "QA ringkas artikel",
+        tanggal: "QA tanggal",
+        kategori: "QA kategori",
+        penulis: "QA penulis",
+        gambar: { url: "/uploads/qa-artikel-beranda.jpg" },
+        isi: ["QA isi 1", "QA isi 2"],
+      },
+    ],
     faq: [{ tanya: "QA tanya", jawab: "QA jawab" }],
     cta: { judul: "QA cta judul", deskripsi: "QA cta deskripsi" },
   }
@@ -97,23 +114,40 @@ describe("beranda (fetchBeranda)", () => {
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
       teks: "QA teks founder",
+      foto: "/api/asset/uploads/qa-founder.jpg",
     })
+    expect(r.keunggulan).toEqual([
+      { judul: "QA alasan 1", teks: "QA alasan teks" },
+    ])
     expect(r.layanan[0]).toEqual({
+      slug: "qa-layanan",
       judul: "QA layanan 1",
       ringkas: "QA ringkas 1",
-      gambar: `${STRAPI_URL}/uploads/qa-layanan-1.jpg`,
+      gambar: "/api/asset/uploads/qa-layanan-1.jpg",
     })
     expect(r.portfolio[0]).toEqual({
       nama: "QA proyek 1",
       lokasi: "QA lokasi proyek",
       kategori: "QA kategori",
-      gambar: `${STRAPI_URL}/uploads/qa-proyek-1.jpg`,
+      gambar: "/api/asset/uploads/qa-proyek-1.jpg",
     })
     expect(r.klien[0]).toEqual({
       nama: "QA klien 1",
-      logo: `${STRAPI_URL}/uploads/qa-logo-1.jpg`,
+      logo: "/api/asset/uploads/qa-logo-1.jpg",
     })
     expect(r.kotaProyek[0]).toEqual({ nama: "QA kota", lat: 1.5, lng: 2.5 })
+    expect(r.jangkauanJudul).toBe("QA jangkauan judul")
+    expect(r.jangkauanDeskripsi).toBe("QA jangkauan deskripsi")
+    expect(r.artikel[0]).toEqual({
+      slug: "qa-artikel-beranda",
+      judul: "QA artikel beranda",
+      ringkas: "QA ringkas artikel",
+      tanggal: "QA tanggal",
+      kategori: "QA kategori",
+      penulis: "QA penulis",
+      gambar: "/api/asset/uploads/qa-artikel-beranda.jpg",
+      isi: ["QA isi 1", "QA isi 2"],
+    })
     expect(r.faq).toEqual([{ tanya: "QA tanya", jawab: "QA jawab" }])
     expect(r.cta).toEqual({
       judul: "QA cta judul",
@@ -128,6 +162,8 @@ describe("beranda (fetchBeranda)", () => {
 
     expect(r.hero?.judul).toMatch(/Tepat Merencanakan/)
     expect(r.statistik.length).toBeGreaterThan(0)
+    expect(r.keunggulan.length).toBeGreaterThan(0)
+    expect(r.artikel.length).toBeGreaterThan(0)
     expect(r.faq.length).toBeGreaterThan(0)
   })
 })
@@ -303,7 +339,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       {
         nama: "QA tim",
         jabatan: "QA tim jabatan",
-        foto: `${STRAPI_URL}/uploads/qa-foto.jpg`,
+        foto: `/api/asset/uploads/qa-foto.jpg`,
         linkedin: "https://linkedin.com/qa",
       },
     ])
@@ -329,10 +365,10 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
     expect(l.ringkas).toBe("QA ringkas")
     expect(l.detail).toEqual(["QA detail"])
     expect(l.manfaat).toEqual(["QA manfaat"])
-    expect(l.gambar).toBe(`${STRAPI_URL}/uploads/qa-lay.jpg`)
+    expect(l.gambar).toBe(`/api/asset/uploads/qa-lay.jpg`)
     expect(l.galeri.map((g) => g.src)).toEqual([
-      `${STRAPI_URL}/uploads/qa-gal-1.jpg`,
-      `${STRAPI_URL}/uploads/qa-gal-2.jpg`,
+      `/api/asset/uploads/qa-gal-1.jpg`,
+      `/api/asset/uploads/qa-gal-2.jpg`,
     ])
     expect(l.alur).toEqual([{ judul: "QA alur", teks: "QA alur teks" }])
     expect(l.persyaratan).toEqual([
@@ -343,7 +379,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       },
     ])
     expect(l.dokumenClient?.judul).toBe("QA dc judul")
-    expect(l.dokumenClient?.gambar).toBe(`${STRAPI_URL}/uploads/qa-dc.jpg`)
+    expect(l.dokumenClient?.gambar).toBe(`/api/asset/uploads/qa-dc.jpg`)
     expect(l.dokumenClient?.daftar).toEqual(["QA dc daftar"])
     expect(r.proses).toEqual([{ judul: "QA proses", teks: "QA proses teks" }])
   })
@@ -357,7 +393,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
         instansi: "QA p instansi",
         lokasi: "QA p lokasi",
         kategori: "QA p kategori",
-        gambar: `${STRAPI_URL}/uploads/qa-p.jpg`,
+        gambar: `/api/asset/uploads/qa-p.jpg`,
       },
     ])
     expect((await fetchKontenSitus("en")).portfolioHero).toEqual({
@@ -425,7 +461,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       tanggal: "QA tanggal",
       kategori: "QA kategori",
       penulis: "QA penulis",
-      gambar: `${STRAPI_URL}/uploads/qa-artikel.jpg`,
+      gambar: `/api/asset/uploads/qa-artikel.jpg`,
       isi: ["QA isi"],
     })
   })
@@ -478,7 +514,7 @@ describe("rekanan (fetchRekanan)", () => {
         nama: "QA rekanan",
         instansi: "QA instansi",
         keterangan: "QA keterangan",
-        gambar: `${STRAPI_URL}/uploads/qa-sertifikat.jpg`,
+        gambar: `/api/asset/uploads/qa-sertifikat.jpg`,
         alt: "QA alt",
       },
     ])

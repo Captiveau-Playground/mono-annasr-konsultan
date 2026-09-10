@@ -62,13 +62,12 @@ function medUrl(v: undefined | { url?: unknown }, fb: string): string {
   const url = v?.url
   if (!url || typeof url !== "string") return fb
   if (url.startsWith("http")) return url
-  // Hanya upload asli Strapi yang butuh prefix base. Path statis FE
-  // (/images/…) tetap dipakai relatif — lebih cepat & tidak kena
-  // blokir Next Image optimizer (SSRF private IP).
+  // Hanya upload asli Strapi yang butuh proxy same-origin. Path statis FE
+  // (/images/…) tetap dipakai relatif — lebih cepat, tidak kena blokir Next
+  // image optimizer, dan tidak bocor host internal strapi:1337 ke browser.
   if (!url.startsWith("/uploads/")) return url
-  const base = process.env.STRAPI_URL?.replace(/\/$/, "")
 
-  return base ? `${base}${url}` : url
+  return `/api/asset${url}`
 }
 
 type Raw = Record<string, unknown>

@@ -4,15 +4,27 @@ import Image from "next/image"
 import { Reveal } from "@/components/site/Reveal"
 import { SectionShell } from "@/components/site/SectionShell"
 import { Button } from "@/components/ui/button"
-import { founder } from "@/data/perusahaan"
+import { founder as founderStatis } from "@/data/perusahaan"
 import type { BerandaKonten } from "@/lib/annasr/beranda"
 import { Link } from "@/lib/navigation"
 
+/**
+ * Section founder — seluruh teks (nama, jabatan, paragraf) dan foto utama
+ * diambil dari CMS Beranda (`beranda.founder`), fallback ke data statis.
+ * Dua foto pendukung (kantor & lapangan) tetap dekoratif statis.
+ */
 export function FounderSection({
   founder: founderData,
 }: {
   founder?: BerandaKonten["founder"]
 }) {
+  const nama = founderData?.nama?.trim() || founderStatis.nama
+  const jabatan = founderData?.jabatan?.trim() || founderStatis.jabatan
+  const teks =
+    founderData?.teks?.trim() ||
+    "CV. An Nasr Konsultan hadir sebagai mitra independen yang melindungi kepentingan klien, memastikan proyek berjalan tepat waktu, tepat mutu, tepat biaya, serta memenuhi seluruh standar teknis dan perizinan yang berlaku."
+  const foto = founderData?.foto?.trim() || "/images/annasr/founder.jpg"
+
   return (
     <SectionShell
       tone="krem"
@@ -29,8 +41,8 @@ export function FounderSection({
       <div className="grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
         <Reveal arah="left" className="h-full">
           <Image
-            src="/images/annasr/founder.jpg"
-            alt={`${founder.nama}, ${founder.jabatan} CV. AN NASR KONSULTAN`}
+            src={foto}
+            alt={`${nama}, ${jabatan} CV. AN NASR KONSULTAN`}
             width={900}
             height={1100}
             className="h-full w-full rounded-xl object-cover"
@@ -39,16 +51,11 @@ export function FounderSection({
 
         <Reveal arah="right" delay={0.08} className="flex flex-col">
           <h3 className="text-foreground text-xl font-semibold tracking-wide uppercase">
-            {founder.nama}
+            {nama}
           </h3>
-          <p className="text-accent mt-1 text-sm font-semibold">
-            {founder.jabatan}
-          </p>
+          <p className="text-accent mt-1 text-sm font-semibold">{jabatan}</p>
           <p className="text-muted-foreground mt-4 text-sm leading-relaxed lg:text-base">
-            CV. An Nasr Konsultan hadir sebagai mitra independen yang melindungi
-            kepentingan klien, memastikan proyek berjalan tepat waktu, tepat
-            mutu, tepat biaya, serta memenuhi seluruh standar teknis dan
-            perizinan yang berlaku.
+            {teks}
           </p>
 
           <div className="mt-6 grid flex-1 grid-cols-2 gap-4">

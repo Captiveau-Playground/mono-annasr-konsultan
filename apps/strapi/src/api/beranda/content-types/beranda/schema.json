@@ -26,6 +26,11 @@
       "component": "annasr.founder",
       "required": false
     },
+    "keunggulan": {
+      "type": "component",
+      "component": "annasr.alasan",
+      "repeatable": true
+    },
     "layanan": {
       "type": "component",
       "component": "annasr.layanan-item",
@@ -46,9 +51,20 @@
       "component": "annasr.kota",
       "repeatable": true
     },
+    "jangkauanJudul": {
+      "type": "string"
+    },
+    "jangkauanDeskripsi": {
+      "type": "text"
+    },
     "faq": {
       "type": "component",
       "component": "annasr.faq-item",
+      "repeatable": true
+    },
+    "artikel": {
+      "type": "component",
+      "component": "annasr.artikel-item",
       "repeatable": true
     },
     "cta": {

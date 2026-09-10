@@ -83,8 +83,8 @@ export function KenapaKami({ alasan = [] }: { alasan?: Alasan[] }) {
                 Mengapa Memilih An Nasr Konsultan
               </h2>
               <p className="text-muted-foreground mt-5 max-w-md text-base leading-relaxed">
-                Scroll untuk mengenal empat alasan utama mengapa banyak pemberi
-                tugas mempercayakan proyeknya kepada kami.
+                Scroll untuk mengenal alasan utama mengapa banyak pemberi tugas
+                mempercayakan proyeknya kepada kami.
               </p>
             </Reveal>
 

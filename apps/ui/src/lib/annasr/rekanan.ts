@@ -33,9 +33,10 @@ function resolv(mungkin: unknown): string | undefined {
   if (typeof mungkin !== "string" || !mungkin) return undefined
   if (mungkin.startsWith("http")) return mungkin
   if (!mungkin.startsWith("/uploads/")) return mungkin
-  const base = process.env.STRAPI_URL?.replace(/\/$/, "")
+  // Proxy same-origin — nama host Docker internal (`strapi:1337`) tidak bisa
+  // dilookup browser.
 
-  return base ? `${base}${mungkin}` : mungkin
+  return `/api/asset${mungkin}`
 }
 
 /**
