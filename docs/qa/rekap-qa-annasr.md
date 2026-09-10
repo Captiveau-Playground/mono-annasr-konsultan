@@ -1,7 +1,16 @@
 # Rekap QA Compro An Nasr — 1 Tabel (per Module)
 
-Tanggal rekap: 2026-09-10 · Status: ✅ selesai di kode · ⏳ butuh isi data CMS/retest · 📋 dokumentasi/konfirmasi.
-Total: **57 baris · 56 issue nyata** (1 baris #20 kosong).
+Tanggal rekap: 2026-09-10 · Total: **57 baris · 56 issue nyata** (1 baris #20 kosong).
+
+**Legenda status:**
+
+| Label | Arti                                                                                         |
+| ----- | -------------------------------------------------------------------------------------------- |
+| ✅    | Selesai di kode (commit + lolos typecheck/test/lint) — belum tentu live, butuh deploy        |
+| ✅ ⏳ | Kode selesai + menunggu isi data CMS (field baru kosong → fallback statis) dan/atau deploy   |
+| 📋    | Dokumentasi / perlu konfirmasi (bukan bug kode; data sudah bisa dikelola di tempat tertentu) |
+| ✅ 📋 | Kode selesai + catatan di mana mengelola datanya di CMS                                      |
+| ⏳    | Butuh retest / akar masalah belum dipastikan (mis. belum ada evidence visual)                |
 
 | #   | Module  | Issue                                           | Expected            | Actual                 | Aksi                                                                              | Status |
 | --- | ------- | ----------------------------------------------- | ------------------- | ---------------------- | --------------------------------------------------------------------------------- | ------ |
