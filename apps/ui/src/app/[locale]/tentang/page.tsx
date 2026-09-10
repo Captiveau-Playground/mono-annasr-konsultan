@@ -45,7 +45,12 @@ export default async function TentangPage({
         deskripsi={konten.hero.deskripsi}
         keunggulan={konten.hero.keunggulan}
       />
-      <TentangInti statistik={konten.statistik} />
+      <TentangInti
+        judul={konten.tentangInti.judul || undefined}
+        deskripsi={konten.tentangInti.deskripsi || undefined}
+        poin={konten.tentangInti.daftar}
+        statistik={konten.statistik}
+      />
       <KisahPerusahaan perjalanan={konten.perjalanan} />
       <VisiMisi kartu={konten.visiMisi} />
       <Founder data={konten.founder} />
@@ -54,6 +59,7 @@ export default async function TentangPage({
         judul={konten.jangkauanJudul}
         deskripsi={konten.jangkauanDeskripsi}
         kota={konten.kotaProyek}
+        statistik={konten.statistik}
       />
       <CtaBanner />
     </>

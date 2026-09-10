@@ -77,7 +77,7 @@ export default async function DetailKarir({
               Deskripsi Pekerjaan
             </h2>
             {item.deskripsi ? (
-              <p className="text-muted-foreground mt-4 leading-relaxed">
+              <p className="text-muted-foreground mt-4 text-justify leading-relaxed">
                 {item.deskripsi}
               </p>
             ) : null}
@@ -152,8 +152,8 @@ export default async function DetailKarir({
                 judul={item.nama}
               />
             </div>
-            <p className="text-muted-foreground mt-4 flex items-center justify-center gap-1.5 text-center text-sm">
-              <Sparkles className="text-accent size-4" />
+            <p className="text-muted-foreground mt-4 flex items-start justify-center gap-1.5 text-center text-sm">
+              <Sparkles className="text-accent mt-0.5 size-4 shrink-0" />
               Kirimkan CV &amp; portofolio Anda — tim kami segera merespons.
             </p>
             <div className="mt-6 text-center">

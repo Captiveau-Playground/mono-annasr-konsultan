@@ -15,7 +15,7 @@ export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
 }
 
-const judul = "Portfolio Proyek — CV. AN NASR KONSULTAN"
+const judul = "Portofolio Proyek — CV. AN NASR KONSULTAN"
 const deskripsi =
   "Dokumentasi proyek bangunan, jalan, jembatan, irigasi, gedung, dan renovasi yang ditangani CV. AN NASR KONSULTAN di Jombang dan sekitarnya."
 
@@ -41,7 +41,7 @@ export default async function PortfolioPage({
   return (
     <>
       <PageHero
-        eyebrow="Portfolio"
+        eyebrow="Portofolio"
         judul={konten.portfolioHero.judul}
         teks={konten.portfolioHero.deskripsi}
       />
@@ -51,6 +51,7 @@ export default async function PortfolioPage({
         judul={konten.tentang.jangkauanJudul}
         deskripsi={konten.tentang.jangkauanDeskripsi}
         kota={konten.tentang.kotaProyek}
+        statistik={konten.tentang.statistik}
       />
       <CtaBanner />
     </>

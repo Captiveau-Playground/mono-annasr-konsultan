@@ -7,7 +7,7 @@ import { useMemo, useState } from "react"
 import { Reveal } from "@/components/site/Reveal"
 import { SectionShell } from "@/components/site/SectionShell"
 import { Button } from "@/components/ui/button"
-import { kategoriPortfolio, portfolio } from "@/data/perusahaan"
+import { portfolio } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
 const PER_HALAMAN = 9
@@ -34,6 +34,11 @@ export function PortfolioSection({
   const [halaman, setHalaman] = useState(1)
 
   const dataSumber = items ?? portfolio
+
+  const kategoriDaftar = useMemo(
+    () => ["Semua", ...Array.from(new Set(dataSumber.map((p) => p.kategori)))],
+    [dataSumber]
+  )
 
   const data = useMemo(
     () =>
@@ -73,7 +78,7 @@ export function PortfolioSection({
     >
       {filterAktif ? (
         <Reveal className="mb-8 flex flex-wrap gap-2.5">
-          {kategoriPortfolio.map((k) => (
+          {kategoriDaftar.map((k) => (
             <button
               key={k}
               type="button"

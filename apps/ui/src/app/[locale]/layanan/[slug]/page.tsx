@@ -48,7 +48,10 @@ export default async function DetailLayanan({
   const item = konten.layanan.find((l) => l.slug === slug)
   if (!item) notFound()
 
-  const galeri = [{ src: item.gambar, alt: item.alt }, ...item.galeri]
+  const galeri = [{ src: item.gambar, alt: item.alt }, ...item.galeri].slice(
+    0,
+    8
+  )
 
   return (
     <>
@@ -164,8 +167,8 @@ function AlurLayanan({
             Bagaimana {nama} dikerjakan
           </h2>
           <p className="text-muted-foreground mt-4 text-base leading-relaxed">
-            Enam langkah berurutan agar setiap tahap terukur dan hasilnya sesuai
-            standar.
+            {alur.length} langkah berurutan agar setiap tahap terukur dan
+            hasilnya sesuai standar.
           </p>
         </Reveal>
 
@@ -183,7 +186,12 @@ function AlurLayanan({
                   {langkah.teks}
                 </p>
                 {i < alur.length - 1 ? (
-                  <ArrowRight className="text-primary/30 pointer-events-none absolute top-1/2 -right-4 hidden size-4 -translate-y-1/2 lg:block" />
+                  <>
+                    {/* Panah antar kartu — desktop (kanan) */}
+                    <ArrowRight className="text-primary/30 pointer-events-none absolute top-1/2 -right-4 hidden size-4 -translate-y-1/2 lg:block" />
+                    {/* Panah antar kartu — mobile (bawah, vertikal) */}
+                    <ArrowRight className="text-primary/30 pointer-events-none absolute -bottom-3 left-1/2 size-4 -translate-x-1/2 rotate-90 lg:hidden" />
+                  </>
                 ) : null}
               </li>
             </Reveal>

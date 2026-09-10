@@ -31,10 +31,12 @@
       "multiple": true
     },
     "manfaat": {
-      "type": "json"
+      "type": "text",
+      "description": "Satu baris = satu poin manfaat (textarea). Dulu JSON."
     },
     "detail": {
-      "type": "json"
+      "type": "text",
+      "description": "Satu baris = satu item lingkup pekerjaan (textarea). Dulu JSON."
     },
     "alur": {
       "type": "component",

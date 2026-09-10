@@ -17,9 +17,13 @@ import { cn } from "@/lib/styles"
 
 const PER_HALAMAN = 6
 
-export function ArtikelList({ items }: { items?: Artikel[] }) {
-  const daftar = items ?? artikel
-  const unggulan = daftar[0]
+export function ArtikelList({
+  items,
+}: {
+  items?: (Artikel & { unggulan?: boolean })[]
+}) {
+  const daftar: (Artikel & { unggulan?: boolean })[] = items ?? artikel
+  const unggulan = daftar.find((a) => a.unggulan === true) ?? daftar[0]
 
   const kategoriArtikel = useMemo(
     () => ["Semua", ...Array.from(new Set(daftar.map((a) => a.kategori)))],

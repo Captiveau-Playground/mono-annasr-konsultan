@@ -36,7 +36,7 @@ export default async function ArtikelPage({
       <PageHero
         eyebrow="Artikel"
         judul={konten.artikelHero.judul}
-        teks="Catatan praktis dari pengalaman kami menangani pekerjaan perencanaan, pengawasan, perizinan, dan konstruksi."
+        teks={konten.artikelHero.deskripsi}
       />
 
       <section className="bg-background py-20 lg:py-24">

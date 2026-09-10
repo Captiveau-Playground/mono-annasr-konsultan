@@ -59,10 +59,10 @@ export default async function KontakPage({
       />
       <PageHero
         eyebrow="Kontak"
-        judul="Mari bicarakan rencana proyek Anda"
-        teks="Tim kami siap membantu menghitung kebutuhan teknis, dokumen perizinan, hingga estimasi biaya pekerjaan."
+        judul={konten.kontak.judul}
+        teks={konten.kontak.deskripsi}
       />
-      <KontakSection />
+      <KontakSection kontak={konten.kontak} />
     </>
   )
 }

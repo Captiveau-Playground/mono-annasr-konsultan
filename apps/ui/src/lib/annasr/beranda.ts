@@ -29,6 +29,7 @@ export type ArtikelBeranda = {
   kategori: string
   penulis: string
   gambar: string
+  unggulan?: boolean
   isi: string[]
 }
 
@@ -267,6 +268,7 @@ type RawBeranda = {
     kategori?: unknown
     penulis?: unknown
     gambar?: { url?: unknown }
+    unggulan?: unknown
     isi?: unknown
   }[]
   faq?: { tanya?: unknown; jawab?: unknown }[]
@@ -417,6 +419,7 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
                 kategori: str(a.kategori, statis?.kategori ?? "Artikel"),
                 penulis: str(a.penulis, statis?.penulis ?? ""),
                 gambar: resolvUrl(a.gambar?.url) ?? statis?.gambar ?? "",
+                unggulan: a.unggulan === true,
                 isi:
                   Array.isArray(a.isi) && a.isi.length > 0
                     ? a.isi

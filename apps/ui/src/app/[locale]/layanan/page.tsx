@@ -64,8 +64,8 @@ export default async function LayananPage({
       />
       <PageHero
         eyebrow="Layanan"
-        judul="Layanan teknik yang lengkap dan terintegrasi"
-        teks="Dari studi awal hingga serah terima pekerjaan, seluruh kebutuhan teknis proyek Anda dapat kami tangani dalam satu koordinasi."
+        judul={konten.layananIntro.judul}
+        teks={konten.layananIntro.deskripsi}
       />
       <LayananSection lengkap items={konten.layanan} />
       <ProsesSection items={konten.proses} />

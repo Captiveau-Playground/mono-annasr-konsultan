@@ -18,12 +18,31 @@ const METRIK_STATIS = [
   { nilai: "98%", label: "Kepuasan Klien" },
 ]
 
+const JUDUL_STATIS =
+  "Konsultan sipil yang mengawal mutu dari gambar hingga serah terima"
+const DESKRIPSI_STATIS = [
+  "Kami adalah penyedia jasa konsultansi teknik sipil dan arsitektur di Kabupaten Jombang, Jawa Timur, dengan pengalaman lapangan di berbagai kota di Indonesia.",
+  "Tujuan kami sederhana: memastikan setiap rencana pembangunan berjalan tepat mutu, tepat biaya, dan tepat waktu — dengan tenaga ahli struktur, jalan, jembatan, dan sumber daya air.",
+]
+
 export function TentangInti({
+  judul = "",
+  deskripsi = "",
+  poin = [],
   statistik = [],
 }: {
+  /** Dari CMS `tentang.tentang.judul` (field "tentang" di single type Tentang). */
+  judul?: string
+  /** Dari CMS `tentang.tentang.deskripsi`. */
+  deskripsi?: string
+  /** Dari CMS `tentang.tentang.daftar` (satu baris = satu poin). */
+  poin?: string[]
   statistik?: { nilai: string; label: string }[]
 }) {
   const METRIK = statistik.length > 0 ? statistik : METRIK_STATIS
+  const paragraf = deskripsi.trim() ? [deskripsi] : DESKRIPSI_STATIS
+  const daftarPoin = poin.length > 0 ? poin : POIN_PENDEK
+  const judulTeks = judul.trim() ? judul : JUDUL_STATIS
 
   return (
     <section className="bg-background py-20 lg:py-24">
@@ -36,24 +55,16 @@ export function TentangInti({
                 Tentang Kami
               </p>
               <h2 className="text-foreground mt-4 max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
-                Konsultan sipil yang mengawal mutu dari gambar hingga serah
-                terima
+                {judulTeks}
               </h2>
               <div className="text-muted-foreground mt-6 max-w-[42rem] space-y-4 text-lg leading-8">
-                <p>
-                  Kami adalah penyedia jasa konsultansi teknik sipil dan
-                  arsitektur di Kabupaten Jombang, Jawa Timur, dengan pengalaman
-                  lapangan di berbagai kota di Indonesia.
-                </p>
-                <p>
-                  Tujuan kami sederhana: memastikan setiap rencana pembangunan
-                  berjalan tepat mutu, tepat biaya, dan tepat waktu — dengan
-                  tenaga ahli struktur, jalan, jembatan, dan sumber daya air.
-                </p>
+                {paragraf.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
               </div>
 
               <ul className="mt-8 flex flex-col gap-3">
-                {POIN_PENDEK.map((p) => (
+                {daftarPoin.map((p) => (
                   <li
                     key={p}
                     className="text-foreground/85 flex items-start gap-3"
@@ -69,7 +80,7 @@ export function TentangInti({
               <div className="mt-9">
                 <Button asChild size="pill">
                   <Link href="/portfolio">
-                    Lihat Portfolio Proyek
+                    Lihat Portofolio Proyek
                     <ArrowRight className="size-4" />
                   </Link>
                 </Button>

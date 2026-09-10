@@ -30,7 +30,13 @@
       "type": "string"
     },
     "isi": {
-      "type": "json"
+      "type": "text",
+      "description": "Satu paragraf per baris kosong / satu baris = satu paragraf (textarea). Dulu JSON."
+    },
+    "unggulan": {
+      "type": "boolean",
+      "default": false,
+      "description": "Tandai sebagai artikel unggulan (hero besar di daftar)."
     }
   }
 }

@@ -17,9 +17,12 @@ export function Footer({
   telepon,
   email,
   instagram,
+  tagline,
 }: {
   /** Dari CMS (situs.brandNama). */
   brand?: string
+  /** Dari CMS (situs.brandTagline). */
+  tagline?: string
   navigasi?: readonly { label: string; href: string }[]
   /** Dari CMS (layanan) — kolom Layanan footer. */
   layananCms?: readonly { label: string; href: string }[]
@@ -103,7 +106,7 @@ export function Footer({
                   {namaBrand?.trim() || "CV. An Nasr Konsultan"}
                 </span>
                 <span className="text-muted-foreground hidden text-[11px] tracking-wide sm:block">
-                  Konsultan Teknik &amp; Konstruksi
+                  {tagline ?? "Konsultan Teknik & Konstruksi"}
                 </span>
               </span>
             </div>

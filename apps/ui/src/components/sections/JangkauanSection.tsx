@@ -55,7 +55,7 @@ export function JangkauanSection({
           </div>
 
           <div className="lg:col-span-5">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid gap-4 sm:grid-cols-3">
               {kartuStat.map((r, i) => (
                 <Reveal key={r.label} delay={i * 0.05}>
                   <div className="border-border bg-card rounded-[20px] border p-5 text-center transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)]">

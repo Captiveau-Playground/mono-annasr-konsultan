@@ -11,7 +11,8 @@
       "type": "text"
     },
     "daftar": {
-      "type": "json"
+      "type": "text",
+      "description": "Satu baris = satu item daftar (textarea). Dulu JSON."
     }
   }
 }

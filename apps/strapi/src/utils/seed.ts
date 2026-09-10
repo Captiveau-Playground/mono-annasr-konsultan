@@ -387,6 +387,13 @@ const ARTIKEL = [
   },
 ]
 
+/** Artikel utk seed — `isi` kini text (satu paragraf per baris), artikel #1 ditandai unggulan. */
+const ARTIKEL_SEED = ARTIKEL.map((a, i) => ({
+  ...a,
+  isi: a.isi.join("\n"),
+  unggulan: i === 0,
+}))
+
 const KOTA = [
   { nama: "Jombang", lat: -7.5454, lng: 112.2424 },
   { nama: "Surabaya", lat: -7.2575, lng: 112.7521 },
@@ -831,8 +838,8 @@ const berandaData: Dok = {
     slug: l.slug,
     judul: l.judul,
     ringkas: l.ringkas,
-    detail: l.detail,
-    manfaat: l.manfaat,
+    detail: l.detail.join("\n"),
+    manfaat: l.manfaat.join("\n"),
   })),
   portfolio: [
     {
@@ -871,7 +878,7 @@ const berandaData: Dok = {
   jangkauanJudul: "20+ kota di Indonesia telah kami kawal",
   jangkauanDeskripsi:
     "Berbasis di Jombang, pekerjaan kami tersebar melintasi Jawa hingga Indonesia Timur.",
-  artikel: ARTIKEL.map((a) => ({ ...a })),
+  artikel: ARTIKEL_SEED.map((a) => ({ ...a })),
   faq: FAQ,
   cta: {
     judul: "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
@@ -923,8 +930,8 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
         judul: l.judul,
         ringkas: l.ringkas,
         deskripsi: l.deskripsi,
-        detail: l.detail,
-        manfaat: l.manfaat,
+        detail: l.detail.join("\n"),
+        manfaat: l.manfaat.join("\n"),
         gambar: await unggahMedia(strapi, GAMBAR_LAYANAN[i]),
         galeri: (
           await Promise.all(
@@ -1157,7 +1164,7 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
       heroDeskripsi: "Catatan praktis dari pengalaman kami di lapangan.",
       artikel: await lampirkanGambar(
         strapi,
-        ARTIKEL as unknown as Dok[],
+        ARTIKEL_SEED as unknown as Dok[],
         GAMBAR_ARTIKEL
       ),
     })

@@ -20,7 +20,8 @@
       "multiple": false
     },
     "daftar": {
-      "type": "json"
+      "type": "text",
+      "description": "Satu baris = satu item dokumen yang diterima (textarea). Dulu JSON."
     }
   }
 }

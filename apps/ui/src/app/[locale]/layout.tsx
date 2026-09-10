@@ -203,10 +203,15 @@ export default async function RootLayout({
               navigasiCms={kontenSitus.situs.navigasi}
               tagline={kontenSitus.situs.brandTagline}
               whatsapp={kontenSitus.kontak.whatsapp}
+              layananNav={kontenSitus.layanan.map((l) => ({
+                label: l.nama,
+                href: `/layanan/${l.slug}`,
+              }))}
             />
             <main className="min-h-screen">{children}</main>
             <Footer
               brand={kontenSitus.situs.brandNama}
+              tagline={kontenSitus.situs.brandTagline}
               navigasi={flattenNavigasi(kontenSitus.situs.navigasi)}
               layananCms={kontenSitus.layanan.map(
                 (l: { nama: string; slug: string }) => ({

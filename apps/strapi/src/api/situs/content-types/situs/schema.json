@@ -17,6 +17,12 @@
     "brandTagline": {
       "type": "string"
     },
+    "rekananIntroJudul": {
+      "type": "string"
+    },
+    "rekananIntroDeskripsi": {
+      "type": "text"
+    },
     "deskripsiLabel": {
       "type": "string"
     },

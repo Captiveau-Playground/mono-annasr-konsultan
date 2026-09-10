@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 import { Reveal } from "@/components/site/Reveal"
 
 function inisial(nama: string) {
@@ -46,12 +48,15 @@ const TIM_STATIS = [
   },
 ]
 
-export function TimTentang({
-  tim = [],
-}: {
-  tim?: { nama: string; jabatan: string }[]
-}) {
-  const TIM =
+type AnggotaTim = {
+  nama: string
+  jabatan: string
+  foto?: string
+  linkedin?: string
+}
+
+export function TimTentang({ tim = [] }: { tim?: AnggotaTim[] }) {
+  const TIM: (AnggotaTim & { inisial: string })[] =
     tim.length > 0
       ? tim.map((t) => ({ ...t, inisial: inisial(t.nama) }))
       : TIM_STATIS
@@ -76,8 +81,21 @@ export function TimTentang({
           {TIM.map((anggota, i) => (
             <Reveal key={anggota.nama} delay={i * 0.06} className="h-full">
               <div className="group border-border bg-card h-full rounded-[20px] border p-7 text-center transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)]">
-                <div className="bg-primary/8 text-primary group-hover:bg-primary/10 mx-auto flex size-20 items-center justify-center rounded-full font-[family-name:var(--font-heading)] text-2xl font-bold">
-                  {anggota.inisial}
+                <div className="mx-auto size-20">
+                  {anggota.foto?.trim() ? (
+                    <Image
+                      src={anggota.foto}
+                      alt={anggota.nama}
+                      width={160}
+                      height={160}
+                      sizes="80px"
+                      className="bg-primary/8 size-20 rounded-full object-cover"
+                    />
+                  ) : (
+                    <span className="bg-primary/8 text-primary group-hover:bg-primary/10 flex size-20 items-center justify-center rounded-full font-[family-name:var(--font-heading)] text-2xl font-bold">
+                      {anggota.inisial}
+                    </span>
+                  )}
                 </div>
                 <h3 className="text-foreground mt-5 text-lg leading-snug font-semibold">
                   {anggota.nama}
@@ -85,13 +103,17 @@ export function TimTentang({
                 <p className="text-accent mt-1.5 text-sm font-medium">
                   {anggota.jabatan}
                 </p>
-                <a
-                  href="#"
-                  aria-label={`LinkedIn ${anggota.nama}`}
-                  className="text-muted-foreground hover:text-primary border-border mt-5 inline-flex size-9 items-center justify-center rounded-full border transition-colors"
-                >
-                  <IkonLinkedin />
-                </a>
+                {anggota.linkedin?.trim() ? (
+                  <a
+                    href={anggota.linkedin}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`LinkedIn ${anggota.nama}`}
+                    className="text-muted-foreground hover:text-primary border-border mt-5 inline-flex size-9 items-center justify-center rounded-full border transition-colors"
+                  >
+                    <IkonLinkedin />
+                  </a>
+                ) : null}
               </div>
             </Reveal>
           ))}

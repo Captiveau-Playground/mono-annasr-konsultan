@@ -35,6 +35,7 @@ export function Navbar({
   navigasiCms,
   tagline,
   whatsapp,
+  layananNav,
 }: {
   brandNama?: string
   /** Navigasi level atas dari CMS — item dengan `anak` jadi dropdown. */
@@ -43,6 +44,8 @@ export function Navbar({
   tagline?: string
   /** Nomor WhatsApp dari CMS (kontak.whatsapp). */
   whatsapp?: string
+  /** Daftar layanan (dari CMS Layanan) — menggantikan submenu item "Layanan". */
+  layananNav?: readonly { label: string; href: string }[]
 }) {
   const daftar: ItemNav[] =
     navigasiCms && navigasiCms.length > 0
@@ -57,11 +60,20 @@ export function Navbar({
   const aktif = (to: string) =>
     to === "/" ? pathname === "/" : pathname.startsWith(to)
 
-  const menu: EntryMenu[] = daftar.map((item) =>
-    item.anak && item.anak.length > 0
-      ? { type: "grup", item }
-      : { type: "link", item }
-  )
+  /** Item "Layanan" memakai daftar layanan live dari CMS (bukan submenu manual). */
+  const menu: EntryMenu[] = daftar.map((item) => {
+    const isLayanan =
+      /^layanan$/i.test(item.label.trim()) || item.href === "/layanan"
+    const anak =
+      isLayanan && layananNav && layananNav.length > 0
+        ? layananNav.map((l) => ({ label: l.label, href: l.href }))
+        : (item.anak ?? [])
+    const itemFinal = { ...item, anak }
+
+    return anak.length > 0
+      ? { type: "grup", item: itemFinal }
+      : { type: "link", item: itemFinal }
+  })
 
   const kelasLink = (href: string) =>
     cn(

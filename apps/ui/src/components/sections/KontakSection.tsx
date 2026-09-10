@@ -10,7 +10,7 @@ import { InstagramIcon } from "@/components/ui/icons"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { layanan, perusahaan } from "@/data/perusahaan"
+import { layanan } from "@/data/perusahaan"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { simpanLeadPublik } from "@/lib/crm/crm-store"
 
@@ -22,7 +22,40 @@ type FormPesan = {
   pesan: string
 }
 
-export function KontakSection() {
+type Kontak = {
+  nama?: string
+  domisili?: string
+  kantor?: string
+  telepon?: string
+  email?: string
+  jamOperasional?: string
+  instagram?: string
+  whatsapp?: string
+}
+
+/** Fallback statis — dipakai bila CMS kontak kosong. */
+const KONTAK_DEFAULT: Kontak = {
+  nama: "CV. AN NASR KONSULTAN",
+  domisili:
+    "Jl. Raya Tembelang RT.001 RW.003, Desa Bedahlawak, Kecamatan Tembelang, Kabupaten Jombang",
+  kantor:
+    "Perumahan Candi Regency No. A10, Desa Candi Mulyo, Kecamatan Jombang, Kabupaten Jombang",
+  telepon: "+62 812-0000-0000",
+  email: "annasrkonsultan@email.com",
+  jamOperasional: "Senin – Sabtu, 08.00 – 17.00 WIB",
+  instagram: "annasrkonsultan",
+  whatsapp: "6281200000000",
+}
+
+export function KontakSection({
+  kontak = {},
+}: {
+  /** Data kontak dari CMS (single type Kontak). */
+  kontak?: Kontak
+}) {
+  const k: Kontak = { ...KONTAK_DEFAULT, ...kontak }
+  const wa = k.whatsapp?.trim() || KONTAK_DEFAULT.whatsapp
+  const ig = (k.instagram ?? "").trim().replace(/^@/, "")
   const {
     register,
     handleSubmit,
@@ -33,8 +66,8 @@ export function KontakSection() {
   })
 
   const onSubmit = handleSubmit(async (data) => {
-    const teks = `Halo ${perusahaan.nama}, saya ${data.nama}.%0A%0AJenis layanan: ${data.jenisLayanan}%0ANo. HP: ${data.hp}%0AEmail: ${data.email}%0A%0A${data.pesan}`
-    window.open(`https://wa.me/${perusahaan.whatsapp}?text=${teks}`, "_blank")
+    const teks = `Halo ${k.nama}, saya ${data.nama}.%0A%0AJenis layanan: ${data.jenisLayanan}%0ANo. HP: ${data.hp}%0AEmail: ${data.email}%0A%0A${data.pesan}`
+    window.open(`https://wa.me/${wa}?text=${teks}`, "_blank")
     toast.success("Pesan Anda siap dikirim melalui WhatsApp.")
     simpanLeadPublik({
       nama: data.nama,
@@ -168,7 +201,7 @@ export function KontakSection() {
                     Domisili Perusahaan
                   </span>
                   <span className="text-muted-foreground mt-1 block text-sm leading-relaxed">
-                    {perusahaan.domisili}
+                    {k.domisili}
                   </span>
                 </span>
               </li>
@@ -181,7 +214,7 @@ export function KontakSection() {
                     Alamat Kantor
                   </span>
                   <span className="text-muted-foreground mt-1 block text-sm leading-relaxed">
-                    {perusahaan.kantor}
+                    {k.kantor}
                   </span>
                 </span>
               </li>
@@ -194,7 +227,7 @@ export function KontakSection() {
                     Telepon
                   </span>
                   <a
-                    href={`tel:${perusahaan.telepon}`}
+                    href={`tel:${k.telepon}`}
                     onClick={() =>
                       trackEvent(ANALYTICS_EVENTS.contactChannel, {
                         channel: "phone",
@@ -203,7 +236,7 @@ export function KontakSection() {
                     }
                     className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
                   >
-                    {perusahaan.telepon}
+                    {k.telepon}
                   </a>
                 </span>
               </li>
@@ -216,7 +249,7 @@ export function KontakSection() {
                     Email
                   </span>
                   <a
-                    href={`mailto:${perusahaan.email}`}
+                    href={`mailto:${k.email}`}
                     onClick={() =>
                       trackEvent(ANALYTICS_EVENTS.contactChannel, {
                         channel: "email",
@@ -225,7 +258,7 @@ export function KontakSection() {
                     }
                     className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
                   >
-                    {perusahaan.email}
+                    {k.email}
                   </a>
                 </span>
               </li>
@@ -238,7 +271,7 @@ export function KontakSection() {
                     WhatsApp
                   </span>
                   <a
-                    href={`https://wa.me/${perusahaan.whatsapp}`}
+                    href={`https://wa.me/${wa}`}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() =>
@@ -249,7 +282,7 @@ export function KontakSection() {
                     }
                     className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
                   >
-                    +{perusahaan.whatsapp}
+                    +{k.whatsapp}
                   </a>
                 </span>
               </li>
@@ -262,15 +295,12 @@ export function KontakSection() {
                     Instagram
                   </span>
                   <a
-                    href={`https://instagram.com/${perusahaan.instagram.replace(
-                      /^@/,
-                      ""
-                    )}`}
+                    href={`https://instagram.com/${ig}`}
                     target="_blank"
                     rel="noreferrer"
                     className="text-muted-foreground hover:text-accent mt-1 block text-sm transition-colors"
                   >
-                    @{perusahaan.instagram.replace(/^@/, "")}
+                    @{ig}
                   </a>
                 </span>
               </li>
@@ -283,7 +313,7 @@ export function KontakSection() {
                     Jam Operasional
                   </span>
                   <span className="text-muted-foreground mt-1 block text-sm">
-                    {perusahaan.jamOperasional}
+                    {k.jamOperasional}
                   </span>
                 </span>
               </li>

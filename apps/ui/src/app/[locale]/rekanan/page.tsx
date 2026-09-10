@@ -6,6 +6,7 @@ import { setRequestLocale } from "next-intl/server"
 import { JsonLd } from "@/components/seo/JsonLd"
 import { EmptyState } from "@/components/site/EmptyState"
 import { PageHero } from "@/components/site/PageHero"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { fetchRekanan, type RekananItem } from "@/lib/annasr/rekanan"
 import { isValidLocale, Link } from "@/lib/navigation"
 import { breadcrumbLd } from "@/lib/seo/structured-data"
@@ -92,7 +93,10 @@ export default async function RekananPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
-  const daftar = await fetchRekanan(locale)
+  const [daftar, situs] = await Promise.all([
+    fetchRekanan(locale),
+    fetchKontenSitus(locale),
+  ])
 
   const baseUrl = publicBaseUrl()
 
@@ -113,8 +117,8 @@ export default async function RekananPage({
       />
       <PageHero
         eyebrow="Rekanan"
-        judul="Sertifikat kerjasama dengan rekanan"
-        teks="Dokumentasi kepercayaan instansi, desa, kecamatan, yayasan, dan badan usaha terhadap layanan kami."
+        judul={situs.situs.rekananIntroJudul}
+        teks={situs.situs.rekananIntroDeskripsi}
       />
       <section className="bg-background px-5 py-16 lg:px-8 lg:py-24">
         <div className="mx-auto w-full max-w-7xl">

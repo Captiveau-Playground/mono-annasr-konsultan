@@ -44,15 +44,48 @@ function teks(v: unknown, fb: string): string {
   return typeof v === "string" && v.trim() ? v : fb
 }
 
+/**
+ * Parse daftar teks dari CMS — dukung tiga bentuk:
+ *  - array string (mis. hasil REST lama/JSON),
+ *  - array { value } / { teks },
+ *  - string textarea (satu baris = satu item), termasuk data JSON lama yang
+ *    terbaca sebagai string `["...","..."]`.
+ */
 function teksArr(v: unknown, fb: string[]): string[] {
   if (Array.isArray(v)) {
     const nilai = v.map((x) =>
       typeof x === "string"
         ? x
-        : String((x as { value?: unknown })?.value ?? "")
+        : String(
+            (x as { value?: unknown; teks?: unknown })?.value ??
+              (x as { teks?: unknown })?.teks ??
+              ""
+          )
     )
 
     return nilai.some(Boolean) ? nilai.filter(Boolean) : fb
+  }
+
+  if (typeof v === "string" && v.trim()) {
+    const teksRaw = v.trim()
+    // Data lama (JSON) yang terbaca sebagai string JSON.
+    if (teksRaw.startsWith("[")) {
+      try {
+        const arr = JSON.parse(teksRaw) as unknown
+        if (Array.isArray(arr)) {
+          const nilai = arr.filter((x): x is string => typeof x === "string")
+          if (nilai.length > 0) return nilai
+        }
+      } catch {
+        // bukan JSON — lanjut split baris
+      }
+    }
+
+    const baris = teksRaw
+      .split(/\r?\n/)
+      .map((b) => b.trim())
+      .filter(Boolean)
+    if (baris.length > 0) return baris
   }
 
   return fb
@@ -95,9 +128,7 @@ export function layananCms(
       nama: judul,
       ikon: IKON_LAYANAN[i % IKON_LAYANAN.length] ?? Building2,
       ringkas: teks(l.ringkas, statis?.ringkas ?? ""),
-      detail: (l.detail as string[])?.length
-        ? (l.detail as string[])
-        : (statis?.detail ?? []),
+      detail: teksArr(l.detail, statis?.detail ?? []),
       gambar: urlGambar(l),
       alt: judul,
       galeri:
@@ -109,9 +140,7 @@ export function layananCms(
             }))
           : (statis?.galeri ?? []),
       deskripsi: teks(l.deskripsi, statis?.deskripsi ?? ""),
-      manfaat: (l.manfaat as string[])?.length
-        ? (l.manfaat as string[])
-        : (statis?.manfaat ?? []),
+      manfaat: teksArr(l.manfaat, statis?.manfaat ?? []),
       alur: Array.isArray(l.alur)
         ? (l.alur as { judul?: unknown; teks?: unknown }[]).map((a) => ({
             judul: teks(a.judul, ""),
@@ -182,11 +211,19 @@ export type KontenSitus = {
   tentang: {
     hero: { judul: string; deskripsi: string; keunggulan: string[] }
     statistik: { nilai: string; label: string }[]
-    founder: { nama: string; jabatan: string; teks: string; kutipan: string }
+    founder: {
+      nama: string
+      jabatan: string
+      teks: string
+      kutipan: string
+      foto?: string
+    }
     perjalanan: { tahun: string; judul: string; teks: string }[]
     visiMisi: { judul: string; teks: string }[]
     tim: { nama: string; jabatan: string; foto?: string; linkedin?: string }[]
     alasan: { judul: string; teks: string }[]
+    /** Inti "Tentang Kami" — dari field `tentang` (persyaratan-kartu) di CMS. */
+    tentangInti: { judul: string; deskripsi: string; daftar: string[] }
     jangkauanJudul: string
     jangkauanDeskripsi: string
     kotaProyek: { nama: string; lat: number; lng: number }[]
@@ -222,6 +259,8 @@ export type KontenSitus = {
   situs: {
     brandNama: string
     brandTagline: string
+    rekananIntroJudul: string
+    rekananIntroDeskripsi: string
     navigasi: ItemNavigasi[]
   }
 }
@@ -244,9 +283,8 @@ function artikelCms(daftar: Record<string, unknown>[]) {
       kategori: teks(a.kategori, "Artikel"),
       penulis: teks(a.penulis, "Tim CV. AN NASR KONSULTAN"),
       gambar: medUrl(a.gambar as { url?: unknown }, statis?.gambar ?? ""),
-      isi: (a.isi as string[])?.length
-        ? (a.isi as string[])
-        : (statis?.isi ?? []),
+      unggulan: Boolean((a as { unggulan?: unknown }).unggulan === true),
+      isi: teksArr(a.isi, statis?.isi ?? []),
     }
   })
 }
@@ -387,7 +425,26 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           (t.founder as { kutipan?: unknown })?.kutipan,
           "Setiap pekerjaan harus dapat dipertanggungjawabkan secara teknis maupun moral."
         ),
+        foto: medUrl((t.founder as { foto?: { url?: unknown } })?.foto, ""),
       },
+      tentangInti: (() => {
+        const inti = t.tentang as
+          | undefined
+          | { judul?: unknown; deskripsi?: unknown; daftar?: unknown }
+        if (!inti) {
+          return {
+            judul: "",
+            deskripsi: "",
+            daftar: [],
+          }
+        }
+
+        return {
+          judul: teks(inti.judul, ""),
+          deskripsi: teks(inti.deskripsi, ""),
+          daftar: teksArr(inti.daftar, []),
+        }
+      })(),
       perjalanan: Array.isArray(t.perjalanan)
         ? (
             t.perjalanan as {
@@ -564,6 +621,14 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
     situs: {
       brandNama: teks(sit.brandNama, "CV. An Nasr Konsultan"),
       brandTagline: teks(sit.brandTagline, "Konsultan Teknik & Konstruksi"),
+      rekananIntroJudul: teks(
+        sit.rekananIntroJudul,
+        "Rekanan & Sertifikat Kerjasama"
+      ),
+      rekananIntroDeskripsi: teks(
+        sit.rekananIntroDeskripsi,
+        "Pemerintah daerah, desa, kecamatan, yayasan, hingga mitra usaha yang mempercayakan pekerjaan tekniknya kepada kami."
+      ),
       navigasi:
         Array.isArray(sit.navigasi) &&
         (sit.navigasi as Record<string, unknown>[]).length

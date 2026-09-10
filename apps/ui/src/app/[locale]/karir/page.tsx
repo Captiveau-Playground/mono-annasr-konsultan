@@ -62,7 +62,7 @@ export default async function KarirPage({
 
       <section className="bg-background px-6 py-16 lg:px-8 lg:py-24">
         <div className="mx-auto w-full max-w-7xl">
-          {konten.karir.length === 0 ? (
+          {konten.karir.filter((p) => p.status !== "ditutup").length === 0 ? (
             <EmptyState
               ikon={BriefcaseBusiness}
               judul="Lowongan belum tersedia"
@@ -78,9 +78,11 @@ export default async function KarirPage({
             />
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {konten.karir.map((item) => (
-                <JobCard key={item.slug || item.nama} item={item} />
-              ))}
+              {konten.karir
+                .filter((p) => p.status !== "ditutup")
+                .map((item) => (
+                  <JobCard key={item.slug || item.nama} item={item} />
+                ))}
             </div>
           )}
         </div>

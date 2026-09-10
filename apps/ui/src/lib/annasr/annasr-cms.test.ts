@@ -92,6 +92,7 @@ describe("beranda (fetchBeranda)", () => {
         kategori: "QA kategori",
         penulis: "QA penulis",
         gambar: { url: "/uploads/qa-artikel-beranda.jpg" },
+        unggulan: true,
         isi: ["QA isi 1", "QA isi 2"],
       },
     ],
@@ -146,6 +147,7 @@ describe("beranda (fetchBeranda)", () => {
       kategori: "QA kategori",
       penulis: "QA penulis",
       gambar: "/api/asset/uploads/qa-artikel-beranda.jpg",
+      unggulan: true,
       isi: ["QA isi 1", "QA isi 2"],
     })
     expect(r.faq).toEqual([{ tanya: "QA tanya", jawab: "QA jawab" }])
@@ -330,6 +332,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       jabatan: "QA f jabatan",
       teks: "QA f teks",
       kutipan: "QA f kutipan",
+      foto: "",
     })
     expect(r.perjalanan).toEqual([
       { tahun: "QA2014", judul: "QA jalan judul", teks: "QA jalan teks" },
