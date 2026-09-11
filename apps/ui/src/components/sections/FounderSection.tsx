@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Quote } from "lucide-react"
 import Image from "next/image"
 
 import { Reveal } from "@/components/site/Reveal"
@@ -9,8 +9,8 @@ import type { BerandaKonten } from "@/lib/annasr/beranda"
 import { Link } from "@/lib/navigation"
 
 /**
- * Section founder — seluruh teks (nama, jabatan, paragraf) dan foto utama
- * diambil dari CMS Beranda (`beranda.founder`), fallback ke data statis.
+ * Section founder — seluruh teks (nama, jabatan, paragraf, kutipan) dan foto
+ * utama diambil dari CMS Beranda (`beranda.founder`), fallback ke data statis.
  * Dua foto pendukung (kantor & lapangan) tetap dekoratif statis.
  */
 export function FounderSection({
@@ -23,6 +23,9 @@ export function FounderSection({
   const teks =
     founderData?.teks?.trim() ||
     "CV. An Nasr Konsultan hadir sebagai mitra independen yang melindungi kepentingan klien, memastikan proyek berjalan tepat waktu, tepat mutu, tepat biaya, serta memenuhi seluruh standar teknis dan perizinan yang berlaku."
+  const kutipan =
+    founderData?.kutipan?.trim() ||
+    "Setiap pekerjaan harus dapat dipertanggungjawabkan secara teknis maupun moral."
   const foto = founderData?.foto?.trim() || "/images/annasr/founder.jpg"
 
   return (
@@ -57,6 +60,13 @@ export function FounderSection({
           <p className="text-muted-foreground mt-4 text-sm leading-relaxed lg:text-base">
             {teks}
           </p>
+
+          <figure className="border-border bg-primary/5 mt-6 rounded-xl border p-5">
+            <Quote className="text-accent size-5" aria-hidden />
+            <blockquote className="text-muted-foreground mt-2 text-sm leading-relaxed lg:text-base">
+              &ldquo;{kutipan}&rdquo;
+            </blockquote>
+          </figure>
 
           <div className="mt-6 grid flex-1 grid-cols-2 gap-4">
             <Image

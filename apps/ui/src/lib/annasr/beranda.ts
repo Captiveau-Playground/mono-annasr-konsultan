@@ -36,7 +36,13 @@ export type ArtikelBeranda = {
 export type BerandaKonten = {
   hero?: { judul: string; deskripsi: string; keunggulan: string[] }
   statistik: { nilai: string; label: string }[]
-  founder?: { nama: string; jabatan: string; teks: string; foto?: string }
+  founder?: {
+    nama: string
+    jabatan: string
+    teks: string
+    kutipan?: string
+    foto?: string
+  }
   /** "Mengapa Memilih An Nasr" — dikelola CMS di Beranda (bukan Tentang). */
   keunggulan: { judul: string; teks: string }[]
   layanan: { slug: string; judul: string; ringkas: string; gambar: string }[]
@@ -135,6 +141,9 @@ const CTA_DEFAULT = {
   deskripsi:
     "Sampaikan rencana pembangunan Anda, tim kami akan membantu menyusun solusi teknis yang tepat sasaran dan sesuai anggaran.",
 }
+
+const KUTIPAN_DEFAULT =
+  "Setiap pekerjaan harus dapat dipertanggungjawabkan secara teknis maupun moral."
 
 /**
  * Resolve URL media Strapi.
@@ -241,6 +250,7 @@ type RawBeranda = {
     nama?: unknown
     jabatan?: unknown
     teks?: unknown
+    kutipan?: unknown
     foto?: { url?: unknown }
   }
   keunggulan?: { judul?: unknown; teks?: unknown }[]
@@ -339,6 +349,7 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
             nama: str(data.founder.nama, fallback.founder!.nama),
             jabatan: str(data.founder.jabatan, fallback.founder!.jabatan),
             teks: str(data.founder.teks, fallback.founder!.teks),
+            kutipan: str(data.founder.kutipan, KUTIPAN_DEFAULT),
             foto: resolvUrl(data.founder.foto?.url) ?? fallback.founder!.foto,
           }
         : fallback.founder,
@@ -375,7 +386,9 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
               lokasi: str(p.lokasi, ""),
               kategori: str(p.kategori, "Bangunan"),
               gambar:
-                resolvUrl(p.gambar?.url) ?? fallback.portfolio[i]?.gambar ?? "",
+                resolvUrl(p.gambar?.url) ??
+                fallback.portfolio[i]?.gambar ??
+                "/images/annasr/proyek-gedung.jpg",
             }))
           : fallback.portfolio,
       klien:

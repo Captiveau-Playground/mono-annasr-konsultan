@@ -3,9 +3,11 @@ import type { Core } from "@strapi/strapi"
 // Must stay first so configured telemetry exporters initialize before the rest
 // of the server is loaded.
 import "./instrumentation"
+import { registerLayananGaleriGuard } from "./documentMiddlewares/layananGaleri"
 import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalidate"
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
+import { seedCmsMainField } from "./utils/cms-config"
 import { logger } from "./utils/logging"
 import { setupRbac } from "./utils/rbac"
 import { seedAnnasr } from "./utils/seed"
@@ -34,9 +36,11 @@ export default {
 
     // Register automatic frontend revalidation middleware for content changes
     registerAutoRevalidateMiddleware({ strapi })
+    registerLayananGaleriGuard({ strapi })
 
     await setupRbac({ strapi })
     await seedAnnasr({ strapi })
+    await seedCmsMainField({ strapi })
 
     logger.info("Strapi bootstrap completed")
   },

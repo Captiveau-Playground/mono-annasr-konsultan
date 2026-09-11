@@ -27,12 +27,18 @@ import { PublicStrapiClient } from "@/lib/strapi-api"
 
 const uid = (nama: string) => `api::${nama}.${nama}` as UID.ContentType
 
-const IKON_LAYANAN: LucideIcon[] = [
-  Building2,
-  ClipboardCheck,
-  FileCheck2,
-  HardHat,
-]
+/** Ikon stabil per-slug layanan (bukan per-indeks) supaya konsisten walau
+ * urutan/jumlah layanan di CMS berubah. */
+const IKON_BY_SLUG: Record<string, LucideIcon> = {
+  perencanaan: Building2,
+  pengawasan: ClipboardCheck,
+  perizinan: FileCheck2,
+  konstruksi: HardHat,
+}
+
+export function ikonLayanan(slug: string): LucideIcon {
+  return IKON_BY_SLUG[slug] ?? Building2
+}
 
 export const slugify = (teks: string) =>
   teks
@@ -126,7 +132,7 @@ export function layananCms(
     return {
       slug: teks(l.slug, statis?.slug ?? slugify(judul)),
       nama: judul,
-      ikon: IKON_LAYANAN[i % IKON_LAYANAN.length] ?? Building2,
+      ikon: ikonLayanan(teks(l.slug, statis?.slug ?? "")),
       ringkas: teks(l.ringkas, statis?.ringkas ?? ""),
       detail: teksArr(l.detail, statis?.detail ?? []),
       gambar: urlGambar(l),
@@ -530,7 +536,10 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
             instansi: teks(p.instansi, portfolio[i]?.instansi ?? ""),
             lokasi: teks(p.lokasi, ""),
             kategori: teks(p.kategori, "Bangunan"),
-            gambar: medUrl(p.gambar, portfolio[i]?.gambar ?? ""),
+            gambar: medUrl(
+              p.gambar,
+              portfolio[i]?.gambar ?? "/images/annasr/proyek-gedung.jpg"
+            ),
           }))
         : portfolio.map((p) => ({
             nama: p.nama,

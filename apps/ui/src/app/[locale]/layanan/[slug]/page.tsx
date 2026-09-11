@@ -50,8 +50,9 @@ export default async function DetailLayanan({
 
   const galeri = [{ src: item.gambar, alt: item.alt }, ...item.galeri].slice(
     0,
-    8
+    9
   )
+  const thumbCount = galeri.length - 1
 
   return (
     <>
@@ -68,25 +69,31 @@ export default async function DetailLayanan({
           </p>
 
           <div className="mt-10 grid gap-3 sm:grid-cols-2">
-            {galeri.map((g, i) => (
-              <Reveal
-                key={g.alt}
-                delay={i * 0.05}
-                className={i === 0 ? "sm:col-span-2" : ""}
-              >
-                <Image
-                  src={g.src}
-                  alt={g.alt}
-                  width={1200}
-                  height={800}
-                  priority={i === 0}
-                  sizes={i === 0 ? "80vw" : "(min-width:640px) 40vw, 80vw"}
-                  className={`border-border w-full rounded-[1.5rem] border object-cover shadow-[var(--shadow-soft)] ${
-                    i === 0 ? "aspect-[16/7]" : "aspect-[4/3]"
-                  }`}
-                />
-              </Reveal>
-            ))}
+            {galeri.map((g, i) => {
+              // Bila jumlah thumbnail ganjil, item terakhir dilebarkan agar grid rapi.
+              const genap =
+                i === 0 || (thumbCount % 2 === 1 && i === galeri.length - 1)
+
+              return (
+                <Reveal
+                  key={g.alt}
+                  delay={i * 0.05}
+                  className={genap ? "sm:col-span-2" : ""}
+                >
+                  <Image
+                    src={g.src}
+                    alt={g.alt}
+                    width={1200}
+                    height={800}
+                    priority={i === 0}
+                    sizes={i === 0 ? "80vw" : "(min-width:640px) 40vw, 80vw"}
+                    className={`border-border w-full rounded-[1.5rem] border object-cover shadow-[var(--shadow-soft)] ${
+                      i === 0 ? "aspect-[16/7]" : "aspect-[4/3]"
+                    }`}
+                  />
+                </Reveal>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -189,8 +196,8 @@ function AlurLayanan({
                   <>
                     {/* Panah antar kartu — desktop (kanan) */}
                     <ArrowRight className="text-primary/30 pointer-events-none absolute top-1/2 -right-4 hidden size-4 -translate-y-1/2 lg:block" />
-                    {/* Panah antar kartu — mobile (bawah, vertikal) */}
-                    <ArrowRight className="text-primary/30 pointer-events-none absolute -bottom-3 left-1/2 size-4 -translate-x-1/2 rotate-90 lg:hidden" />
+                    {/* Panah antar kartu — mobile (di dalam kartu, tengah bawah) */}
+                    <ArrowRight className="text-primary/30 mx-auto mt-4 block size-4 rotate-90 lg:hidden" />
                   </>
                 ) : null}
               </li>

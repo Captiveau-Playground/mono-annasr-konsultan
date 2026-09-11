@@ -60,6 +60,7 @@ describe("beranda (fetchBeranda)", () => {
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
       teks: "QA teks founder",
+      kutipan: "QA kutipan founder",
       foto: { url: "/uploads/qa-founder.jpg" },
     },
     keunggulan: [{ judul: "QA alasan 1", teks: "QA alasan teks" }],
@@ -115,6 +116,7 @@ describe("beranda (fetchBeranda)", () => {
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
       teks: "QA teks founder",
+      kutipan: "QA kutipan founder",
       foto: "/api/asset/uploads/qa-founder.jpg",
     })
     expect(r.keunggulan).toEqual([

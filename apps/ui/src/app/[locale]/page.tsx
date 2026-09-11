@@ -1,10 +1,3 @@
-import {
-  Building2,
-  ClipboardCheck,
-  FileCheck2,
-  HardHat,
-  type LucideIcon,
-} from "lucide-react"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
@@ -21,7 +14,7 @@ import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { KenapaKami } from "@/components/tentang/KenapaKami"
 import { fetchBeranda } from "@/lib/annasr/beranda"
-import { fetchKontenSitus } from "@/lib/annasr/konten"
+import { fetchKontenSitus, ikonLayanan } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 import { faqLd, localBusinessLd, websiteLd } from "@/lib/seo/structured-data"
 import { publicBaseUrl } from "@/lib/seo/urls"
@@ -55,13 +48,6 @@ export async function generateMetadata({
   }
 }
 
-const IKON_LAYANAN: LucideIcon[] = [
-  Building2,
-  ClipboardCheck,
-  FileCheck2,
-  HardHat,
-]
-
 const slugify = (teks: string) =>
   teks
     .toLowerCase()
@@ -86,7 +72,7 @@ function layananKeItem(
         (l.slug && l.slug.length > 0 ? l.slug : slugify(nama)) ||
         `layanan-${i + 1}`,
       nama,
-      ikon: IKON_LAYANAN[i % IKON_LAYANAN.length] ?? Building2,
+      ikon: ikonLayanan(l.slug ?? ""),
       ringkas: l.ringkas,
       detail: [l.ringkas],
       gambar: l.gambar,
@@ -135,18 +121,18 @@ export default async function BerandaPage({
         hero={konten.hero}
         brand={kontenSitus.situs.brandNama}
         tagline={kontenSitus.situs.brandTagline}
-        layanan={konten.layanan.map((l) => l.judul)}
+        layanan={kontenSitus.layanan.map((l) => l.nama)}
       />
       <KlienSection items={konten.klien} />
       <FounderSection founder={konten.founder} />
       <KenapaKami alasan={konten.keunggulan} />
-      <LayananSection items={layananKeItem(konten.layanan)} />
-      <PortfolioSection items={konten.portfolio} />
+      <LayananSection items={layananKeItem(kontenSitus.layanan)} />
+      <PortfolioSection items={kontenSitus.portfolio} />
       <JangkauanSection
-        judul={konten.jangkauanJudul}
-        deskripsi={konten.jangkauanDeskripsi}
-        kota={konten.kotaProyek}
-        statistik={konten.statistik}
+        judul={kontenSitus.tentang.jangkauanJudul}
+        deskripsi={kontenSitus.tentang.jangkauanDeskripsi}
+        kota={kontenSitus.tentang.kotaProyek}
+        statistik={kontenSitus.tentang.statistik}
       />
       <ArtikelSection items={konten.artikel} />
       <FaqSection items={konten.faq} />

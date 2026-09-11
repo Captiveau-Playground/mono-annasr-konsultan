@@ -71,6 +71,24 @@ Tanggal rekap: 2026-09-10 · Total: **57 baris · 56 issue nyata** (1 baris #20 
 | 55  | Footer  | List jasa tak sinkron menu vs layanan           | sinkron             | tidak sinkron          | Menu & footer sama-sama pakai daftar layanan CMS                                  | ✅     |
 | 56  | Footer  | Wording & kontak footer manage di mana?         | ada field           | tidak ada field        | Kelola: **Footer** (sections/copyRight) · **Global** (brand/tagline) · **Kontak** | 📋     |
 
+## Follow-up putaran 2 (v3.7.9) — hasil retest QA
+
+| #   | Module  | Follow-up                                          | Aksi                                                                                                                       | Status |
+| --- | ------- | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------ |
+| 4   | Beranda | Founder: kutipan tidak tampil di web               | `FounderSection` kini render blockquote kutipan (dari CMS, fallback statis)                                                | ✅     |
+| 9   | Beranda | Jangkauan harus sinkron & maintain via CMS proyek  | Satu sumber: **Tentang** dipakai utk semua halaman (Beranda + `/portfolio` + Tentang); kartu stat dari `tentang.statistik` | ✅ 📋  |
+| 1   | Beranda | Icon jasa belum konsisten                          | Ikon layanan kini per-slug stabil (`ikonLayanan`) — tidak nempel urutan                                                    | ✅     |
+| 6   | Beranda | Detail layanan 404 & tidak muncul di navbar/footer | Homepage pakai **single type Layanan** (sama dgn navbar/footer/list/detail) → satu katalog                                 | ✅     |
+| 8   | Beranda | Proyek tambahan tak muncul di "Semua Proyek"       | Homepage pakai **single type Portfolio** (sama dgn `/portfolio`) → satu katalog                                            | ✅     |
+| 11  | Beranda | FAQ masih tanpa title di admin                     | Seeder `mainField` Content-Manager (`faq→tanya` + field komponen lain)                                                     | ✅ ⏳  |
+| 14  | Layanan | Galeri genap & limit di CMS                        | Guard CMS maks 8 file + grid rapi (item ganjil dilebarkan)                                                                 | ✅     |
+| 17  | Layanan | Persyaratan: "satu kata" nempel di baris sendiri   | ⏳ kemungkinan isi teks CMS (newline) — perlu dipastikan teksnya                                                           | ⏳     |
+| 20  | Layanan | Panah mobile kurang rapi                           | Panah mobile dipindah ke dalam kartu (bukan absolute)                                                                      | ✅     |
+| 24  | Proyek  | Page 2 tanpa gambar + butuh scroll ke section      | Default gambar bila CMS kosong + `scrollIntoView` ke `#proyek` saat ganti halaman/kategori                                 | ✅     |
+| 26  | Proyek  | Kartu jangkauan 3 tampil (5 input) + size beda     | Tetap maks 3 kartu (dokumentasi) + tinggi kartu disamakan                                                                  | ✅ 📋  |
+
+> Catatan: field `beranda.layanan`/`beranda.portfolio`/`beranda.kotaProyek`/`beranda.jangkauan*` kini tidak dipakai halaman (katalog dikelola di single type Layanan/Portfolio/Tentang).
+
 ---
 
 ## Catatan

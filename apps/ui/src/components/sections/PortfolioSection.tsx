@@ -58,6 +58,14 @@ export function PortfolioSection({
   const gantiKategori = (k: string) => {
     setKategori(k)
     setHalaman(1)
+    scrollKeSection()
+  }
+
+  /** Kembalikan pandangan ke section proyek saat ganti halaman/kategori. */
+  const scrollKeSection = () => {
+    document
+      .getElementById("proyek")
+      ?.scrollIntoView({ behavior: "smooth", block: "start" })
   }
 
   return (
@@ -139,7 +147,10 @@ export function PortfolioSection({
         <PagBtn
           label="Halaman sebelumnya"
           disabled={halamanAman === 1}
-          onClick={() => setHalaman(halamanAman - 1)}
+          onClick={() => {
+            setHalaman(halamanAman - 1)
+            scrollKeSection()
+          }}
         >
           <ChevronLeft className="size-4" />
         </PagBtn>
@@ -153,7 +164,10 @@ export function PortfolioSection({
               key={n}
               type="button"
               aria-current={aktif ? "page" : undefined}
-              onClick={() => setHalaman(n)}
+              onClick={() => {
+                setHalaman(n)
+                scrollKeSection()
+              }}
               className={`size-9 rounded-md border text-sm font-medium transition-colors ${
                 aktif
                   ? "border-accent bg-accent text-accent-foreground"
@@ -168,7 +182,10 @@ export function PortfolioSection({
         <PagBtn
           label="Halaman berikutnya"
           disabled={halamanAman === totalHalaman}
-          onClick={() => setHalaman(halamanAman + 1)}
+          onClick={() => {
+            setHalaman(halamanAman + 1)
+            scrollKeSection()
+          }}
         >
           <ChevronRight className="size-4" />
         </PagBtn>
