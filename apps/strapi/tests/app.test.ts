@@ -25,30 +25,21 @@ describe("content-type schemas", () => {
   it("registers the expected content types", () => {
     // Each entry must have a readable schema file on disk.
     for (const [api, contentType] of [
-      ["page", "page"],
-      ["subscriber", "subscriber"],
+      ["beranda", "beranda"],
+      ["tentang", "tentang"],
+      ["layanan", "layanan"],
+      ["portfolio", "portfolio"],
+      ["klien", "klien"],
+      ["karir", "karir"],
+      ["kontak", "kontak"],
+      ["artikel", "artikel"],
+      ["situs", "situs"],
       ["navbar", "navbar"],
       ["footer", "footer"],
       ["redirect", "redirect"],
-      ["hierarchy", "hierarchy"],
+      ["rekanan", "rekanan"],
     ]) {
       expect(readSchema(api, contentType).attributes).toBeTypeOf("object")
-    }
-  })
-
-  it("defines the expected attributes on the page schema", () => {
-    const { attributes } = readSchema("page", "page")
-
-    for (const field of [
-      "title",
-      "slug",
-      "fullPath",
-      "content",
-      "parent",
-      "children",
-      "seo",
-    ]) {
-      expect(attributes[field]).toBeDefined()
     }
   })
 

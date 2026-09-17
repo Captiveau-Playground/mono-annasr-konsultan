@@ -13,8 +13,11 @@ import { getEnvVar } from "@/lib/env-vars"
  */
 export function PetaMap({
   kota,
+  brand = "",
 }: {
   kota?: { nama: string; lat: number; lng: number }[]
+  /** Nama brand untuk label tooltip — dari CMS situs.brandNama. */
+  brand?: string
 }) {
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -90,7 +93,7 @@ export function PetaMap({
           .addTo(map)
           .bindTooltip(kota.nama, { direction: "top", offset: [0, -6] })
           .bindPopup(
-            `<strong>${kota.nama}</strong><br /><span style="font-size:12px">Kota proyek CV. AN NASR KONSULTAN</span>`
+            `<strong>${kota.nama}</strong><br /><span style="font-size:12px">Kota Proyek${brand ? ` — ${brand}` : ""}</span>`
           )
       }
 

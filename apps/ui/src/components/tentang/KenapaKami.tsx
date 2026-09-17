@@ -40,7 +40,14 @@ const ALASAN_STATIS: Alasan[] = [
  * (judul + penghitung besar + progress), daftar alasan di kanan menyala satu
  * per satu saat scroll; item yang sedang terbaca disorot.
  */
-export function KenapaKami({ alasan = [] }: { alasan?: Alasan[] }) {
+export function KenapaKami({
+  alasan = [],
+  judul = "Mengapa Memilih An Nasr Konsultan",
+}: {
+  alasan?: Alasan[]
+  /** Judul section — dari CMS beranda.keunggulanJudul (via situs). */
+  judul?: string
+}) {
   const sumber: Alasan[] = alasan.length > 0 ? alasan : ALASAN_STATIS
   const ALASAN: (Alasan & { ikon: LucideIcon })[] = sumber.map((a, i) => ({
     ...a,
@@ -80,7 +87,7 @@ export function KenapaKami({ alasan = [] }: { alasan?: Alasan[] }) {
           <div className="lg:sticky lg:top-28">
             <Reveal>
               <h2 className="text-foreground max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl lg:text-5xl">
-                Mengapa Memilih An Nasr Konsultan
+                {judul}
               </h2>
               <p className="text-muted-foreground mt-5 max-w-md text-base leading-relaxed">
                 Scroll untuk mengenal alasan utama mengapa banyak pemberi tugas

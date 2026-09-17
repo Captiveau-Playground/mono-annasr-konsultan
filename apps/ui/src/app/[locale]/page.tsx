@@ -24,12 +24,8 @@ export function generateStaticParams() {
 }
 
 const deskripsi =
-  "Jasa perencanaan, pengawasan, perizinan (PBG & SLF), dan konstruksi bangunan, jalan, jembatan, serta irigasi di Kabupaten Jombang, Jawa Timur."
+  "Jasa perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang"
 
-/**
- * Judul tab & deskripsi SEO diambil dari CMS (situs.brandNama/tagline)
- * dengan fallback, supaya edit brand di Strapi langsung ke halaman utama.
- */
 export async function generateMetadata({
   params,
 }: {
@@ -41,10 +37,11 @@ export async function generateMetadata({
   const brand = konten.situs.brandNama || "CV. AN NASR KONSULTAN"
   const tagline =
     konten.situs.brandTagline || "Konsultan Teknik Sipil & Konstruksi Jombang"
+  const seo = konten.situs.seo?.beranda
 
   return {
-    title: `${brand} — ${tagline}`,
-    description: deskripsi,
+    title: seo?.judul || `${brand} — ${tagline}`,
+    description: seo?.deskripsi || deskripsi + ", Jawa Timur.",
   }
 }
 
@@ -123,9 +120,15 @@ export default async function BerandaPage({
         tagline={kontenSitus.situs.brandTagline}
         layanan={kontenSitus.layanan.map((l) => l.nama)}
       />
-      <KlienSection items={konten.klien} />
+      <KlienSection
+        items={kontenSitus.klien}
+        judul={kontenSitus.klienHero.judul || undefined}
+      />
       <FounderSection founder={konten.founder} />
-      <KenapaKami alasan={konten.keunggulan} />
+      <KenapaKami
+        alasan={konten.keunggulan}
+        judul={kontenSitus.situs.keunggulanJudul || undefined}
+      />
       <LayananSection items={layananKeItem(kontenSitus.layanan)} />
       <PortfolioSection items={kontenSitus.portfolio} />
       <JangkauanSection
@@ -133,9 +136,18 @@ export default async function BerandaPage({
         deskripsi={kontenSitus.tentang.jangkauanDeskripsi}
         kota={kontenSitus.tentang.kotaProyek}
         statistik={kontenSitus.tentang.statistik}
+        brand={kontenSitus.situs.brandNama}
       />
-      <ArtikelSection items={konten.artikel} />
-      <FaqSection items={konten.faq} />
+      <ArtikelSection
+        items={kontenSitus.artikel}
+        judul={kontenSitus.situs.artikelJudul || undefined}
+        deskripsi={kontenSitus.situs.artikelDeskripsi || undefined}
+      />
+      <FaqSection
+        items={konten.faq}
+        judul={kontenSitus.situs.faqJudul || undefined}
+        deskripsi={kontenSitus.situs.faqDeskripsi || undefined}
+      />
       <CtaBanner judul={konten.cta?.judul} deskripsi={konten.cta?.deskripsi} />
     </>
   )

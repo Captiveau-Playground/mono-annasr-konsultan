@@ -6,10 +6,12 @@ import { motion } from "motion/react"
 import { perusahaan } from "@/data/perusahaan"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 
-export function WhatsAppFloat() {
+export function WhatsAppFloat({ whatsapp }: { whatsapp?: string }) {
+  const nomor = whatsapp?.trim() || perusahaan.whatsapp
+
   return (
     <motion.a
-      href={`https://wa.me/${perusahaan.whatsapp}`}
+      href={`https://wa.me/${nomor}`}
       target="_blank"
       rel="noreferrer"
       aria-label="Hubungi kami via WhatsApp"

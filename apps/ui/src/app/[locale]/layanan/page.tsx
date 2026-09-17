@@ -20,9 +20,20 @@ const judul = "Layanan — Perencanaan, Pengawasan, Perizinan & Konstruksi"
 const deskripsi =
   "Lingkup layanan CV. AN NASR KONSULTAN: perencanaan gedung, jalan, jembatan, irigasi, pengawasan proyek, PBG, SLF, hingga pelaksanaan konstruksi."
 
-export const metadata: Metadata = {
-  title: judul,
-  description: deskripsi,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  if (!isValidLocale(locale)) return {}
+  const konten = await fetchKontenSitus(locale)
+  const seo = konten.situs.seo?.layanan
+
+  return {
+    title: seo?.judul || judul,
+    description: seo?.deskripsi || deskripsi,
+  }
 }
 
 export default async function LayananPage({
@@ -68,8 +79,15 @@ export default async function LayananPage({
         teks={konten.layananIntro.deskripsi}
       />
       <LayananSection lengkap items={konten.layanan} />
-      <ProsesSection items={konten.proses} />
-      <CtaBanner />
+      <ProsesSection
+        items={konten.proses}
+        judul={konten.situs.prosesJudul || undefined}
+        deskripsi={konten.situs.prosesDeskripsi || undefined}
+      />
+      <CtaBanner
+        judul={konten.beranda.cta?.judul}
+        deskripsi={konten.beranda.cta?.deskripsi}
+      />
     </>
   )
 }

@@ -20,9 +20,14 @@ export async function generateMetadata({
   const { locale } = await params
   if (!isValidLocale(locale)) return {}
 
+  const konten = await fetchKontenSitus(locale)
+  const seo = konten.situs.seo?.rekanan
+
   return {
-    title: "Rekanan & Sertifikat Kerjasama — CV. AN NASR KONSULTAN",
+    title:
+      seo?.judul || "Rekanan & Sertifikat Kerjasama — CV. AN NASR KONSULTAN",
     description:
+      seo?.deskripsi ||
       "Katalog rekanan dan sertifikat kerjasama CV. AN NASR KONSULTAN: pemerintah daerah, desa, kecamatan, yayasan, hingga BUMD.",
   }
 }

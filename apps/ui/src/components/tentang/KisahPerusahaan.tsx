@@ -30,8 +30,13 @@ const PERJALANAN_STATIS = [
 
 export function KisahPerusahaan({
   perjalanan = [],
+  judul = "Dari kantor kecil di Jombang, menuju pembangunan di banyak kota",
+  deskripsi = "Lebih dari satu dekade kami menumbuhkan kredibilitas lewat pekerjaan yang dapat dipertanggungjawabkan secara teknis dan moral.",
 }: {
   perjalanan?: { tahun: string; judul: string; teks: string }[]
+  /** Judul & paragraf pengantar section — dari CMS. */
+  judul?: string
+  deskripsi?: string
 }) {
   const PERJALANAN = perjalanan.length > 0 ? perjalanan : PERJALANAN_STATIS
 
@@ -46,12 +51,10 @@ export function KisahPerusahaan({
                 Perjalanan Kami
               </p>
               <h2 className="text-foreground mt-4 max-w-md text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
-                Dari kantor kecil di Jombang, menuju pembangunan di banyak kota
+                {judul}
               </h2>
               <p className="text-muted-foreground mt-6 max-w-[42rem] text-lg leading-8">
-                Lebih dari satu dekade kami menumbuhkan kredibilitas lewat
-                pekerjaan yang dapat dipertanggungjawabkan secara teknis dan
-                moral — bukan sekadar jumlah proyek.
+                {deskripsi}
               </p>
             </Reveal>
           </div>

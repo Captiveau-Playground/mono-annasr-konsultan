@@ -12,7 +12,16 @@ import { cn } from "@/lib/styles"
  * logo + label status di header, dan daftar kualifikasi di depan.
  * Kartu clickable; state tutup: opacity lebih rendah + CTA disabled.
  */
-export function JobCard({ item }: { item: ItemKarir }) {
+export function JobCard({
+  item,
+  brand = "CV. An Nasr Konsultan",
+  tagline = "Konsultan Teknik &amp; Konstruksi",
+}: {
+  item: ItemKarir
+  /** Brand & tagline — dari CMS situs. */
+  brand?: string
+  tagline?: string
+}) {
   const tutup = item.status === "ditutup"
   const kualifikasi = item.kualifikasi.slice(0, 3)
 
@@ -28,17 +37,17 @@ export function JobCard({ item }: { item: ItemKarir }) {
         <div className="flex items-center gap-3">
           <Image
             src="/images/logo/logo-white.png"
-            alt="CV. An Nasr Konsultan"
+            alt={brand}
             width={40}
             height={40}
             className="size-10 shrink-0 bg-white/10 object-contain"
           />
           <span className="leading-tight">
             <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold">
-              CV. An Nasr Konsultan
+              {brand}
             </span>
             <span className="hidden text-[11px] tracking-wide sm:block">
-              Konsultan Teknik &amp; Konstruksi
+              {tagline}
             </span>
           </span>
         </div>

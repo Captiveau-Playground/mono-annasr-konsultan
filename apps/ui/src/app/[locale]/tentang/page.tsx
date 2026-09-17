@@ -21,9 +21,20 @@ const judul = "Tentang Kami — CV. AN NASR KONSULTAN"
 const deskripsi =
   "Profil, visi, misi, dan nilai perusahaan CV. AN NASR KONSULTAN, konsultan teknik sipil dan konstruksi di Kabupaten Jombang."
 
-export const metadata: Metadata = {
-  title: judul,
-  description: deskripsi,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  if (!isValidLocale(locale)) return {}
+  const k = await fetchKontenSitus(locale)
+  const seo = k.situs.seo?.tentang
+
+  return {
+    title: seo?.judul || judul,
+    description: seo?.deskripsi || deskripsi,
+  }
 }
 
 export default async function TentangPage({
@@ -44,24 +55,41 @@ export default async function TentangPage({
         judul={konten.hero.judul}
         deskripsi={konten.hero.deskripsi}
         keunggulan={konten.hero.keunggulan}
+        statistik={konten.statistik}
       />
       <TentangInti
         judul={konten.tentangInti.judul || undefined}
         deskripsi={konten.tentangInti.deskripsi || undefined}
         poin={konten.tentangInti.daftar}
         statistik={konten.statistik}
+        brand={k.situs.brandNama || undefined}
       />
-      <KisahPerusahaan perjalanan={konten.perjalanan} />
-      <VisiMisi kartu={konten.visiMisi} />
+      <KisahPerusahaan
+        perjalanan={konten.perjalanan}
+        judul={k.situs.perjalananJudul || undefined}
+        deskripsi={k.situs.perjalananDeskripsi || undefined}
+      />
+      <VisiMisi
+        kartu={konten.visiMisi}
+        judul={k.situs.visiMisiJudul || undefined}
+      />
       <Founder data={konten.founder} />
-      <TimTentang tim={konten.tim} />
+      <TimTentang
+        tim={konten.tim}
+        judul={k.situs.timJudul || undefined}
+        deskripsi={k.situs.timDeskripsi || undefined}
+      />
       <JangkauanSection
         judul={konten.jangkauanJudul}
         deskripsi={konten.jangkauanDeskripsi}
         kota={konten.kotaProyek}
         statistik={konten.statistik}
+        brand={k.situs.brandNama}
       />
-      <CtaBanner />
+      <CtaBanner
+        judul={k.beranda.cta?.judul}
+        deskripsi={k.beranda.cta?.deskripsi}
+      />
     </>
   )
 }

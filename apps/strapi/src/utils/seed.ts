@@ -68,6 +68,43 @@ async function seedTunggal(strapi: Core.Strapi, uid: string, data: Dok) {
 /** Cache unggahan per run (nama file → id) agar tidak duplikat di Media Library. */
 const MEDIA_TERUPLOAD = new Map<string, number>()
 
+/**
+ * Seed collection type: idempotent — lewati bila collection sudah punya
+ * dokumen (>= 1), sehingga tidak menimpa edit manual maupun isian lift.
+ */
+async function seedKoleksi(
+  strapi: Core.Strapi,
+  uid: string,
+  items: (Dok | null | undefined)[]
+) {
+  const dok = strapi.documents(uid as never) as {
+    create: (q: never) => Promise<unknown>
+  }
+  // Hitung lewat db.query langsung (bukan documents.findMany) — document
+  // service sering balik 0 untuk dokumen yang hanya punya revisi published,
+  // sehingga seeding "idempotent" malah menggandakan data tiap boot.
+  const jumlah = (await strapi.db.query(uid as never).count({})) as number
+  if (Number(jumlah) > 0) return
+
+  let sukses = 0
+  for (const item of items) {
+    if (!item) continue
+    try {
+      await dok.create({
+        data: santinain(item) as Dok,
+        status: "published",
+      } as never)
+      sukses += 1
+    } catch (error) {
+      console.warn(
+        `[seed] create koleksi ${uid} gagal: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      )
+    }
+  }
+  console.log(`[seed] koleksi ${uid}: ${sukses} dokumen dibuat.`)
+}
 const MIME_ALAM = new Map<string, string>([
   [".jpg", "image/jpeg"],
   [".jpeg", "image/jpeg"],
@@ -417,6 +454,40 @@ const KLIEN = [
   "BUMDes Makmur",
   "PDAM Jombang",
 ]
+
+/** Portfolio seed (single type Portfolio — sumber tunggal, tidak duplikat di Beranda). */
+const PORTFOLIO_SEED = [
+  {
+    nama: "Pembangunan Gedung Serbaguna",
+    lokasi: "Kec. Jombang",
+    kategori: "Gedung",
+  },
+  {
+    nama: "Peningkatan Jalan Beton Desa",
+    lokasi: "Kec. Tembelang",
+    kategori: "Jalan",
+  },
+  {
+    nama: "Pembangunan Jembatan Penghubung Desa",
+    lokasi: "Kec. Ploso",
+    kategori: "Jembatan",
+  },
+  {
+    nama: "Rehabilitasi Saluran Irigasi Primer",
+    lokasi: "Kec. Megaluh",
+    kategori: "Irigasi",
+  },
+  {
+    nama: "Renovasi Rumah Tinggal Dua Lantai",
+    lokasi: "Candi Mulyo",
+    kategori: "Renovasi",
+  },
+  {
+    nama: "Pengawasan Bangunan Penahan Air",
+    lokasi: "Kab. Jombang",
+    kategori: "Bangunan",
+  },
+]
 /** Menu website An Nasr (kanonik) — item punya submenu (anak) bila bergrup. */
 const NAV_MENU = [
   { label: "Beranda", href: "/" },
@@ -482,141 +553,26 @@ const NAV_MENU = [
  * Reset karir (single) supaya posisi dengan field baru (slug/status/dll)
  * ikut tersimpan — delete+create agar published & draft seragam.
  */
-async function seedKarir(strapi: Core.Strapi) {
-  const dok = strapi.documents("api::karir.karir" as never)
-  const ada = (await dok.findFirst({})) as null | {
-    documentId?: string
-    heroJudul?: string
-    heroDeskripsi?: string
-  }
-  if (!ada?.documentId) return
-  await dok.delete({ documentId: ada.documentId } as never)
-  await dok.create({
-    status: "published",
-    data: {
-      heroJudul: ada.heroJudul ?? "Tumbuh bersama tim teknik kami",
-      heroDeskripsi:
-        ada.heroDeskripsi ??
-        "Kami mencari orang yang teliti, disiplin, dan senang belajar.",
-      posisi: [
-        {
-          nama: "Drafter Teknik Sipil",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang",
-          status: "terbuka",
-          slug: "drafter-teknik-sipil",
-          ringkas:
-            "Menyusun gambar kerja bangunan, jalan, dan jembatan dari konsep hingga siap konstruksi.",
-          deskripsi:
-            "Bergabung dengan tim perencanaan kami untuk menerjemahkan konsep desain menjadi gambar kerja yang akurat, lengkap, dan sesuai standar SNI.",
-          tanggungJawab: [
-            { teks: "Membuat gambar arsitektur dan struktur bangunan." },
-            { teks: "Menyusun detail, RAB pendukung, dan bestek." },
-            { teks: "Revisi gambar berdasarkan hasil koordinasi lapangan." },
-          ],
-          kualifikasi: [
-            { teks: "D1-D3 Teknik Sipil / Arsitektur." },
-            { teks: "Mahir AutoCAD; SketchUp nilai plus." },
-            { teks: "Teliti, rapi, dan disiplin tenggat." },
-          ],
-          manfaat: [
-            { teks: "Gaji kompetitif." },
-            { teks: "BPJS Ketenagakerjaan & Kesehatan." },
-            { teks: "Lingkungan tim yang suportif." },
-          ],
-        },
-        {
-          nama: "Pengawas Lapangan",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang & sekitarnya",
-          status: "terbuka",
-          slug: "pengawas-lapangan",
-          ringkas:
-            "Mengawasi mutu, volume, dan progres pekerjaan di lapangan sesuai gambar dan spesifikasi.",
-          deskripsi:
-            "Kami mencari pengawas yang teliti untuk memastikan setiap tahap pelaksanaan berjalan tepat mutu, biaya, dan waktu.",
-          tanggungJawab: [
-            { teks: "Memeriksa mutu bahan dan volume pekerjaan." },
-            { teks: "Menilai kesesuaian pelaksanaan dengan gambar kerja." },
-            { teks: "Menyusun laporan harian dan mingguan." },
-          ],
-          kualifikasi: [
-            { teks: "D3/S1 Teknik Sipil; pengalaman lapangan nilai plus." },
-            { teks: "Menguasai spesifikasi teknis dan metode kerja." },
-          ],
-          manfaat: [
-            { teks: "Tunjangan transport & makan lapangan." },
-            { teks: "BPJS Ketenagakerjaan & Kesehatan." },
-          ],
-        },
-        {
-          nama: "Estimator / Quantity Surveyor",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang",
-          status: "terbuka",
-          slug: "estimator-quantity-surveyor",
-          ringkas: "Menyusun RAB, analisa harga satuan, dan Bill of Quantity.",
-          deskripsi:
-            "Bersama tim kami, Anda menyusun estimasi biaya yang akurat dan menjadi dasar keputusan proyek.",
-          tanggungJawab: [
-            { teks: "Penyusunan RAB dan analisa harga satuan." },
-            { teks: "Membuat Bill of Quantity dari gambar kerja." },
-            { teks: "Evaluasi penawaran dan progress payment." },
-          ],
-          kualifikasi: [
-            { teks: "D3/S1 Teknik Sipil atau Ekonomi Teknik." },
-            { teks: "Mahir spreadsheet & software estimasi." },
-          ],
-          manfaat: [
-            { teks: "Insentif proyek." },
-            { teks: "BPJS Ketenagakerjaan & Kesehatan." },
-          ],
-        },
-        {
-          nama: "Administrasi Proyek",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang",
-          status: "ditutup",
-          slug: "administrasi-proyek",
-          ringkas: "Mengelola dokumen kontrak, laporan, dan perizinan proyek.",
-          deskripsi:
-            "Lowongan ini sementara ditutup. Pantau terus website kami untuk pembukaan kembali.",
-          tanggungJawab: [
-            { teks: "Mengelola dokumen kontrak dan laporan." },
-            { teks: "Koordinasi perizinan proyek." },
-          ],
-          kualifikasi: [
-            { teks: "D3/S1 Administrasi atau Manajemen." },
-            { teks: "Mahir Microsoft Office." },
-          ],
-          manfaat: [{ teks: "BPJS Ketenagakerjaan & Kesehatan." }],
-        },
-      ] as unknown as Dok,
-    } as never,
-  } as never)
-}
-
 async function seedMenuSitus(strapi: Core.Strapi) {
   const dok = strapi.documents("api::situs.situs" as never)
   const ada = (await dok.findFirst({})) as null | {
     documentId?: string
     brandNama?: string
-    brandTagline?: string
-    deskripsiLabel?: string
+    navigasi?: unknown
+    seo?: unknown
+    [kunci: string]: unknown
   }
   if (!ada?.documentId) return
 
-  // Reset dokumen situs supaya versi published & draft sama (update biasa
-  // hanya menyentuh draft, API published tidak berubah).
-  await dok.delete({ documentId: ada.documentId } as never)
-  await dok.create({
-    status: "published",
+  // Pastikan navigasi sinkron & data lain (intro, seo) tidak hilang.
+  // Update dengan status "published" langsung menulis versi published,
+  // sehingga draft & published tetap sama tanpa delete+create.
+  await dok.update({
+    documentId: ada.documentId,
     data: {
-      brandNama: ada.brandNama ?? "CV. An Nasr Konsultan",
-      brandTagline: ada.brandTagline ?? "Konsultan Teknik & Konstruksi",
-      deskripsiLabel: ada.deskripsiLabel ?? "",
       navigasi: NAV_MENU as unknown as Dok,
-    } as never,
+    },
+    status: "published",
   } as never)
 }
 
@@ -834,51 +790,6 @@ const berandaData: Dok = {
       teks: "Laporan berkala yang jelas.",
     },
   ],
-  layanan: LAYANAN.map((l) => ({
-    slug: l.slug,
-    judul: l.judul,
-    ringkas: l.ringkas,
-    detail: l.detail.join("\n"),
-    manfaat: l.manfaat.join("\n"),
-  })),
-  portfolio: [
-    {
-      nama: "Pembangunan Gedung Serbaguna",
-      lokasi: "Kec. Jombang",
-      kategori: "Gedung",
-    },
-    {
-      nama: "Peningkatan Jalan Beton Desa",
-      lokasi: "Kec. Tembelang",
-      kategori: "Jalan",
-    },
-    {
-      nama: "Pembangunan Jembatan Penghubung Desa",
-      lokasi: "Kec. Ploso",
-      kategori: "Jembatan",
-    },
-    {
-      nama: "Rehabilitasi Saluran Irigasi Primer",
-      lokasi: "Kec. Megaluh",
-      kategori: "Irigasi",
-    },
-    {
-      nama: "Renovasi Rumah Tinggal Dua Lantai",
-      lokasi: "Candi Mulyo",
-      kategori: "Renovasi",
-    },
-    {
-      nama: "Pengawasan Bangunan Penahan Air",
-      lokasi: "Kab. Jombang",
-      kategori: "Bangunan",
-    },
-  ],
-  klien: KLIEN.map((nama) => ({ nama })),
-  kotaProyek: KOTA,
-  jangkauanJudul: "20+ kota di Indonesia telah kami kawal",
-  jangkauanDeskripsi:
-    "Berbasis di Jombang, pekerjaan kami tersebar melintasi Jawa hingga Indonesia Timur.",
-  artikel: ARTIKEL_SEED.map((a) => ({ ...a })),
   faq: FAQ,
   cta: {
     judul: "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
@@ -887,6 +798,114 @@ const berandaData: Dok = {
   },
 }
 
+/** Lowongan seed (collection Karir — tiap posisi = satu dokumen). */
+const KARIR_SEED: Dok[] = [
+  {
+    nama: "Drafter Teknik Sipil",
+    tipe: "Penuh Waktu",
+    lokasi: "Jombang",
+    statusPosisi: "terbuka",
+    slug: "drafter-teknik-sipil",
+    ringkas:
+      "Menyusun gambar kerja bangunan, jalan, dan jembatan dari konsep hingga siap konstruksi.",
+    deskripsi:
+      "Bergabung dengan tim perencanaan kami untuk menerjemahkan konsep desain menjadi gambar kerja yang akurat, lengkap, dan sesuai standar SNI.",
+    tanggungJawab: [
+      { teks: "Membuat gambar arsitektur dan struktur bangunan." },
+      { teks: "Menyusun detail, RAB pendukung, dan bestek." },
+      { teks: "Revisi gambar berdasarkan hasil koordinasi lapangan." },
+      { teks: "Dokumentasi dan pengarsipan gambar proyek." },
+    ],
+    kualifikasi: [
+      { teks: "D1–D3 Teknik Sipil/Arsitektur." },
+      { teks: "Mahir AutoCAD 2D/3D; SketchUp nilai plus." },
+      { teks: "Teliti, rapi, dan disiplin terhadap tenggat." },
+    ],
+    manfaat: [
+      { teks: "Gaji kompetitif sesuai kemampuan." },
+      { teks: "BPJS Ketenagakerjaan & Kesehatan." },
+      { teks: "Lingkungan kerja tim yang suportif." },
+    ],
+  },
+  {
+    nama: "Pengawas Lapangan",
+    tipe: "Penuh Waktu",
+    lokasi: "Jombang & sekitarnya",
+    statusPosisi: "terbuka",
+    slug: "pengawas-lapangan",
+    ringkas:
+      "Mengawasi mutu, volume, dan progres pekerjaan di lapangan sesuai gambar dan spesifikasi.",
+    deskripsi:
+      "Kami mencari pengawas yang teliti untuk memastikan setiap tahap pelaksanaan berjalan tepat mutu, biaya, dan waktu.",
+    tanggungJawab: [
+      { teks: "Memeriksa mutu bahan dan volume pekerjaan." },
+      { teks: "Menilai kesesuaian pelaksanaan dengan gambar kerja." },
+      { teks: "Menyusun laporan harian dan mingguan proyek." },
+      { teks: "Koordinasi dengan kontraktor dan owner." },
+    ],
+    kualifikasi: [
+      { teks: "D3/S1 Teknik Sipil, pengalaman lapangan nilai plus." },
+      { teks: "Menguasai spesifikasi teknis dan metode kerja." },
+      { teks: "Jujur, komunikatif, dan siap mobilitas." },
+    ],
+    manfaat: [
+      { teks: "Tunjangan transport & makan lapangan." },
+      { teks: "BPJS Ketenagakerjaan & Kesehatan." },
+      { teks: "Pengalaman proyek yang beragam." },
+    ],
+  },
+  {
+    nama: "Estimator / Quantity Surveyor",
+    tipe: "Penuh Waktu",
+    lokasi: "Jombang",
+    statusPosisi: "terbuka",
+    slug: "estimator-quantity-surveyor",
+    ringkas: "Menyusun RAB, analisa harga satuan, dan Bill of Quantity.",
+    deskripsi:
+      "Bersama tim kami, Anda menyusun estimasi biaya yang akurat dan menjadi dasar keputusan proyek.",
+    tanggungJawab: [
+      { teks: "Penyusunan RAB dan analisa harga satuan." },
+      { teks: "Membuat Bill of Quantity dari gambar kerja." },
+      { teks: "Evaluasi penawaran dan progress payment." },
+      { teks: "Rekonsiliasi volume dan varian pekerjaan." },
+    ],
+    kualifikasi: [
+      { teks: "D3/S1 Teknik Sipil atau Ekonomi Teknik." },
+      { teks: "Mahir spreadsheet & software estimasi." },
+      { teks: "Cermat dan detail terhadap angka." },
+    ],
+    manfaat: [
+      { teks: "Insentif proyek." },
+      { teks: "BPJS Ketenagakerjaan & Kesehatan." },
+      { teks: "Bimbingan senior di lapangan." },
+    ],
+  },
+  {
+    nama: "Administrasi Proyek",
+    tipe: "Penuh Waktu",
+    lokasi: "Jombang",
+    statusPosisi: "ditutup",
+    slug: "administrasi-proyek",
+    ringkas: "Mengelola dokumen kontrak, laporan, dan perizinan proyek.",
+    deskripsi:
+      "Lowongan ini sementara ditutup. Pantau terus website kami untuk pembukaan kembali.",
+    tanggungJawab: [
+      { teks: "Mengelola dokumen kontrak dan laporan." },
+      { teks: "Koordinasi perizinan proyek." },
+      { teks: "Administrasi keuangan termin." },
+    ],
+    kualifikasi: [
+      { teks: "D3/S1 Administrasi atau Manajemen." },
+      { teks: "Mahir Office." },
+      { teks: "Rapi dan berkomunikasi baik." },
+    ],
+    manfaat: [
+      { teks: "BPJS Ketenagakerjaan & Kesehatan." },
+      { teks: "Kerja yang terstruktur." },
+    ],
+  },
+]
+
 export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
   if (process.env.RUN_ANNASR_SEED !== "true") return
   const sekarang = new Date()
@@ -894,21 +913,6 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
   try {
     const beranda = {
       ...berandaData,
-      layanan: await lampirkanGambar(
-        strapi,
-        berandaData.layanan as Dok[],
-        GAMBAR_LAYANAN
-      ),
-      portfolio: await lampirkanGambar(
-        strapi,
-        berandaData.portfolio as Dok[],
-        GAMBAR_PROYEK
-      ),
-      artikel: await lampirkanGambar(
-        strapi,
-        berandaData.artikel as Dok[],
-        GAMBAR_ARTIKEL
-      ),
       founder: {
         ...(berandaData.founder as Dok),
         foto: await unggahMedia(strapi, "founder.jpg"),
@@ -924,7 +928,9 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
       { nama: "Siti Maulida, S.T., M.T.", jabatan: "Structural Engineer" },
       { nama: "Bagus Setiawan", jabatan: "Site Inspector" },
     ]
-    const layananSeed = await Promise.all(
+
+    // ----- Collection types (tiap item = satu dokumen) -----
+    const layananItems = await Promise.all(
       LAYANAN.map(async (l, i) => ({
         slug: l.slug,
         judul: l.judul,
@@ -939,6 +945,16 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
           )
         ).filter((x): x is { id: number } => x != null),
       }))
+    )
+    const portfolioItems = await lampirkanGambar(
+      strapi,
+      PORTFOLIO_SEED as Dok[],
+      GAMBAR_PROYEK
+    )
+    const artikelItems = await lampirkanGambar(
+      strapi,
+      ARTIKEL_SEED as unknown as Dok[],
+      GAMBAR_ARTIKEL
     )
 
     await seedTunggal(strapi, "api::beranda.beranda", {
@@ -1002,11 +1018,45 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
         "Berbasis di Jombang, pekerjaan kami tersebar melintasi Jawa hingga Indonesia Timur.",
       kotaProyek: KOTA,
     })
-    await seedTunggal(strapi, "api::layanan.layanan", {
-      introJudul: "Layanan teknik yang lengkap dan terintegrasi",
-      introDeskripsi:
+
+    await seedKoleksi(strapi, "api::layanan.layanan", layananItems as Dok[])
+    await seedKoleksi(
+      strapi,
+      "api::portfolio.portfolio",
+      portfolioItems as Dok[]
+    )
+    await seedKoleksi(
+      strapi,
+      "api::klien.klien",
+      KLIEN.map((nama) => ({ nama }))
+    )
+    await seedKoleksi(strapi, "api::karir.karir", KARIR_SEED as Dok[])
+    await seedKoleksi(
+      strapi,
+      "api::artikel.artikel",
+      artikelItems as unknown as Dok[]
+    )
+    await seedTunggal(strapi, "api::kontak.kontak", {
+      heroJudul: "Mari bicarakan rencana proyek Anda",
+      heroDeskripsi:
+        "Tim kami siap membantu menghitung kebutuhan teknis hingga estimasi biaya.",
+      domisili:
+        "Jl. Raya Tembelang RT.001 RW.003, Desa Bedahlawak, Kec. Tembelang, Jombang",
+      kantor: "Perumahan Candi Regency No. A10, Desa Candi Mulyo, Kec. Jombang",
+      telepon: "+62 812-0000-0000",
+      email: "annasrkonsultan@email.com",
+      jamOperasional: "Senin – Sabtu, 08.00 – 17.00 WIB",
+      instagram: "annasrkonsultan",
+      whatsapp: "6281200000000",
+    })
+
+    await seedTunggal(strapi, "api::situs.situs", {
+      brandNama: "CV. An Nasr Konsultan",
+      brandTagline: "Konsultan Teknik & Konstruksi",
+      navigasi: NAV_MENU,
+      layananIntroJudul: "Layanan teknik yang lengkap dan terintegrasi",
+      layananIntroDeskripsi:
         "Dari studi awal hingga serah terima, seluruh kebutuhan teknis proyek ditangani dalam satu koordinasi.",
-      layanan: layananSeed,
       proses: [
         {
           judul: "Konsultasi",
@@ -1022,163 +1072,42 @@ export async function seedAnnasr({ strapi }: { strapi: Core.Strapi }) {
         { judul: "Pengawasan", teks: "Kendali mutu, volume, dan progres." },
         { judul: "Serah Terima", teks: "Pemeriksaan akhir dan as built." },
       ],
-    })
-    await seedTunggal(strapi, "api::portfolio.portfolio", {
-      heroJudul: "Pekerjaan yang berbicara melalui hasilnya",
-      heroDeskripsi:
+      portfolioHeroJudul: "Pekerjaan yang berbicara melalui hasilnya",
+      portfolioHeroDeskripsi:
         "Dokumentasi komitmen terhadap mutu dan ketepatan pelaksanaan.",
-      proyek: beranda.portfolio as Dok[],
-    })
-    await seedTunggal(strapi, "api::klien.klien", {
-      heroJudul: "Kepercayaan yang terjalin di banyak pintu",
-      heroDeskripsi:
+      klienHeroJudul: "Kepercayaan yang terjalin di banyak pintu",
+      klienHeroDeskripsi:
         "Instansi, lembaga, dan mitra usaha mempercayakan pekerjaan tekniknya kepada kami.",
-      klien: KLIEN.map((nama) => ({ nama })),
-    })
-    await seedTunggal(strapi, "api::karir.karir", {
-      heroJudul: "Tumbuh bersama tim teknik kami",
-      heroDeskripsi:
+      karirHeroJudul: "Tumbuh bersama tim teknik kami",
+      karirHeroDeskripsi:
         "Kami mencari orang yang teliti, disiplin, dan senang belajar.",
-      posisi: [
-        {
-          nama: "Drafter Teknik Sipil",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang",
-          status: "terbuka",
-          slug: "drafter-teknik-sipil",
-          ringkas:
-            "Menyusun gambar kerja bangunan, jalan, dan jembatan dari konsep hingga siap konstruksi.",
-          deskripsi:
-            "Bergabung dengan tim perencanaan kami untuk menerjemahkan konsep desain menjadi gambar kerja yang akurat, lengkap, dan sesuai standar SNI.",
-          tanggungJawab: [
-            { teks: "Membuat gambar arsitektur dan struktur bangunan." },
-            { teks: "Menyusun detail, RAB pendukung, dan bestek." },
-            { teks: "Revisi gambar berdasarkan hasil koordinasi lapangan." },
-            { teks: "Dokumentasi dan pengarsipan gambar proyek." },
-          ],
-          kualifikasi: [
-            { teks: "D1–D3 Teknik Sipil/Arsitektur." },
-            { teks: "Mahir AutoCAD 2D/3D; SketchUp nilai plus." },
-            { teks: "Teliti, rapi, dan disiplin terhadap tenggat." },
-          ],
-          manfaat: [
-            { teks: "Gaji kompetitif sesuai kemampuan." },
-            { teks: "BPJS Ketenagakerjaan & Kesehatan." },
-            { teks: "Lingkungan kerja tim yang suportif." },
-          ],
-        },
-        {
-          nama: "Pengawas Lapangan",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang & sekitarnya",
-          status: "terbuka",
-          slug: "pengawas-lapangan",
-          ringkas:
-            "Mengawasi mutu, volume, dan progres pekerjaan di lapangan sesuai gambar dan spesifikasi.",
-          deskripsi:
-            "Kami mencari pengawas yang teliti untuk memastikan setiap tahap pelaksanaan berjalan tepat mutu, biaya, dan waktu.",
-          tanggungJawab: [
-            { teks: "Memeriksa mutu bahan dan volume pekerjaan." },
-            { teks: "Menilai kesesuaian pelaksanaan dengan gambar kerja." },
-            { teks: "Menyusun laporan harian dan mingguan proyek." },
-            { teks: "Koordinasi dengan kontraktor dan owner." },
-          ],
-          kualifikasi: [
-            { teks: "D3/S1 Teknik Sipil, pengalaman lapangan nilai plus." },
-            { teks: "Menguasai spesifikasi teknis dan metode kerja." },
-            { teks: "Jujur, komunikatif, dan siap mobilitas." },
-          ],
-          manfaat: [
-            { teks: "Tunjangan transport & makan lapangan." },
-            { teks: "BPJS Ketenagakerjaan & Kesehatan." },
-            { teks: "Pengalaman proyek yang beragam." },
-          ],
-        },
-        {
-          nama: "Estimator / Quantity Surveyor",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang",
-          status: "terbuka",
-          slug: "estimator-quantity-surveyor",
-          ringkas: "Menyusun RAB, analisa harga satuan, dan Bill of Quantity.",
-          deskripsi:
-            "Bersama tim kami, Anda menyusun estimasi biaya yang akurat dan menjadi dasar keputusan proyek.",
-          tanggungJawab: [
-            { teks: "Penyusunan RAB dan analisa harga satuan." },
-            { teks: "Membuat Bill of Quantity dari gambar kerja." },
-            { teks: "Evaluasi penawaran dan progress payment." },
-            { teks: "Rekonsiliasi volume dan varian pekerjaan." },
-          ],
-          kualifikasi: [
-            { teks: "D3/S1 Teknik Sipil atau Ekonomi Teknik." },
-            { teks: "Mahir spreadsheet & software estimasi." },
-            { teks: "Cermat dan detail terhadap angka." },
-          ],
-          manfaat: [
-            { teks: "Insentif proyek." },
-            { teks: "BPJS Ketenagakerjaan & Kesehatan." },
-            { teks: "Bimbingan senior di lapangan." },
-          ],
-        },
-        {
-          nama: "Administrasi Proyek",
-          tipe: "Penuh Waktu",
-          lokasi: "Jombang",
-          status: "ditutup",
-          slug: "administrasi-proyek",
-          ringkas: "Mengelola dokumen kontrak, laporan, dan perizinan proyek.",
-          deskripsi:
-            "Lowongan ini sementara ditutup. Pantau terus website kami untuk pembukaan kembali.",
-          tanggungJawab: [
-            { teks: "Mengelola dokumen kontrak dan laporan." },
-            { teks: "Koordinasi perizinan proyek." },
-            { teks: "Administrasi keuangan termin." },
-          ],
-          kualifikasi: [
-            { teks: "D3/S1 Administrasi atau Manajemen." },
-            { teks: "Mahir Office." },
-            { teks: "Rapi dan berkomunikasi baik." },
-          ],
-          manfaat: [
-            { teks: "BPJS Ketenagakerjaan & Kesehatan." },
-            { teks: "Kerja yang terstruktur." },
-          ],
-        },
-      ],
+      artikelHeroJudul: "Wawasan Teknik & Konstruksi",
+      artikelHeroDeskripsi: "Catatan praktis dari pengalaman kami di lapangan.",
+      keunggulanJudul: "Mengapa Memilih An Nasr Konsultan",
+      prosesJudul: "Tujuh tahap kerja yang terukur",
+      prosesDeskripsi:
+        "Alur kerja yang sama untuk setiap proyek, sehingga progres mudah dipantau dari awal hingga serah terima.",
+      faqJudul: "Pertanyaan yang Sering Diajukan",
+      faqDeskripsi:
+        "Jawaban singkat untuk kebutuhan yang paling sering ditanyakan calon klien kami.",
+      artikelJudul: "Wawasan teknik dari pengalaman di lapangan",
+      artikelDeskripsi:
+        "Catatan praktis seputar perencanaan, pengawasan, perizinan, dan konstruksi.",
+      perjalananJudul:
+        "Dari kantor kecil di Jombang, menuju pembangunan di banyak kota",
+      perjalananDeskripsi:
+        "Lebih dari satu dekade kami menumbuhkan kredibilitas lewat pekerjaan yang dapat dipertanggungjawabkan secara teknis dan moral.",
+      visiMisiJudul: "Visi & Misi",
+      timJudul: "Tenaga ahli yang bekerja di balik setiap proyek",
+      timDeskripsi:
+        "Dari struktur, jalan, jembatan, hingga sumber daya air — setiap penugasan dipegang oleh profesional yang berpengalaman di lapangan.",
     })
-    await seedTunggal(strapi, "api::kontak.kontak", {
-      heroJudul: "Mari bicarakan rencana proyek Anda",
-      heroDeskripsi:
-        "Tim kami siap membantu menghitung kebutuhan teknis hingga estimasi biaya.",
-      domisili:
-        "Jl. Raya Tembelang RT.001 RW.003, Desa Bedahlawak, Kec. Tembelang, Jombang",
-      kantor: "Perumahan Candi Regency No. A10, Desa Candi Mulyo, Kec. Jombang",
-      telepon: "+62 812-0000-0000",
-      email: "annasrkonsultan@email.com",
-      jamOperasional: "Senin – Sabtu, 08.00 – 17.00 WIB",
-      instagram: "annasrkonsultan",
-      whatsapp: "6281200000000",
-    })
-    await seedTunggal(strapi, "api::artikel.artikel", {
-      heroJudul: "Wawasan Teknik & Konstruksi",
-      heroDeskripsi: "Catatan praktis dari pengalaman kami di lapangan.",
-      artikel: await lampirkanGambar(
-        strapi,
-        ARTIKEL_SEED as unknown as Dok[],
-        GAMBAR_ARTIKEL
-      ),
-    })
-    await seedTunggal(strapi, "api::situs.situs", {
-      brandNama: "CV. An Nasr Konsultan",
-      brandTagline: "Konsultan Teknik & Konstruksi",
-      navigasi: NAV_MENU,
-    })
+
     await seedKoleksiRekanan(strapi)
     await seedNavbarFooter(strapi)
-    await seedKarir(strapi)
     await seedMenuSitus(strapi)
     console.log(
-      "[seed] Konten An Nasr berhasil di-seed (9 tipe + rekanan + navbar/footer/menu)."
+      "[seed] Konten An Nasr berhasil di-seed (beranda/tentang/kontak/situs + koleksi layanan, proyek, klien, karir, artikel + rekanan + navbar/footer/menu)."
     )
   } catch (error) {
     const e = error as {

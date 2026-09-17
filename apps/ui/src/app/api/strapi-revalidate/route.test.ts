@@ -58,7 +58,7 @@ describe("POST /api/strapi-revalidate", () => {
 
     const response = await POST(
       request({
-        uid: "api::page.page",
+        uid: "api::artikel.artikel",
         next: { fullPaths: ["/about"], tags: [] },
       })
     )
@@ -75,7 +75,7 @@ describe("POST /api/strapi-revalidate", () => {
     const response = await POST(
       request(
         {
-          uid: "api::page.page",
+          uid: "api::artikel.artikel",
           next: { fullPaths: ["/about"], tags: [] },
         },
         "wrong-secret"
@@ -105,10 +105,10 @@ describe("POST /api/strapi-revalidate", () => {
     const response = await POST(
       request(
         {
-          uid: "api::page.page",
+          uid: "api::artikel.artikel",
           next: {
             fullPaths: [" /en/about ", "/about", "/en"],
-            tags: [" strapi:api::page.page ", "", "news", "news"],
+            tags: [" strapi:api::artikel.artikel ", "", "news", "news"],
           },
         },
         "test-secret"
@@ -124,15 +124,15 @@ describe("POST /api/strapi-revalidate", () => {
 
     expect(revalidateTagMock).toHaveBeenCalledTimes(2)
     expect(revalidateTagMock).toHaveBeenCalledWith(
-      "strapi:api::page.page",
+      "strapi:api::artikel.artikel",
       "max"
     )
     expect(revalidateTagMock).toHaveBeenCalledWith("news", "max")
     await expect(response.json()).resolves.toMatchObject({
-      uid: "api::page.page",
+      uid: "api::artikel.artikel",
       revalidated: true,
       fullPaths: expect.arrayContaining(["/en/about", "/about", "/en", "/"]),
-      tags: expect.arrayContaining(["strapi:api::page.page", "news"]),
+      tags: expect.arrayContaining(["strapi:api::artikel.artikel", "news"]),
     })
   })
 
@@ -142,7 +142,7 @@ describe("POST /api/strapi-revalidate", () => {
     const response = await POST(
       request(
         {
-          uid: "api::page.page",
+          uid: "api::artikel.artikel",
           next: { fullPaths: [" "], tags: [] },
         },
         "test-secret"

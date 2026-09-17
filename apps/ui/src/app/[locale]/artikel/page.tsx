@@ -15,9 +15,20 @@ const judul = "Artikel — CV. AN NASR KONSULTAN"
 const deskripsi =
   "Artikel dan wawasan seputar perencanaan, pengawasan, perizinan PBG & SLF, serta pelaksanaan konstruksi dari CV. AN NASR KONSULTAN Jombang."
 
-export const metadata: Metadata = {
-  title: judul,
-  description: deskripsi,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  if (!isValidLocale(locale)) return {}
+  const konten = await fetchKontenSitus(locale)
+  const seo = konten.situs.seo?.artikel
+
+  return {
+    title: seo?.judul || judul,
+    description: seo?.deskripsi || deskripsi,
+  }
 }
 
 export default async function ArtikelPage({

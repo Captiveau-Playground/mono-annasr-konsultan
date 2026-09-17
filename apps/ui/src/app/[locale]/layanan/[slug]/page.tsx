@@ -24,8 +24,11 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
-  const item = layanan.find((l) => l.slug === slug)
+  const { locale, slug } = await params
+  if (!isValidLocale(locale)) return {}
+
+  const konten = await fetchKontenSitus(locale)
+  const item = konten.layanan.find((l) => l.slug === slug)
 
   return {
     title: `${item?.nama ?? "Layanan"} — CV. AN NASR KONSULTAN`,
@@ -150,7 +153,10 @@ export default async function DetailLayanan({
         <DokumenClientLayanan dokumen={item.dokumenClient} />
       ) : null}
 
-      <CtaBanner />
+      <CtaBanner
+        judul={konten.beranda.cta?.judul}
+        deskripsi={konten.beranda.cta?.deskripsi}
+      />
     </>
   )
 }

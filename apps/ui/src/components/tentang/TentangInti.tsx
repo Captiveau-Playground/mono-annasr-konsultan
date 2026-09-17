@@ -30,6 +30,7 @@ export function TentangInti({
   deskripsi = "",
   poin = [],
   statistik = [],
+  brand = "CV. AN NASR KONSULTAN — Jombang, Jawa Timur",
 }: {
   /** Dari CMS `tentang.tentang.judul` (field "tentang" di single type Tentang). */
   judul?: string
@@ -38,6 +39,8 @@ export function TentangInti({
   /** Dari CMS `tentang.tentang.daftar` (satu baris = satu poin). */
   poin?: string[]
   statistik?: { nilai: string; label: string }[]
+  /** Caption gambar — brand dari CMS situs. */
+  brand?: string
 }) {
   const METRIK = statistik.length > 0 ? statistik : METRIK_STATIS
   const paragraf = deskripsi.trim() ? [deskripsi] : DESKRIPSI_STATIS
@@ -94,16 +97,14 @@ export function TentangInti({
               <div className="border-border overflow-hidden rounded-[20px] border shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
                 <Image
                   src="/images/annasr/tim-perusahaan.jpg"
-                  alt="Tim CV. AN NASR KONSULTAN — Jombang, Jawa Timur"
+                  alt="Tim {brand}"
                   width={1000}
                   height={760}
                   sizes="(min-width:1024px) 42vw, 100vw"
                   className="aspect-[4/3] w-full object-cover transition-transform duration-500 hover:scale-[1.03]"
                 />
               </div>
-              <p className="text-muted-foreground mt-3 text-sm">
-                Tim CV. AN NASR KONSULTAN — Jombang, Jawa Timur
-              </p>
+              <p className="text-muted-foreground mt-3 text-sm">Tim {brand}</p>
             </Reveal>
           </div>
         </div>

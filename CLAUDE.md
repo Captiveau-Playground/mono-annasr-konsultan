@@ -41,6 +41,16 @@ pnpm seed:import  # Import baseline seed content
 - **CMS → frontend loop**: `apps/ui/src/lib/annasr/*` fetches Strapi content (via
   `PublicStrapiClient`) with static fallbacks. Content types: `beranda`, `tentang`,
   `layanan`, `portfolio`, `klien`, `karir`, `kontak`, `artikel`, `situs`.
+- **Single type vs collection type**: halaman dalam sistem An Nasr dibedakan agar
+  mudah dikelola — **collection types** untuk daftar konten (tiap item = satu
+  dokumen: `Layanan`, `Proyek`, `Klien`, `Karir`, `Artikel`, `Rekanan`,
+  `Redirect`) dan **single types** untuk konfigurasi halaman
+  (`Beranda`, `Tentang`, `Kontak`, `Pengaturan Global` = `situs` — berisi intro
+  tiap halaman, proses, navigasi, dan SEO per halaman; `Navbar`, `Footer`).
+  Catatan: `Page`, `Hierarchy`, dan `Subscriber` telah dihapus (dormant —
+  frontend live hanya memakai rute legacy + konten compro).
+  Intro halaman lama (heroJudul/dll) kini tinggal di `situs`;
+  REST collection memakai bentuk plural (`/api/layanans`, `/api/artikels`, …).
 - **Smart populate**: population uses object form (`populate[hero]=smart`), not a
   flat `populate=smart` string — the `@notum-cz/strapi-plugin-smart-populate`
   plugin only accepts the object form in REST.

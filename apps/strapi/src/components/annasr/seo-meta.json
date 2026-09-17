@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_annasr_seo_metas",
+  "info": {
+    "displayName": "SEO (Judul & Deskripsi per Halaman)"
+  },
+  "attributes": {
+    "halaman": {
+      "type": "enumeration",
+      "enum": [
+        "global",
+        "beranda",
+        "tentang",
+        "layanan",
+        "portfolio",
+        "klien",
+        "karir",
+        "kontak",
+        "artikel",
+        "rekanan"
+      ],
+      "default": "beranda"
+    },
+    "judul": {
+      "type": "string"
+    },
+    "deskripsi": {
+      "type": "text"
+    }
+  }
+}

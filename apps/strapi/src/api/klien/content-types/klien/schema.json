@@ -1,26 +1,25 @@
 {
-  "kind": "singleType",
+  "kind": "collectionType",
   "collectionName": "kliens",
   "info": {
     "singularName": "klien",
     "pluralName": "kliens",
-    "displayName": "4 Klien"
+    "displayName": "Klien"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "heroJudul": {
+    "nama": {
       "type": "string"
     },
-    "heroDeskripsi": {
-      "type": "text"
-    },
-    "klien": {
-      "type": "component",
-      "component": "annasr.klien-item",
-      "repeatable": true
+    "logo": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": false
     }
   }
 }

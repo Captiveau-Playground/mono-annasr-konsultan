@@ -4,8 +4,13 @@ import { prosesKerja } from "@/data/perusahaan"
 
 export function ProsesSection({
   items,
+  judul = "Tujuh tahap kerja yang terukur",
+  deskripsi = "Alur kerja yang sama untuk setiap proyek, sehingga progres mudah dipantau dari awal hingga serah terima.",
 }: {
   items?: { judul: string; teks: string }[]
+  /** Judul & deskripsi section — dari CMS. */
+  judul?: string
+  deskripsi?: string
 }) {
   const daftar = items ?? prosesKerja
 
@@ -14,8 +19,8 @@ export function ProsesSection({
       <div className="mx-auto max-w-5xl">
         <SectionHeading
           eyebrow="Proses Kerja"
-          judul="Tujuh tahap kerja yang terukur"
-          deskripsi="Alur kerja yang sama untuk setiap proyek, sehingga progres mudah dipantau dari awal hingga serah terima."
+          judul={judul}
+          deskripsi={deskripsi}
         />
 
         <ol className="mx-auto mt-10 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4">

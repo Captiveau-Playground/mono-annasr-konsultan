@@ -16,12 +16,6 @@ const MAIN_FIELD_PER_UID: Record<string, Record<string, string>> = {
   "api::beranda.beranda": {
     faq: "tanya",
     keunggulan: "judul",
-    layanan: "judul",
-    portfolio: "nama",
-    klien: "nama",
-    statistik: "label",
-    artikel: "judul",
-    kotaProyek: "nama",
   },
   "api::tentang.tentang": {
     statistik: "label",
@@ -31,11 +25,16 @@ const MAIN_FIELD_PER_UID: Record<string, Record<string, string>> = {
     alasan: "judul",
     kotaProyek: "nama",
   },
-  "api::layanan.layanan": { layanan: "judul", proses: "judul" },
-  "api::portfolio.portfolio": { proyek: "nama" },
-  "api::klien.klien": { klien: "nama" },
-  "api::artikel.artikel": { artikel: "judul" },
-  "api::karir.karir": { posisi: "nama" },
+  "api::layanan.layanan": { alur: "judul", persyaratan: "judul" },
+  "api::portfolio.portfolio": {},
+  "api::klien.klien": {},
+  "api::karir.karir": {
+    tanggungJawab: "teks",
+    kualifikasi: "teks",
+    manfaat: "teks",
+  },
+  "api::artikel.artikel": {},
+  "api::situs.situs": { seo: "halaman", proses: "judul" },
 }
 
 export async function seedCmsMainField({ strapi }: { strapi: Core.Strapi }) {

@@ -92,6 +92,24 @@ Tanggal rekap: 2026-09-10 · Total: **57 baris · 56 issue nyata** (1 baris #20 
 
 ---
 
+## Audit coverage CMS ↔ FE (satu sumber per section)
+
+Menyelesaikan single-source di seluruh halaman legacy + menutup bagian FE yang sebelumnya hardcoded:
+
+| Perubahan                     | Detail                                                                                                                                                                                                                           |
+| ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Artikel satu sumber**       | Homepage kini baca `artikel` (single type) — sama dengan `/artikel` & `/artikel/[slug]`. Field duplikat `beranda.artikel` dihapus.                                                                                               |
+| **Klien satu sumber**         | Homepage dan `/klien` baca `klien` (single type, dengan logo). `beranda.klien` dihapus.                                                                                                                                          |
+| **Field beranda dibersihkan** | `statistik`, `layanan`, `portfolio`, `klien`, `kotaProyek`, `jangkauanJudul/Deskripsi`, `artikel` dihapus dari schema (migrasi `20260917_beranda_single_source_cleanup.js`). Beranda hanya: hero, founder, keunggulan, faq, cta. |
+| **WhatsApp float**            | `WhatsAppFloat` kini baca `kontak.whatsapp` dari CMS (sebelumnya hardcoded `perusahaan.whatsapp`).                                                                                                                               |
+| **Halaman `/klien`**          | `PageHero` ← `klienHero`, `KlienSection` ← `klien.klien`, `PetaSection` ← `tentang.kotaProyek` (sebelumnya hardcoded / kosong).                                                                                                  |
+| **CTA banner**                | Semua halaman dalam (`layanan`, `tentang`, `portfolio`, `klien`, detail) kini pakai `beranda.cta` dari CMS, bukan teks default.                                                                                                  |
+| **Heading section**           | `KlienSection` & `PetaSection` menerima judul dari CMS (`klienHero.judul`, `tentang.jangkauanJudul`) dengan fallback.                                                                                                            |
+| **SEO per halaman**           | Komponen `annasr.seo-meta` (+ field `situs.seo`) — judul & deskripsi meta per halaman di-manage di CMS dengan fallback ke default FE. Semua halaman legacy kini `generateMetadata` dari CMS.                                     |
+| **Tetap statis (sengaja)**    | Gambar slider Hero, logo navbar/footer, dan heading-sub adalah aset desain FE (bukan konten).                                                                                                                                    |
+
+---
+
 ## Catatan
 
 - **Fix infrastruktur**: media `/uploads`→`/api/asset` (beranda/konten/rekanan) · 6 migrasi DB (`detail`, `manfaat`, `persyaratan.daftar`, `dokumenClient.daftar`, `artikel.isi`, `hero.keunggulan` `json`→`text`; `faq.tanya` `text`→`string`) · CI tag build kini publish `:latest` · verifikasi typecheck + tes **72/72** + lint 0 error.
@@ -103,3 +121,88 @@ sed -i 's|IMAGE_STRAPI=.*|IMAGE_STRAPI=ghcr.io/Captiveau-Playground/mono-annasr-
 docker compose pull ui strapi
 docker compose up -d
 ```
+
+---
+
+## Single type vs Collection type (pemisahan arsitektur CMS)
+
+Mengikuti arahan: **single type = konfigurasi halaman, collection type = daftar konten** (tiap item dokumen sendiri di admin). Konversi dilakukan & diuji live dengan Docker:
+
+| Tipe                                               | Sebelum                                                  | Sesudah                                                                                                             |
+| -------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Layanan                                            | single type + komponen `layanan` (4 kartu dalam 1 entri) | **collection** `layanans` — 1 layanan = 1 dokumen (slug, gambar, galeri, alur, persyaratan, dokumenClient)          |
+| Portfolio                                          | single type + `proyek`                                   | **collection** `portfolios` (nama, instansi, lokasi, kategori, gambar)                                              |
+| Klien                                              | single type + `klien`                                    | **collection** `kliens` (nama, logo)                                                                                |
+| Karir                                              | single type + `posisi`                                   | **collection** `karirs` (tiap lowongan = dokumen; `status` → `statusPosisi` karena reserved)                        |
+| Artikel                                            | single type + `artikel`                                  | **collection** `artikels` (judul, slug, isi, unggulan, gambar)                                                      |
+| Intro halaman (heroJudul, introJudul, proses, dsb) | di single type masing-masing                             | **pindah ke `situs` (Pengaturan Global)** — 1 entri berisi intro tiap halaman + proses + navigasi + SEO per halaman |
+| Yang tetap single type                             | —                                                        | `Beranda`, `Tentang`, `Kontak`, `Pengaturan Global` (situs), `Navbar`, `Footer`                                     |
+| Collection lain (tetap)                            | —                                                        | `Rekanan`, `Page`, `Redirect`, `Subscriber`                                                                         |
+
+**Mekanika teknis**
+
+- Migrasi data aman: `20260917_convert_lists_to_collections.js` meng-copy komponen lama ke staging `_mig_*` SEBELUM schema sync, lalu bootstrap `src/utils/lift-lists.ts` membuat dokumen collection dari staging (idempotent; skip bila sudah terisi).
+- REST collection bentuk plural: `/api/layanans`, `/api/portfolios`, `/api/kliens`, `/api/karirs`, `/api/artikels` (FE `API_ENDPOINTS` diperbarui).
+- Bonding uid tetap (`api::layanan.layanan`, dsb.) → RBAC & middleware tak berubah fungsi.
+- Seeder (`seed.ts`): koleksi dibuat per dokumen via `seedKoleksi` (idempotent); `seedMenuSitus` kini update+publish (tak lagi delete+create agar intro/SEO situs tidak hilang).
+- Baseline seed export di-regenerasi (`seed/exports/strapi-export-2026-09-17-*.tar.gz`) supaya `pnpm dev` fresh langsung memakai model baru.
+
+**Hasil tes live (Docker aktif, Postgres via compose, AUTO_SEED baseline baru)**
+
+- Migrasi + schema sync + lift + seed jalan: `layanans` 4, `portfolios` 6, `kliens` 10, `karirs` 4, `artikels` 4, situs dengan intro & proses & navigasi; media (gambar/galeri) terpasang.
+- Alur admin (create+draft/publish/kirim uid) diverifikasi OK — tidak ada blok "must be unique" saat operasi normal.
+- Verifikasi: UI typecheck 0 error · UI tests 72/72 · UI lint 0 error · Strapi tests 62/62 · Strapi lint 0 error.
+- Catatan kecil: `seedCmsMainField` menulis warning `syncConfigurations` (preexisting, tertangkap try/catch) — tidak memblokir boot.
+
+---
+
+## Hapus content type dormant (page-builder + subscriber)
+
+Berdasarkan audit pemakaian FE live — yang **dormant dihapus**, yang **dipakai dipertahankan**:
+
+| Dihapus                   | Alasan                                                                        | Ikut dihapus                                                                                                                                                                                                                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Page` (collection)       | page-builder tidak terjangkau dari nav live (semua halaman pakai rute legacy) | rute `/dynamic/...`, `StrapiPageView`, `components/page-builder/*`, `lib/metadata/*`, `Breadcrumbs`,`usePages`, `hooks/useAppForm`, `dev/pages-overview` & `components-overview`, bagian MockedStrapi di showcase, migrasi `20260917_remove_unused_content_types.js`, baseline seed di-re-export (tanpa Page) |
+| `Hierarchy` (single)      | bagian page-builder (breadcrumb/tree)                                         | folder `api/hierarchy`, admin `extensions/Hierarchy`, tests hierarchy-\*                                                                                                                                                                                                                                      |
+| `Subscriber` (collection) | hanya dipakai form newsletter/kontak milik page-builder yang dormant          | folder `api/subscriber`, `useAppForm` (kontak form ke `/subscribers`), entri endpoint & RBAC                                                                                                                                                                                                                  |
+
+**Dipertahankan (beralasan):** `Redirect` — dibaca middleware `proxy.ts` (`redirectsProxy`) tiap request (redirect SEO dari CMS); plugin **users-permissions** — penyedia "Public role" yang menjadi sumber izin baca publik semua konten (mencabutnya = seluruh halaman tak bisa baca CMS).
+
+Efek samping yang dibersihkan: relasi `page` di komponen `utilities.link` dihapus (sendi boot gagal `Metadata for api::page.page not found`), RBAC `SUBYEK_KONTEN`, `seed-check` (kini butuh Navbar+Footer saja), `API_ENDPOINTS` FE (`/pages`, `/subscribers`), revalidate middleware (config page path-field dihapus; poin redirect tetap).
+
+**Hasil verifikasi final (DB fresh + AUTO_SEED baseline baru):**
+
+- `pages`/`subscribers`/`hierarchies` → 404; `layanans`/`artikels`/`rekanans`/`redirects`/`situs` → 200
+- UI rerender dari CMS (`/`, `/artikel`, `/layanan` 200)
+- UI typecheck 0 · UI tests 72/72 · UI lint 0 · Strapi tests 29/29 · Strapi lint 0
+
+---
+
+## Audit ulang "semua FE call Strapi?" + test semua input & changes
+
+Pass audit menyeluruh (tanpa terkecuali) + tes live semua route & input:
+
+**Hasil audit data per halaman:** 12 halaman publik + 3 tipe detail semuanya render dari Strapi (`fetchKontenSitus` / `fetchBeranda` / `fetchRekanan` / `fetchFooter`) — diuji langsung `curl` tiap route, marker konten CMS ada di semua (status 200; `/artikel`, `/layanan`, `/karir` detail pakai slug asli DB). SEO title/description per halaman terpasang (sumber: `situs.seo`, fallback FE).
+
+**Input & perubahan yang diuji:**
+
+- Form kontak `/kontak`: pilihan layanan (dari collection Layanan), WhatsApp (dari `kontak.whatsapp`), alamat/email/jam (dari `kontak`) ✓ — submit sengaja ke WhatsApp + CRM lokal (bukan simpan Strapi, by design).
+- Navbar & WhatsAppFloat: nomor WA dari CMS ✓ · Footer kolom dari footer CT ✓ · auth (users-permissions + Strapi auth plugin) render OK.
+
+**Gap konten yang ditutup di pass ini** (judul section & brand yang tadinya literali FE → CMS):
+| Section | Field CMS baru di `situs` (Pengaturan Global) |
+| --- | --- |
+| Mengapa Memilih (KenapaKami) | `keunggulanJudul` |
+| Proses Kerja | `prosesJudul`, `prosesDeskripsi` |
+| FAQ | `faqJudul`, `faqDeskripsi` |
+| Artikel home | `artikelJudul`, `artikelDeskripsi` |
+| Perjalanan (tentang) | `perjalananJudul`, `perjalananDeskripsi` |
+| Visi & Misi | `visiMisiJudul` |
+| Tim | `timJudul`, `timDeskripsi` |
+| Caption peta ("Kota Proyek — brand") | brand dari `situs.brandNama` (PetaMap via Jangkauan/PetaSection) |
+| JobCard (brand/tagline) | `brandNama`/`brandTagline` dari `situs` |
+| Byline TentangInti | brand dari `situs.brandNama` |
+
+**Yang tetap statis sengaja (UI chrome, bukan konten):** label tombol/CTA/eyebrow ("Konsultasi", "Lihat Detail", "Hubungi Kami", "Kirim Pesan", "FAQ", "Tim Kami", …), empty-state microcopy, aset gambar (hero slider, logo), kredit "Dibuat oleh Captiveau", nama layanan di select "Lainnya".
+
+**Verifikasi akhir:** UI typecheck 0 · UI tests **73/73** · UI lint 0 · Strapi tests **29/29** · Strapi lint 0 · baseline seed di-re-export (model baru + field section situs).

@@ -58,20 +58,6 @@ const REVALIDATE_CONFIG: Record<
   string,
   (ctx: RevalidateContext) => RevalidateAction | null
 > = {
-  "api::page.page": ({ uid, fullPath, locale }) => {
-    if (!fullPath) {
-      return null
-    }
-
-    return {
-      label: REVALIDATE_LABEL,
-      successMessage: `Revalidated page cache at "${fullPath}".`,
-      errorMessage: "Failed to revalidate page cache.",
-      payload: locale
-        ? { uid, fullPaths: [fullPath], locale }
-        : { uid, fullPaths: [fullPath] },
-    }
-  },
   "api::navbar.navbar": tagBasedAction("navbar"),
   "api::footer.footer": tagBasedAction("footer"),
 }

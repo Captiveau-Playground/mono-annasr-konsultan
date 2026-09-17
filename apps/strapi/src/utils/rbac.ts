@@ -23,7 +23,6 @@ const SUBYEK_KONTEN = [
   "api::situs.situs",
   "api::rekanan.rekanan",
   "api::redirect.redirect",
-  "api::page.page",
   "api::footer.footer",
   "api::navbar.navbar",
 ]

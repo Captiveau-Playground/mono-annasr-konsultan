@@ -199,20 +199,15 @@ export function Hero({
             </p>
           ) : null}
 
-          {/* Strip lini layanan — penutup tenang. */}
+          {/* Strip lini layanan — penutup tenang. Setiap poin = bullet oranye. */}
           <div className="border-primary-foreground/15 mt-14 border-t pt-5">
             <ul className="flex flex-wrap items-center gap-x-7 gap-y-2.5">
-              {lini.map((nama, i) => (
+              {lini.map((nama) => (
                 <li
                   key={nama}
                   className="text-primary-foreground/65 flex items-center gap-2.5 text-xs font-semibold tracking-[0.14em] uppercase"
                 >
-                  {i > 0 && (
-                    <span
-                      className="bg-accent size-1 rounded-full"
-                      aria-hidden
-                    />
-                  )}
+                  <span className="bg-accent size-1 rounded-full" aria-hidden />
                   {nama}
                 </li>
               ))}

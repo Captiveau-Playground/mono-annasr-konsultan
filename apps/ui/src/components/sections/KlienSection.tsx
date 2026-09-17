@@ -8,7 +8,7 @@ const MAKS_BARIS = 4
 /**
  * Section "Dipercaya oleh Berbagai Klien".
  *
- * - Logo client (dari CMS beranda.klien.logo), fallback teks nama bila belum
+ * - Logo client (dari CMS collection Klien — `logo`), fallback teks nama bila belum
  *   diisi.
  * - Tinggi DINAMIS: jumlah baris marquee mengikuti banyaknya data
  *   (rows = ceil(n / 8), maks 4) — tidak ada tinggi fix.
@@ -38,24 +38,26 @@ function BarisMarquee({
   ]
 
   return (
-    <ul className={`${kelas} flex w-max items-center gap-4`}>
+    <ul className={`${kelas} flex w-max items-center gap-3`}>
       {/* Duplikasi 2x agar loop mulus (animasi geser -50%). */}
       {[items, items].flat().map((item, i) => (
         <li
           key={`${item.nama}-${i}`}
           aria-hidden={i >= items.length}
-          className="border-border bg-card flex min-h-14 shrink-0 items-center justify-center rounded-xl border px-6 shadow-[var(--shadow-soft)]"
+          className="border-border bg-card flex min-h-24 shrink-0 items-center justify-center rounded-xl border px-4 shadow-[var(--shadow-soft)] sm:min-h-28 sm:px-5"
         >
           {item.logo ? (
+            // Gambar CMS — dipakai polos agar file besar (logo lebar/tinggi)
+            // proporsional; batas tinggi & lebar supaya kartu seragam.
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={item.logo}
               alt={`${item.nama} — logo`}
               loading="lazy"
-              className="max-h-9 w-auto object-contain"
+              className="max-h-14 w-auto max-w-36 object-contain sm:max-h-16 sm:max-w-44"
             />
           ) : (
-            <span className="text-foreground text-sm font-semibold">
+            <span className="text-foreground text-sm font-semibold sm:text-base">
               {item.nama}
             </span>
           )}
@@ -65,7 +67,14 @@ function BarisMarquee({
   )
 }
 
-export function KlienSection({ items = [] }: { items?: ItemKlien[] }) {
+export function KlienSection({
+  items = [],
+  judul,
+}: {
+  items?: ItemKlien[]
+  /** Judul section — dari CMS klien.heroJudul. Fallback bila kosong. */
+  judul?: string
+}) {
   const daftar = items.filter((k) => k.nama)
   if (daftar.length === 0) return null
 
@@ -76,7 +85,7 @@ export function KlienSection({ items = [] }: { items?: ItemKlien[] }) {
   const barisPotong = potongBaris(daftar, baris)
 
   return (
-    <SectionShell tone="krem" judul={"Dipercaya oleh\nBerbagai Klien"}>
+    <SectionShell tone="krem" judul={judul ?? "Dipercaya oleh\nBerbagai Klien"}>
       <div className="marquee-mask space-y-5">
         {barisPotong.map((b, i) => (
           <BarisMarquee key={i} items={b} indeks={i} />

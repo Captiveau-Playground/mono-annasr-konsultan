@@ -27,10 +27,13 @@ export function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ locale: string; slug: string }>
 }): Promise<Metadata> {
-  const { slug } = await params
-  const item = artikel.find((a) => a.slug === slug)
+  const { locale, slug } = await params
+  if (!isValidLocale(locale)) return {}
+
+  const konten = await fetchKontenSitus(locale)
+  const item = konten.artikel.find((a) => a.slug === slug)
 
   return {
     title: `${item?.judul ?? "Artikel"} — CV. AN NASR KONSULTAN`,
@@ -158,7 +161,10 @@ export default async function DetailArtikel({
         </div>
       </article>
 
-      <CtaBanner />
+      <CtaBanner
+        judul={konten.beranda.cta?.judul}
+        deskripsi={konten.beranda.cta?.deskripsi}
+      />
 
       {terkait.length > 0 ? (
         <section className="bg-background py-20 lg:py-24">

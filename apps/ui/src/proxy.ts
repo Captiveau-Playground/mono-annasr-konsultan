@@ -5,7 +5,6 @@ import { routing } from "@/lib/navigation"
 import { authGuard } from "@/lib/proxies/authGuard"
 import { authSitemap } from "@/lib/proxies/authSitemap"
 import { basicAuth } from "@/lib/proxies/basicAuth"
-import { dynamicRewrite } from "@/lib/proxies/dynamicRewrite"
 import { httpsRedirect } from "@/lib/proxies/httpsRedirect"
 import { redirectsProxy } from "@/lib/proxies/redirects"
 import { withSecurityHeaders } from "@/lib/proxies/securityHeaders"
@@ -23,7 +22,6 @@ const proxies: ((
   authSitemap,
   redirectsProxy,
   (req) => authGuard(req, intlProxy),
-  (req) => dynamicRewrite(req, intlProxy),
 ]
 
 export default async function proxy(req: NextRequest) {

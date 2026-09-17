@@ -7,7 +7,6 @@ import { KlienSection } from "@/components/sections/KlienSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { PageHero } from "@/components/site/PageHero"
-import { fetchBeranda } from "@/lib/annasr/beranda"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
@@ -19,9 +18,20 @@ const judul = "Portofolio Proyek — CV. AN NASR KONSULTAN"
 const deskripsi =
   "Dokumentasi proyek bangunan, jalan, jembatan, irigasi, gedung, dan renovasi yang ditangani CV. AN NASR KONSULTAN di Jombang dan sekitarnya."
 
-export const metadata: Metadata = {
-  title: judul,
-  description: deskripsi,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  if (!isValidLocale(locale)) return {}
+  const konten = await fetchKontenSitus(locale)
+  const seo = konten.situs.seo?.portfolio
+
+  return {
+    title: seo?.judul || judul,
+    description: seo?.deskripsi || deskripsi,
+  }
 }
 
 export default async function PortfolioPage({
@@ -33,10 +43,7 @@ export default async function PortfolioPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
-  const [konten, beranda] = await Promise.all([
-    fetchKontenSitus(locale),
-    fetchBeranda(locale),
-  ])
+  const konten = await fetchKontenSitus(locale)
 
   return (
     <>
@@ -46,14 +53,21 @@ export default async function PortfolioPage({
         teks={konten.portfolioHero.deskripsi}
       />
       <PortfolioSection items={konten.portfolio} showAllButton={false} />
-      <KlienSection items={beranda.klien} />
+      <KlienSection
+        items={konten.klien}
+        judul={konten.klienHero.judul || undefined}
+      />
       <JangkauanSection
         judul={konten.tentang.jangkauanJudul}
         deskripsi={konten.tentang.jangkauanDeskripsi}
         kota={konten.tentang.kotaProyek}
         statistik={konten.tentang.statistik}
+        brand={konten.situs.brandNama}
       />
-      <CtaBanner />
+      <CtaBanner
+        judul={konten.beranda.cta?.judul}
+        deskripsi={konten.beranda.cta?.deskripsi}
+      />
     </>
   )
 }

@@ -20,12 +20,15 @@ export function JangkauanSection({
   deskripsi,
   kota = [],
   statistik = [],
+  brand = "",
 }: {
   judul?: string
   deskripsi?: string
   kota?: { nama: string; lat: number; lng: number }[]
-  /** Kartu ringkas (diambil dari beranda.statistik bila tersedia). */
+  /** Kartu ringkas (dari tentang.statistik via situs/CMS). */
   statistik?: { nilai: string; label: string }[]
+  /** Brand untuk label peta — dari CMS situs.brandNama. */
+  brand?: string
 }) {
   const daftarKota = kota.length > 0 ? kota : kotaProyek
   const kartuStat = (
@@ -73,7 +76,7 @@ export function JangkauanSection({
         </div>
 
         <Reveal className="mt-12">
-          <PetaMap kota={daftarKota} />
+          <PetaMap kota={daftarKota} brand={brand} />
         </Reveal>
 
         <div className="mt-10">

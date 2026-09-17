@@ -14,11 +14,6 @@ type RevalidateCollectionConfig = {
 }
 
 const REVALIDATE_COLLECTIONS: RevalidateCollectionConfig[] = [
-  {
-    uid: "api::page.page",
-    mode: "path-revalidate",
-    pathField: "fullPath",
-  },
   { uid: "api::navbar.navbar", mode: "tag-revalidate" },
   { uid: "api::footer.footer", mode: "tag-revalidate" },
   {

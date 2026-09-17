@@ -92,7 +92,7 @@ describe("revalidate service", () => {
 
     const service = revalidateServiceFactory()
     const result = await service.run({
-      uid: "api::page.page",
+      uid: "api::redirect.redirect",
       fullPaths: [" /about ", "about", ""],
       locale: "en",
       tags: [" shared ", "", "shared"],
@@ -110,10 +110,10 @@ describe("revalidate service", () => {
       },
     })
     expect(JSON.parse(revalidateCall?.[1].body as string)).toEqual({
-      uid: "api::page.page",
+      uid: "api::redirect.redirect",
       next: {
         fullPaths: ["/en/about"],
-        tags: ["strapi:api::page.page", "shared"],
+        tags: ["strapi:api::redirect.redirect", "shared"],
       },
     })
     expect(result).toEqual({ revalidated: true })
@@ -125,16 +125,16 @@ describe("revalidate service", () => {
 
     const service = revalidateServiceFactory()
     await service.run({
-      uid: "api::subscriber.subscriber",
+      uid: "api::rekanan.rekanan",
     })
 
     const revalidateCall = findFetchCall(fetchMock, REVALIDATE_URL)
 
     expect(JSON.parse(revalidateCall?.[1].body as string)).toEqual({
-      uid: "api::subscriber.subscriber",
+      uid: "api::rekanan.rekanan",
       next: {
         fullPaths: [],
-        tags: ["strapi:api::subscriber.subscriber"],
+        tags: ["strapi:api::rekanan.rekanan"],
       },
     })
     expect(findFetchCall(fetchMock, CDN_PURGE_URL)).toBeUndefined()
@@ -162,7 +162,7 @@ describe("revalidate service", () => {
 
     await expect(
       service.run({
-        uid: "api::page.page",
+        uid: "api::redirect.redirect",
         fullPaths: ["/about"],
       })
     ).rejects.toThrow(
@@ -182,7 +182,7 @@ describe("revalidate service", () => {
 
     await expect(
       service.run({
-        uid: "api::page.page",
+        uid: "api::redirect.redirect",
         fullPaths: ["/about"],
       })
     ).rejects.toThrow("Failed to revalidate Next.js cache.")
@@ -192,36 +192,6 @@ describe("revalidate service", () => {
 })
 
 describe("auto revalidate document middleware", () => {
-  it("revalidates page paths on publish", async () => {
-    const { middleware, runMock } = buildMiddleware()
-    const nextResult = {
-      entries: [
-        {
-          locale: "en",
-          fullPath: "/about",
-          status: "published",
-        },
-      ],
-    }
-
-    const result = await middleware(
-      {
-        uid: "api::page.page",
-        action: "publish",
-        params: { locale: "en" },
-        contentType: { options: { draftAndPublish: true } },
-      },
-      vi.fn().mockResolvedValue(nextResult)
-    )
-
-    expect(runMock).toHaveBeenCalledWith({
-      uid: "api::page.page",
-      fullPaths: ["/about"],
-      locale: "en",
-    })
-    expect(result).toBe(nextResult)
-  })
-
   it("revalidates redirect source paths on publish", async () => {
     const { middleware, runMock } = buildMiddleware()
     const nextResult = {
@@ -282,7 +252,7 @@ describe("auto revalidate document middleware", () => {
 
     await middleware(
       {
-        uid: "api::page.page",
+        uid: "api::redirect.redirect",
         action: "update",
         params: {
           data: {
@@ -328,7 +298,7 @@ describe("auto revalidate document middleware", () => {
 
     await middleware(
       {
-        uid: "api::page.page",
+        uid: "api::redirect.redirect",
         action: "update",
         params: { locale: "en" },
         contentType: { options: { draftAndPublish: true } },

@@ -8,6 +8,7 @@ import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalida
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
 import { seedCmsMainField } from "./utils/cms-config"
+import { liftCollections } from "./utils/lift-lists"
 import { logger } from "./utils/logging"
 import { setupRbac } from "./utils/rbac"
 import { seedAnnasr } from "./utils/seed"
@@ -39,6 +40,8 @@ export default {
     registerLayananGaleriGuard({ strapi })
 
     await setupRbac({ strapi })
+    // Lift data lama single → collection (baca staging dari migration).
+    await liftCollections({ strapi })
     await seedAnnasr({ strapi })
     await seedCmsMainField({ strapi })
 

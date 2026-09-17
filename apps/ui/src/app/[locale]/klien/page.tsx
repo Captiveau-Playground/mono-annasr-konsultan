@@ -6,6 +6,7 @@ import { KlienSection } from "@/components/sections/KlienSection"
 import { PetaSection } from "@/components/sections/PetaSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { PageHero } from "@/components/site/PageHero"
+import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
 export function generateStaticParams() {
@@ -16,9 +17,20 @@ const judul = "Klien Kami — CV. AN NASR KONSULTAN"
 const deskripsi =
   "Instansi pemerintah, lembaga pendidikan, dan mitra usaha yang telah bekerja sama dengan CV. AN NASR KONSULTAN di Jombang dan berbagai kota di Indonesia."
 
-export const metadata: Metadata = {
-  title: judul,
-  description: deskripsi,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  if (!isValidLocale(locale)) return {}
+  const konten = await fetchKontenSitus(locale)
+  const seo = konten.situs.seo?.klien
+
+  return {
+    title: seo?.judul || judul,
+    description: seo?.deskripsi || deskripsi,
+  }
 }
 
 export default async function KlienPage({
@@ -30,16 +42,28 @@ export default async function KlienPage({
   if (!isValidLocale(locale)) notFound()
   setRequestLocale(locale)
 
+  const konten = await fetchKontenSitus(locale)
+
   return (
     <>
       <PageHero
         eyebrow="Klien Kami"
-        judul="Kepercayaan yang terjalin di banyak pintu"
-        teks="Instansi pemerintah, lembaga pendidikan, dan mitra usaha mempercayakan pekerjaan tekniknya kepada kami."
+        judul={konten.klienHero.judul}
+        teks={konten.klienHero.deskripsi}
       />
-      <KlienSection />
-      <PetaSection />
-      <CtaBanner />
+      <KlienSection
+        items={konten.klien}
+        judul={konten.klienHero.judul || undefined}
+      />
+      <PetaSection
+        kota={konten.tentang.kotaProyek}
+        judul={konten.tentang.jangkauanJudul || undefined}
+        brand={konten.situs.brandNama}
+      />
+      <CtaBanner
+        judul={konten.beranda.cta?.judul}
+        deskripsi={konten.beranda.cta?.deskripsi}
+      />
     </>
   )
 }

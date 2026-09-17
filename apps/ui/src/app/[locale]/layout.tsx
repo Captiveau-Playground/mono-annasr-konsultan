@@ -55,8 +55,10 @@ export async function generateMetadata({
     kontenSitus.situs.brandTagline ||
     "Konsultan Teknik Sipil & Konstruksi Jombang"
 
+  const seoGlobal = kontenSitus.situs.seo?.global
   const baseUrl = publicBaseUrl()
   const deskripsi =
+    seoGlobal?.deskripsi ||
     "Jasa perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang, Jawa Timur."
   const ogImage = `${baseUrl.replace(/\/$/, "")}/images/annasr/hero-konstruksi.jpg`
 
@@ -227,7 +229,7 @@ export default async function RootLayout({
               email={kontenSitus.kontak.email}
               instagram={kontenSitus.kontak.instagram}
             />
-            <WhatsAppFloat />
+            <WhatsAppFloat whatsapp={kontenSitus.kontak.whatsapp} />
             <Toaster position="top-center" />
           </ClientProviders>
         </NextIntlClientProvider>

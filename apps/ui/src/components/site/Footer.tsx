@@ -82,6 +82,24 @@ export function Footer({
 
   const kolom = sections && sections.length > 0 ? sections : kolomFallback
 
+  // Kolom "Layanan" sudah punya daftar jasa sendiri → di kolom lain (mis.
+  // kolom Menu hasil flatten navigasi CMS) semua link layanan dihapus agar
+  // tidak dobel: hub "/layanan" dan turunannya ("Jasa …" di /layanan/*).
+  const adaKolomLayanan = kolom.some((k) => /^layanan/i.test(k.title.trim()))
+  const bukanLayanan = (l: { label: string; href: string }) =>
+    l.href !== "/layanan" &&
+    !l.href.startsWith("/layanan/") &&
+    !/^layanan$/i.test(l.label.trim()) &&
+    !/^jasa /i.test(l.label.trim())
+  const kolomFinal = adaKolomLayanan
+    ? kolom.map((k) => ({
+        title: k.title,
+        links: /^layanan/i.test(k.title.trim())
+          ? k.links
+          : k.links.filter(bukanLayanan),
+      }))
+    : kolom
+
   return (
     <footer className="bg-secondary text-primary-foreground relative overflow-hidden">
       <div
@@ -118,7 +136,7 @@ export function Footer({
             </p>
           </div>
 
-          {kolom.map((k) => {
+          {kolomFinal.map((k) => {
             const isKontak = /^kontak/i.test(k.title)
 
             return (

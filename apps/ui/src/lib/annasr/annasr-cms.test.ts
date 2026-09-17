@@ -38,6 +38,74 @@ import { fetchRekanan } from "./rekanan"
 
 const STRAPI_URL = "https://cms.test"
 
+const KOLEKSI: Record<string, Record<string, unknown>[]> = {
+  "api::layanan.layanan": [
+    {
+      slug: "qa-layanan",
+      judul: "QA layanan n",
+      ringkas: "QA ringkas",
+      deskripsi: "QA deskripsi",
+      detail: ["QA detail"],
+      manfaat: ["QA manfaat"],
+      gambar: { url: "/uploads/qa-lay.jpg" },
+      galeri: [
+        { url: "/uploads/qa-gal-1.jpg" },
+        { url: "/uploads/qa-gal-2.jpg" },
+      ],
+      alur: [{ judul: "QA alur", teks: "QA alur teks" }],
+      persyaratan: [
+        {
+          judul: "QA persyaratan",
+          deskripsi: "QA p deskripsi",
+          daftar: ["QA p daftar"],
+        },
+      ],
+      dokumenClient: {
+        judul: "QA dc judul",
+        deskripsi: "QA dc deskripsi",
+        gambar: { url: "/uploads/qa-dc.jpg" },
+        daftar: ["QA dc daftar"],
+      },
+    },
+  ],
+  "api::portfolio.portfolio": [
+    {
+      nama: "QA p nama",
+      instansi: "QA p instansi",
+      lokasi: "QA p lokasi",
+      kategori: "QA p kategori",
+      gambar: { url: "/uploads/qa-p.jpg" },
+    },
+  ],
+  "api::klien.klien": [{ nama: "QA klien-satu" }],
+  "api::karir.karir": [
+    {
+      nama: "QA posisi",
+      tipe: "QA tipe",
+      lokasi: "QA lokasi",
+      slug: "qa-posisi",
+      statusPosisi: "terbuka",
+      ringkas: "QA ringkas",
+      deskripsi: "QA deskripsi",
+      tanggungJawab: [{ teks: "QA tj" }],
+      kualifikasi: [{ teks: "QA kual" }],
+      manfaat: [{ teks: "QA manf" }],
+    },
+  ],
+  "api::artikel.artikel": [
+    {
+      slug: "qa-artikel",
+      judul: "QA artikel judul",
+      ringkas: "QA artikel ringkas",
+      tanggal: "QA tanggal",
+      kategori: "QA kategori",
+      penulis: "QA penulis",
+      gambar: { url: "/uploads/qa-artikel.jpg" },
+      isi: ["QA isi"],
+    },
+  ],
+}
+
 beforeEach(() => {
   process.env.STRAPI_URL = STRAPI_URL
   mocks.fetchOne.mockReset()
@@ -45,7 +113,15 @@ beforeEach(() => {
   mocks.fetchOne.mockImplementation(async (uid: string) => ({
     data: mocks.payloads[uid] ?? null,
   }))
-  mocks.fetchMany.mockImplementation(async () => ({ data: mocks.rekanan }))
+  mocks.fetchMany.mockImplementation(async (uid: string) => {
+    const uidAsal = String(uid)
+
+    return {
+      data: uidAsal.startsWith("api::rekanan")
+        ? mocks.rekanan
+        : (KOLEKSI[uidAsal as keyof typeof KOLEKSI] ?? []),
+    }
+  })
 })
 
 describe("beranda (fetchBeranda)", () => {
@@ -55,7 +131,6 @@ describe("beranda (fetchBeranda)", () => {
       deskripsi: "QA hero deskripsi",
       keunggulan: "QA-ke1\nQA-ke2",
     },
-    statistik: [{ nilai: "QA99", label: "QA stat label" }],
     founder: {
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
@@ -64,39 +139,6 @@ describe("beranda (fetchBeranda)", () => {
       foto: { url: "/uploads/qa-founder.jpg" },
     },
     keunggulan: [{ judul: "QA alasan 1", teks: "QA alasan teks" }],
-    layanan: [
-      {
-        slug: "qa-layanan",
-        judul: "QA layanan 1",
-        ringkas: "QA ringkas 1",
-        gambar: { url: "/uploads/qa-layanan-1.jpg" },
-      },
-    ],
-    portfolio: [
-      {
-        nama: "QA proyek 1",
-        lokasi: "QA lokasi proyek",
-        kategori: "QA kategori",
-        gambar: { url: "/uploads/qa-proyek-1.jpg" },
-      },
-    ],
-    klien: [{ nama: "QA klien 1", logo: { url: "/uploads/qa-logo-1.jpg" } }],
-    kotaProyek: [{ nama: "QA kota", lat: 1.5, lng: 2.5 }],
-    jangkauanJudul: "QA jangkauan judul",
-    jangkauanDeskripsi: "QA jangkauan deskripsi",
-    artikel: [
-      {
-        slug: "qa-artikel-beranda",
-        judul: "QA artikel beranda",
-        ringkas: "QA ringkas artikel",
-        tanggal: "QA tanggal",
-        kategori: "QA kategori",
-        penulis: "QA penulis",
-        gambar: { url: "/uploads/qa-artikel-beranda.jpg" },
-        unggulan: true,
-        isi: ["QA isi 1", "QA isi 2"],
-      },
-    ],
     faq: [{ tanya: "QA tanya", jawab: "QA jawab" }],
     cta: { judul: "QA cta judul", deskripsi: "QA cta deskripsi" },
   }
@@ -111,7 +153,6 @@ describe("beranda (fetchBeranda)", () => {
       deskripsi: "QA hero deskripsi",
       keunggulan: ["QA-ke1", "QA-ke2"],
     })
-    expect(r.statistik).toEqual([{ nilai: "QA99", label: "QA stat label" }])
     expect(r.founder).toEqual({
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
@@ -122,36 +163,6 @@ describe("beranda (fetchBeranda)", () => {
     expect(r.keunggulan).toEqual([
       { judul: "QA alasan 1", teks: "QA alasan teks" },
     ])
-    expect(r.layanan[0]).toEqual({
-      slug: "qa-layanan",
-      judul: "QA layanan 1",
-      ringkas: "QA ringkas 1",
-      gambar: "/api/asset/uploads/qa-layanan-1.jpg",
-    })
-    expect(r.portfolio[0]).toEqual({
-      nama: "QA proyek 1",
-      lokasi: "QA lokasi proyek",
-      kategori: "QA kategori",
-      gambar: "/api/asset/uploads/qa-proyek-1.jpg",
-    })
-    expect(r.klien[0]).toEqual({
-      nama: "QA klien 1",
-      logo: "/api/asset/uploads/qa-logo-1.jpg",
-    })
-    expect(r.kotaProyek[0]).toEqual({ nama: "QA kota", lat: 1.5, lng: 2.5 })
-    expect(r.jangkauanJudul).toBe("QA jangkauan judul")
-    expect(r.jangkauanDeskripsi).toBe("QA jangkauan deskripsi")
-    expect(r.artikel[0]).toEqual({
-      slug: "qa-artikel-beranda",
-      judul: "QA artikel beranda",
-      ringkas: "QA ringkas artikel",
-      tanggal: "QA tanggal",
-      kategori: "QA kategori",
-      penulis: "QA penulis",
-      gambar: "/api/asset/uploads/qa-artikel-beranda.jpg",
-      unggulan: true,
-      isi: ["QA isi 1", "QA isi 2"],
-    })
     expect(r.faq).toEqual([{ tanya: "QA tanya", jawab: "QA jawab" }])
     expect(r.cta).toEqual({
       judul: "QA cta judul",
@@ -165,9 +176,7 @@ describe("beranda (fetchBeranda)", () => {
     const r = await fetchBeranda("en")
 
     expect(r.hero?.judul).toMatch(/Tepat Merencanakan/)
-    expect(r.statistik.length).toBeGreaterThan(0)
     expect(r.keunggulan.length).toBeGreaterThan(0)
-    expect(r.artikel.length).toBeGreaterThan(0)
     expect(r.faq.length).toBeGreaterThan(0)
   })
 })
@@ -204,76 +213,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       jangkauanDeskripsi: "QA jangkauan deskripsi",
       kotaProyek: [{ nama: "QA kota2", lat: -3, lng: 4 }],
     },
-    "api::layanan.layanan": {
-      introJudul: "QA intro judul",
-      introDeskripsi: "QA intro deskripsi",
-      layanan: [
-        {
-          slug: "qa-layanan",
-          judul: "QA layanan n",
-          ringkas: "QA ringkas",
-          deskripsi: "QA deskripsi",
-          detail: ["QA detail"],
-          manfaat: ["QA manfaat"],
-          gambar: { url: "/uploads/qa-lay.jpg" },
-          galeri: [
-            { url: "/uploads/qa-gal-1.jpg" },
-            { url: "/uploads/qa-gal-2.jpg" },
-          ],
-          alur: [{ judul: "QA alur", teks: "QA alur teks" }],
-          persyaratan: [
-            {
-              judul: "QA persyaratan",
-              deskripsi: "QA p deskripsi",
-              daftar: ["QA p daftar"],
-            },
-          ],
-          dokumenClient: {
-            judul: "QA dc judul",
-            deskripsi: "QA dc deskripsi",
-            gambar: { url: "/uploads/qa-dc.jpg" },
-            daftar: ["QA dc daftar"],
-          },
-        },
-      ],
-      proses: [{ judul: "QA proses", teks: "QA proses teks" }],
-    },
-    "api::portfolio.portfolio": {
-      heroJudul: "QA portfolio hero",
-      heroDeskripsi: "QA portfolio deskripsi",
-      proyek: [
-        {
-          nama: "QA p nama",
-          instansi: "QA p instansi",
-          lokasi: "QA p lokasi",
-          kategori: "QA p kategori",
-          gambar: { url: "/uploads/qa-p.jpg" },
-        },
-      ],
-    },
-    "api::klien.klien": {
-      heroJudul: "QA klien hero",
-      heroDeskripsi: "QA klien deskripsi",
-      klien: [{ nama: "QA klien-satu" }],
-    },
-    "api::karir.karir": {
-      heroJudul: "QA karir hero",
-      heroDeskripsi: "QA karir deskripsi",
-      posisi: [
-        {
-          nama: "QA posisi",
-          tipe: "QA tipe",
-          lokasi: "QA lokasi",
-          slug: "qa-posisi",
-          status: "terbuka",
-          ringkas: "QA ringkas",
-          deskripsi: "QA deskripsi",
-          tanggungJawab: [{ teks: "QA tj" }],
-          kualifikasi: [{ teks: "QA kual" }],
-          manfaat: [{ teks: "QA manf" }],
-        },
-      ],
-    },
+
     "api::kontak.kontak": {
       heroJudul: "QA kontak hero",
       heroDeskripsi: "QA kontak deskripsi",
@@ -285,25 +225,22 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       instagram: "QA ig",
       whatsapp: "QA wa",
     },
-    "api::artikel.artikel": {
-      heroJudul: "QA artikel hero",
-      heroDeskripsi: "QA artikel deskripsi",
-      artikel: [
-        {
-          slug: "qa-artikel",
-          judul: "QA artikel judul",
-          ringkas: "QA artikel ringkas",
-          tanggal: "QA tanggal",
-          kategori: "QA kategori",
-          penulis: "QA penulis",
-          gambar: { url: "/uploads/qa-artikel.jpg" },
-          isi: ["QA isi"],
-        },
-      ],
-    },
+
     "api::situs.situs": {
       brandNama: "QA brand",
       brandTagline: "QA tagline",
+
+      layananIntroJudul: "QA intro judul",
+      layananIntroDeskripsi: "QA intro deskripsi",
+      proses: [{ judul: "QA proses", teks: "QA proses teks" }],
+      portfolioHeroJudul: "QA portfolio hero",
+      portfolioHeroDeskripsi: "QA portfolio deskripsi",
+      klienHeroJudul: "QA klien hero",
+      klienHeroDeskripsi: "QA klien deskripsi",
+      karirHeroJudul: "QA karir hero",
+      karirHeroDeskripsi: "QA karir deskripsi",
+      artikelHeroJudul: "QA artikel hero",
+      artikelHeroDeskripsi: "QA artikel deskripsi",
       navigasi: [
         {
           label: "QA nav",
@@ -312,6 +249,14 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
             { label: "QA anak", href: "/qa/1", deskripsi: "QA deskripsi anak" },
           ],
         },
+      ],
+      seo: [
+        {
+          halaman: "layanan",
+          judul: "QA seo layanan",
+          deskripsi: "QA seo deskripsi",
+        },
+        { halaman: "beranda", judul: "", deskripsi: "" },
       ],
     },
   }
@@ -410,7 +355,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
   it("klien + hero dari CMS", async () => {
     const r = await fetchKontenSitus("en")
 
-    expect(r.klien).toEqual(["QA klien-satu"])
+    expect(r.klien).toEqual([{ nama: "QA klien-satu" }])
     expect(r.klienHero).toEqual({
       judul: "QA klien hero",
       deskripsi: "QA klien deskripsi",
@@ -471,7 +416,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
     })
   })
 
-  it("situs: brand + navigasi (termasuk submenu) dari CMS", async () => {
+  it("situs: brand + navigasi (termasuk submenu) + seo per halaman dari CMS", async () => {
     const r = (await fetchKontenSitus("en")).situs
 
     expect(r.brandNama).toBe("QA brand")
@@ -485,6 +430,35 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
         ],
       },
     ])
+    // Entry SEO yang terisi dipakai; entry kosong dilewati.
+    expect(r.seo.layanan).toEqual({
+      judul: "QA seo layanan",
+      deskripsi: "QA seo deskripsi",
+    })
+    expect(r.seo.beranda).toBeUndefined()
+  })
+
+  it("situs: judul section lintas halaman dari CMS (fallback bila kosong)", async () => {
+    const situs = (await fetchKontenSitus("en")).situs
+
+    // CMS kosong untuk field baru → fallback default FE dipakai.
+    expect(situs.keunggulanJudul).toBe("Mengapa Memilih An Nasr Konsultan")
+    expect(situs.prosesJudul).toBe("Tujuh tahap kerja yang terukur")
+    expect(situs.faqJudul).toBe("Pertanyaan yang Sering Diajukan")
+    expect(situs.timJudul).toBe(
+      "Tenaga ahli yang bekerja di balik setiap proyek"
+    )
+    expect(situs.perjalananJudul).toMatch(/Dari kantor kecil/)
+
+    // Bila CMS mengisi → nilai CMS menang (anti-fallback).
+    mocks.payloads["api::situs.situs"] = {
+      ...CMS["api::situs.situs"],
+      keunggulanJudul: "QA keunggulan judul",
+      timJudul: "QA tim judul",
+    }
+    const situs2 = (await fetchKontenSitus("en")).situs
+    expect(situs2.keunggulanJudul).toBe("QA keunggulan judul")
+    expect(situs2.timJudul).toBe("QA tim judul")
   })
 
   it("fallback statis hanya dipakai bila CMS kosong", async () => {

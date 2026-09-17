@@ -42,8 +42,13 @@ const faq = [
 
 export function FaqSection({
   items: itemsFaq,
+  judul = "Pertanyaan yang Sering Diajukan",
+  deskripsi = "Jawaban singkat untuk kebutuhan yang paling sering ditanyakan calon klien kami.",
 }: {
   items?: BerandaKonten["faq"]
+  /** Judul & deskripsi section — dari CMS. */
+  judul?: string
+  deskripsi?: string
 }) {
   const [aktif, setAktif] = useState<number | null>(0)
 
@@ -55,8 +60,8 @@ export function FaqSection({
           <div className="lg:sticky lg:top-24">
             <SectionHeading
               eyebrow="FAQ"
-              judul={"Pertanyaan yang\nSering Diajukan"}
-              deskripsi="Jawaban singkat untuk kebutuhan yang paling sering ditanyakan calon klien kami."
+              judul={judul}
+              deskripsi={deskripsi}
               align="left"
             />
           </div>

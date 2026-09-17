@@ -1,7 +1,7 @@
 ---
 name: seed-content
-description: 'Use when populating the local Strapi with content programmatically through MCP — e.g. "seed content", "seed a page", "import content into strapi", "create demo content", "add a page with components". Schema-driven create/update of pages, navbar, and footer via the Strapi MCP server. For reproducible baseline content, use the native export/import seed flow instead.'
-argument-hint: "[target-page-path]"
+description: 'Use when populating the local Strapi with content programmatically through MCP — e.g. "seed content", "import content into strapi", "create demo content", "seed the navbar/footer", "add collection entries". Schema-driven create/update of content types (mostly collections) via the Strapi MCP server. Note: the page-builder (`Page`, `Hierarchy`) has been removed — do not seed pages. For reproducible baseline content, use the native export/import seed flow instead.'
+argument-hint: "[content-type]"
 ---
 
 # Seed Content via MCP

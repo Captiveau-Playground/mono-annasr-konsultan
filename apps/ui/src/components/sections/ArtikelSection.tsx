@@ -7,7 +7,16 @@ import { artikel, type Artikel } from "@/data/perusahaan"
 import { Link } from "@/lib/navigation"
 
 /** Section ringkas artikel terbaru — diletakkan sebelum CTA banner. */
-export function ArtikelSection({ items }: { items?: Artikel[] }) {
+export function ArtikelSection({
+  items,
+  judul = "Wawasan teknik dari pengalaman di lapangan",
+  deskripsi = "Catatan praktis seputar perencanaan, pengawasan, perizinan, dan konstruksi.",
+}: {
+  items?: Artikel[]
+  /** Judul & deskripsi section — dari CMS. */
+  judul?: string
+  deskripsi?: string
+}) {
   const terbaru = (items ?? artikel).slice(0, 3)
 
   return (
@@ -16,8 +25,8 @@ export function ArtikelSection({ items }: { items?: Artikel[] }) {
         <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <SectionHeading
             eyebrow="Artikel"
-            judul={"Wawasan teknik dari\npengalaman di lapangan"}
-            deskripsi="Catatan praktis seputar perencanaan, pengawasan, perizinan, dan konstruksi."
+            judul={judul}
+            deskripsi={deskripsi}
             align="left"
           />
           <Link

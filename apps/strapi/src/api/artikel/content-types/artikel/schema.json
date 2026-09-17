@@ -1,26 +1,50 @@
 {
-  "kind": "singleType",
+  "kind": "collectionType",
   "collectionName": "artikels",
   "info": {
     "singularName": "artikel",
     "pluralName": "artikels",
-    "displayName": "7 Artikel"
+    "displayName": "Artikel"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "heroJudul": {
+    "judul": {
       "type": "string"
     },
-    "heroDeskripsi": {
+    "ringkas": {
       "type": "text"
     },
-    "artikel": {
-      "type": "component",
-      "component": "annasr.artikel-item",
-      "repeatable": true
+    "kategori": {
+      "type": "string"
+    },
+    "tanggal": {
+      "type": "string"
+    },
+    "gambar": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": false
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "judul"
+    },
+    "penulis": {
+      "type": "string"
+    },
+    "isi": {
+      "type": "text",
+      "description": "Satu paragraf per baris kosong / satu baris = satu paragraf (textarea)."
+    },
+    "unggulan": {
+      "type": "boolean",
+      "default": false,
+      "description": "Tandai sebagai artikel unggulan (hero besar di daftar)."
     }
   }
 }

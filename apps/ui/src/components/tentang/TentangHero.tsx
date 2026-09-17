@@ -15,12 +15,19 @@ export function TentangHero({
   judul,
   deskripsi,
   keunggulan = [],
+  statistik = [],
 }: {
   judul?: string
   deskripsi?: string
   keunggulan?: string[]
+  /** Angka/label badge dari CMS (`tentang.statistik`) — item ke-2 dipakai. */
+  statistik?: { nilai: string; label: string }[]
 }) {
   const trust = keunggulan.length > 0 ? keunggulan : KEUNGGULAN
+  const badge = statistik[1] ?? {
+    nilai: "100+",
+    label: "Proyek di berbagai daerah",
+  }
 
   return (
     <section className="bg-background relative overflow-hidden py-20 lg:py-24">
@@ -95,9 +102,9 @@ export function TentangHero({
               </div>
 
               <div className="border-border absolute right-4 -bottom-6 left-4 rounded-2xl border bg-white/95 p-4 shadow-[0_10px_30px_rgba(0,0,0,0.1)] backdrop-blur sm:right-auto sm:left-6 sm:max-w-xs">
-                <p className="text-primary text-2xl font-bold">100+</p>
+                <p className="text-primary text-2xl font-bold">{badge.nilai}</p>
                 <p className="text-muted-foreground mt-0.5 text-xs font-medium tracking-wide uppercase">
-                  Proyek di berbagai daerah
+                  {badge.label}
                 </p>
               </div>
             </div>

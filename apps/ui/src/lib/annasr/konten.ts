@@ -109,6 +109,31 @@ function medUrl(v: undefined | { url?: unknown }, fb: string): string {
   return `/api/asset${url}`
 }
 
+type SeoEntry = { halaman?: unknown; judul?: unknown; deskripsi?: unknown }
+
+type SeoHalaman = { judul: string; deskripsi: string }
+
+/**
+ * Peta SEO per halaman dari CMS (situs.seo — repeatable seo-meta).
+ * Halaman yang tidak diisi → key tidak ada → halaman memakai default lokalnya.
+ */
+function seoCms(v: unknown): Record<string, SeoHalaman> {
+  if (!Array.isArray(v)) return {}
+
+  const hasil: Record<string, SeoHalaman> = {}
+  for (const e of v as SeoEntry[]) {
+    const kunci = teks(e.halaman, "")
+    if (!kunci) continue
+    const judul = teks(e.judul, "")
+    const deskripsi = teks(e.deskripsi, "")
+    if (!judul && !deskripsi) continue
+
+    hasil[kunci] = { judul, deskripsi }
+  }
+
+  return hasil
+}
+
 type Raw = Record<string, unknown>
 
 /** Item layanan lengkap (dipakai /layanan dan detail) dengan fallback statis. */
@@ -245,7 +270,7 @@ export type KontenSitus = {
     gambar: string
   }[]
   portfolioHero: { judul: string; deskripsi: string }
-  klien: string[]
+  klien: { nama: string; logo?: string }[]
   klienHero: { judul: string; deskripsi: string }
   karir: ItemKarir[]
   karirHero: { judul: string; deskripsi: string }
@@ -268,6 +293,23 @@ export type KontenSitus = {
     rekananIntroJudul: string
     rekananIntroDeskripsi: string
     navigasi: ItemNavigasi[]
+    /** Judul/deskripsi meta per halaman — dikelola CMS (situs.seo). */
+    seo: Record<string, { judul: string; deskripsi: string }>
+    /** Judul/deskripsi section lintas halaman — dikelola CMS. */
+    keunggulanJudul: string
+    keunggulanDeskripsi: string
+    prosesJudul: string
+    prosesDeskripsi: string
+    faqJudul: string
+    faqDeskripsi: string
+    artikelJudul: string
+    artikelDeskripsi: string
+    perjalananJudul: string
+    perjalananDeskripsi: string
+    visiMisiJudul: string
+    visiMisiDeskripsi: string
+    timJudul: string
+    timDeskripsi: string
   }
 }
 
@@ -313,13 +355,65 @@ const POPULATE_SMART: Record<string, Record<string, "smart">> = {
     alasan: "smart",
     kotaProyek: "smart",
   },
-  layanan: { layanan: "smart", proses: "smart" },
-  portfolio: { proyek: "smart" },
-  klien: { klien: "smart" },
-  karir: { posisi: "smart" },
   kontak: {},
-  artikel: { artikel: "smart" },
-  situs: { navigasi: "smart" },
+  artikel: {},
+  situs: { navigasi: "smart", seo: "smart", proses: "smart" },
+}
+
+/** Populate per collection (komponen bertingkat pakai "smart"; MEDIA wajib "true"). */
+const POPULATE_KOLEKSI: Record<string, Record<string, "smart" | true>> = {
+  layanan: {
+    alur: "smart",
+    persyaratan: "smart",
+    dokumenClient: "smart",
+    gambar: true,
+    galeri: true,
+  },
+  karir: {
+    tanggungJawab: "smart",
+    kualifikasi: "smart",
+    manfaat: "smart",
+  },
+  portfolio: { gambar: true },
+  klien: { logo: true },
+  artikel: { gambar: true },
+}
+
+/**
+ * Ambil daftar dokumen dari collection type (layanan/portfolio/klien/
+ * karir/artikel) — tiap item adalah satu dokumen dengan field di level atas.
+ */
+async function ambilKoleksi(nama: string, locale: Locale): Promise<Raw[]> {
+  try {
+    const populate = POPULATE_KOLEKSI[nama]
+    const params =
+      populate && Object.keys(populate).length > 0
+        ? { locale, populate, pagination: { page: 1, pageSize: 100 } }
+        : { locale, pagination: { page: 1, pageSize: 100 } }
+
+    const result = (await PublicStrapiClient.fetchMany(
+      uid(nama) as UID.ContentType,
+      params,
+      {
+        next: {
+          revalidate: STRAPI_CACHE_TTL,
+          tags: [strapiCacheTag(uid(nama))],
+        },
+      } as never
+    )) as undefined | { data?: Raw[] }
+
+    return result?.data ?? []
+  } catch (error) {
+    logNonBlockingError({
+      message: `fetch koleksi ${nama} gagal — fallback statis`,
+      error: {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      },
+    })
+
+    return []
+  }
 }
 
 async function ambil(nama: string, locale: Locale): Promise<Raw> {
@@ -356,22 +450,15 @@ async function ambil(nama: string, locale: Locale): Promise<Raw> {
   }
 }
 
-const fotoGb = (l: Record<string, unknown>) =>
-  teks(
-    medUrl(l.gambar as { url?: unknown }, ""),
-    layanan[layanan.findIndex((x) => x.nama === teks(l.judul, ""))]?.gambar ??
-      "/images/annasr/layanan-perencanaan.jpg"
-  )
-
 export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
   const [t, lay, por, kl, kar, kon, art, sit, home] = await Promise.all([
     ambil("tentang", locale),
-    ambil("layanan", locale),
-    ambil("portfolio", locale),
-    ambil("klien", locale),
-    ambil("karir", locale),
+    ambilKoleksi("layanan", locale),
+    ambilKoleksi("portfolio", locale),
+    ambilKoleksi("klien", locale),
+    ambilKoleksi("karir", locale),
     ambil("kontak", locale),
-    ambil("artikel", locale),
+    ambilKoleksi("artikel", locale),
     ambil("situs", locale),
     (await import("@/lib/annasr/beranda")).fetchBeranda(locale),
   ])
@@ -501,30 +588,31 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
       ),
       kotaProyek: kota,
     },
-    layanan: layananCms(
-      (lay.layanan as Record<string, unknown>[]) ?? [],
-      fotoGb
+    layanan: layananCms(lay as Record<string, unknown>[], (l) =>
+      teks(
+        medUrl(l.gambar as { url?: unknown }, ""),
+        "/images/annasr/layanan-perencanaan.jpg"
+      )
     ),
     layananIntro: {
       judul: teks(
-        lay.introJudul,
+        sit.layananIntroJudul,
         "Layanan An Nasr dalam Mendukung Proyek Anda"
       ),
-      deskripsi: teks(lay.introDeskripsi, ""),
+      deskripsi: teks(sit.layananIntroDeskripsi, ""),
     },
     proses:
-      Array.isArray(lay.proses) &&
-      (lay.proses as Record<string, unknown>[]).length
-        ? (lay.proses as { judul?: unknown; teks?: unknown }[]).map((p) => ({
+      Array.isArray(sit.proses) &&
+      (sit.proses as Record<string, unknown>[]).length
+        ? (sit.proses as { judul?: unknown; teks?: unknown }[]).map((p) => ({
             judul: teks(p.judul, ""),
             teks: teks(p.teks, ""),
           }))
         : [],
     portfolio:
-      Array.isArray(por.proyek) &&
-      (por.proyek as Record<string, unknown>[]).length
+      Array.isArray(por) && por.length
         ? (
-            por.proyek as {
+            por as {
               nama?: unknown
               instansi?: unknown
               lokasi?: unknown
@@ -549,29 +637,48 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
             gambar: p.gambar,
           })),
     portfolioHero: {
-      judul: teks(por.heroJudul, "Pekerjaan yang berbicara melalui hasilnya"),
-      deskripsi: teks(por.heroDeskripsi, ""),
+      judul: teks(
+        sit.portfolioHeroJudul,
+        "Pekerjaan yang berbicara melalui hasilnya"
+      ),
+      deskripsi: teks(sit.portfolioHeroDeskripsi, ""),
     },
     klien:
-      Array.isArray(kl.klien) && (kl.klien as Record<string, unknown>[]).length
-        ? (kl.klien as { nama?: unknown }[])
-            .map((c) => teks(c.nama, ""))
-            .filter(Boolean)
-        : [...klien],
+      Array.isArray(kl) && kl.length
+        ? // Dedupe by nama: guard bila DB pernah ter-seed ganda (draft/publish
+          // revisi ikut keluar di REST) sehingga marquee tidak dobel.
+          (() => {
+            const terlihat = new Set<string>()
+            const hasil: { nama: string; logo?: string }[] = []
+            for (const c of kl as {
+              nama?: unknown
+              logo?: { url?: unknown }
+            }[]) {
+              const nama = teks(c.nama, "")
+              if (!nama || terlihat.has(nama)) continue
+              terlihat.add(nama)
+              hasil.push({ nama, logo: medUrl(c.logo, "") || undefined })
+            }
+
+            return hasil
+          })()
+        : [...klien].map((nama) => ({ nama })),
     klienHero: {
-      judul: teks(kl.heroJudul, "Kepercayaan yang terjalin di banyak pintu"),
-      deskripsi: teks(kl.heroDeskripsi, ""),
+      judul: teks(
+        sit.klienHeroJudul,
+        "Kepercayaan yang terjalin di banyak pintu"
+      ),
+      deskripsi: teks(sit.klienHeroDeskripsi, ""),
     },
     karir:
-      Array.isArray(kar.posisi) &&
-      (kar.posisi as Record<string, unknown>[]).length
+      Array.isArray(kar) && kar.length
         ? (
-            kar.posisi as {
+            kar as {
               nama?: unknown
               tipe?: unknown
               lokasi?: unknown
               slug?: unknown
-              status?: unknown
+              statusPosisi?: unknown
               ringkas?: unknown
               deskripsi?: unknown
               tanggungJawab?: { teks?: unknown }[]
@@ -585,7 +692,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
                 tipe: teks(p.tipe, "Penuh Waktu"),
                 lokasi: teks(p.lokasi, "Jombang"),
                 slug: teks(p.slug, ""),
-                status: p.status === "ditutup" ? "ditutup" : "terbuka",
+                status: p.statusPosisi === "ditutup" ? "ditutup" : "terbuka",
                 ringkas: teks(p.ringkas, ""),
                 deskripsi: teks(p.deskripsi, ""),
                 tanggungJawab: (p.tanggungJawab ?? [])
@@ -602,8 +709,8 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
             .filter((p) => p.nama)
         : [],
     karirHero: {
-      judul: teks(kar.heroJudul, "Tumbuh bersama tim teknik kami"),
-      deskripsi: teks(kar.heroDeskripsi, ""),
+      judul: teks(sit.karirHeroJudul, "Tumbuh bersama tim teknik kami"),
+      deskripsi: teks(sit.karirHeroDeskripsi, ""),
     },
     kontak: {
       judul: teks(kon.heroJudul, "Mari bicarakan rencana proyek Anda"),
@@ -622,10 +729,10 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           ? kon.whatsapp.trim()
           : undefined,
     },
-    artikel: artikelCms((art.artikel as Record<string, unknown>[]) ?? []),
+    artikel: artikelCms(art as Record<string, unknown>[]),
     artikelHero: {
-      judul: teks(art.heroJudul, "Wawasan Teknik & Konstruksi"),
-      deskripsi: teks(art.heroDeskripsi, ""),
+      judul: teks(sit.artikelHeroJudul, "Wawasan Teknik & Konstruksi"),
+      deskripsi: teks(sit.artikelHeroDeskripsi, ""),
     },
     situs: {
       brandNama: teks(sit.brandNama, "CV. An Nasr Konsultan"),
@@ -675,6 +782,48 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
               { label: "Karir", href: "/karir" },
               { label: "Kontak", href: "/kontak" },
             ],
+      seo: seoCms(sit.seo),
+      keunggulanJudul: teks(
+        sit.keunggulanJudul,
+        "Mengapa Memilih An Nasr Konsultan"
+      ),
+      keunggulanDeskripsi: teks(sit.keunggulanDeskripsi, ""),
+      prosesJudul: teks(sit.prosesJudul, "Tujuh tahap kerja yang terukur"),
+      prosesDeskripsi: teks(
+        sit.prosesDeskripsi,
+        "Alur kerja yang sama untuk setiap proyek, sehingga progres mudah dipantau dari awal hingga serah terima."
+      ),
+      faqJudul: teks(sit.faqJudul, "Pertanyaan yang Sering Diajukan"),
+      faqDeskripsi: teks(
+        sit.faqDeskripsi,
+        "Jawaban singkat untuk kebutuhan yang paling sering ditanyakan calon klien kami."
+      ),
+      artikelJudul: teks(
+        sit.artikelJudul,
+        "Wawasan teknik dari pengalaman di lapangan"
+      ),
+      artikelDeskripsi: teks(
+        sit.artikelDeskripsi,
+        "Catatan praktis seputar perencanaan, pengawasan, perizinan, dan konstruksi."
+      ),
+      perjalananJudul: teks(
+        sit.perjalananJudul,
+        "Dari kantor kecil di Jombang, menuju pembangunan di banyak kota"
+      ),
+      perjalananDeskripsi: teks(
+        sit.perjalananDeskripsi,
+        "Lebih dari satu dekade kami menumbuhkan kredibilitas lewat pekerjaan yang dapat dipertanggungjawabkan secara teknis dan moral."
+      ),
+      visiMisiJudul: teks(sit.visiMisiJudul, "Visi & Misi"),
+      visiMisiDeskripsi: teks(sit.visiMisiDeskripsi, ""),
+      timJudul: teks(
+        sit.timJudul,
+        "Tenaga ahli yang bekerja di balik setiap proyek"
+      ),
+      timDeskripsi: teks(
+        sit.timDeskripsi,
+        "Dari struktur, jalan, jembatan, hingga sumber daya air — setiap penugasan dipegang oleh profesional yang berpengalaman di lapangan."
+      ),
     },
   }
 }

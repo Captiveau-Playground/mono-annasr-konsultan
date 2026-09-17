@@ -9,7 +9,10 @@
       "type": "enumeration",
       "required": true,
       "default": "page",
-      "enum": ["external", "page"]
+      "enum": [
+        "external",
+        "page"
+      ]
     },
     "label": {
       "type": "string",
@@ -33,21 +36,6 @@
         }
       },
       "required": true
-    },
-    "page": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::page.page",
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "type"
-            },
-            "page"
-          ]
-        }
-      }
     },
     "decorations": {
       "type": "component",

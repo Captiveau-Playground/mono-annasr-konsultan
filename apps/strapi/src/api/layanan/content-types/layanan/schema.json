@@ -1,31 +1,64 @@
 {
-  "kind": "singleType",
+  "kind": "collectionType",
   "collectionName": "layanans",
   "info": {
     "singularName": "layanan",
     "pluralName": "layanans",
-    "displayName": "2 Layanan"
+    "displayName": "Layanan"
   },
   "options": {
     "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "introJudul": {
+    "judul": {
       "type": "string"
     },
-    "introDeskripsi": {
+    "ringkas": {
       "type": "text"
     },
-    "layanan": {
-      "type": "component",
-      "component": "annasr.layanan-item",
-      "repeatable": true
+    "slug": {
+      "type": "uid",
+      "targetField": "judul"
     },
-    "proses": {
+    "gambar": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": false
+    },
+    "deskripsi": {
+      "type": "text"
+    },
+    "galeri": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": true
+    },
+    "manfaat": {
+      "type": "text",
+      "description": "Satu baris = satu poin manfaat (textarea)."
+    },
+    "detail": {
+      "type": "text",
+      "description": "Satu baris = satu item lingkup pekerjaan (textarea)."
+    },
+    "alur": {
       "type": "component",
       "component": "annasr.alur-step",
       "repeatable": true
+    },
+    "persyaratan": {
+      "type": "component",
+      "component": "annasr.persyaratan-kartu",
+      "repeatable": true
+    },
+    "dokumenClient": {
+      "type": "component",
+      "component": "annasr.dokumen-client"
     }
   }
 }

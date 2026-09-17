@@ -20,9 +20,13 @@ export async function generateMetadata({
   const { locale } = await params
   if (!isValidLocale(locale)) return {}
 
+  const konten = await fetchKontenSitus(locale)
+  const seo = konten.situs.seo?.karir
+
   return {
-    title: "Karir — Bergabung Bersama CV. AN NASR KONSULTAN",
+    title: seo?.judul || "Karir — Bergabung Bersama CV. AN NASR KONSULTAN",
     description:
+      seo?.deskripsi ||
       "Lowongan kerja terbaru di CV. AN NASR KONSULTAN: drafter, pengawas lapangan, estimator, dan administrasi proyek di Jombang.",
   }
 }
@@ -81,7 +85,12 @@ export default async function KarirPage({
               {konten.karir
                 .filter((p) => p.status !== "ditutup")
                 .map((item) => (
-                  <JobCard key={item.slug || item.nama} item={item} />
+                  <JobCard
+                    key={item.slug || item.nama}
+                    item={item}
+                    brand={konten.situs.brandNama}
+                    tagline={konten.situs.brandTagline}
+                  />
                 ))}
             </div>
           )}

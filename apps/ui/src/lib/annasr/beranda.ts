@@ -4,14 +4,7 @@ import { strapiCacheTag } from "@repo/shared-data"
 import type { UID } from "@repo/strapi-types"
 import type { Locale } from "next-intl"
 
-import {
-  artikel,
-  founder,
-  klien,
-  kotaProyek,
-  layanan,
-  portfolio,
-} from "@/data/perusahaan"
+import { founder } from "@/data/perusahaan"
 import { STRAPI_CACHE_TTL } from "@/lib/annasr/config"
 import { logNonBlockingError } from "@/lib/logging"
 import { PublicStrapiClient } from "@/lib/strapi-api"
@@ -19,23 +12,8 @@ import { PublicStrapiClient } from "@/lib/strapi-api"
 // UID belum ada di strapi-types hasil generate (typegen env bermasalah) — cast aman.
 const UID_BERANDA = "api::beranda.beranda" as UID.ContentType
 
-export type BerandaGambar = { url: string; alt?: string }
-
-export type ArtikelBeranda = {
-  slug: string
-  judul: string
-  ringkas: string
-  tanggal: string
-  kategori: string
-  penulis: string
-  gambar: string
-  unggulan?: boolean
-  isi: string[]
-}
-
 export type BerandaKonten = {
   hero?: { judul: string; deskripsi: string; keunggulan: string[] }
-  statistik: { nilai: string; label: string }[]
   founder?: {
     nama: string
     jabatan: string
@@ -45,18 +23,6 @@ export type BerandaKonten = {
   }
   /** "Mengapa Memilih An Nasr" — dikelola CMS di Beranda (bukan Tentang). */
   keunggulan: { judul: string; teks: string }[]
-  layanan: { slug: string; judul: string; ringkas: string; gambar: string }[]
-  portfolio: {
-    nama: string
-    lokasi: string
-    kategori: string
-    gambar: string
-  }[]
-  klien: { nama: string; logo?: string }[]
-  kotaProyek: { nama: string; lat: number; lng: number }[]
-  jangkauanJudul: string
-  jangkauanDeskripsi: string
-  artikel: ArtikelBeranda[]
   faq: { tanya: string; jawab: string }[]
   cta?: { judul: string; deskripsi: string }
 }
@@ -71,12 +37,6 @@ const HERO_DEFAULT = {
     "Tim profesional bersertifikat",
   ],
 }
-
-const STATISTIK_DEFAULT = [
-  { nilai: "15+", label: "Tahun Pengalaman" },
-  { nilai: "7", label: "Tahap Kerja Terukur" },
-  { nilai: "4", label: "Lini Layanan" },
-]
 
 const KEUNGGULAN_DEFAULT = [
   {
@@ -96,12 +56,6 @@ const KEUNGGULAN_DEFAULT = [
     teks: "Laporan berkala yang jelas, progres terdokumentasi, dan komitmen waktu.",
   },
 ]
-
-const JANGKAUAN_DEFAULT = {
-  judul: "20+ kota di Indonesia telah kami kawal",
-  deskripsi:
-    "Berbasis di Jombang, pekerjaan kami tersebar melintasi Jawa hingga Indonesia Timur.",
-}
 
 const FAQ_DEFAULT = [
   {
@@ -203,37 +157,12 @@ function keunggulanBaris(v: unknown, fallback: string[]): string[] {
   return fallback
 }
 
-function slugify(teks: string): string {
-  return teks
-    .toLowerCase()
-    .replaceAll(/[^a-z0-9]+/g, "-")
-    .replaceAll(/^-|-$/g, "")
-}
-
 /** Konten default (statis) — dipakai bila Strapi kosong/gagal. */
 export function berandaFallback(): BerandaKonten {
   return {
     hero: HERO_DEFAULT,
-    statistik: STATISTIK_DEFAULT,
     founder: { ...founder },
     keunggulan: KEUNGGULAN_DEFAULT,
-    layanan: layanan.map((l) => ({
-      slug: l.slug,
-      judul: l.nama,
-      ringkas: l.ringkas,
-      gambar: l.gambar,
-    })),
-    portfolio: portfolio.map((p) => ({
-      nama: p.nama,
-      lokasi: p.lokasi,
-      kategori: p.kategori,
-      gambar: p.gambar,
-    })),
-    klien: klien.map((nama) => ({ nama })),
-    kotaProyek: [...kotaProyek],
-    jangkauanJudul: JANGKAUAN_DEFAULT.judul,
-    jangkauanDeskripsi: JANGKAUAN_DEFAULT.deskripsi,
-    artikel: artikel.map((a) => ({ ...a })),
     faq: FAQ_DEFAULT,
     cta: { ...CTA_DEFAULT },
   }
@@ -245,7 +174,6 @@ type RawBeranda = {
     deskripsi?: unknown
     keunggulan?: unknown
   }
-  statistik?: unknown[]
   founder?: {
     nama?: unknown
     jabatan?: unknown
@@ -254,33 +182,6 @@ type RawBeranda = {
     foto?: { url?: unknown }
   }
   keunggulan?: { judul?: unknown; teks?: unknown }[]
-  layanan?: {
-    slug?: unknown
-    judul?: unknown
-    ringkas?: unknown
-    gambar?: { url?: unknown }
-  }[]
-  portfolio?: {
-    nama?: unknown
-    lokasi?: unknown
-    kategori?: unknown
-    gambar?: { url?: unknown }
-  }[]
-  klien?: { nama?: unknown; logo?: { url?: unknown } }[]
-  kotaProyek?: { nama?: unknown; lat?: unknown; lng?: unknown }[]
-  jangkauanJudul?: unknown
-  jangkauanDeskripsi?: unknown
-  artikel?: {
-    slug?: unknown
-    judul?: unknown
-    ringkas?: unknown
-    tanggal?: unknown
-    kategori?: unknown
-    penulis?: unknown
-    gambar?: { url?: unknown }
-    unggulan?: unknown
-    isi?: unknown
-  }[]
   faq?: { tanya?: unknown; jawab?: unknown }[]
   cta?: { judul?: unknown; deskripsi?: unknown }
 }
@@ -297,14 +198,8 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
       locale,
       populate: {
         hero: "smart",
-        statistik: "smart",
         founder: "smart",
         keunggulan: "smart",
-        layanan: "smart",
-        portfolio: "smart",
-        klien: "smart",
-        kotaProyek: "smart",
-        artikel: "smart",
         faq: "smart",
         cta: "smart",
       },
@@ -337,13 +232,6 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
             ),
           }
         : fallback.hero,
-      statistik:
-        data.statistik && data.statistik.length > 0
-          ? data.statistik.map((s) => ({
-              nilai: str((s as { nilai?: unknown }).nilai, "—"),
-              label: str((s as { label?: unknown }).label, ""),
-            }))
-          : fallback.statistik,
       founder: data.founder
         ? {
             nama: str(data.founder.nama, fallback.founder!.nama),
@@ -363,85 +251,6 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
               teks: str(k.teks, fallback.keunggulan[i]?.teks ?? ""),
             }))
           : fallback.keunggulan,
-      layanan:
-        data.layanan && data.layanan.length > 0
-          ? data.layanan.map((l, i) => ({
-              slug: str(l.slug, fallback.layanan[i]?.slug ?? ""),
-              judul: str(
-                l.judul,
-                fallback.layanan[i]?.judul ?? `Layanan ${i + 1}`
-              ),
-              ringkas: str(l.ringkas, fallback.layanan[i]?.ringkas ?? ""),
-              gambar:
-                resolvUrl(l.gambar?.url) ?? fallback.layanan[i]?.gambar ?? "",
-            }))
-          : fallback.layanan,
-      portfolio:
-        data.portfolio && data.portfolio.length > 0
-          ? data.portfolio.map((p, i) => ({
-              nama: str(
-                p.nama,
-                fallback.portfolio[i]?.nama ?? `Proyek ${i + 1}`
-              ),
-              lokasi: str(p.lokasi, ""),
-              kategori: str(p.kategori, "Bangunan"),
-              gambar:
-                resolvUrl(p.gambar?.url) ??
-                fallback.portfolio[i]?.gambar ??
-                "/images/annasr/proyek-gedung.jpg",
-            }))
-          : fallback.portfolio,
-      klien:
-        data.klien && data.klien.length > 0
-          ? data.klien
-              .map((k) => ({
-                nama: str(k.nama, ""),
-                logo: resolvUrl((k.logo as undefined | { url?: unknown })?.url),
-              }))
-              .filter((k) => k.nama)
-          : fallback.klien,
-      kotaProyek:
-        data.kotaProyek && data.kotaProyek.length > 0
-          ? data.kotaProyek
-              .map((k) => ({
-                nama: str(k.nama, ""),
-                lat: Number(k.lat),
-                lng: Number(k.lng),
-              }))
-              .filter(
-                (k) =>
-                  k.nama && Number.isFinite(k.lat) && Number.isFinite(k.lng)
-              )
-          : fallback.kotaProyek,
-      jangkauanJudul: str(data.jangkauanJudul, JANGKAUAN_DEFAULT.judul),
-      jangkauanDeskripsi: str(
-        data.jangkauanDeskripsi,
-        JANGKAUAN_DEFAULT.deskripsi
-      ),
-      artikel:
-        data.artikel && data.artikel.length > 0
-          ? data.artikel.map((a, i) => {
-              const judul = str(a.judul, `Artikel ${i + 1}`)
-              const statis = fallback.artikel[i]
-
-              return {
-                slug: str(a.slug, statis?.slug ?? slugify(judul)),
-                judul,
-                ringkas: str(a.ringkas, statis?.ringkas ?? ""),
-                tanggal: str(a.tanggal, statis?.tanggal ?? ""),
-                kategori: str(a.kategori, statis?.kategori ?? "Artikel"),
-                penulis: str(a.penulis, statis?.penulis ?? ""),
-                gambar: resolvUrl(a.gambar?.url) ?? statis?.gambar ?? "",
-                unggulan: a.unggulan === true,
-                isi:
-                  Array.isArray(a.isi) && a.isi.length > 0
-                    ? a.isi
-                        .map((x) => (typeof x === "string" ? x : ""))
-                        .filter((x) => x.length > 0)
-                    : (statis?.isi ?? []),
-              }
-            })
-          : fallback.artikel,
       faq:
         data.faq && data.faq.length > 0
           ? data.faq.map((f, i) => ({
