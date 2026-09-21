@@ -14,7 +14,6 @@ const PER_HALAMAN = 9
 
 type ProyekItem = {
   nama: string
-  instansi?: string
   lokasi: string
   kategori: string
   gambar: string
@@ -121,11 +120,6 @@ export function PortfolioSection({
                   <span className="text-accent text-[11px] font-semibold tracking-[0.18em] uppercase">
                     {p.kategori}
                   </span>
-                  {p.instansi ? (
-                    <span className="text-primary-foreground/55 text-[11px] tracking-wide uppercase">
-                      {p.instansi}
-                    </span>
-                  ) : null}
                 </div>
                 <h3 className="text-primary-foreground mt-1.5 text-base leading-snug">
                   {p.nama}

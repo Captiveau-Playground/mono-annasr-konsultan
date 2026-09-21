@@ -14,9 +14,6 @@
     "nama": {
       "type": "string"
     },
-    "instansi": {
-      "type": "string"
-    },
     "lokasi": {
       "type": "string"
     },

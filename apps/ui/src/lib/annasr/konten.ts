@@ -272,7 +272,6 @@ export type KontenSitus = {
   proses: { judul: string; teks: string }[]
   portfolio: {
     nama: string
-    instansi: string
     lokasi: string
     kategori: string
     gambar: string
@@ -637,14 +636,12 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
         ? (
             por as {
               nama?: unknown
-              instansi?: unknown
               lokasi?: unknown
               kategori?: unknown
               gambar?: { url?: unknown }
             }[]
           ).map((p, i) => ({
             nama: teks(p.nama, portfolio[i]?.nama ?? `Proyek ${i + 1}`),
-            instansi: teks(p.instansi, portfolio[i]?.instansi ?? ""),
             lokasi: teks(p.lokasi, ""),
             kategori: teks(p.kategori, "Bangunan"),
             gambar: medUrl(
@@ -654,7 +651,6 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           }))
         : portfolio.map((p) => ({
             nama: p.nama,
-            instansi: p.instansi,
             lokasi: p.lokasi,
             kategori: p.kategori,
             gambar: p.gambar,

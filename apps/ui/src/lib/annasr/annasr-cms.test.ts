@@ -71,7 +71,6 @@ const KOLEKSI: Record<string, Record<string, unknown>[]> = {
   "api::portfolio.portfolio": [
     {
       nama: "QA p nama",
-      instansi: "QA p instansi",
       lokasi: "QA p lokasi",
       kategori: "QA p kategori",
       gambar: { url: "/uploads/qa-p.jpg" },
@@ -365,7 +364,6 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
     expect(r).toEqual([
       {
         nama: "QA p nama",
-        instansi: "QA p instansi",
         lokasi: "QA p lokasi",
         kategori: "QA p kategori",
         gambar: `/api/asset/uploads/qa-p.jpg`,
