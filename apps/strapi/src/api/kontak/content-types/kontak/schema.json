@@ -39,6 +39,10 @@
     "whatsapp": {
       "type": "string",
       "default": "6281200000000"
+    },
+    "petaEmbedUrl": {
+      "type": "string",
+      "description": "URL embed Google Maps untuk peta halaman Kontak. Kosongkan untuk memakai peta bawaan."
     }
   }
 }

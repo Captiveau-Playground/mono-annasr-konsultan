@@ -16,12 +16,15 @@ export function TentangHero({
   deskripsi,
   keunggulan = [],
   statistik = [],
+  gambar,
 }: {
   judul?: string
   deskripsi?: string
   keunggulan?: string[]
   /** Angka/label badge dari CMS (`tentang.statistik`) — item ke-2 dipakai. */
   statistik?: { nilai: string; label: string }[]
+  /** Gambar hero dari CMS (`tentang.hero.gambar[0]`). Kosong = bawaan. */
+  gambar?: string
 }) {
   const trust = keunggulan.length > 0 ? keunggulan : KEUNGGULAN
   const badge = statistik[1] ?? {
@@ -91,7 +94,7 @@ export function TentangHero({
               <div className="from-primary/15 to-accent/25 absolute -inset-4 rounded-[28px] bg-gradient-to-br blur-lg" />
               <div className="border-border relative overflow-hidden rounded-[24px] border shadow-[0_28px_64px_-26px_rgba(0,0,0,0.25)]">
                 <Image
-                  src="/images/annasr/layanan-perencanaan.jpg"
+                  src={gambar || "/images/annasr/layanan-perencanaan.jpg"}
                   alt="Tim perencanaan CV. AN NASR KONSULTAN menyusun gambar kerja"
                   width={840}
                   height={640}

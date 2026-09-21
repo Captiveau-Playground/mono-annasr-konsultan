@@ -13,13 +13,21 @@ import { PublicStrapiClient } from "@/lib/strapi-api"
 const UID_BERANDA = "api::beranda.beranda" as UID.ContentType
 
 export type BerandaKonten = {
-  hero?: { judul: string; deskripsi: string; keunggulan: string[] }
+  hero?: {
+    judul: string
+    deskripsi: string
+    keunggulan: string[]
+    /** Gambar slider hero dari CMS — kosong = pakai gambar bawaan. */
+    gambar: string[]
+  }
   founder?: {
     nama: string
     jabatan: string
     teks: string
     kutipan?: string
     foto?: string
+    /** Dua gambar pendukung dari CMS — kosong = pakai gambar bawaan. */
+    gambarPendukung?: string[]
   }
   /** "Mengapa Memilih An Nasr" — dikelola CMS di Beranda (bukan Tentang). */
   keunggulan: { judul: string; teks: string }[]
@@ -36,6 +44,7 @@ const HERO_DEFAULT = {
     "Puluhan proyek daerah",
     "Tim profesional bersertifikat",
   ],
+  gambar: [],
 }
 
 const KEUNGGULAN_DEFAULT = [
@@ -173,6 +182,7 @@ type RawBeranda = {
     judul?: unknown
     deskripsi?: unknown
     keunggulan?: unknown
+    gambar?: { url?: unknown }[]
   }
   founder?: {
     nama?: unknown
@@ -180,6 +190,7 @@ type RawBeranda = {
     teks?: unknown
     kutipan?: unknown
     foto?: { url?: unknown }
+    gambarPendukung?: { url?: unknown }[]
   }
   keunggulan?: { judul?: unknown; teks?: unknown }[]
   faq?: { tanya?: unknown; jawab?: unknown }[]
@@ -230,6 +241,11 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
               data.hero.keunggulan,
               fallback.hero!.keunggulan
             ),
+            gambar: Array.isArray(data.hero.gambar)
+              ? data.hero.gambar
+                  .map((g) => resolvUrl(g.url))
+                  .filter((x): x is string => Boolean(x))
+              : [],
           }
         : fallback.hero,
       founder: data.founder
@@ -239,6 +255,11 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
             teks: str(data.founder.teks, fallback.founder!.teks),
             kutipan: str(data.founder.kutipan, KUTIPAN_DEFAULT),
             foto: resolvUrl(data.founder.foto?.url) ?? fallback.founder!.foto,
+            gambarPendukung: Array.isArray(data.founder.gambarPendukung)
+              ? data.founder.gambarPendukung
+                  .map((g) => resolvUrl(g.url))
+                  .filter((x): x is string => Boolean(x))
+              : [],
           }
         : fallback.founder,
       keunggulan:

@@ -56,6 +56,7 @@ export default async function TentangPage({
         deskripsi={konten.hero.deskripsi}
         keunggulan={konten.hero.keunggulan}
         statistik={konten.statistik}
+        gambar={konten.hero.gambar?.[0]}
       />
       <TentangInti
         judul={konten.tentangInti.judul || undefined}
@@ -63,6 +64,7 @@ export default async function TentangPage({
         poin={konten.tentangInti.daftar}
         statistik={konten.statistik}
         brand={k.situs.brandNama || undefined}
+        gambar={konten.tentangGambar || undefined}
       />
       <KisahPerusahaan
         perjalanan={konten.perjalanan}

@@ -27,6 +27,10 @@ export function FounderSection({
     founderData?.kutipan?.trim() ||
     "Setiap pekerjaan harus dapat dipertanggungjawabkan secara teknis maupun moral."
   const foto = founderData?.foto?.trim() || "/images/annasr/founder.jpg"
+  // Dua gambar pendukung — dari CMS bila diisi; per slot fallback ke statis.
+  const pendukung = founderData?.gambarPendukung?.filter(Boolean) ?? []
+  const gambarPendukung1 = pendukung[0] || "/images/annasr/tim-perusahaan.jpg"
+  const gambarPendukung2 = pendukung[1] || "/images/annasr/tim-engineer.jpg"
 
   return (
     <SectionShell
@@ -70,14 +74,14 @@ export function FounderSection({
 
           <div className="mt-6 grid flex-1 grid-cols-2 gap-4">
             <Image
-              src="/images/annasr/tim-perusahaan.jpg"
+              src={gambarPendukung1}
               alt="Rapat koordinasi tim CV. AN NASR KONSULTAN di kantor"
               width={800}
               height={600}
               className="h-full max-h-56 w-full rounded-xl object-cover"
             />
             <Image
-              src="/images/annasr/tim-engineer.jpg"
+              src={gambarPendukung2}
               alt="Tim teknik CV. AN NASR KONSULTAN di lokasi proyek"
               width={800}
               height={600}

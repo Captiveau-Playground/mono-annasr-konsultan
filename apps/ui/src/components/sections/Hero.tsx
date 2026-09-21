@@ -15,6 +15,7 @@ const HERO_DEFAULT = {
   deskripsi:
     "Menyediakan layanan perencanaan, pengawasan, perizinan, dan konstruksi dengan mengutamakan kualitas, profesionalisme, serta ketepatan dalam setiap tahap pelaksanaan proyek.",
   keunggulan: [],
+  gambar: [],
 }
 
 const LINI_DEFAULT = [
@@ -42,8 +43,16 @@ const GAMBAR_SLIDER = [
   { src: "/images/annasr/tim-engineer.jpg", alt: "Tim konsultan di lapangan" },
 ]
 
-/** Kotak gambar hero — auto slider (crossfade), tanpa interaksi tambahan. */
-function SliderGambar() {
+/** Kotak gambar hero — auto slider (crossfade), tanpa interaksi tambahan.
+ *  Gambar dari CMS (`hero.gambar`) dipakai bila ada; kosong = slider bawaan. */
+function SliderGambar({ gambar }: { gambar: string[] }) {
+  const daftar =
+    gambar.length > 0
+      ? gambar.map((src, i) => ({
+          src,
+          alt: `Gambar hero ${i + 1} CV. AN NASR KONSULTAN`,
+        }))
+      : GAMBAR_SLIDER
   const [indeks, setIndeks] = useState(0)
   const [kurangiGerak] = useState(
     () =>
@@ -53,18 +62,15 @@ function SliderGambar() {
 
   useEffect(() => {
     if (kurangiGerak) return
-    const t = setInterval(
-      () => setIndeks((x) => (x + 1) % GAMBAR_SLIDER.length),
-      4200
-    )
+    const t = setInterval(() => setIndeks((x) => (x + 1) % daftar.length), 4200)
 
     return () => clearInterval(t)
-  }, [kurangiGerak])
+  }, [kurangiGerak, daftar.length])
 
   return (
     <div className="relative hidden shrink-0 lg:block" aria-hidden="true">
       <div className="relative aspect-[4/5] w-[400px] overflow-hidden rounded-3xl border border-white/15 shadow-[var(--shadow-lift)]">
-        {GAMBAR_SLIDER.map((g, i) => (
+        {daftar.map((g, i) => (
           <Image
             key={g.src}
             src={g.src}
@@ -87,7 +93,7 @@ function SliderGambar() {
         <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent" />
       </div>
       <div className="absolute -bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-        {GAMBAR_SLIDER.map((g, i) => (
+        {daftar.map((g, i) => (
           <span
             key={g.src}
             className={cn(
@@ -214,7 +220,7 @@ export function Hero({
             </ul>
           </div>
         </div>
-        <SliderGambar />
+        <SliderGambar gambar={kontenHero.gambar ?? []} />
       </div>
     </section>
   )

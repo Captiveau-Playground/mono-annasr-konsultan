@@ -22,6 +22,14 @@
         "images"
       ],
       "multiple": false
+    },
+    "gambarPendukung": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ],
+      "description": "Dua gambar pendukung di samping foto founder (maksimal 2 dipakai). Kosongkan untuk memakai gambar bawaan."
     }
   }
 }

@@ -1,33 +1,5 @@
 import { Reveal } from "@/components/site/Reveal"
 
-const PERJALANAN_STATIS = [
-  {
-    tahun: "2014",
-    judul: "Berdiri di Jombang",
-    teks: "CV. AN NASR KONSULTAN didirikan dengan fokus pada jasa perencanaan dan pengawasan bangunan.",
-  },
-  {
-    tahun: "2016",
-    judul: "Ekspansi Layanan",
-    teks: "Lini perizinan PBG & SLF dan pelaksanaan konstruksi mulai melengkapi layanan utama.",
-  },
-  {
-    tahun: "2018",
-    judul: "Proyek Pemerintah Daerah",
-    teks: "Dipercaya instansi dan desa untuk pekerjaan jalan, jembatan, dan irigasi berskala daerah.",
-  },
-  {
-    tahun: "2021",
-    judul: "Jangkauan Luar Jawa",
-    teks: "Cakupan proyek meluas ke kota-kota di luar Jawa Timur hingga wilayah Indonesia Timur.",
-  },
-  {
-    tahun: "Hari Ini",
-    judul: "Mitra Pembangunan yang Terpercaya",
-    teks: "Melayani instansi, lembaga, dan mitra usaha dengan satu standar mutu di setiap proyek.",
-  },
-]
-
 export function KisahPerusahaan({
   perjalanan = [],
   judul = "Dari kantor kecil di Jombang, menuju pembangunan di banyak kota",
@@ -38,7 +10,9 @@ export function KisahPerusahaan({
   judul?: string
   deskripsi?: string
 }) {
-  const PERJALANAN = perjalanan.length > 0 ? perjalanan : PERJALANAN_STATIS
+  // Semua milestone dihapus di CMS → section tidak dirender (bukan fallback
+  // ke data statis), sehingga section bisa "dihapus" lewat CMS.
+  if (perjalanan.length === 0) return null
 
   return (
     <section className="bg-surface py-20 lg:py-24">
@@ -62,7 +36,7 @@ export function KisahPerusahaan({
           {/* 7/12 — timeline */}
           <div className="lg:col-span-7">
             <ol className="border-border relative flex flex-col gap-10 border-l-2 pl-8">
-              {PERJALANAN.map((tahap, i) => (
+              {perjalanan.map((tahap, i) => (
                 <Reveal key={tahap.tahun} arah="right" delay={i * 0.05}>
                   <li className="relative">
                     <span className="bg-accent ring-surface absolute top-1.5 -left-[38px] size-3.5 rounded-full ring-4" />

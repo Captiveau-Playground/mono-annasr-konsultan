@@ -145,8 +145,10 @@ export default async function DetailLayanan({
         </div>
       </section>
 
-      {item.alur ? <AlurLayanan nama={item.nama} alur={item.alur} /> : null}
-      {item.persyaratan ? (
+      {item.alur.length > 0 ? (
+        <AlurLayanan nama={item.nama} alur={item.alur} />
+      ) : null}
+      {item.persyaratan.length > 0 ? (
         <PersyaratanLayanan persyaratan={item.persyaratan} />
       ) : null}
       {item.dokumenClient ? (

@@ -130,6 +130,10 @@ describe("beranda (fetchBeranda)", () => {
       judul: "QA hero judul",
       deskripsi: "QA hero deskripsi",
       keunggulan: "QA-ke1\nQA-ke2",
+      gambar: [
+        { url: "/uploads/qa-hero-1.jpg" },
+        { url: "/uploads/qa-hero-2.jpg" },
+      ],
     },
     founder: {
       nama: "QA nama founder",
@@ -137,6 +141,7 @@ describe("beranda (fetchBeranda)", () => {
       teks: "QA teks founder",
       kutipan: "QA kutipan founder",
       foto: { url: "/uploads/qa-founder.jpg" },
+      gambarPendukung: [{ url: "/uploads/qa-pendukung-1.jpg" }],
     },
     keunggulan: [{ judul: "QA alasan 1", teks: "QA alasan teks" }],
     faq: [{ tanya: "QA tanya", jawab: "QA jawab" }],
@@ -152,6 +157,10 @@ describe("beranda (fetchBeranda)", () => {
       judul: "QA hero judul",
       deskripsi: "QA hero deskripsi",
       keunggulan: ["QA-ke1", "QA-ke2"],
+      gambar: [
+        "/api/asset/uploads/qa-hero-1.jpg",
+        "/api/asset/uploads/qa-hero-2.jpg",
+      ],
     })
     expect(r.founder).toEqual({
       nama: "QA nama founder",
@@ -159,6 +168,7 @@ describe("beranda (fetchBeranda)", () => {
       teks: "QA teks founder",
       kutipan: "QA kutipan founder",
       foto: "/api/asset/uploads/qa-founder.jpg",
+      gambarPendukung: ["/api/asset/uploads/qa-pendukung-1.jpg"],
     })
     expect(r.keunggulan).toEqual([
       { judul: "QA alasan 1", teks: "QA alasan teks" },
@@ -188,6 +198,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
         judul: "QA t hero",
         deskripsi: "QA t deskripsi",
         keunggulan: ["QA-t-ke"],
+        gambar: [{ url: "/uploads/qa-t-hero.jpg" }],
       },
       statistik: [{ nilai: "QA1", label: "QA stat" }],
       founder: {
@@ -212,6 +223,12 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       jangkauanJudul: "QA jangkauan judul",
       jangkauanDeskripsi: "QA jangkauan deskripsi",
       kotaProyek: [{ nama: "QA kota2", lat: -3, lng: 4 }],
+      tentang: {
+        judul: "QA t inti judul",
+        deskripsi: "QA t inti deskripsi",
+        daftar: "QA t inti daftar 1\nQA t inti daftar 2",
+      },
+      tentangGambar: { url: "/uploads/qa-tentang.jpg" },
     },
 
     "api::kontak.kontak": {
@@ -224,6 +241,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       jamOperasional: "QA jam",
       instagram: "QA ig",
       whatsapp: "QA wa",
+      petaEmbedUrl: "https://maps.test/embed",
     },
 
     "api::situs.situs": {
@@ -272,7 +290,14 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       judul: "QA t hero",
       deskripsi: "QA t deskripsi",
       keunggulan: ["QA-t-ke"],
+      gambar: ["/api/asset/uploads/qa-t-hero.jpg"],
     })
+    expect(r.tentangInti).toEqual({
+      judul: "QA t inti judul",
+      deskripsi: "QA t inti deskripsi",
+      daftar: ["QA t inti daftar 1", "QA t inti daftar 2"],
+    })
+    expect(r.tentangGambar).toBe("/api/asset/uploads/qa-tentang.jpg")
     expect(r.statistik).toEqual([{ nilai: "QA1", label: "QA stat" }])
     expect(r.founder).toEqual({
       nama: "QA f nama",
@@ -395,6 +420,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
     expect(r.jamOperasional).toBe("QA jam")
     expect(r.instagram).toBe("QA ig")
     expect(r.whatsapp).toBe("QA wa")
+    expect(r.petaEmbedUrl).toBe("https://maps.test/embed")
   })
 
   it("artikel: daftar + hero dari CMS", async () => {

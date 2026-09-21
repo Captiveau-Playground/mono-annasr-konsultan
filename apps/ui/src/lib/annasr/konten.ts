@@ -240,7 +240,13 @@ export type ItemKarir = {
 export type KontenSitus = {
   beranda: BerandaKonten
   tentang: {
-    hero: { judul: string; deskripsi: string; keunggulan: string[] }
+    hero: {
+      judul: string
+      deskripsi: string
+      keunggulan: string[]
+      /** Gambar hero dari CMS — kosong = pakai gambar bawaan. */
+      gambar: string[]
+    }
     statistik: { nilai: string; label: string }[]
     founder: {
       nama: string
@@ -255,6 +261,8 @@ export type KontenSitus = {
     alasan: { judul: string; teks: string }[]
     /** Inti "Tentang Kami" — dari field `tentang` (persyaratan-kartu) di CMS. */
     tentangInti: { judul: string; deskripsi: string; daftar: string[] }
+    /** Gambar section "Tentang Kami" dari CMS — kosong = pakai gambar bawaan. */
+    tentangGambar: string
     jangkauanJudul: string
     jangkauanDeskripsi: string
     kotaProyek: { nama: string; lat: number; lng: number }[]
@@ -284,6 +292,8 @@ export type KontenSitus = {
     jamOperasional: string
     instagram?: string
     whatsapp?: string
+    /** URL embed peta (Google Maps) halaman Kontak — kosong = peta bawaan. */
+    petaEmbedUrl: string
   }
   artikel: ReturnType<typeof artikelCms>
   artikelHero: { judul: string; deskripsi: string }
@@ -344,7 +354,7 @@ function artikelCms(daftar: Record<string, unknown>[]) {
  * (`populate[hero]=smart`), bukan nilai string datar (`populate=smart`)
  * yang ditolak Strapi dengan "Invalid key smart".
  */
-const POPULATE_SMART: Record<string, Record<string, "smart">> = {
+const POPULATE_SMART: Record<string, Record<string, "smart" | true>> = {
   tentang: {
     hero: "smart",
     statistik: "smart",
@@ -354,6 +364,8 @@ const POPULATE_SMART: Record<string, Record<string, "smart">> = {
     tim: "smart",
     alasan: "smart",
     kotaProyek: "smart",
+    tentang: "smart",
+    tentangGambar: true,
   },
   kontak: {},
   artikel: {},
@@ -492,6 +504,13 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           "Puluhan proyek daerah",
           "Tim profesional bersertifikat",
         ]),
+        gambar: Array.isArray(
+          (t.hero as { gambar?: { url?: unknown }[] })?.gambar
+        )
+          ? (t.hero as { gambar?: { url?: unknown }[] })
+              .gambar!.map((g) => medUrl(g, ""))
+              .filter(Boolean)
+          : [],
       },
       statistik:
         Array.isArray(t.statistik) && t.statistik.length > 0
@@ -538,6 +557,10 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           daftar: teksArr(inti.daftar, []),
         }
       })(),
+      tentangGambar: medUrl(
+        t.tentangGambar as undefined | { url?: unknown },
+        ""
+      ),
       perjalanan: Array.isArray(t.perjalanan)
         ? (
             t.perjalanan as {
@@ -728,6 +751,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
         typeof kon.whatsapp === "string" && kon.whatsapp.trim()
           ? kon.whatsapp.trim()
           : undefined,
+      petaEmbedUrl: teks(kon.petaEmbedUrl, ""),
     },
     artikel: artikelCms(art as Record<string, unknown>[]),
     artikelHero: {

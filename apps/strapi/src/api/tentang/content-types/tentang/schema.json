@@ -58,6 +58,14 @@
       "type": "component",
       "component": "annasr.kota",
       "repeatable": true
+    },
+    "tentangGambar": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "description": "Gambar section Tentang Kami (di sisi kanan teks). Kosongkan untuk memakai gambar bawaan."
     }
   }
 }

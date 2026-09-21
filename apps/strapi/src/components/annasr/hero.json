@@ -14,6 +14,14 @@
     "keunggulan": {
       "type": "text",
       "description": "Satu baris = satu poin keunggulan. Dulu JSON (code editor), sekarang textarea biasa."
+    },
+    "gambar": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ],
+      "description": "Gambar slider hero (maksimal 4 dipakai). Kosongkan untuk memakai gambar bawaan."
     }
   }
 }

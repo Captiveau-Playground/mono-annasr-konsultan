@@ -50,7 +50,9 @@ function kolomGrid(jumlah: number): string {
 function KartuRekanan({ item }: { item: RekananItem }) {
   return (
     <article className="border-border bg-card flex flex-col overflow-hidden rounded-2xl border shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-lift)]">
-      <div className="bg-surface/60 flex aspect-[4/3] items-center justify-center overflow-hidden p-4">
+      {/* Frame sertifikat dibuat lebih lebar (landscape) agar dokumen
+          sertifikat/rekomendasi yang umumnya landscape terbaca penuh. */}
+      <div className="bg-surface/60 flex aspect-[16/10] items-center justify-center overflow-hidden p-5 sm:p-6">
         {item.gambar ? (
           // ESLint(next/no-img-element) absen di config ini — gambar CMS
           // dipakai polos (bukan <Image>) agar tidak kena blokir optimizer SSRF.

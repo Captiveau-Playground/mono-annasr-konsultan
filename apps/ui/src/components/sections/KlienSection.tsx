@@ -44,7 +44,7 @@ function BarisMarquee({
         <li
           key={`${item.nama}-${i}`}
           aria-hidden={i >= items.length}
-          className="border-border bg-card flex min-h-24 shrink-0 items-center justify-center rounded-xl border px-4 shadow-[var(--shadow-soft)] sm:min-h-28 sm:px-5"
+          className="border-border bg-card flex min-h-24 min-w-44 shrink-0 items-center justify-center rounded-xl border px-5 shadow-[var(--shadow-soft)] sm:min-h-28 sm:min-w-56 sm:px-6"
         >
           {item.logo ? (
             // Gambar CMS — dipakai polos agar file besar (logo lebar/tinggi)
@@ -54,7 +54,7 @@ function BarisMarquee({
               src={item.logo}
               alt={`${item.nama} — logo`}
               loading="lazy"
-              className="max-h-14 w-auto max-w-36 object-contain sm:max-h-16 sm:max-w-44"
+              className="max-h-14 w-auto max-w-44 object-contain sm:max-h-16 sm:max-w-52"
             />
           ) : (
             <span className="text-foreground text-sm font-semibold sm:text-base">
