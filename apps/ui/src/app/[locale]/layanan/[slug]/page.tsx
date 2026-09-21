@@ -124,7 +124,7 @@ export default async function DetailLayanan({
           </ul>
 
           <h3 className="text-foreground mt-12 text-xl">Lingkup pekerjaan</h3>
-          <ul className="mx-auto mt-6 grid gap-2.5 text-left sm:grid-cols-2">
+          <ul className="mx-auto mt-6 flex flex-col gap-2.5 text-left">
             {item.detail.map((d) => (
               <li
                 key={d}
