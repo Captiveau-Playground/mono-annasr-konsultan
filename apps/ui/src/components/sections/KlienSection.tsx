@@ -38,26 +38,26 @@ function BarisMarquee({
   ]
 
   return (
-    <ul className={`${kelas} flex w-max items-center gap-3`}>
+    <ul className={`${kelas} flex w-max items-center gap-2`}>
       {/* Duplikasi 2x agar loop mulus (animasi geser -50%). */}
       {[items, items].flat().map((item, i) => (
         <li
           key={`${item.nama}-${i}`}
           aria-hidden={i >= items.length}
-          className="border-border bg-card flex min-h-24 min-w-44 shrink-0 items-center justify-center rounded-xl border px-5 shadow-[var(--shadow-soft)] sm:min-h-28 sm:min-w-56 sm:px-6"
+          className="border-border bg-card flex aspect-[3/2] w-36 shrink-0 items-center justify-center rounded border p-1.5 shadow-[var(--shadow-soft)] sm:w-48"
         >
           {item.logo ? (
             // Gambar CMS — dipakai polos agar file besar (logo lebar/tinggi)
-            // proporsional; batas tinggi & lebar supaya kartu seragam.
+            // proporsional; logo fit ke frame 3:2 dengan padding tipis.
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={item.logo}
               alt={`${item.nama} — logo`}
               loading="lazy"
-              className="max-h-14 w-auto max-w-44 object-contain sm:max-h-16 sm:max-w-52"
+              className="h-full w-full object-contain"
             />
           ) : (
-            <span className="text-foreground text-sm font-semibold sm:text-base">
+            <span className="text-foreground px-1 text-center text-xs font-semibold sm:text-sm">
               {item.nama}
             </span>
           )}
@@ -86,7 +86,7 @@ export function KlienSection({
 
   return (
     <SectionShell tone="krem" judul={judul ?? "Dipercaya oleh\nBerbagai Klien"}>
-      <div className="marquee-mask space-y-5">
+      <div className="marquee-mask space-y-2">
         {barisPotong.map((b, i) => (
           <BarisMarquee key={i} items={b} indeks={i} />
         ))}
