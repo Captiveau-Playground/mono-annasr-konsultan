@@ -3,7 +3,7 @@
 import { ChevronDown, Menu, X } from "lucide-react"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -55,7 +55,46 @@ export function Navbar({
   const nomorWa = whatsapp?.trim() || perusahaan.whatsapp
   const [open, setOpen] = useState(false)
   const [bukaMobile, setBukaMobile] = useState<string | null>(null)
+  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
+
+  useEffect(() => {
+    let raf = 0
+
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+
+      raf = requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 24)
+      })
+    }
+
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener("scroll", onScroll)
+    }
+  }, [])
+
+  // Kunci scroll halaman saat menu mobile terbuka + tutup dengan tombol Escape.
+  useEffect(() => {
+    if (!open) return
+
+    const sebelumnya = document.documentElement.style.overflow
+    document.documentElement.style.overflow = "hidden"
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false)
+    }
+    window.addEventListener("keydown", onKey)
+
+    return () => {
+      document.documentElement.style.overflow = sebelumnya
+      window.removeEventListener("keydown", onKey)
+    }
+  }, [open])
 
   const aktif = (to: string) =>
     to === "/" ? pathname === "/" : pathname.startsWith(to)
@@ -75,34 +114,44 @@ export function Navbar({
       : { type: "link", item: itemFinal }
   })
 
+  /** Mode "di atas halaman" (belum scroll): navy pekat menyatu dengan hero. */
+  const atas = !scrolled
+
   const kelasLink = (href: string) =>
     cn(
-      "px-3 py-2 text-sm font-medium transition-colors",
-      // Override hover bawaan shadcn (hover:bg-accent oranye) dengan biru navy,
-      // TERMASUK pada link aktif — twMerge menimpa hover:bg-accent dasar.
-      "hover:bg-primary hover:text-primary-foreground",
-      aktif(href) ? "text-primary" : "text-muted-foreground"
+      "rounded-full px-3 py-2 text-sm font-medium transition-colors",
+      "text-white/70 hover:bg-white/10 hover:text-white",
+      aktif(href) && "bg-white/10 text-white hover:bg-white/10 hover:text-white"
     )
 
   const kelasTrigger = (aktifGrup: boolean) =>
     cn(
-      "h-10 gap-1 px-3 text-sm font-medium rounded-full",
-      // Override hover/state bawaan shadcn (hover:bg-accent oranye) -> invert
-      // biru; pakai important agar menang atas utility bawaan trigger.
-      "hover:bg-primary! hover:text-primary-foreground! data-[state=open]:bg-primary! data-[state=open]:text-primary-foreground! hover:[&_svg]:text-primary-foreground! data-[state=open]:[&_svg]:text-primary-foreground!",
-      aktifGrup ? "text-primary" : "text-muted-foreground"
+      "h-10 gap-1 rounded-full px-3 text-sm font-medium",
+      // Override bg-background & hover/accent bawaan shadcn dengan glassy putih.
+      "bg-transparent! text-white/70 hover:bg-white/10! hover:text-white! data-[state=open]:bg-white/10! data-[state=open]:text-white! hover:[&_svg]:text-white! data-[state=open]:[&_svg]:text-white!",
+      aktifGrup &&
+        "bg-white/10! text-white! hover:bg-white/10! hover:text-white! data-[state=open]:bg-white/10! data-[state=open]:text-white!"
     )
 
   return (
-    <header className="border-border bg-background/95 sticky top-0 z-50 border-b backdrop-blur">
-      <nav className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center gap-0 px-4 sm:px-6 lg:px-8">
+    <header
+      className={cn(
+        "sticky top-0 z-50 border-b border-white/10 transition-all duration-300",
+        atas
+          ? "cta-gradient"
+          : "bg-secondary/85 shadow-[0_10px_30px_-15px_rgba(4,10,22,0.6)] backdrop-blur-xl"
+      )}
+    >
+      {/* Tinggi konstan h-16 — tidak menyusut saat scroll supaya tidak ada
+          lompatan layout pada konten di bawahnya. */}
+      <nav className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center px-4 transition-none sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="flex shrink-0 items-center gap-2.5"
+          className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80"
           onClick={() => setOpen(false)}
         >
           <Image
-            src="/images/logo/logo-blue.png"
+            src="/images/logo/logo-white.png"
             alt={brandNama?.trim() || "CV. An Nasr Konsultan"}
             width={40}
             height={40}
@@ -110,17 +159,23 @@ export function Navbar({
             className="size-10 shrink-0 object-contain"
           />
           <span className="leading-tight">
-            <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold">
+            <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold text-white">
               {brandNama?.trim() || "CV. An Nasr Konsultan"}
             </span>
-            <span className="text-muted-foreground hidden text-[11px] tracking-wide sm:block">
+            <span className="hidden text-[11px] tracking-wide text-white/60 sm:block">
               {tagline ?? "Konsultan Teknik &amp; Konstruksi"}
             </span>
           </span>
         </Link>
 
-        {/* Navigasi desktop — item flat + grup yang bisa di-expand. */}
-        <NavigationMenu className="hidden justify-self-center lg:flex">
+        {/* Navigasi desktop — item flat + grup yang bisa di-expand.
+            viewport={false}: tiap dropdown dirender inline di dalam item-nya
+            sehingga mengikuti posisi trigger (Profil/Layanan), bukan viewport
+            bersama yang posisinya tetap di kiri menu. */}
+        <NavigationMenu
+          viewport={false}
+          className="hidden justify-self-center lg:flex"
+        >
           <NavigationMenuList className="gap-1">
             {menu.map((entry) => {
               if (entry.type === "grup") {
@@ -135,7 +190,7 @@ export function Navbar({
                       {item.label}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="border-border bg-popover flex w-60 flex-col gap-0.5 border p-1.5 shadow-[var(--shadow-soft)]">
+                      <ul className="border-border bg-popover flex w-60 flex-col gap-0.5 p-1.5 shadow-[var(--shadow-soft)]">
                         {(item.anak ?? []).map((sub) => (
                           <li key={sub.href}>
                             <NavigationMenuLink
@@ -163,6 +218,7 @@ export function Navbar({
                 <NavigationMenuItem key={item.href}>
                   <NavigationMenuLink
                     href={item.href}
+                    aria-current={aktif(item.href) ? "page" : undefined}
                     onClick={() => {
                       if (item.href === "/kontak") {
                         trackEvent(ANALYTICS_EVENTS.ctaClicked, {
@@ -183,8 +239,9 @@ export function Navbar({
         <div className="flex shrink-0 items-center gap-2 justify-self-end">
           <Button
             asChild
-            size="sm"
-            className="hidden rounded-full px-5 lg:inline-flex"
+            variant="heroGhost"
+            size="pill"
+            className="hidden rounded-full px-6 font-semibold transition-transform hover:scale-[1.03] lg:inline-flex"
           >
             <a
               href={`https://wa.me/${nomorWa}`}
@@ -201,18 +258,19 @@ export function Navbar({
             aria-expanded={open}
             aria-controls="menu-mobile"
             onClick={() => setOpen((v) => !v)}
-            className="border-border bg-background text-foreground flex size-10 items-center justify-center rounded-full border lg:hidden"
+            className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors hover:bg-white/10 hover:text-white lg:hidden"
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile — grup bisa di-expand, tanpa animasi. */}
+      {/* Mobile — panel navy gelap menyatu dengan identitas brand; halaman
+          dikunci (overflow hidden) dan bisa ditutup dengan Escape. */}
       {open ? (
         <div
           id="menu-mobile"
-          className="border-border bg-background absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t shadow-[var(--shadow-lift)] lg:hidden"
+          className="bg-secondary absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 shadow-[var(--shadow-lift)] lg:hidden"
         >
           <div className="mx-auto max-w-[80rem] px-4 py-4">
             {menu.map((entry) => {
@@ -221,18 +279,21 @@ export function Navbar({
                 const terbuka = bukaMobile === item.href
 
                 return (
-                  <div key={item.href} className="border-b last:border-0">
+                  <div
+                    key={item.href}
+                    className="border-b border-white/10 last:border-0"
+                  >
                     <button
                       type="button"
                       onClick={() => setBukaMobile(terbuka ? null : item.href)}
-                      className="text-foreground flex w-full items-center justify-between px-3 py-3 text-sm font-medium"
+                      className="flex w-full items-center justify-between px-3 py-3 text-sm font-medium text-white"
                       aria-expanded={terbuka}
                     >
                       {item.label}
                       <ChevronDown
                         className={cn(
-                          "text-muted-foreground size-4 transition-transform",
-                          terbuka && "rotate-180"
+                          "size-4 text-white/50 transition-transform",
+                          terbuka && "rotate-180 text-white"
                         )}
                       />
                     </button>
@@ -243,7 +304,12 @@ export function Navbar({
                             <Link
                               href={sub.href}
                               onClick={() => setOpen(false)}
-                              className="text-muted-foreground hover:text-primary block rounded-lg px-3 py-2.5 text-sm"
+                              className={cn(
+                                "block rounded-lg px-3 py-2.5 text-sm",
+                                aktif(sub.href)
+                                  ? "bg-white/10 text-white"
+                                  : "text-white/70 hover:bg-white/10 hover:text-white"
+                              )}
                             >
                               {sub.label}
                             </Link>
@@ -262,11 +328,12 @@ export function Navbar({
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
+                  aria-current={aktif(item.href) ? "page" : undefined}
                   className={cn(
-                    "block border-b px-3 py-3 text-sm font-medium last:border-0",
+                    "block border-b border-white/10 px-3 py-3 text-sm font-medium last:border-0",
                     aktif(item.href)
-                      ? "text-primary"
-                      : "text-foreground hover:text-primary"
+                      ? "text-white"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
                   )}
                 >
                   {item.label}
@@ -275,7 +342,12 @@ export function Navbar({
             })}
 
             <div className="pt-4">
-              <Button asChild className="w-full rounded-full" size="sm">
+              <Button
+                asChild
+                variant="heroGhost"
+                size="pill"
+                className="w-full rounded-full"
+              >
                 <a
                   href={`https://wa.me/${nomorWa}`}
                   target="_blank"
