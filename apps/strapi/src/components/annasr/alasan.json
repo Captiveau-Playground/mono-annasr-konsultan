@@ -1,2 +1,42 @@
-{ "collectionName": "components_annasr_alasans", "info": { "displayName": "Alasan (Keunggulan)" },
-  "attributes": { "judul": { "type": "string" }, "teks": { "type": "text" } } }
+{
+  "collectionName": "components_annasr_alasans",
+  "info": {
+    "displayName": "Alasan (Keunggulan)"
+  },
+  "attributes": {
+    "judul": {
+      "type": "string"
+    },
+    "teks": {
+      "type": "text"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "teks": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
+  }
+}

@@ -54,6 +54,144 @@ const AKSI_EXPLORER = [
   "plugin::content-manager.explorer.publish",
 ]
 
+/**
+ * Sinkronkan label field content-manager dari schema (`config.metadatas`) ke
+ * konfigurasi yang tersimpan di DB.
+ *
+ * Latar belakang: Strapi menyimpan konfigurasi content-manager (termasuk
+ * label field) di core store dan konfigurasi DB MENIMPA default dari schema.
+ * Akibatnya label schema yang UX-friendly (mis. "Jam Operasional", "Visi &
+ * Misi") tidak terlihat di admin pada environment yang konfigurasinya sudah
+ * pernah dibuat dengan label nama-variabel ("jamOperasional", "visiMisi").
+ *
+ * Fungsi ini menimpa label dari schema ke DB setiap boot (idempotent),
+ * sambil MEMPERTAHANKAN pengaturan lain (layout, settings) hasil kustomisasi
+ * admin. Dipanggil `RBAC_AUTO_SETUP` — matikan dengan env yang sama bila
+ * ingin nonaktif (nilai default "true").
+ */
+const KOMPONEN_CMS: string[] = [
+  // Komponen annasr (label sudah di-set di schema masing-masing).
+  "annasr.alasan",
+  "annasr.alur-step",
+  "annasr.artikel-item",
+  "annasr.baris-teks",
+  "annasr.cta",
+  "annasr.dokumen-client",
+  "annasr.faq-item",
+  "annasr.founder",
+  "annasr.hero",
+  "annasr.klien-item",
+  "annasr.kota",
+  "annasr.layanan-item",
+  "annasr.milestone",
+  "annasr.persyaratan-kartu",
+  "annasr.posisi",
+  "annasr.proyek",
+  "annasr.seo-meta",
+  "annasr.stat",
+  "annasr.submenu-item",
+  "annasr.tim-member",
+  "annasr.tombol-nav",
+  "annasr.visi-misi",
+  // Komponen navbar/footer.
+  "layout.navbar-item",
+  "utilities.image-with-link",
+  "utilities.link",
+  "elements.footer-item",
+]
+
+export async function syncCmsFieldLabels({ strapi }: { strapi: Core.Strapi }) {
+  if (process.env.RBAC_AUTO_SETUP === "false") return
+
+  const TABLE = "strapi_core_store_settings"
+  const PREFIX_CT = "plugin_content_manager_configuration_content_types::api::"
+  const PREFIX_KOMPONEN = "plugin_content_manager_configuration_components::"
+
+  try {
+    const komponenKhusus = KOMPONEN_CMS.filter(
+      (k) => !k.startsWith("annasr.")
+    ).map((k) => `${PREFIX_KOMPONEN}${k}`)
+    const tempat = komponenKhusus.map(() => "?").join(",")
+
+    const hasil = await strapi.db.connection.raw(
+      `SELECT key, value FROM ${TABLE}
+         WHERE key LIKE ? OR key LIKE ? OR key IN (${tempat})`,
+      [`${PREFIX_CT}%`, `${PREFIX_KOMPONEN}annasr.%`, ...komponenKhusus]
+    )
+    const baris = (
+      Array.isArray(hasil)
+        ? (hasil as unknown[])
+        : ((hasil as { rows?: unknown[] }).rows ?? [])
+    ) as { key: string; value: unknown }[]
+
+    const registry = strapi.contentTypes as unknown as Record<
+      string,
+      { config?: unknown }
+    >
+    const registryKomponen = strapi.components as unknown as Record<
+      string,
+      { config?: unknown }
+    >
+
+    /** Terapkan label schema ke satu konfigurasi tersimpan (bool: ada berubah). */
+    const terapkanLabel = (
+      nilai: { metadatas?: Record<string, { edit?: { label?: string } }> },
+      metadatas: Record<string, { edit?: { label?: unknown } }>
+    ): boolean => {
+      if (!nilai.metadatas) nilai.metadatas = {}
+
+      let berubah = false
+      for (const [nama, meta] of Object.entries(metadatas)) {
+        const label = meta?.edit?.label
+        if (typeof label !== "string") continue
+        const target = (nilai.metadatas[nama] ??= { edit: {} })
+        target.edit ??= {}
+        if (target.edit.label !== label) {
+          target.edit.label = label
+          berubah = true
+        }
+      }
+
+      return berubah
+    }
+
+    for (const row of baris) {
+      const uid = row.key.startsWith(PREFIX_CT)
+        ? row.key.slice(PREFIX_CT.length) // API::xxx.xxx
+        : row.key.startsWith(PREFIX_KOMPONEN)
+          ? row.key.slice(PREFIX_KOMPONEN.length) // annasr.xxx / layout.xxx / …
+          : null
+      if (!uid) continue
+
+      const schema = registry[uid] ?? registryKomponen[uid]
+      const metadatas = (schema?.config as undefined | { metadatas?: unknown })
+        ?.metadatas
+      if (!schema || !metadatas || typeof metadatas !== "object") continue
+
+      let nilai: { metadatas?: Record<string, { edit?: { label?: string } }> }
+      try {
+        nilai = JSON.parse(String(row.value))
+      } catch {
+        continue
+      }
+
+      const berubah = terapkanLabel(
+        nilai,
+        metadatas as Record<string, { edit?: { label?: unknown } }>
+      )
+
+      if (berubah) {
+        await strapi.db.connection.raw(
+          `UPDATE ${TABLE} SET value = ? WHERE key = ?`,
+          [JSON.stringify(nilai), row.key]
+        )
+      }
+    }
+  } catch (error) {
+    console.warn("[cms-labels] sync label content-manager gagal:", error)
+  }
+}
+
 export async function setupRbac({ strapi }: { strapi: Core.Strapi }) {
   if (process.env.RBAC_AUTO_SETUP === "false") {
     return

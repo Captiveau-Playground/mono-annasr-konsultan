@@ -18,5 +18,33 @@
       "type": "string",
       "required": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "source": {
+        "edit": {
+          "label": "URL Asal (Source)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "URL Asal (Source)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "destination": {
+        "edit": {
+          "label": "URL Tujuan (Destination)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "URL Tujuan (Destination)",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

@@ -7,10 +7,13 @@ import { registerLayananGaleriGuard } from "./documentMiddlewares/layananGaleri"
 import { registerAutoRevalidateMiddleware } from "./documentMiddlewares/revalidate"
 import { registerAdminUserSubscriber } from "./lifeCycles/adminUser"
 import { registerUserSubscriber } from "./lifeCycles/user"
-import { seedCmsMainField } from "./utils/cms-config"
+import {
+  reconcileContentManagerLayouts,
+  seedCmsMainField,
+} from "./utils/cms-config"
 import { liftCollections } from "./utils/lift-lists"
 import { logger } from "./utils/logging"
-import { setupRbac } from "./utils/rbac"
+import { setupRbac, syncCmsFieldLabels } from "./utils/rbac"
 import { seedAnnasr } from "./utils/seed"
 
 export default {
@@ -40,6 +43,10 @@ export default {
     registerLayananGaleriGuard({ strapi })
 
     await setupRbac({ strapi })
+    // Urutan field Content Manager = urutan schema.json (lihat utils/cms-config).
+    await reconcileContentManagerLayouts({ strapi })
+    // Label field CMS UX-friendly dari schema → konfigurasi content-manager di DB.
+    await syncCmsFieldLabels({ strapi })
     // Lift data lama single → collection (baca staging dari migration).
     await liftCollections({ strapi })
     await seedAnnasr({ strapi })

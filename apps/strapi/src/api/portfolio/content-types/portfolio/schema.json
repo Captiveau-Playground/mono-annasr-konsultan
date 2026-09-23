@@ -27,5 +27,57 @@
       ],
       "multiple": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama Proyek",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Proyek",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "lokasi": {
+        "edit": {
+          "label": "Lokasi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Lokasi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kategori": {
+        "edit": {
+          "label": "Kategori",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Kategori",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "gambar": {
+        "edit": {
+          "label": "Gambar Proyek",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar Proyek",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

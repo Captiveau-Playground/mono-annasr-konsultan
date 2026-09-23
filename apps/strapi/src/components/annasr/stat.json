@@ -1,8 +1,42 @@
 {
   "collectionName": "components_annasr_stats",
-  "info": { "displayName": "Metrik (Statistik)" },
+  "info": {
+    "displayName": "Metrik (Statistik)"
+  },
   "attributes": {
-    "nilai": { "type": "string" },
-    "label": { "type": "string" }
+    "nilai": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "nilai": {
+        "edit": {
+          "label": "Angka / Nilai",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Angka / Nilai",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Label",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Label",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

@@ -52,5 +52,141 @@
       "type": "component",
       "component": "annasr.dokumen-client"
     }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul Layanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Layanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ringkas": {
+        "edit": {
+          "label": "Ringkasan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Ringkasan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "gambar": {
+        "edit": {
+          "label": "Gambar",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "Slug (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Slug (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "galeri": {
+        "edit": {
+          "label": "Galeri",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Galeri",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "manfaat": {
+        "edit": {
+          "label": "Manfaat",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Manfaat",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "detail": {
+        "edit": {
+          "label": "Lingkup Pekerjaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Lingkup Pekerjaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "alur": {
+        "edit": {
+          "label": "Alur Pengerjaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Alur Pengerjaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "persyaratan": {
+        "edit": {
+          "label": "Persyaratan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Persyaratan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "dokumenClient": {
+        "edit": {
+          "label": "Dokumen Client",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Dokumen Client",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

@@ -38,5 +38,117 @@
       "default": false,
       "description": "Tandai sebagai artikel unggulan (hero besar di daftar)."
     }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul Artikel",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Artikel",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ringkas": {
+        "edit": {
+          "label": "Ringkasan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Ringkasan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kategori": {
+        "edit": {
+          "label": "Kategori",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Kategori",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tanggal": {
+        "edit": {
+          "label": "Tanggal",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tanggal",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "gambar": {
+        "edit": {
+          "label": "Gambar",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "Slug (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Slug (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "penulis": {
+        "edit": {
+          "label": "Penulis",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Penulis",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "isi": {
+        "edit": {
+          "label": "Isi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Isi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "unggulan": {
+        "edit": {
+          "label": "Artikel Unggulan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Artikel Unggulan",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

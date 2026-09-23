@@ -1,9 +1,57 @@
 {
   "collectionName": "components_annasr_kotas",
-  "info": { "displayName": "Kota Proyek (Pin Peta)" },
+  "info": {
+    "displayName": "Kota Proyek (Pin Peta)"
+  },
   "attributes": {
-    "nama": { "type": "string" },
-    "lat": { "type": "decimal" },
-    "lng": { "type": "decimal" }
+    "nama": {
+      "type": "string"
+    },
+    "lat": {
+      "type": "decimal"
+    },
+    "lng": {
+      "type": "decimal"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama Kota",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Kota",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "lat": {
+        "edit": {
+          "label": "Latitude",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Latitude",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "lng": {
+        "edit": {
+          "label": "Longitude",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Longitude",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

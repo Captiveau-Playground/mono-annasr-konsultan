@@ -20,6 +20,14 @@
     "lokasi": {
       "type": "string"
     },
+    "statusPosisi": {
+      "type": "enumeration",
+      "enum": [
+        "terbuka",
+        "ditutup"
+      ],
+      "default": "terbuka"
+    },
     "slug": {
       "type": "uid",
       "targetField": "nama"
@@ -44,14 +52,130 @@
       "type": "component",
       "component": "annasr.baris-teks",
       "repeatable": true
-    },
-    "statusPosisi": {
-      "type": "enumeration",
-      "enum": [
-        "terbuka",
-        "ditutup"
-      ],
-      "default": "terbuka"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama Posisi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Posisi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tipe": {
+        "edit": {
+          "label": "Tipe Pekerjaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tipe Pekerjaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "lokasi": {
+        "edit": {
+          "label": "Lokasi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Lokasi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "Slug (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Slug (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ringkas": {
+        "edit": {
+          "label": "Ringkasan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Ringkasan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi Lengkap",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Lengkap",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tanggungJawab": {
+        "edit": {
+          "label": "Tanggung Jawab",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tanggung Jawab",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kualifikasi": {
+        "edit": {
+          "label": "Kualifikasi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Kualifikasi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "manfaat": {
+        "edit": {
+          "label": "Benefit / Manfaat",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Benefit / Manfaat",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "statusPosisi": {
+        "edit": {
+          "label": "Status Posisi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Status Posisi",
+          "searchable": false,
+          "sortable": false
+        }
+      }
     }
   }
 }

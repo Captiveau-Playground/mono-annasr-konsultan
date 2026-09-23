@@ -49,5 +49,141 @@
       "component": "annasr.baris-teks",
       "repeatable": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama Posisi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Posisi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tipe": {
+        "edit": {
+          "label": "Tipe",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tipe",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "lokasi": {
+        "edit": {
+          "label": "Lokasi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Lokasi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "teks": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "Slug (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Slug (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "status": {
+        "edit": {
+          "label": "Status",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Status",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ringkas": {
+        "edit": {
+          "label": "Ringkasan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Ringkasan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi Lengkap",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Lengkap",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tanggungJawab": {
+        "edit": {
+          "label": "Tanggung Jawab",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tanggung Jawab",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kualifikasi": {
+        "edit": {
+          "label": "Kualifikasi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Kualifikasi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "manfaat": {
+        "edit": {
+          "label": "Benefit",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Benefit",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

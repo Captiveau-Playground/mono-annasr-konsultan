@@ -1,9 +1,57 @@
 {
   "collectionName": "components_annasr_ctas",
-  "info": { "displayName": "CTA Banner" },
+  "info": {
+    "displayName": "CTA Banner"
+  },
   "attributes": {
-    "judul": { "type": "string" },
-    "deskripsi": { "type": "text" },
-    "telepon": { "type": "string" }
+    "judul": {
+      "type": "string"
+    },
+    "deskripsi": {
+      "type": "text"
+    },
+    "telepon": {
+      "type": "string"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul CTA",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul CTA",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi CTA",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi CTA",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "telepon": {
+        "edit": {
+          "label": "Nomor Telepon",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nomor Telepon",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

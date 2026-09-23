@@ -1,2 +1,57 @@
-{ "collectionName": "components_annasr_milestones", "info": { "displayName": "Tonggak Perjalanan" },
-  "attributes": { "tahun": { "type": "string" }, "judul": { "type": "string" }, "teks": { "type": "text" } } }
+{
+  "collectionName": "components_annasr_milestones",
+  "info": {
+    "displayName": "Tonggak Perjalanan"
+  },
+  "attributes": {
+    "tahun": {
+      "type": "string"
+    },
+    "judul": {
+      "type": "string"
+    },
+    "teks": {
+      "type": "text"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "tahun": {
+        "edit": {
+          "label": "Tahun",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tahun",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "judul": {
+        "edit": {
+          "label": "Judul Tonggak",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Tonggak",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "teks": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
+  }
+}

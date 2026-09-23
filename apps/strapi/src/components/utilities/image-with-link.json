@@ -16,5 +16,33 @@
       "repeatable": false,
       "component": "utilities.link"
     }
+  },
+  "config": {
+    "metadatas": {
+      "image": {
+        "edit": {
+          "label": "Gambar",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "link": {
+        "edit": {
+          "label": "Link",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Link",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

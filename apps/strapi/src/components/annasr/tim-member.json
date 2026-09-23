@@ -1,2 +1,76 @@
-{ "collectionName": "components_annasr_tim_members", "info": { "displayName": "Anggota Tim" },
-  "attributes": { "nama": { "type": "string" }, "jabatan": { "type": "string" }, "foto": { "type": "media", "allowedTypes": ["images"], "multiple": false }, "linkedin": { "type": "string" } } }
+{
+  "collectionName": "components_annasr_tim_members",
+  "info": {
+    "displayName": "Anggota Tim"
+  },
+  "attributes": {
+    "nama": {
+      "type": "string"
+    },
+    "jabatan": {
+      "type": "string"
+    },
+    "foto": {
+      "type": "media",
+      "allowedTypes": [
+        "images"
+      ],
+      "multiple": false
+    },
+    "linkedin": {
+      "type": "string"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "jabatan": {
+        "edit": {
+          "label": "Jabatan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Jabatan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "foto": {
+        "edit": {
+          "label": "Foto",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Foto",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "linkedin": {
+        "edit": {
+          "label": "LinkedIn",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "LinkedIn",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
+  }
+}

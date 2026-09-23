@@ -4,7 +4,7 @@
   "info": {
     "singularName": "kontak",
     "pluralName": "kontaks",
-    "displayName": "6 Kontak"
+    "displayName": "Kontak"
   },
   "options": {
     "draftAndPublish": true
@@ -43,6 +43,130 @@
     "petaEmbedUrl": {
       "type": "string",
       "description": "URL embed Google Maps untuk peta halaman Kontak. Kosongkan untuk memakai peta bawaan."
+    }
+  },
+  "config": {
+    "metadatas": {
+      "heroJudul": {
+        "edit": {
+          "label": "Judul Hero Halaman",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Hero Halaman",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "heroDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Hero Halaman",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Hero Halaman",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "domisili": {
+        "edit": {
+          "label": "Alamat Domisili Perusahaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Alamat Domisili Perusahaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kantor": {
+        "edit": {
+          "label": "Alamat Kantor",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Alamat Kantor",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "telepon": {
+        "edit": {
+          "label": "Nomor Telepon",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nomor Telepon",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "email": {
+        "edit": {
+          "label": "Email",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Email",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "whatsapp": {
+        "edit": {
+          "label": "Nomor WhatsApp",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nomor WhatsApp",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "instagram": {
+        "edit": {
+          "label": "Username Instagram",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Username Instagram",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "jamOperasional": {
+        "edit": {
+          "label": "Jam Operasional",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Jam Operasional",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "petaEmbedUrl": {
+        "edit": {
+          "label": "Peta Lokasi (URL Embed Google Maps)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Peta Lokasi (URL Embed Google Maps)",
+          "searchable": false,
+          "sortable": false
+        }
+      }
     }
   }
 }

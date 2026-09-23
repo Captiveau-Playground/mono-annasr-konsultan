@@ -16,6 +16,16 @@
     }
   },
   "attributes": {
+    "logoImage": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "utilities.image-with-link",
+      "repeatable": false
+    },
     "sections": {
       "type": "component",
       "pluginOptions": {
@@ -43,16 +53,58 @@
           "localized": true
         }
       }
-    },
-    "logoImage": {
-      "type": "component",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
+    }
+  },
+  "config": {
+    "metadatas": {
+      "sections": {
+        "edit": {
+          "label": "Section / Kolom Footer",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Section / Kolom Footer",
+          "searchable": false,
+          "sortable": false
         }
       },
-      "component": "utilities.image-with-link",
-      "repeatable": false
+      "links": {
+        "edit": {
+          "label": "Link / Tautan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Link / Tautan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "copyRight": {
+        "edit": {
+          "label": "Teks Copyright",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Teks Copyright",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "logoImage": {
+        "edit": {
+          "label": "Logo Footer",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Logo Footer",
+          "searchable": false,
+          "sortable": false
+        }
+      }
     }
   }
 }

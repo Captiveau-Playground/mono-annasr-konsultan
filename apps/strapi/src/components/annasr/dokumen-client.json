@@ -23,5 +23,57 @@
       "type": "text",
       "description": "Satu baris = satu item dokumen yang diterima (textarea). Dulu JSON."
     }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "gambar": {
+        "edit": {
+          "label": "Gambar",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "daftar": {
+        "edit": {
+          "label": "Daftar Dokumen",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Daftar Dokumen",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

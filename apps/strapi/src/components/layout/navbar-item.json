@@ -43,5 +43,56 @@
       }
     }
   },
-  "config": {}
+  "config": {
+    "metadatas": {
+      "isCategoryLink": {
+        "edit": {
+          "label": "Link Kategori",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Link Kategori",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "link": {
+        "edit": {
+          "label": "Link Utama",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Link Utama",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "categoryItems": {
+        "edit": {
+          "label": "Item Kategori",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Item Kategori",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Label",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Label",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
+  }
 }

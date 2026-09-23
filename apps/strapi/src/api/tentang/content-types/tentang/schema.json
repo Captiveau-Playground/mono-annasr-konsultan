@@ -4,7 +4,7 @@
   "info": {
     "singularName": "tentang",
     "pluralName": "tentangs",
-    "displayName": "1 Tentang Kami"
+    "displayName": "Tentang Kami"
   },
   "options": {
     "draftAndPublish": true
@@ -15,14 +15,22 @@
       "type": "component",
       "component": "annasr.hero"
     },
+    "tentang": {
+      "type": "component",
+      "component": "annasr.persyaratan-kartu"
+    },
+    "tentangGambar": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ],
+      "description": "Gambar section Tentang Kami (di sisi kanan teks). Kosongkan untuk memakai gambar bawaan."
+    },
     "statistik": {
       "type": "component",
       "component": "annasr.stat",
       "repeatable": true
-    },
-    "tentang": {
-      "type": "component",
-      "component": "annasr.persyaratan-kartu"
     },
     "perjalanan": {
       "type": "component",
@@ -43,11 +51,6 @@
       "component": "annasr.tim-member",
       "repeatable": true
     },
-    "alasan": {
-      "type": "component",
-      "component": "annasr.alasan",
-      "repeatable": true
-    },
     "jangkauanJudul": {
       "type": "string"
     },
@@ -58,14 +61,142 @@
       "type": "component",
       "component": "annasr.kota",
       "repeatable": true
-    },
-    "tentangGambar": {
-      "type": "media",
-      "multiple": false,
-      "allowedTypes": [
-        "images"
-      ],
-      "description": "Gambar section Tentang Kami (di sisi kanan teks). Kosongkan untuk memakai gambar bawaan."
+    }
+  },
+  "config": {
+    "metadatas": {
+      "hero": {
+        "edit": {
+          "label": "Hero Halaman",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Hero Halaman",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tentang": {
+        "edit": {
+          "label": "Section Tentang Kami (Inti)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Section Tentang Kami (Inti)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tentangGambar": {
+        "edit": {
+          "label": "Gambar Section Tentang Kami",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar Section Tentang Kami",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "statistik": {
+        "edit": {
+          "label": "Statistik (Angka Pendukung)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Statistik (Angka Pendukung)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "perjalanan": {
+        "edit": {
+          "label": "Perjalanan Kami (Timeline)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Perjalanan Kami (Timeline)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "visiMisi": {
+        "edit": {
+          "label": "Visi & Misi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Visi & Misi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "founder": {
+        "edit": {
+          "label": "Founder / Pendiri",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Founder / Pendiri",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tim": {
+        "edit": {
+          "label": "Tim (Anggota Perusahaan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tim (Anggota Perusahaan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "jangkauanJudul": {
+        "edit": {
+          "label": "Judul Section Jangkauan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section Jangkauan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "jangkauanDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section Jangkauan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section Jangkauan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kotaProyek": {
+        "edit": {
+          "label": "Kota Proyek (Pin Peta)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Kota Proyek (Pin Peta)",
+          "searchable": false,
+          "sortable": false
+        }
+      }
     }
   }
 }

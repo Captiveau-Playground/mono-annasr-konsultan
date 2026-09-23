@@ -42,5 +42,69 @@
       "component": "utilities.link-decorations",
       "repeatable": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "type": {
+        "edit": {
+          "label": "Tipe Link",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tipe Link",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "label": {
+        "edit": {
+          "label": "Label",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Label",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "newTab": {
+        "edit": {
+          "label": "Buka Tab Baru",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Buka Tab Baru",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "href": {
+        "edit": {
+          "label": "Tautan (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tautan (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "decorations": {
+        "edit": {
+          "label": "Dekorasi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Dekorasi",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

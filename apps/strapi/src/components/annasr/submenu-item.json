@@ -14,5 +14,45 @@
     "deskripsi": {
       "type": "text"
     }
+  },
+  "config": {
+    "metadatas": {
+      "label": {
+        "edit": {
+          "label": "Label",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Label",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "href": {
+        "edit": {
+          "label": "Tautan (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tautan (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

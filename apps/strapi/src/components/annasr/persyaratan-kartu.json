@@ -14,5 +14,45 @@
       "type": "text",
       "description": "Satu baris = satu item daftar (textarea). Dulu JSON."
     }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul Kartu",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Kartu",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "daftar": {
+        "edit": {
+          "label": "Daftar",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Daftar",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

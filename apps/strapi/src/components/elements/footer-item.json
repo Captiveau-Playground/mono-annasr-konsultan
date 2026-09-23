@@ -15,5 +15,33 @@
       "repeatable": true,
       "component": "utilities.link"
     }
+  },
+  "config": {
+    "metadatas": {
+      "title": {
+        "edit": {
+          "label": "Judul Kolom",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Kolom",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "links": {
+        "edit": {
+          "label": "Link / Tautan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Link / Tautan",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

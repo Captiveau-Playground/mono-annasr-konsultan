@@ -15,5 +15,45 @@
       "component": "annasr.submenu-item",
       "repeatable": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "label": {
+        "edit": {
+          "label": "Label Menu",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Label Menu",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "href": {
+        "edit": {
+          "label": "Tautan (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tautan (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "anak": {
+        "edit": {
+          "label": "Submenu",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Submenu",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

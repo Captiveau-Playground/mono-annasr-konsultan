@@ -26,5 +26,45 @@
     "deskripsi": {
       "type": "text"
     }
+  },
+  "config": {
+    "metadatas": {
+      "halaman": {
+        "edit": {
+          "label": "Halaman",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Halaman",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "judul": {
+        "edit": {
+          "label": "Judul Meta",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Meta",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi Meta",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Meta",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

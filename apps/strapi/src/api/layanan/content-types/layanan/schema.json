@@ -14,12 +14,12 @@
     "judul": {
       "type": "string"
     },
-    "ringkas": {
-      "type": "text"
-    },
     "slug": {
       "type": "uid",
       "targetField": "judul"
+    },
+    "ringkas": {
+      "type": "text"
     },
     "gambar": {
       "type": "media",
@@ -28,15 +28,15 @@
       ],
       "multiple": false
     },
-    "deskripsi": {
-      "type": "text"
-    },
     "galeri": {
       "type": "media",
       "allowedTypes": [
         "images"
       ],
       "multiple": true
+    },
+    "deskripsi": {
+      "type": "text"
     },
     "manfaat": {
       "type": "text",
@@ -59,6 +59,142 @@
     "dokumenClient": {
       "type": "component",
       "component": "annasr.dokumen-client"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul Layanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Layanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ringkas": {
+        "edit": {
+          "label": "Ringkasan (Satu Kalimat)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Ringkasan (Satu Kalimat)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "slug": {
+        "edit": {
+          "label": "Slug (URL)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Slug (URL)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "gambar": {
+        "edit": {
+          "label": "Gambar Utama",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar Utama",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsi": {
+        "edit": {
+          "label": "Deskripsi Lengkap",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Lengkap",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "manfaat": {
+        "edit": {
+          "label": "Manfaat untuk Proyek",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Manfaat untuk Proyek",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "detail": {
+        "edit": {
+          "label": "Lingkup Pekerjaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Lingkup Pekerjaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "galeri": {
+        "edit": {
+          "label": "Galeri Gambar",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Galeri Gambar",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "alur": {
+        "edit": {
+          "label": "Alur Pengerjaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Alur Pengerjaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "persyaratan": {
+        "edit": {
+          "label": "Persyaratan Pengurusan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Persyaratan Pengurusan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "dokumenClient": {
+        "edit": {
+          "label": "Dokumen yang Diterima Client",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Dokumen yang Diterima Client",
+          "searchable": false,
+          "sortable": false
+        }
+      }
     }
   }
 }

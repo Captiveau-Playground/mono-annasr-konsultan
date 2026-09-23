@@ -36,5 +36,69 @@
       "component": "annasr.cta",
       "required": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "hero": {
+        "edit": {
+          "label": "Hero Beranda",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Hero Beranda",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "founder": {
+        "edit": {
+          "label": "Founder / Pendiri",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Founder / Pendiri",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "keunggulan": {
+        "edit": {
+          "label": "Keunggulan (Mengapa Memilih Kami)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Keunggulan (Mengapa Memilih Kami)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "faq": {
+        "edit": {
+          "label": "FAQ (Pertanyaan Umum)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "FAQ (Pertanyaan Umum)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "cta": {
+        "edit": {
+          "label": "CTA Banner (Penutup Halaman)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "CTA Banner (Penutup Halaman)",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

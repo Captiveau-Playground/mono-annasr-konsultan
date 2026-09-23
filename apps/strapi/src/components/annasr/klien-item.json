@@ -14,5 +14,33 @@
         "images"
       ]
     }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama Klien",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Klien",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "logo": {
+        "edit": {
+          "label": "Logo",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Logo",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "situs",
     "pluralName": "situss",
-    "displayName": "8 Pengaturan Global"
+    "displayName": "Pengaturan Global"
   },
   "options": {
     "draftAndPublish": true
@@ -17,10 +17,35 @@
     "brandTagline": {
       "type": "string"
     },
+    "navigasi": {
+      "type": "component",
+      "component": "annasr.tombol-nav",
+      "repeatable": true
+    },
+    "seo": {
+      "type": "component",
+      "component": "annasr.seo-meta",
+      "repeatable": true,
+      "description": "Judul tab & deskripsi meta per halaman (global = fallback root layout). Kosongkan untuk memakai default dari frontend."
+    },
+    "keunggulanJudul": {
+      "type": "string",
+      "default": "Mengapa Memilih An Nasr Konsultan"
+    },
+    "keunggulanDeskripsi": {
+      "type": "text"
+    },
     "layananIntroJudul": {
       "type": "string"
     },
     "layananIntroDeskripsi": {
+      "type": "text"
+    },
+    "prosesJudul": {
+      "type": "string",
+      "default": "Alur Kerja Alur Kerja yang Terukur"
+    },
+    "prosesDeskripsi": {
       "type": "text"
     },
     "proses": {
@@ -41,30 +66,17 @@
     "klienHeroDeskripsi": {
       "type": "text"
     },
-    "karirHeroJudul": {
-      "type": "string"
+    "artikelJudul": {
+      "type": "string",
+      "default": "Wawasan Teknik dari Pengalaman di Lapangan"
     },
-    "karirHeroDeskripsi": {
+    "artikelDeskripsi": {
       "type": "text"
     },
     "artikelHeroJudul": {
       "type": "string"
     },
     "artikelHeroDeskripsi": {
-      "type": "text"
-    },
-    "keunggulanJudul": {
-      "type": "string",
-      "default": "Mengapa Memilih An Nasr Konsultan"
-    },
-    "keunggulanDeskripsi": {
-      "type": "text"
-    },
-    "prosesJudul": {
-      "type": "string",
-      "default": "Alur Kerja Alur Kerja yang Terukur"
-    },
-    "prosesDeskripsi": {
       "type": "text"
     },
     "faqJudul": {
@@ -74,11 +86,10 @@
     "faqDeskripsi": {
       "type": "text"
     },
-    "artikelJudul": {
-      "type": "string",
-      "default": "Wawasan Teknik dari Pengalaman di Lapangan"
+    "karirHeroJudul": {
+      "type": "string"
     },
-    "artikelDeskripsi": {
+    "karirHeroDeskripsi": {
       "type": "text"
     },
     "perjalananJudul": {
@@ -110,17 +121,394 @@
     },
     "deskripsiLabel": {
       "type": "string"
-    },
-    "navigasi": {
-      "type": "component",
-      "component": "annasr.tombol-nav",
-      "repeatable": true
-    },
-    "seo": {
-      "type": "component",
-      "component": "annasr.seo-meta",
-      "repeatable": true,
-      "description": "Judul tab & deskripsi meta per halaman (global = fallback root layout). Kosongkan untuk memakai default dari frontend."
+    }
+  },
+  "config": {
+    "metadatas": {
+      "brandNama": {
+        "edit": {
+          "label": "Nama Brand",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Brand",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "brandTagline": {
+        "edit": {
+          "label": "Tagline Brand",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tagline Brand",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "keunggulanJudul": {
+        "edit": {
+          "label": "Judul Section Keunggulan (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section Keunggulan (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "keunggulanDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section Keunggulan (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section Keunggulan (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "faqJudul": {
+        "edit": {
+          "label": "Judul Section FAQ (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section FAQ (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "faqDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section FAQ (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section FAQ (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "layananIntroJudul": {
+        "edit": {
+          "label": "Judul Intro Halaman Layanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Intro Halaman Layanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "layananIntroDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Intro Halaman Layanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Intro Halaman Layanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "prosesJudul": {
+        "edit": {
+          "label": "Judul Section Alur Kerja (Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section Alur Kerja (Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "prosesDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section Alur Kerja (Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section Alur Kerja (Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "proses": {
+        "edit": {
+          "label": "Alur Kerja (7 Langkah)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Alur Kerja (7 Langkah)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "portfolioHeroJudul": {
+        "edit": {
+          "label": "Judul Hero Halaman Proyek",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Hero Halaman Proyek",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "portfolioHeroDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Hero Halaman Proyek",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Hero Halaman Proyek",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "klienHeroJudul": {
+        "edit": {
+          "label": "Judul Hero Halaman Klien",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Hero Halaman Klien",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "klienHeroDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Hero Halaman Klien",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Hero Halaman Klien",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "karirHeroJudul": {
+        "edit": {
+          "label": "Judul Hero Halaman Karir",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Hero Halaman Karir",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "karirHeroDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Hero Halaman Karir",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Hero Halaman Karir",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "artikelJudul": {
+        "edit": {
+          "label": "Judul Section Artikel (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section Artikel (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "artikelDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section Artikel (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section Artikel (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "artikelHeroJudul": {
+        "edit": {
+          "label": "Judul Hero Halaman Artikel",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Hero Halaman Artikel",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "artikelHeroDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Hero Halaman Artikel",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Hero Halaman Artikel",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "perjalananJudul": {
+        "edit": {
+          "label": "Judul Section Perjalanan (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section Perjalanan (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "perjalananDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section Perjalanan (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section Perjalanan (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "visiMisiJudul": {
+        "edit": {
+          "label": "Judul Section Visi & Misi (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section Visi & Misi (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "visiMisiDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section Visi & Misi (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section Visi & Misi (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "timJudul": {
+        "edit": {
+          "label": "Judul Section Tim (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Section Tim (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "timDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Section Tim (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Section Tim (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "rekananIntroJudul": {
+        "edit": {
+          "label": "Judul Intro Halaman Rekanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Intro Halaman Rekanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "rekananIntroDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Intro Halaman Rekanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Intro Halaman Rekanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "deskripsiLabel": {
+        "edit": {
+          "label": "Label Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Label Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "navigasi": {
+        "edit": {
+          "label": "Navigasi Menu",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Navigasi Menu",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "seo": {
+        "edit": {
+          "label": "SEO (Judul & Deskripsi Meta per Halaman)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "SEO (Judul & Deskripsi Meta per Halaman)",
+          "searchable": false,
+          "sortable": false
+        }
+      }
     }
   }
 }

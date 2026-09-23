@@ -46,5 +46,45 @@
       "component": "utilities.link",
       "repeatable": true
     }
+  },
+  "config": {
+    "metadatas": {
+      "logoImage": {
+        "edit": {
+          "label": "Logo Navbar",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Logo Navbar",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "navbarItems": {
+        "edit": {
+          "label": "Item Menu Utama",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Item Menu Utama",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "primaryButtons": {
+        "edit": {
+          "label": "Tombol Utama (CTA)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Tombol Utama (CTA)",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

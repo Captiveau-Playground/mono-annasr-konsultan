@@ -28,5 +28,57 @@
         "images"
       ]
     }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama Rekanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Rekanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "instansi": {
+        "edit": {
+          "label": "Instansi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Instansi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "keterangan": {
+        "edit": {
+          "label": "Keterangan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Keterangan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "sertifikat": {
+        "edit": {
+          "label": "Sertifikat Kerjasama",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Sertifikat Kerjasama",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

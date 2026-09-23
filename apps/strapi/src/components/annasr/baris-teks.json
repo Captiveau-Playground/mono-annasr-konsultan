@@ -8,5 +8,21 @@
     "teks": {
       "type": "text"
     }
+  },
+  "config": {
+    "metadatas": {
+      "teks": {
+        "edit": {
+          "label": "Teks",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Teks",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

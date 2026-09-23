@@ -1,2 +1,42 @@
-{ "collectionName": "components_annasr_alur_steps", "info": { "displayName": "Alur (Step)" },
-  "attributes": { "judul": { "type": "string" }, "teks": { "type": "text" } } }
+{
+  "collectionName": "components_annasr_alur_steps",
+  "info": {
+    "displayName": "Alur (Step)"
+  },
+  "attributes": {
+    "judul": {
+      "type": "string"
+    },
+    "teks": {
+      "type": "text"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul Step",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul Step",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "teks": {
+        "edit": {
+          "label": "Deskripsi Step",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Step",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
+  }
+}

@@ -21,5 +21,33 @@
       ],
       "multiple": false
     }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama Klien / Perusahaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama Klien / Perusahaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "logo": {
+        "edit": {
+          "label": "Logo",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Logo",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

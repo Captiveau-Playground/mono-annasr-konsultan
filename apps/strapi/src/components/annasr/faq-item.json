@@ -1,11 +1,43 @@
 {
   "collectionName": "components_annasr_faq_items",
-  "info": { "displayName": "FAQ (Item)" },
+  "info": {
+    "displayName": "FAQ (Item)"
+  },
   "attributes": {
     "tanya": {
       "type": "string",
       "description": "Dijadikan judul accordion FAQ di admin (Strapi memakai atribut string pertama sbg main field)."
     },
-    "jawab": { "type": "text" }
+    "jawab": {
+      "type": "text"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "tanya": {
+        "edit": {
+          "label": "Pertanyaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Pertanyaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "jawab": {
+        "edit": {
+          "label": "Jawaban",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Jawaban",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }

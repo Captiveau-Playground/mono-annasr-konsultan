@@ -1,2 +1,42 @@
-{ "collectionName": "components_annasr_visi_misis", "info": { "displayName": "Visi / Misi" },
-  "attributes": { "judul": { "type": "string" }, "teks": { "type": "text" } } }
+{
+  "collectionName": "components_annasr_visi_misis",
+  "info": {
+    "displayName": "Visi / Misi"
+  },
+  "attributes": {
+    "judul": {
+      "type": "string"
+    },
+    "teks": {
+      "type": "text"
+    }
+  },
+  "config": {
+    "metadatas": {
+      "judul": {
+        "edit": {
+          "label": "Judul (Visi / Misi)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Judul (Visi / Misi)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "teks": {
+        "edit": {
+          "label": "Deskripsi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
+  }
+}

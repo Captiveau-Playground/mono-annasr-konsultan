@@ -31,5 +31,81 @@
       ],
       "description": "Dua gambar pendukung di samping foto founder (maksimal 2 dipakai). Kosongkan untuk memakai gambar bawaan."
     }
+  },
+  "config": {
+    "metadatas": {
+      "nama": {
+        "edit": {
+          "label": "Nama",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Nama",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "jabatan": {
+        "edit": {
+          "label": "Jabatan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Jabatan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "teks": {
+        "edit": {
+          "label": "Teks Biografi",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Teks Biografi",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kutipan": {
+        "edit": {
+          "label": "Kutipan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Kutipan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "foto": {
+        "edit": {
+          "label": "Foto Founder",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Foto Founder",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "gambarPendukung": {
+        "edit": {
+          "label": "Gambar Pendukung",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Gambar Pendukung",
+          "searchable": false,
+          "sortable": false
+        }
+      }
+    }
   }
 }
