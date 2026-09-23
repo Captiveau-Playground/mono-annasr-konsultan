@@ -258,7 +258,6 @@ export type KontenSitus = {
     perjalanan: { tahun: string; judul: string; teks: string }[]
     visiMisi: { judul: string; teks: string }[]
     tim: { nama: string; jabatan: string; foto?: string; linkedin?: string }[]
-    alasan: { judul: string; teks: string }[]
     /** Inti "Tentang Kami" — dari field `tentang` (persyaratan-kartu) di CMS. */
     tentangInti: { judul: string; deskripsi: string; daftar: string[] }
     /** Gambar section "Tentang Kami" dari CMS — kosong = pakai gambar bawaan. */
@@ -361,7 +360,6 @@ const POPULATE_SMART: Record<string, Record<string, "smart" | true>> = {
     perjalanan: "smart",
     visiMisi: "smart",
     tim: "smart",
-    alasan: "smart",
     kotaProyek: "smart",
     tentang: "smart",
     tentangGambar: true,
@@ -592,12 +590,6 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
             jabatan: teks(tm.jabatan, ""),
             foto: medUrl(tm.foto, ""),
             linkedin: teks(tm.linkedin, ""),
-          }))
-        : [],
-      alasan: Array.isArray(t.alasan)
-        ? (t.alasan as { judul?: unknown; teks?: unknown }[]).map((a) => ({
-            judul: teks(a.judul, ""),
-            teks: teks(a.teks, ""),
           }))
         : [],
       jangkauanJudul: teks(

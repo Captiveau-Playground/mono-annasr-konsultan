@@ -218,7 +218,6 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
           linkedin: "https://linkedin.com/qa",
         },
       ],
-      alasan: [{ judul: "QA alasan", teks: "QA alasan teks" }],
       jangkauanJudul: "QA jangkauan judul",
       jangkauanDeskripsi: "QA jangkauan deskripsi",
       kotaProyek: [{ nama: "QA kota2", lat: -3, lng: 4 }],
@@ -282,7 +281,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
     mocks.payloads = { ...CMS }
   })
 
-  it("tentang: hero/statistik/founder/riwayat/visi/tim/alasan/jangkauan/kota dari CMS", async () => {
+  it("tentang: hero/statistik/founder/riwayat/visi/tim/jangkauan/kota dari CMS", async () => {
     const r = (await fetchKontenSitus("en")).tentang
 
     expect(r.hero).toEqual({
@@ -317,7 +316,6 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
         linkedin: "https://linkedin.com/qa",
       },
     ])
-    expect(r.alasan).toEqual([{ judul: "QA alasan", teks: "QA alasan teks" }])
     expect(r.jangkauanJudul).toBe("QA jangkauan judul")
     expect(r.jangkauanDeskripsi).toBe("QA jangkauan deskripsi")
     expect(r.kotaProyek).toEqual([{ nama: "QA kota2", lat: -3, lng: 4 }])
