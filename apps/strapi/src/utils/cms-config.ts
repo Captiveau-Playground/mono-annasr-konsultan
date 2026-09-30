@@ -126,7 +126,7 @@ function komponenConfigDefault(model: Model): {
   const edit: { name: string; size: number }[][] = []
   for (const k of nama) {
     const size = FIELD_SIZE[attrs[k]?.type ?? "string"] ?? 12
-    const baris = edit[edit.length - 1]
+    const baris = edit.at(-1)
     const jml = (baris ?? []).reduce((s, i) => s + i.size, 0)
     if (size === 12 || !baris || jml + size > 12) edit.push([{ name: k, size }])
     else baris.push({ name: k, size })
@@ -242,7 +242,12 @@ const MAIN_FIELD_PER_UID: Record<string, Record<string, string>> = {
     manfaat: "teks",
   },
   "api::artikel.artikel": {},
-  "api::situs.situs": { seo: "halaman", proses: "judul" },
+  "api::situs.situs": {
+    seo: "halaman",
+    proses: "judul",
+    eyebrows: "halaman",
+  },
+  "api::kontak.kontak": { peta: "label" },
 }
 
 export async function seedCmsMainField({ strapi }: { strapi: Core.Strapi }) {

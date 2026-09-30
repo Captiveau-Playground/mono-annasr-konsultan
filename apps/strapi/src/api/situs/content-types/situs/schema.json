@@ -121,6 +121,11 @@
     },
     "deskripsiLabel": {
       "type": "string"
+    },
+    "eyebrows": {
+      "type": "component",
+      "repeatable": true,
+      "component": "annasr.eyebrow-item"
     }
   },
   "config": {
@@ -505,6 +510,18 @@
         },
         "list": {
           "label": "SEO (Judul & Deskripsi Meta per Halaman)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "eyebrows": {
+        "edit": {
+          "label": "Eyebrow (label kecil di atas judul)",
+          "description": "Isi hanya halaman yang ingin diubah dari bawaan.",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow",
           "searchable": false,
           "sortable": false
         }

@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_annasr_eyebrow_items",
+  "info": {
+    "displayName": "Eyebrow (Label Atas Judul)",
+    "description": "Label kecil di atas judul hero/section. Isi hanya halaman yang ingin diubah dari bawaan (mis. 'Layanan', 'FAQ')."
+  },
+  "attributes": {
+    "halaman": {
+      "type": "enumeration",
+      "enum": [
+        "Tentang",
+        "Layanan",
+        "Proyek",
+        "Klien",
+        "Karir",
+        "Kontak",
+        "Artikel",
+        "Rekanan",
+        "FAQ",
+        "Proses Kerja"
+      ],
+      "required": true
+    },
+    "teks": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

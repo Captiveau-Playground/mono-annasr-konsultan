@@ -43,6 +43,11 @@
     "petaEmbedUrl": {
       "type": "string",
       "description": "URL embed Google Maps untuk peta halaman Kontak. Kosongkan untuk memakai peta bawaan."
+    },
+    "peta": {
+      "type": "component",
+      "repeatable": true,
+      "component": "annasr.map-item"
     }
   },
   "config": {
@@ -163,6 +168,18 @@
         },
         "list": {
           "label": "Peta Lokasi (URL Embed Google Maps)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "peta": {
+        "edit": {
+          "label": "Peta Lokasi (bisa lebih dari satu)",
+          "description": "Tautan Google Maps per lokasi. Kosongkan untuk memakai peta bawaan.",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Peta Lokasi",
           "searchable": false,
           "sortable": false
         }

@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_annasr_map_items",
+  "info": {
+    "displayName": "Peta Lokasi",
+    "description": "Satu peta lokasi kantor/domisili. Tempel tautan Google Maps (pilih 'Bagikan → Salin tautan' atau URL /maps?q=…&output=embed). Panjang bebas — tidak terpotong 255 karakter."
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "url": {
+      "type": "text",
+      "required": true
+    }
+  }
+}
