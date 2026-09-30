@@ -22,11 +22,14 @@ type ProyekItem = {
 export function PortfolioSection({
   filterAktif = true,
   showAllButton = true,
+  tanpaJudul = false,
   items,
 }: {
   filterAktif?: boolean
   /** Tampilkan tombol "Lihat Semua Proyek" di header section (dimatikan di halaman Portfolio). */
   showAllButton?: boolean
+  /** Sembunyikan header section — hanya tab kategori + kartu (dipakai halaman Portfolio). */
+  tanpaJudul?: boolean
   items?: ProyekItem[]
 }) {
   const [kategori, setKategori] = useState("Semua")
@@ -71,7 +74,7 @@ export function PortfolioSection({
     <SectionShell
       id="proyek"
       tone="gelap"
-      judul={"Ratusan Proyek yang\nTelah Kami Kawal"}
+      judul={tanpaJudul ? undefined : "Ratusan Proyek yang\nTelah Kami Kawal"}
       aksi={
         showAllButton ? (
           <Button asChild size="pill" variant="hero">

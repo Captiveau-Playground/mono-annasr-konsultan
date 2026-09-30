@@ -58,12 +58,10 @@ type AnggotaTim = {
 export function TimTentang({
   tim = [],
   judul = "Tenaga ahli yang bekerja di balik setiap proyek",
-  deskripsi = "Dari struktur, jalan, jembatan, hingga sumber daya air — setiap penugasan dipegang oleh profesional yang berpengalaman di lapangan.",
 }: {
   tim?: AnggotaTim[]
-  /** Judul/subjudul section — dari CMS. */
+  /** Judul section — dari CMS. */
   judul?: string
-  deskripsi?: string
 }) {
   const TIM: (AnggotaTim & { inisial: string })[] =
     tim.length > 0
@@ -80,9 +78,6 @@ export function TimTentang({
           <h2 className="text-foreground mt-4 text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
             {judul}
           </h2>
-          <p className="text-muted-foreground mx-auto mt-5 max-w-xl text-lg leading-8">
-            {deskripsi}
-          </p>
         </Reveal>
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

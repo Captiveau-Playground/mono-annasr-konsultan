@@ -76,14 +76,9 @@ export default async function TentangPage({
         judul={k.situs.visiMisiJudul || undefined}
       />
       <Founder data={konten.founder} />
-      <TimTentang
-        tim={konten.tim}
-        judul={k.situs.timJudul || undefined}
-        deskripsi={k.situs.timDeskripsi || undefined}
-      />
+      <TimTentang tim={konten.tim} judul={k.situs.timJudul || undefined} />
       <JangkauanSection
         judul={konten.jangkauanJudul}
-        deskripsi={konten.jangkauanDeskripsi}
         kota={konten.kotaProyek}
         statistik={konten.statistik}
         brand={k.situs.brandNama}

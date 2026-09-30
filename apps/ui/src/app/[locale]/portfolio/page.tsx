@@ -6,7 +6,6 @@ import { JangkauanSection } from "@/components/sections/JangkauanSection"
 import { KlienSection } from "@/components/sections/KlienSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
 import { CtaBanner } from "@/components/site/CtaBanner"
-import { PageHero } from "@/components/site/PageHero"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 
@@ -47,19 +46,17 @@ export default async function PortfolioPage({
 
   return (
     <>
-      <PageHero
-        eyebrow="Portofolio"
-        judul={konten.portfolioHero.judul}
-        teks={konten.portfolioHero.deskripsi}
+      <PortfolioSection
+        items={konten.portfolio}
+        showAllButton={false}
+        tanpaJudul
       />
-      <PortfolioSection items={konten.portfolio} showAllButton={false} />
       <KlienSection
         items={konten.klien}
         judul={konten.klienHero.judul || undefined}
       />
       <JangkauanSection
         judul={konten.tentang.jangkauanJudul}
-        deskripsi={konten.tentang.jangkauanDeskripsi}
         kota={konten.tentang.kotaProyek}
         statistik={konten.tentang.statistik}
         brand={konten.situs.brandNama}

@@ -12,18 +12,16 @@ const RINGKAS_STATIS = [
 
 /**
  * Section peta jangkauan proyek — dipakai di Beranda, Proyek, dan Tentang
- * Kami. Komposisi: judul + deskripsi, kartu statistik, peta Leaflet
- * interaktif, dan daftar kota yang bisa dibuka.
+ * Kami. Komposisi: judul, kartu statistik, peta Leaflet interaktif, dan
+ * daftar kota yang bisa dibuka.
  */
 export function JangkauanSection({
   judul,
-  deskripsi,
   kota = [],
   statistik = [],
   brand = "",
 }: {
   judul?: string
-  deskripsi?: string
   kota?: { nama: string; lat: number; lng: number }[]
   /** Kartu ringkas (dari tentang.statistik via situs/CMS). */
   statistik?: { nilai: string; label: string }[]
@@ -49,11 +47,6 @@ export function JangkauanSection({
               <h2 className="text-foreground mt-4 max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
                 {judul}
               </h2>
-              {deskripsi ? (
-                <p className="text-muted-foreground mt-5 max-w-[42rem] text-lg leading-8">
-                  {deskripsi}
-                </p>
-              ) : null}
             </Reveal>
           </div>
 

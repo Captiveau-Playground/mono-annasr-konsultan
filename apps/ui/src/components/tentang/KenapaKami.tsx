@@ -89,10 +89,6 @@ export function KenapaKami({
               <h2 className="text-foreground max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl lg:text-5xl">
                 {judul}
               </h2>
-              <p className="text-muted-foreground mt-5 max-w-md text-base leading-relaxed">
-                Scroll untuk mengenal alasan utama mengapa banyak pemberi tugas
-                mempercayakan proyeknya kepada kami.
-              </p>
             </Reveal>
 
             <Reveal delay={0.05} className="mt-10 hidden lg:block">

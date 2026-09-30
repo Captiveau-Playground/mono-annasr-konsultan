@@ -25,7 +25,8 @@ export function SectionShell({
   className = "",
 }: {
   id?: string
-  judul: string
+  /** Judul section — kosongkan untuk menyembunyikan header (mis. halaman Proyek). */
+  judul?: string
   aksi?: ReactNode
   children: ReactNode
   tone?: "terang" | "krem" | "gelap"
@@ -44,18 +45,20 @@ export function SectionShell({
       className={`flex scroll-mt-20 flex-col justify-center overflow-hidden py-20 lg:py-24 ${bg} ${className}`}
     >
       <Kontainer>
-        <Reveal className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
-          <h2
-            className={`max-w-2xl text-3xl leading-[1.12] text-balance whitespace-pre-line sm:text-4xl lg:text-5xl ${
-              tone === "gelap" ? "text-primary-foreground" : "text-foreground"
-            }`}
-          >
-            {judul}
-          </h2>
-          {aksi ? <div className="shrink-0">{aksi}</div> : null}
-        </Reveal>
+        {judul ? (
+          <Reveal className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+            <h2
+              className={`max-w-2xl text-3xl leading-[1.12] text-balance whitespace-pre-line sm:text-4xl lg:text-5xl ${
+                tone === "gelap" ? "text-primary-foreground" : "text-foreground"
+              }`}
+            >
+              {judul}
+            </h2>
+            {aksi ? <div className="shrink-0">{aksi}</div> : null}
+          </Reveal>
+        ) : null}
 
-        <div className="mt-12">{children}</div>
+        <div className={judul ? "mt-12" : ""}>{children}</div>
       </Kontainer>
     </section>
   )
