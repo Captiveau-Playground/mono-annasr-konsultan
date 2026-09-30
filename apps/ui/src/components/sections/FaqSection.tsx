@@ -43,12 +43,13 @@ const faq = [
 export function FaqSection({
   items: itemsFaq,
   judul = "Pertanyaan yang Sering Diajukan",
-  deskripsi = "Jawaban singkat untuk kebutuhan yang paling sering ditanyakan calon klien kami.",
+  eyebrow = "FAQ",
 }: {
   items?: BerandaKonten["faq"]
-  /** Judul & deskripsi section — dari CMS. */
+  /** Judul section — dari CMS. */
   judul?: string
-  deskripsi?: string
+  /** Label kecil di atas judul — dari CMS situs.eyebrows. */
+  eyebrow?: string
 }) {
   const [aktif, setAktif] = useState<number | null>(0)
 
@@ -58,12 +59,7 @@ export function FaqSection({
         {/* 2 kolom dalam 1 baris: judul kiri (sticky), daftar FAQ kanan (rata atas) */}
         <div className="grid gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-start">
           <div className="lg:sticky lg:top-24">
-            <SectionHeading
-              eyebrow="FAQ"
-              judul={judul}
-              deskripsi={deskripsi}
-              align="left"
-            />
+            <SectionHeading eyebrow={eyebrow} judul={judul} align="left" />
           </div>
 
           <div className="flex flex-col gap-3">

@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { layanan } from "@/data/perusahaan"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { simpanLeadPublik } from "@/lib/crm/crm-store"
+import { normalizeGmapsEmbed } from "@/lib/maps"
 
 type FormPesan = {
   nama: string
@@ -32,6 +33,8 @@ type Kontak = {
   instagram?: string
   whatsapp?: string
   petaEmbedUrl?: string
+  /** Daftar peta lokasi dari CMS (bisa 2+ lokasi). */
+  peta?: { label: string; url: string }[]
 }
 
 /** Fallback statis — dipakai bila CMS kontak kosong. */
@@ -61,7 +64,19 @@ export function KontakSection({
   const k: Kontak = { ...KONTAK_DEFAULT, ...kontak }
   const wa = k.whatsapp?.trim() || KONTAK_DEFAULT.whatsapp
   const ig = (k.instagram ?? "").trim().replace(/^@/, "")
-  const petaUrl = k.petaEmbedUrl?.trim() || PETA_DEFAULT
+  // Daftar peta: prioritas CMS `peta` → `petaEmbedUrl` lama → peta bawaan.
+  const daftarPeta =
+    k.peta && k.peta.length > 0
+      ? k.peta.map((p) => ({
+          label: p.label || "Peta Lokasi",
+          url: normalizeGmapsEmbed(p.url),
+        }))
+      : [
+          {
+            label: "Peta Lokasi",
+            url: normalizeGmapsEmbed(k.petaEmbedUrl?.trim() || PETA_DEFAULT),
+          },
+        ]
   const {
     register,
     handleSubmit,
@@ -326,15 +341,29 @@ export function KontakSection({
             </ul>
           </div>
 
-          <div className="border-border overflow-hidden rounded-[2rem] border">
-            <iframe
-              title="Peta lokasi kantor CV. AN NASR KONSULTAN"
-              src={petaUrl}
-              allowFullScreen
-              loading="lazy"
-              className="h-72 w-full border-0"
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
+          <div
+            className={
+              daftarPeta.length > 1 ? "grid gap-4 sm:grid-cols-2" : "space-y-4"
+            }
+          >
+            {daftarPeta.map((peta, i) => (
+              <div
+                key={`${peta.label}-${i}`}
+                className="border-border overflow-hidden rounded-[2rem] border"
+              >
+                <p className="bg-primary/8 text-primary border-border border-b px-5 py-3 text-sm font-semibold">
+                  {peta.label}
+                </p>
+                <iframe
+                  title={`Peta ${peta.label} — CV. AN NASR KONSULTAN`}
+                  src={peta.url}
+                  allowFullScreen
+                  loading="lazy"
+                  className="h-72 w-full border-0"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                />
+              </div>
+            ))}
           </div>
         </Reveal>
       </div>

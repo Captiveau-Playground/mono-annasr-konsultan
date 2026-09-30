@@ -134,6 +134,23 @@ function seoCms(v: unknown): Record<string, SeoHalaman> {
   return hasil
 }
 
+/**
+ * Peta eyebrow per halaman/section dari CMS (situs.eyebrows).
+ * Halaman yang tidak diisi → key tidak ada → FE memakai default lokalnya.
+ */
+function eyebrowCms(v: unknown): Record<string, string> {
+  if (!Array.isArray(v)) return {}
+
+  const hasil: Record<string, string> = {}
+  for (const e of v as { halaman?: unknown; teks?: unknown }[]) {
+    const kunci = teks(e.halaman, "")
+    const nilai = teks(e.teks, "")
+    if (kunci && nilai) hasil[kunci] = nilai
+  }
+
+  return hasil
+}
+
 type Raw = Record<string, unknown>
 
 /** Item layanan lengkap (dipakai /layanan dan detail) dengan fallback statis. */
@@ -292,6 +309,8 @@ export type KontenSitus = {
     whatsapp?: string
     /** URL embed peta (Google Maps) halaman Kontak — kosong = peta bawaan. */
     petaEmbedUrl: string
+    /** Daftar peta lokasi dari CMS (bisa 2+ lokasi). */
+    peta: { label: string; url: string }[]
   }
   artikel: ReturnType<typeof artikelCms>
   artikelHero: { judul: string; deskripsi: string }
@@ -318,6 +337,8 @@ export type KontenSitus = {
     visiMisiDeskripsi: string
     timJudul: string
     timDeskripsi: string
+    /** Eyebrow per halaman/section — dikelola CMS (situs.eyebrows). */
+    eyebrows: Record<string, string>
   }
 }
 
@@ -364,9 +385,14 @@ const POPULATE_SMART: Record<string, Record<string, "smart" | true>> = {
     tentang: "smart",
     tentangGambar: true,
   },
-  kontak: {},
+  kontak: { peta: "smart" },
   artikel: {},
-  situs: { navigasi: "smart", seo: "smart", proses: "smart" },
+  situs: {
+    navigasi: "smart",
+    seo: "smart",
+    proses: "smart",
+    eyebrows: "smart",
+  },
 }
 
 /** Populate per collection (komponen bertingkat pakai "smart"; MEDIA wajib "true"). */
@@ -740,6 +766,17 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           ? kon.whatsapp.trim()
           : undefined,
       petaEmbedUrl: teks(kon.petaEmbedUrl, ""),
+      // Daftar peta lokasi dari CMS — fallback ke petaEmbedUrl lama bila kosong.
+      peta:
+        Array.isArray(kon.peta) &&
+        (kon.peta as Record<string, unknown>[]).length
+          ? (kon.peta as { label?: unknown; url?: unknown }[])
+              .map((p, i) => ({
+                label: teks(p.label, `Lokasi ${i + 1}`),
+                url: teks(p.url, ""),
+              }))
+              .filter((p) => p.url)
+          : [],
     },
     artikel: artikelCms(art as Record<string, unknown>[]),
     artikelHero: {
@@ -836,6 +873,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
         sit.timDeskripsi,
         "Dari struktur, jalan, jembatan, hingga sumber daya air — setiap penugasan dipegang oleh profesional yang berpengalaman di lapangan."
       ),
+      eyebrows: eyebrowCms(sit.eyebrows),
     },
   }
 }

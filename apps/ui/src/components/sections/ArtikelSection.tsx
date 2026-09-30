@@ -10,12 +10,13 @@ import { Link } from "@/lib/navigation"
 export function ArtikelSection({
   items,
   judul = "Wawasan teknik dari pengalaman di lapangan",
-  deskripsi = "Catatan praktis seputar perencanaan, pengawasan, perizinan, dan konstruksi.",
+  eyebrow = "Artikel",
 }: {
   items?: Artikel[]
-  /** Judul & deskripsi section — dari CMS. */
+  /** Judul section — dari CMS. */
   judul?: string
-  deskripsi?: string
+  /** Label kecil di atas judul — dari CMS situs.eyebrows. */
+  eyebrow?: string
 }) {
   const terbaru = (items ?? artikel).slice(0, 3)
 
@@ -23,12 +24,7 @@ export function ArtikelSection({
     <section className="bg-background py-16 lg:py-20">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         <Reveal className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-          <SectionHeading
-            eyebrow="Artikel"
-            judul={judul}
-            deskripsi={deskripsi}
-            align="left"
-          />
+          <SectionHeading eyebrow={eyebrow} judul={judul} align="left" />
           <Link
             href="/artikel"
             className="text-primary hover:text-accent mb-1 inline-flex shrink-0 items-center gap-1.5 text-sm font-medium transition-colors"

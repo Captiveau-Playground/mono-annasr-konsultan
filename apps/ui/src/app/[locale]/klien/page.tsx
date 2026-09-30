@@ -47,7 +47,7 @@ export default async function KlienPage({
   return (
     <>
       <PageHero
-        eyebrow="Klien Kami"
+        eyebrow={konten.situs.eyebrows?.Klien ?? "Klien Kami"}
         judul={konten.klienHero.judul}
         teks={konten.klienHero.deskripsi}
       />

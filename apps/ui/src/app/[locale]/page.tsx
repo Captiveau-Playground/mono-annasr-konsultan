@@ -133,7 +133,6 @@ export default async function BerandaPage({
       <PortfolioSection items={kontenSitus.portfolio} />
       <JangkauanSection
         judul={kontenSitus.tentang.jangkauanJudul}
-        deskripsi={kontenSitus.tentang.jangkauanDeskripsi}
         kota={kontenSitus.tentang.kotaProyek}
         statistik={kontenSitus.tentang.statistik}
         brand={kontenSitus.situs.brandNama}
@@ -141,12 +140,12 @@ export default async function BerandaPage({
       <ArtikelSection
         items={kontenSitus.artikel}
         judul={kontenSitus.situs.artikelJudul || undefined}
-        deskripsi={kontenSitus.situs.artikelDeskripsi || undefined}
+        eyebrow={kontenSitus.situs.eyebrows?.Artikel ?? "Artikel"}
       />
       <FaqSection
         items={konten.faq}
         judul={kontenSitus.situs.faqJudul || undefined}
-        deskripsi={kontenSitus.situs.faqDeskripsi || undefined}
+        eyebrow={kontenSitus.situs.eyebrows?.FAQ ?? "FAQ"}
       />
       <CtaBanner judul={konten.cta?.judul} deskripsi={konten.cta?.deskripsi} />
     </>

@@ -58,7 +58,7 @@ export default async function KontakPage({
         ]}
       />
       <PageHero
-        eyebrow="Kontak"
+        eyebrow={konten.situs.eyebrows?.Kontak ?? "Kontak"}
         judul={konten.kontak.judul}
         teks={konten.kontak.deskripsi}
       />

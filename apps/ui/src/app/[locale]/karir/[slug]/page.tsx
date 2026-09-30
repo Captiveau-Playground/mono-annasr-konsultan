@@ -64,7 +64,7 @@ export default async function DetailKarir({
         ]}
       />
       <PageHero
-        eyebrow="Karir"
+        eyebrow={konten.situs.eyebrows?.Karir ?? "Karir"}
         judul={item.nama}
         teks={`${item.tipe} · ${item.lokasi}`}
       />

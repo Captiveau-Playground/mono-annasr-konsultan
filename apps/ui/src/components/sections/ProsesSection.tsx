@@ -6,22 +6,21 @@ export function ProsesSection({
   items,
   judul = "Tujuh tahap kerja yang terukur",
   deskripsi = "Alur kerja yang sama untuk setiap proyek, sehingga progres mudah dipantau dari awal hingga serah terima.",
+  eyebrow = "Proses Kerja",
 }: {
   items?: { judul: string; teks: string }[]
   /** Judul & deskripsi section — dari CMS. */
   judul?: string
   deskripsi?: string
+  /** Label kecil di atas judul — dari CMS situs.eyebrows. */
+  eyebrow?: string
 }) {
   const daftar = items ?? prosesKerja
 
   return (
     <section className="bg-surface px-6 py-16 lg:px-8 lg:py-20">
       <div className="mx-auto max-w-5xl">
-        <SectionHeading
-          eyebrow="Proses Kerja"
-          judul={judul}
-          deskripsi={deskripsi}
-        />
+        <SectionHeading eyebrow={eyebrow} judul={judul} deskripsi={deskripsi} />
 
         <ol className="mx-auto mt-10 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {daftar.map((tahap, i) => (
