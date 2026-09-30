@@ -126,7 +126,7 @@ function komponenConfigDefault(model: Model): {
   const edit: { name: string; size: number }[][] = []
   for (const k of nama) {
     const size = FIELD_SIZE[attrs[k]?.type ?? "string"] ?? 12
-    const baris = edit.at(-1)
+    const baris = edit[edit.length - 1]
     const jml = (baris ?? []).reduce((s, i) => s + i.size, 0)
     if (size === 12 || !baris || jml + size > 12) edit.push([{ name: k, size }])
     else baris.push({ name: k, size })
