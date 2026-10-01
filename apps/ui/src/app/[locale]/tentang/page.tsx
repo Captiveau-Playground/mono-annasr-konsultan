@@ -52,6 +52,7 @@ export default async function TentangPage({
   return (
     <>
       <TentangHero
+        eyebrow={k.situs.tentangHeroEyebrow}
         judul={konten.hero.judul}
         deskripsi={konten.hero.deskripsi}
         keunggulan={konten.hero.keunggulan}
@@ -74,9 +75,14 @@ export default async function TentangPage({
       <VisiMisi
         kartu={konten.visiMisi}
         judul={k.situs.visiMisiJudul || undefined}
+        eyebrow={k.situs.visiMisiEyebrow}
       />
-      <Founder data={konten.founder} />
-      <TimTentang tim={konten.tim} judul={k.situs.timJudul || undefined} />
+      <Founder data={konten.founder} eyebrow={k.situs.founderTentangEyebrow} />
+      <TimTentang
+        tim={konten.tim}
+        judul={k.situs.timJudul || undefined}
+        eyebrow={k.situs.timEyebrow}
+      />
       <JangkauanSection
         judul={konten.jangkauanJudul}
         kota={konten.kotaProyek}
@@ -86,6 +92,7 @@ export default async function TentangPage({
       <CtaBanner
         judul={k.beranda.cta?.judul}
         deskripsi={k.beranda.cta?.deskripsi}
+        eyebrow={k.situs.ctaEyebrow}
       />
     </>
   )

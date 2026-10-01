@@ -10,9 +10,15 @@ import { layanan, type Layanan } from "@/data/perusahaan"
 export function LayananSection({
   lengkap = false,
   items,
+  judul = "Layanan An Nasr dalam\nMendukung Proyek Anda",
+  eyebrow = "Layanan",
 }: {
   lengkap?: boolean
   items?: Layanan[]
+  /** Judul section — dari CMS situs.layananIntroJudul. */
+  judul?: string
+  /** Label kecil di atas judul — dari CMS situs.layananEyebrow. */
+  eyebrow?: string
 }) {
   const daftar = items ?? layanan
   if (lengkap) {
@@ -100,11 +106,7 @@ export function LayananSection({
   }
 
   return (
-    <SectionShell
-      id="layanan"
-      tone="terang"
-      judul={"Layanan An Nasr dalam\nMendukung Proyek Anda"}
-    >
+    <SectionShell id="layanan" tone="terang" judul={judul} eyebrow={eyebrow}>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {daftar.map((item, i) => (
           <Reveal key={item.slug} delay={i * 0.07} className="h-full">

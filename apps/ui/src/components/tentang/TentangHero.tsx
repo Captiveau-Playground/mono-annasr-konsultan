@@ -17,6 +17,7 @@ export function TentangHero({
   keunggulan = [],
   statistik = [],
   gambar,
+  eyebrow = "Tentang Kami",
 }: {
   judul?: string
   deskripsi?: string
@@ -25,6 +26,8 @@ export function TentangHero({
   statistik?: { nilai: string; label: string }[]
   /** Gambar hero dari CMS (`tentang.hero.gambar[0]`). Kosong = bawaan. */
   gambar?: string
+  /** Label kecil di atas judul — dari CMS situs.tentangHeroEyebrow. */
+  eyebrow?: string
 }) {
   const trust = keunggulan.length > 0 ? keunggulan : KEUNGGULAN
   const badge = statistik[1] ?? {
@@ -46,7 +49,10 @@ export function TentangHero({
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
           {/* 7/12 — konten di atas latar putih yang terbaca */}
           <div className="lg:col-span-7">
-            <h1 className="text-foreground mt-0 max-w-2xl text-4xl leading-[1.08] font-bold text-balance sm:text-5xl lg:text-[3.4rem]">
+            <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
+              {eyebrow}
+            </p>
+            <h1 className="text-foreground mt-3 max-w-2xl text-4xl leading-[1.08] font-bold text-balance sm:text-5xl lg:text-[3.4rem]">
               {judul}
             </h1>
 

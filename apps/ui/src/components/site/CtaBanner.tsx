@@ -12,9 +12,12 @@ import { Kontainer } from "./SectionShell"
 export function CtaBanner({
   judul = "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
   deskripsi = "Sampaikan rencana pembangunan Anda, tim kami akan membantu menyusun solusi teknis yang tepat sasaran dan sesuai anggaran.",
+  eyebrow = "Konsultasi Gratis",
 }: {
   judul?: string
   deskripsi?: string
+  /** Label kecil di atas judul — dari CMS situs.ctaEyebrow. */
+  eyebrow?: string
 }) {
   return (
     <section className="bg-secondary py-20 lg:py-24">
@@ -27,10 +30,10 @@ export function CtaBanner({
             <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
               <div>
                 <p className="text-accent text-xs font-semibold tracking-[0.3em] uppercase">
-                  Konsultasi Gratis
+                  {eyebrow}
                 </p>
                 <h2 className="text-foreground mt-4 max-w-2xl text-3xl leading-[1.12] sm:text-4xl lg:text-5xl">
-                  Konsultasikan Kebutuhan Proyek Anda Bersama Kami
+                  {judul}
                 </h2>
               </div>
 

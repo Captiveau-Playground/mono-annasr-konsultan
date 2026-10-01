@@ -134,23 +134,6 @@ function seoCms(v: unknown): Record<string, SeoHalaman> {
   return hasil
 }
 
-/**
- * Peta eyebrow per halaman/section dari CMS (situs.eyebrows).
- * Halaman yang tidak diisi → key tidak ada → FE memakai default lokalnya.
- */
-function eyebrowCms(v: unknown): Record<string, string> {
-  if (!Array.isArray(v)) return {}
-
-  const hasil: Record<string, string> = {}
-  for (const e of v as { halaman?: unknown; teks?: unknown }[]) {
-    const kunci = teks(e.halaman, "")
-    const nilai = teks(e.teks, "")
-    if (kunci && nilai) hasil[kunci] = nilai
-  }
-
-  return hasil
-}
-
 type Raw = Record<string, unknown>
 
 /** Item layanan lengkap (dipakai /layanan dan detail) dengan fallback statis. */
@@ -323,6 +306,8 @@ export type KontenSitus = {
     /** Judul/deskripsi meta per halaman — dikelola CMS (situs.seo). */
     seo: Record<string, { judul: string; deskripsi: string }>
     /** Judul/deskripsi section lintas halaman — dikelola CMS. */
+    layananIntroJudul: string
+    layananIntroDeskripsi: string
     keunggulanJudul: string
     keunggulanDeskripsi: string
     prosesJudul: string
@@ -337,8 +322,34 @@ export type KontenSitus = {
     visiMisiDeskripsi: string
     timJudul: string
     timDeskripsi: string
-    /** Eyebrow per halaman/section — dikelola CMS (situs.eyebrows). */
-    eyebrows: Record<string, string>
+    // ── Eyebrow & header per section (CMS) ──────────────────────────
+    founderJudul: string
+    founderEyebrow: string
+    keunggulanEyebrow: string
+    layananEyebrow: string
+    proyekJudul: string
+    proyekEyebrow: string
+    klienEyebrow: string
+    jangkauanEyebrow: string
+    artikelEyebrow: string
+    faqEyebrow: string
+    ctaEyebrow: string
+    prosesEyebrow: string
+    alurEyebrow: string
+    alurJudul: string
+    alurDeskripsi: string
+    persyaratanEyebrow: string
+    persyaratanJudul: string
+    persyaratanDeskripsi: string
+    dokumenEyebrow: string
+    tentangHeroEyebrow: string
+    visiMisiEyebrow: string
+    founderTentangEyebrow: string
+    timEyebrow: string
+    rekananEyebrow: string
+    artikelHeroEyebrow: string
+    karirHeroEyebrow: string
+    kontakEyebrow: string
   }
 }
 
@@ -832,6 +843,11 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
               { label: "Kontak", href: "/kontak" },
             ],
       seo: seoCms(sit.seo),
+      layananIntroJudul: teks(
+        sit.layananIntroJudul,
+        "Layanan An Nasr dalam Mendukung Proyek Anda"
+      ),
+      layananIntroDeskripsi: teks(sit.layananIntroDeskripsi, ""),
       keunggulanJudul: teks(
         sit.keunggulanJudul,
         "Mengapa Memilih An Nasr Konsultan"
@@ -873,7 +889,43 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
         sit.timDeskripsi,
         "Dari struktur, jalan, jembatan, hingga sumber daya air — setiap penugasan dipegang oleh profesional yang berpengalaman di lapangan."
       ),
-      eyebrows: eyebrowCms(sit.eyebrows),
+      // ── Eyebrow & header per section (flat field situs) ────────────
+      founderJudul: teks(
+        sit.founderJudul,
+        "Tumbuh dari Pengalaman, Berkarya dengan Integritas"
+      ),
+      founderEyebrow: teks(sit.founderEyebrow, "Tentang Kami"),
+      keunggulanEyebrow: teks(sit.keunggulanEyebrow, "Keunggulan"),
+      layananEyebrow: teks(sit.layananEyebrow, "Layanan"),
+      proyekJudul: teks(
+        sit.proyekJudul,
+        "Ratusan Proyek yang\nTelah Kami Kawal"
+      ),
+      proyekEyebrow: teks(sit.proyekEyebrow, "Proyek"),
+      klienEyebrow: teks(sit.klienEyebrow, "Klien Kami"),
+      jangkauanEyebrow: teks(sit.jangkauanEyebrow, "Jangkauan Proyek"),
+      artikelEyebrow: teks(sit.artikelEyebrow, "Artikel"),
+      faqEyebrow: teks(sit.faqEyebrow, "FAQ"),
+      ctaEyebrow: teks(sit.ctaEyebrow, "Konsultasi Gratis"),
+      prosesEyebrow: teks(sit.prosesEyebrow, "Proses Kerja"),
+      alurEyebrow: teks(sit.alurEyebrow, "Alur Pengerjaan"),
+      alurJudul: teks(sit.alurJudul, ""),
+      alurDeskripsi: teks(sit.alurDeskripsi, ""),
+      persyaratanEyebrow: teks(
+        sit.persyaratanEyebrow,
+        "Dokumen yang Perlu Disiapkan"
+      ),
+      persyaratanJudul: teks(sit.persyaratanJudul, "Persyaratan Pengurusan"),
+      persyaratanDeskripsi: teks(sit.persyaratanDeskripsi, ""),
+      dokumenEyebrow: teks(sit.dokumenEyebrow, "Dokumen yang Diterima Client"),
+      tentangHeroEyebrow: teks(sit.tentangHeroEyebrow, "Tentang Kami"),
+      visiMisiEyebrow: teks(sit.visiMisiEyebrow, "Arahan Perusahaan"),
+      founderTentangEyebrow: teks(sit.founderTentangEyebrow, "Founder"),
+      timEyebrow: teks(sit.timEyebrow, "Tim Kami"),
+      rekananEyebrow: teks(sit.rekananEyebrow, "Rekanan"),
+      artikelHeroEyebrow: teks(sit.artikelHeroEyebrow, "Artikel"),
+      karirHeroEyebrow: teks(sit.karirHeroEyebrow, "Karir"),
+      kontakEyebrow: teks(sit.kontakEyebrow, "Kontak"),
     },
   }
 }

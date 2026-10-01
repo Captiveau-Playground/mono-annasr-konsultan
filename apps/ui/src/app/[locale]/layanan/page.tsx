@@ -74,7 +74,7 @@ export default async function LayananPage({
         ]}
       />
       <PageHero
-        eyebrow={konten.situs.eyebrows?.Layanan ?? "Layanan"}
+        eyebrow={konten.situs.layananEyebrow}
         judul={konten.layananIntro.judul}
         teks={konten.layananIntro.deskripsi}
       />
@@ -83,11 +83,12 @@ export default async function LayananPage({
         items={konten.proses}
         judul={konten.situs.prosesJudul || undefined}
         deskripsi={konten.situs.prosesDeskripsi || undefined}
-        eyebrow={konten.situs.eyebrows?.["Proses Kerja"] ?? "Proses Kerja"}
+        eyebrow={konten.situs.prosesEyebrow}
       />
       <CtaBanner
         judul={konten.beranda.cta?.judul}
         deskripsi={konten.beranda.cta?.deskripsi}
+        eyebrow={konten.situs.ctaEyebrow}
       />
     </>
   )

@@ -6,6 +6,7 @@ import { founder } from "@/data/perusahaan"
 
 export function Founder({
   data,
+  eyebrow = "Founder",
 }: {
   data?: {
     nama?: string
@@ -14,6 +15,8 @@ export function Founder({
     kutipan?: string
     foto?: string
   }
+  /** Label kecil di atas judul — dari CMS situs.founderTentangEyebrow. */
+  eyebrow?: string
 }) {
   const nama = data?.nama?.trim() || founder.nama
   const jabatan = data?.jabatan?.trim() || founder.jabatan
@@ -58,7 +61,7 @@ export function Founder({
           <div className="lg:col-span-7">
             <Reveal arah="right">
               <p className="text-accent text-xs font-semibold tracking-[0.22em] uppercase">
-                Founder
+                {eyebrow}
               </p>
               <h2 className="mt-4 text-4xl font-bold text-balance sm:text-5xl">
                 {nama}

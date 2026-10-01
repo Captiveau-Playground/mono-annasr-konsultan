@@ -23,6 +23,8 @@ export function PortfolioSection({
   filterAktif = true,
   showAllButton = true,
   tanpaJudul = false,
+  judul = "Ratusan Proyek yang\nTelah Kami Kawal",
+  eyebrow = "Proyek",
   items,
 }: {
   filterAktif?: boolean
@@ -30,6 +32,10 @@ export function PortfolioSection({
   showAllButton?: boolean
   /** Sembunyikan header section — hanya tab kategori + kartu (dipakai halaman Portfolio). */
   tanpaJudul?: boolean
+  /** Judul section — dari CMS situs.proyekJudul. */
+  judul?: string
+  /** Label kecil di atas judul — dari CMS situs.proyekEyebrow. */
+  eyebrow?: string
   items?: ProyekItem[]
 }) {
   const [kategori, setKategori] = useState("Semua")
@@ -74,7 +80,8 @@ export function PortfolioSection({
     <SectionShell
       id="proyek"
       tone="gelap"
-      judul={tanpaJudul ? undefined : "Ratusan Proyek yang\nTelah Kami Kawal"}
+      judul={tanpaJudul ? undefined : judul}
+      eyebrow={tanpaJudul ? undefined : eyebrow}
       aksi={
         showAllButton ? (
           <Button asChild size="pill" variant="hero">

@@ -62,7 +62,7 @@ export default async function DetailLayanan({
       <section className="px-6 pt-24 pb-16 lg:px-8 lg:pt-28 lg:pb-20">
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-            Layanan
+            {konten.situs.layananEyebrow}
           </p>
           <h1 className="text-foreground mt-3 text-3xl leading-tight text-balance sm:text-4xl lg:text-5xl">
             {item.nama}
@@ -146,18 +146,33 @@ export default async function DetailLayanan({
       </section>
 
       {item.alur.length > 0 ? (
-        <AlurLayanan nama={item.nama} alur={item.alur} />
+        <AlurLayanan
+          nama={item.nama}
+          alur={item.alur}
+          eyebrow={konten.situs.alurEyebrow}
+          judul={konten.situs.alurJudul || undefined}
+          deskripsi={konten.situs.alurDeskripsi || undefined}
+        />
       ) : null}
       {item.persyaratan.length > 0 ? (
-        <PersyaratanLayanan persyaratan={item.persyaratan} />
+        <PersyaratanLayanan
+          persyaratan={item.persyaratan}
+          eyebrow={konten.situs.persyaratanEyebrow}
+          judul={konten.situs.persyaratanJudul}
+          deskripsi={konten.situs.persyaratanDeskripsi || undefined}
+        />
       ) : null}
       {item.dokumenClient ? (
-        <DokumenClientLayanan dokumen={item.dokumenClient} />
+        <DokumenClientLayanan
+          dokumen={item.dokumenClient}
+          eyebrow={konten.situs.dokumenEyebrow}
+        />
       ) : null}
 
       <CtaBanner
         judul={konten.beranda.cta?.judul}
         deskripsi={konten.beranda.cta?.deskripsi}
+        eyebrow={konten.situs.ctaEyebrow}
       />
     </>
   )
@@ -167,23 +182,33 @@ export default async function DetailLayanan({
 function AlurLayanan({
   nama,
   alur,
+  eyebrow = "Alur Pengerjaan",
+  judul,
+  deskripsi,
 }: {
   nama: string
   alur: NonNullable<(typeof layanan)[number]["alur"]>
+  /** Label kecil di atas judul — dari CMS situs.alurEyebrow. */
+  eyebrow?: string
+  /** Header section — dari CMS situs.alurJudul. Kosong = template bawaan. */
+  judul?: string
+  /** Deskripsi section — dari CMS situs.alurDeskripsi. */
+  deskripsi?: string
 }) {
   return (
     <section className="bg-background px-6 py-16 lg:px-8 lg:py-20">
       <div className="mx-auto w-full max-w-5xl">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-            Alur Pengerjaan
+            {eyebrow}
           </p>
           <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl">
-            Bagaimana {nama} dikerjakan
+            {judul ?? `Bagaimana ${nama} dikerjakan`}
           </h2>
           <p className="text-muted-foreground mt-4 text-base leading-relaxed">
-            {alur.length} langkah berurutan agar setiap tahap terukur dan
-            hasilnya sesuai standar.
+            {deskripsi ??
+              `${alur.length} langkah berurutan agar setiap tahap terukur dan
+            hasilnya sesuai standar.`}
           </p>
         </Reveal>
 
@@ -220,22 +245,31 @@ function AlurLayanan({
 /** Kartu persyaratan PBG & SLF dengan daftar bernomor — khusus layanan perizinan. */
 function PersyaratanLayanan({
   persyaratan,
+  eyebrow = "Dokumen yang Perlu Disiapkan",
+  judul = "Persyaratan Pengurusan",
+  deskripsi,
 }: {
   persyaratan: NonNullable<(typeof layanan)[number]["persyaratan"]>
+  /** Label kecil di atas judul — dari CMS situs.persyaratanEyebrow. */
+  eyebrow?: string
+  /** Header section — dari CMS situs.persyaratanJudul. */
+  judul?: string
+  /** Deskripsi section — dari CMS situs.persyaratanDeskripsi. */
+  deskripsi?: string
 }) {
   return (
     <section className="bg-surface px-6 py-16 lg:px-8 lg:py-20">
       <div className="mx-auto w-full max-w-5xl">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-            Dokumen yang Perlu Disiapkan
+            {eyebrow}
           </p>
           <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl">
-            Persyaratan Pengurusan
+            {judul}
           </h2>
           <p className="text-muted-foreground mt-4 text-base leading-relaxed">
-            Kami dampingi dari penyiapan berkas hingga dokumen terbit — lengkap
-            dan siap diajukan.
+            {deskripsi ??
+              "Kami dampingi dari penyiapan berkas hingga dokumen terbit — lengkap dan siap diajukan."}
           </p>
         </Reveal>
 
@@ -283,8 +317,11 @@ function PersyaratanLayanan({
  */
 function DokumenClientLayanan({
   dokumen,
+  eyebrow = "Dokumen yang Diterima Client",
 }: {
   dokumen: NonNullable<(typeof layanan)[number]["dokumenClient"]>
+  /** Label kecil di atas judul — dari CMS situs.dokumenEyebrow. */
+  eyebrow?: string
 }) {
   return (
     <section className="bg-background px-6 py-16 lg:px-8 lg:py-20">
@@ -303,7 +340,7 @@ function DokumenClientLayanan({
 
           <div>
             <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-              Dokumen yang Diterima Client
+              {eyebrow}
             </p>
             <h2 className="text-foreground mt-3 text-3xl leading-[1.12] text-balance sm:text-4xl">
               {dokumen.judul}

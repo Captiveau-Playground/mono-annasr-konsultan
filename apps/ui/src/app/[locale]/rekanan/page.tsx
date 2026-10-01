@@ -124,7 +124,7 @@ export default async function RekananPage({
         ]}
       />
       <PageHero
-        eyebrow={situs.situs.eyebrows?.Rekanan ?? "Rekanan"}
+        eyebrow={situs.situs.rekananEyebrow}
         judul={situs.situs.rekananIntroJudul}
         teks={situs.situs.rekananIntroDeskripsi}
       />
@@ -151,6 +151,29 @@ export default async function RekananPage({
               ))}
             </div>
           )}
+
+          {/* CTA gabung rekanan — selalu tampil, terisi atau kosong. */}
+          <div className="mt-16">
+            <div className="border-border bg-card flex flex-col items-center gap-6 rounded-2xl border px-6 py-12 text-center shadow-[var(--shadow-soft)] lg:flex-row lg:justify-between lg:px-12 lg:text-left">
+              <div>
+                <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
+                  Kolaborasi
+                </p>
+                <h2 className="text-foreground mt-2 text-2xl text-balance sm:text-3xl">
+                  Gabung Menjadi Rekanan
+                </h2>
+                <p className="text-muted-foreground mt-2 max-w-xl text-sm leading-relaxed">
+                  {situs.situs.rekananIntroDeskripsi}
+                </p>
+              </div>
+              <Link
+                href="/kontak"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 inline-flex shrink-0 items-center gap-2 rounded-full px-7 py-3 text-sm font-semibold transition-colors"
+              >
+                Hubungi Kami
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </>

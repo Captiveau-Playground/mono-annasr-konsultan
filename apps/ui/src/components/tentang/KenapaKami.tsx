@@ -43,10 +43,13 @@ const ALASAN_STATIS: Alasan[] = [
 export function KenapaKami({
   alasan = [],
   judul = "Mengapa Memilih An Nasr Konsultan",
+  eyebrow = "Keunggulan",
 }: {
   alasan?: Alasan[]
   /** Judul section — dari CMS beranda.keunggulanJudul (via situs). */
   judul?: string
+  /** Label kecil di atas judul — dari CMS situs.keunggulanEyebrow. */
+  eyebrow?: string
 }) {
   const sumber: Alasan[] = alasan.length > 0 ? alasan : ALASAN_STATIS
   const ALASAN: (Alasan & { ikon: LucideIcon })[] = sumber.map((a, i) => ({
@@ -86,7 +89,12 @@ export function KenapaKami({
           {/* Panel kiri — melekat (sticky) di desktop */}
           <div className="lg:sticky lg:top-28">
             <Reveal>
-              <h2 className="text-foreground max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl lg:text-5xl">
+              {eyebrow ? (
+                <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
+                  {eyebrow}
+                </p>
+              ) : null}
+              <h2 className="text-foreground mt-4 max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl lg:text-5xl">
                 {judul}
               </h2>
             </Reveal>

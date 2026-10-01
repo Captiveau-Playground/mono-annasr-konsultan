@@ -341,25 +341,24 @@ export function KontakSection({
             </ul>
           </div>
 
-          <div
-            className={
-              daftarPeta.length > 1 ? "grid gap-4 sm:grid-cols-2" : "space-y-4"
-            }
-          >
+          <div className="space-y-5">
             {daftarPeta.map((peta, i) => (
               <div
                 key={`${peta.label}-${i}`}
                 className="border-border overflow-hidden rounded-[2rem] border"
               >
-                <p className="bg-primary/8 text-primary border-border border-b px-5 py-3 text-sm font-semibold">
-                  {peta.label}
-                </p>
+                <div className="bg-primary/8 border-border flex items-center gap-3 border-b px-5 py-3">
+                  <MapPin className="text-primary size-4" strokeWidth={1.8} />
+                  <p className="text-foreground text-sm font-semibold">
+                    {peta.label}
+                  </p>
+                </div>
                 <iframe
                   title={`Peta ${peta.label} — CV. AN NASR KONSULTAN`}
                   src={peta.url}
                   allowFullScreen
                   loading="lazy"
-                  className="h-72 w-full border-0"
+                  className="h-80 w-full border-0"
                   referrerPolicy="strict-origin-when-cross-origin"
                 />
               </div>

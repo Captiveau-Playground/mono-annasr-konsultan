@@ -54,6 +54,7 @@ export default async function PortfolioPage({
       <KlienSection
         items={konten.klien}
         judul={konten.klienHero.judul || undefined}
+        eyebrow={konten.situs.klienEyebrow}
       />
       <JangkauanSection
         judul={konten.tentang.jangkauanJudul}

@@ -15,8 +15,14 @@ import { Link } from "@/lib/navigation"
  */
 export function FounderSection({
   founder: founderData,
+  judul = "Tumbuh dari Pengalaman,\nBerkarya dengan Integritas",
+  eyebrow = "Tentang Kami",
 }: {
   founder?: BerandaKonten["founder"]
+  /** Judul section — dari CMS situs.founderJudul. */
+  judul?: string
+  /** Label kecil di atas judul — dari CMS situs.founderEyebrow. */
+  eyebrow?: string
 }) {
   const nama = founderData?.nama?.trim() || founderStatis.nama
   const jabatan = founderData?.jabatan?.trim() || founderStatis.jabatan
@@ -35,7 +41,8 @@ export function FounderSection({
   return (
     <SectionShell
       tone="krem"
-      judul={"Tumbuh dari Pengalaman,\nBerkarya dengan Integritas"}
+      judul={judul}
+      eyebrow={eyebrow}
       aksi={
         <Button asChild size="pill">
           <Link href="/tentang">

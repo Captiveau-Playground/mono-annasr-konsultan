@@ -18,10 +18,13 @@ const KARTU_STATIS = [
 export function VisiMisi({
   kartu = [],
   judul = "Visi & Misi",
+  eyebrow = "Arahan Perusahaan",
 }: {
   kartu?: { judul: string; teks: string }[]
   /** Judul section — dari CMS situs.visiMisiJudul. */
   judul?: string
+  /** Label kecil di atas judul — dari CMS situs.visiMisiEyebrow. */
+  eyebrow?: string
 }) {
   const daftar =
     kartu.length > 0
@@ -33,7 +36,7 @@ export function VisiMisi({
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-            Arahan Perusahaan
+            {eyebrow}
           </p>
           <h2 className="text-foreground mt-4 text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
             {judul}

@@ -17,11 +17,14 @@ const RINGKAS_STATIS = [
  */
 export function JangkauanSection({
   judul,
+  eyebrow = "Jangkauan Proyek",
   kota = [],
   statistik = [],
   brand = "",
 }: {
   judul?: string
+  /** Label kecil di atas judul — dari CMS situs.jangkauanEyebrow. */
+  eyebrow?: string
   kota?: { nama: string; lat: number; lng: number }[]
   /** Kartu ringkas (dari tentang.statistik via situs/CMS). */
   statistik?: { nilai: string; label: string }[]
@@ -42,7 +45,7 @@ export function JangkauanSection({
           <div className="lg:col-span-7">
             <Reveal>
               <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-                Jangkauan Proyek
+                {eyebrow}
               </p>
               <h2 className="text-foreground mt-4 max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
                 {judul}

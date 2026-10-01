@@ -70,10 +70,13 @@ function BarisMarquee({
 export function KlienSection({
   items = [],
   judul,
+  eyebrow = "Klien Kami",
 }: {
   items?: ItemKlien[]
   /** Judul section — dari CMS klien.heroJudul. Fallback bila kosong. */
   judul?: string
+  /** Label kecil di atas judul — dari CMS situs.klienEyebrow. */
+  eyebrow?: string
 }) {
   const daftar = items.filter((k) => k.nama)
   if (daftar.length === 0) return null
@@ -85,7 +88,11 @@ export function KlienSection({
   const barisPotong = potongBaris(daftar, baris)
 
   return (
-    <SectionShell tone="krem" judul={judul ?? "Dipercaya oleh\nBerbagai Klien"}>
+    <SectionShell
+      tone="krem"
+      eyebrow={eyebrow}
+      judul={judul ?? "Dipercaya oleh\nBerbagai Klien"}
+    >
       <div className="marquee-mask space-y-2">
         {barisPotong.map((b, i) => (
           <BarisMarquee key={i} items={b} indeks={i} />

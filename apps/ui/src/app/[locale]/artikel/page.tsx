@@ -45,7 +45,7 @@ export default async function ArtikelPage({
   return (
     <>
       <PageHero
-        eyebrow={konten.situs.eyebrows?.Artikel ?? "Artikel"}
+        eyebrow={konten.situs.artikelHeroEyebrow}
         judul={konten.artikelHero.judul}
         teks={konten.artikelHero.deskripsi}
       />

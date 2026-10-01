@@ -47,13 +47,14 @@ export default async function KlienPage({
   return (
     <>
       <PageHero
-        eyebrow={konten.situs.eyebrows?.Klien ?? "Klien Kami"}
+        eyebrow={konten.situs.klienEyebrow}
         judul={konten.klienHero.judul}
         teks={konten.klienHero.deskripsi}
       />
       <KlienSection
         items={konten.klien}
         judul={konten.klienHero.judul || undefined}
+        eyebrow={konten.situs.klienEyebrow}
       />
       <PetaSection
         kota={konten.tentang.kotaProyek}
@@ -63,6 +64,7 @@ export default async function KlienPage({
       <CtaBanner
         judul={konten.beranda.cta?.judul}
         deskripsi={konten.beranda.cta?.deskripsi}
+        eyebrow={konten.situs.ctaEyebrow}
       />
     </>
   )

@@ -58,10 +58,13 @@ type AnggotaTim = {
 export function TimTentang({
   tim = [],
   judul = "Tenaga ahli yang bekerja di balik setiap proyek",
+  eyebrow = "Tim Kami",
 }: {
   tim?: AnggotaTim[]
   /** Judul section — dari CMS. */
   judul?: string
+  /** Label kecil di atas judul — dari CMS situs.timEyebrow. */
+  eyebrow?: string
 }) {
   const TIM: (AnggotaTim & { inisial: string })[] =
     tim.length > 0
@@ -73,7 +76,7 @@ export function TimTentang({
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-            Tim Kami
+            {eyebrow}
           </p>
           <h2 className="text-foreground mt-4 text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
             {judul}

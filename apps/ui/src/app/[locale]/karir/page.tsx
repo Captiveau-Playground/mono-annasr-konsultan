@@ -59,7 +59,7 @@ export default async function KarirPage({
         ]}
       />
       <PageHero
-        eyebrow={konten.situs.eyebrows?.Karir ?? "Karir"}
+        eyebrow={konten.situs.karirHeroEyebrow}
         judul={konten.karirHero.judul}
         teks={konten.karirHero.deskripsi}
       />

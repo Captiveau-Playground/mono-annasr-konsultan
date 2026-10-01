@@ -123,16 +123,31 @@ export default async function BerandaPage({
       <KlienSection
         items={kontenSitus.klien}
         judul={kontenSitus.klienHero.judul || undefined}
+        eyebrow={kontenSitus.situs.klienEyebrow}
       />
-      <FounderSection founder={konten.founder} />
+      <FounderSection
+        founder={konten.founder}
+        judul={kontenSitus.situs.founderJudul}
+        eyebrow={kontenSitus.situs.founderEyebrow}
+      />
       <KenapaKami
         alasan={konten.keunggulan}
         judul={kontenSitus.situs.keunggulanJudul || undefined}
+        eyebrow={kontenSitus.situs.keunggulanEyebrow}
       />
-      <LayananSection items={layananKeItem(kontenSitus.layanan)} />
-      <PortfolioSection items={kontenSitus.portfolio} />
+      <LayananSection
+        items={layananKeItem(kontenSitus.layanan)}
+        judul={kontenSitus.situs.layananIntroJudul || undefined}
+        eyebrow={kontenSitus.situs.layananEyebrow}
+      />
+      <PortfolioSection
+        items={kontenSitus.portfolio}
+        judul={kontenSitus.situs.proyekJudul}
+        eyebrow={kontenSitus.situs.proyekEyebrow}
+      />
       <JangkauanSection
         judul={kontenSitus.tentang.jangkauanJudul}
+        eyebrow={kontenSitus.situs.jangkauanEyebrow}
         kota={kontenSitus.tentang.kotaProyek}
         statistik={kontenSitus.tentang.statistik}
         brand={kontenSitus.situs.brandNama}
@@ -140,14 +155,18 @@ export default async function BerandaPage({
       <ArtikelSection
         items={kontenSitus.artikel}
         judul={kontenSitus.situs.artikelJudul || undefined}
-        eyebrow={kontenSitus.situs.eyebrows?.Artikel ?? "Artikel"}
+        eyebrow={kontenSitus.situs.artikelEyebrow}
       />
       <FaqSection
         items={konten.faq}
         judul={kontenSitus.situs.faqJudul || undefined}
-        eyebrow={kontenSitus.situs.eyebrows?.FAQ ?? "FAQ"}
+        eyebrow={kontenSitus.situs.faqEyebrow}
       />
-      <CtaBanner judul={konten.cta?.judul} deskripsi={konten.cta?.deskripsi} />
+      <CtaBanner
+        judul={konten.cta?.judul}
+        deskripsi={konten.cta?.deskripsi}
+        eyebrow={kontenSitus.situs.ctaEyebrow}
+      />
     </>
   )
 }
