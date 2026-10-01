@@ -126,6 +126,87 @@
       "type": "component",
       "repeatable": true,
       "component": "annasr.eyebrow-item"
+    },
+    "founderJudul": {
+      "type": "string"
+    },
+    "founderEyebrow": {
+      "type": "string"
+    },
+    "keunggulanEyebrow": {
+      "type": "string"
+    },
+    "layananEyebrow": {
+      "type": "string"
+    },
+    "proyekJudul": {
+      "type": "string"
+    },
+    "proyekEyebrow": {
+      "type": "string"
+    },
+    "klienEyebrow": {
+      "type": "string"
+    },
+    "jangkauanEyebrow": {
+      "type": "string"
+    },
+    "artikelEyebrow": {
+      "type": "string"
+    },
+    "faqEyebrow": {
+      "type": "string"
+    },
+    "ctaEyebrow": {
+      "type": "string"
+    },
+    "prosesEyebrow": {
+      "type": "string"
+    },
+    "alurEyebrow": {
+      "type": "string"
+    },
+    "alurJudul": {
+      "type": "string"
+    },
+    "alurDeskripsi": {
+      "type": "string"
+    },
+    "persyaratanEyebrow": {
+      "type": "string"
+    },
+    "persyaratanJudul": {
+      "type": "string"
+    },
+    "persyaratanDeskripsi": {
+      "type": "string"
+    },
+    "dokumenEyebrow": {
+      "type": "string"
+    },
+    "tentangHeroEyebrow": {
+      "type": "string"
+    },
+    "visiMisiEyebrow": {
+      "type": "string"
+    },
+    "founderTentangEyebrow": {
+      "type": "string"
+    },
+    "timEyebrow": {
+      "type": "string"
+    },
+    "rekananEyebrow": {
+      "type": "string"
+    },
+    "artikelHeroEyebrow": {
+      "type": "string"
+    },
+    "karirHeroEyebrow": {
+      "type": "string"
+    },
+    "kontakEyebrow": {
+      "type": "string"
     }
   },
   "config": {
@@ -522,6 +603,330 @@
         },
         "list": {
           "label": "Eyebrow",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "founderJudul": {
+        "edit": {
+          "label": "Header Section Founder (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Header Section Founder (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "founderEyebrow": {
+        "edit": {
+          "label": "Eyebrow Founder (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Founder (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "keunggulanEyebrow": {
+        "edit": {
+          "label": "Eyebrow Keunggulan (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Keunggulan (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "layananEyebrow": {
+        "edit": {
+          "label": "Eyebrow Layanan (Beranda, halaman & detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Layanan (Beranda, halaman & detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "proyekJudul": {
+        "edit": {
+          "label": "Header Section Proyek (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Header Section Proyek (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "proyekEyebrow": {
+        "edit": {
+          "label": "Eyebrow Proyek (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Proyek (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "klienEyebrow": {
+        "edit": {
+          "label": "Eyebrow Klien (Beranda & halaman Klien)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Klien (Beranda & halaman Klien)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "jangkauanEyebrow": {
+        "edit": {
+          "label": "Eyebrow Map / Jangkauan Proyek",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Map / Jangkauan Proyek",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "artikelEyebrow": {
+        "edit": {
+          "label": "Eyebrow Artikel (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Artikel (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "faqEyebrow": {
+        "edit": {
+          "label": "Eyebrow FAQ (Beranda)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow FAQ (Beranda)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "ctaEyebrow": {
+        "edit": {
+          "label": "Eyebrow CTA Banner (Konsultasi Gratis)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow CTA Banner (Konsultasi Gratis)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "prosesEyebrow": {
+        "edit": {
+          "label": "Eyebrow Proses Kerja (halaman Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Proses Kerja (halaman Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "alurEyebrow": {
+        "edit": {
+          "label": "Eyebrow Alur Pengerjaan (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Alur Pengerjaan (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "alurJudul": {
+        "edit": {
+          "label": "Header Alur Pengerjaan (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Header Alur Pengerjaan (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "alurDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Alur Pengerjaan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Alur Pengerjaan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "persyaratanEyebrow": {
+        "edit": {
+          "label": "Eyebrow Persyaratan (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Persyaratan (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "persyaratanJudul": {
+        "edit": {
+          "label": "Header Persyaratan (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Header Persyaratan (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "persyaratanDeskripsi": {
+        "edit": {
+          "label": "Deskripsi Persyaratan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Deskripsi Persyaratan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "dokumenEyebrow": {
+        "edit": {
+          "label": "Eyebrow Dokumen yang Diterima Client (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Dokumen yang Diterima Client (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "tentangHeroEyebrow": {
+        "edit": {
+          "label": "Eyebrow Tentang Kami (hero halaman)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Tentang Kami (hero halaman)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "visiMisiEyebrow": {
+        "edit": {
+          "label": "Eyebrow Visi & Misi (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Visi & Misi (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "founderTentangEyebrow": {
+        "edit": {
+          "label": "Eyebrow Founder (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Founder (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "timEyebrow": {
+        "edit": {
+          "label": "Eyebrow Tim Kami (Tentang)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow Tim Kami (Tentang)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "rekananEyebrow": {
+        "edit": {
+          "label": "Eyebrow halaman Rekanan",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow halaman Rekanan",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "artikelHeroEyebrow": {
+        "edit": {
+          "label": "Eyebrow halaman Artikel",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow halaman Artikel",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "karirHeroEyebrow": {
+        "edit": {
+          "label": "Eyebrow halaman Karir",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow halaman Karir",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "kontakEyebrow": {
+        "edit": {
+          "label": "Eyebrow halaman Kontak",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow halaman Kontak",
           "searchable": false,
           "sortable": false
         }
