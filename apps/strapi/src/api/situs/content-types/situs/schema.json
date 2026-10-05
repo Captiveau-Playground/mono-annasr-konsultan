@@ -207,6 +207,18 @@
     },
     "kontakEyebrow": {
       "type": "string"
+    },
+    "layananTentangJudul": {
+      "type": "string"
+    },
+    "layananManfaatJudul": {
+      "type": "string"
+    },
+    "layananLingkupJudul": {
+      "type": "string"
+    },
+    "layananKonsultasiLabel": {
+      "type": "string"
     }
   },
   "config": {
@@ -927,6 +939,54 @@
         },
         "list": {
           "label": "Eyebrow halaman Kontak",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "layananTentangJudul": {
+        "edit": {
+          "label": "Header 'Tentang layanan ini' (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Header 'Tentang layanan ini' (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "layananManfaatJudul": {
+        "edit": {
+          "label": "Header 'Manfaat untuk proyek Anda' (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Header 'Manfaat untuk proyek Anda' (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "layananLingkupJudul": {
+        "edit": {
+          "label": "Header 'Lingkup pekerjaan' (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Header 'Lingkup pekerjaan' (detail Layanan)",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "layananKonsultasiLabel": {
+        "edit": {
+          "label": "Label tombol 'Konsultasi ...' (detail Layanan)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Label tombol 'Konsultasi ...' (detail Layanan)",
           "searchable": false,
           "sortable": false
         }

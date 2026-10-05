@@ -4,6 +4,10 @@
     "displayName": "Founder"
   },
   "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "description": "Label kecil di atas judul (opsional). Kosong = pakai bawaan."
+    },
     "nama": {
       "type": "string"
     },

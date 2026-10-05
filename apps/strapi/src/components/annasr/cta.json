@@ -4,6 +4,10 @@
     "displayName": "CTA Banner"
   },
   "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "description": "Label kecil di atas judul (opsional). Kosong = pakai bawaan."
+    },
     "judul": {
       "type": "string"
     },

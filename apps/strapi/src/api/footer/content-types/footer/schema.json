@@ -53,6 +53,9 @@
           "localized": true
         }
       }
+    },
+    "creditText": {
+      "type": "string"
     }
   },
   "config": {
@@ -102,6 +105,18 @@
         "list": {
           "label": "Logo Footer",
           "searchable": false,
+          "sortable": false
+        }
+      },
+      "creditText": {
+        "edit": {
+          "label": "Teks Kredit Footer (mis. 'Dibuat oleh Captiveau')",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Kredit Footer",
+          "searchable": true,
           "sortable": false
         }
       }
