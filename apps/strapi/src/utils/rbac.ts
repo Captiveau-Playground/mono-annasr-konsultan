@@ -44,6 +44,8 @@ const PUBLIC_FIND = [
   "situs",
   "rekanan",
   "redirect",
+  "navbar",
+  "footer",
 ]
 
 const AKSI_EXPLORER = [
