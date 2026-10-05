@@ -340,8 +340,13 @@ export function KontakSection({
               </li>
             </ul>
           </div>
+        </Reveal>
+      </div>
 
-          <div className="space-y-5">
+      {/* Peta lokasi — 1 baris 2 kolom full-width di bawah form & info. */}
+      {daftarPeta.length > 0 ? (
+        <div className="mx-auto mt-14 max-w-7xl">
+          <div className="grid gap-5 sm:grid-cols-2">
             {daftarPeta.map((peta, i) => (
               <div
                 key={`${peta.label}-${i}`}
@@ -358,14 +363,14 @@ export function KontakSection({
                   src={peta.url}
                   allowFullScreen
                   loading="lazy"
-                  className="h-80 w-full border-0"
+                  className="h-72 w-full border-0 sm:h-80"
                   referrerPolicy="strict-origin-when-cross-origin"
                 />
               </div>
             ))}
           </div>
-        </Reveal>
-      </div>
+        </div>
+      ) : null}
     </section>
   )
 }
