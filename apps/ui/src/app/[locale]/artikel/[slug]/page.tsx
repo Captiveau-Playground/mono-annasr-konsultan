@@ -164,7 +164,7 @@ export default async function DetailArtikel({
       <CtaBanner
         judul={konten.beranda.cta?.judul}
         deskripsi={konten.beranda.cta?.deskripsi}
-        eyebrow={konten.situs.ctaEyebrow}
+        eyebrow={konten.beranda.cta?.eyebrow || konten.situs.ctaEyebrow}
       />
 
       {terkait.length > 0 ? (

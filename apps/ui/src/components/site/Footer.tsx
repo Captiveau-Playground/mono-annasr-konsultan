@@ -11,6 +11,8 @@ export function Footer({
   layananCms,
   sections,
   copyRight,
+  creditText,
+  logoImage,
   singkat,
   jam,
   kantor,
@@ -23,6 +25,10 @@ export function Footer({
   brand?: string
   /** Dari CMS (situs.brandTagline). */
   tagline?: string
+  /** Logo dari CMS (footer.logoImage) — fallback logo statis FE. */
+  logoImage?: string
+  /** Teks kredit footer — dari CMS (footer.creditText). */
+  creditText?: string
   navigasi?: readonly { label: string; href: string }[]
   /** Dari CMS (layanan) — kolom Layanan footer. */
   layananCms?: readonly { label: string; href: string }[]
@@ -113,7 +119,7 @@ export function Footer({
           <div>
             <div className="flex items-center gap-3">
               <Image
-                src="/images/logo/logo-white.png"
+                src={logoImage?.trim() || "/images/logo/logo-white.png"}
                 alt={namaBrand}
                 width={40}
                 height={40}
@@ -213,7 +219,7 @@ export function Footer({
             {copyRight?.trim() ||
               `© ${tahun} ${namaBrand}. Seluruh hak cipta dilindungi.`}
           </span>
-          <span>Dibuat oleh Captiveau</span>
+          <span>{creditText?.trim() || "Dibuat oleh Captiveau"}</span>
         </div>
       </div>
     </footer>

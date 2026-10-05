@@ -65,6 +65,7 @@ export default async function PortfolioPage({
       <CtaBanner
         judul={konten.beranda.cta?.judul}
         deskripsi={konten.beranda.cta?.deskripsi}
+        eyebrow={konten.beranda.cta?.eyebrow || konten.situs.ctaEyebrow}
       />
     </>
   )

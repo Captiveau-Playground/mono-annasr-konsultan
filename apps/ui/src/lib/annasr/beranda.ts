@@ -28,11 +28,13 @@ export type BerandaKonten = {
     foto?: string
     /** Dua gambar pendukung dari CMS — kosong = pakai gambar bawaan. */
     gambarPendukung?: string[]
+    /** Label kecil di atas judul section — dari CMS beranda.founder.eyebrow. */
+    eyebrow?: string
   }
   /** "Mengapa Memilih An Nasr" — dikelola CMS di Beranda (bukan Tentang). */
   keunggulan: { judul: string; teks: string }[]
   faq: { tanya: string; jawab: string }[]
-  cta?: { judul: string; deskripsi: string }
+  cta?: { judul: string; deskripsi: string; eyebrow?: string }
 }
 
 const HERO_DEFAULT = {
@@ -189,12 +191,13 @@ type RawBeranda = {
     jabatan?: unknown
     teks?: unknown
     kutipan?: unknown
+    eyebrow?: unknown
     foto?: { url?: unknown }
     gambarPendukung?: { url?: unknown }[]
   }
   keunggulan?: { judul?: unknown; teks?: unknown }[]
   faq?: { tanya?: unknown; jawab?: unknown }[]
-  cta?: { judul?: unknown; deskripsi?: unknown }
+  cta?: { judul?: unknown; deskripsi?: unknown; eyebrow?: unknown }
 }
 
 type Res = {
@@ -254,6 +257,7 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
             jabatan: str(data.founder.jabatan, fallback.founder!.jabatan),
             teks: str(data.founder.teks, fallback.founder!.teks),
             kutipan: str(data.founder.kutipan, KUTIPAN_DEFAULT),
+            eyebrow: str(data.founder.eyebrow, ""),
             foto: resolvUrl(data.founder.foto?.url) ?? fallback.founder!.foto,
             gambarPendukung: Array.isArray(data.founder.gambarPendukung)
               ? data.founder.gambarPendukung
@@ -286,6 +290,7 @@ export async function fetchBeranda(locale: Locale): Promise<BerandaKonten> {
         ? {
             judul: str(data.cta.judul, CTA_DEFAULT.judul),
             deskripsi: str(data.cta.deskripsi, CTA_DEFAULT.deskripsi),
+            eyebrow: str(data.cta.eyebrow, ""),
           }
         : fallback.cta,
     }

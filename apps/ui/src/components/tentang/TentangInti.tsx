@@ -100,7 +100,7 @@ export function TentangInti({
               <div className="border-border overflow-hidden rounded-[20px] border shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
                 <Image
                   src={gambar || "/images/annasr/tim-perusahaan.jpg"}
-                  alt="Tim {brand}"
+                  alt={`Tim ${brand}`}
                   width={1000}
                   height={760}
                   sizes="(min-width:1024px) 42vw, 100vw"

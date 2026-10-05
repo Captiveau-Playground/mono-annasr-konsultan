@@ -88,7 +88,7 @@ export default async function LayananPage({
       <CtaBanner
         judul={konten.beranda.cta?.judul}
         deskripsi={konten.beranda.cta?.deskripsi}
-        eyebrow={konten.situs.ctaEyebrow}
+        eyebrow={konten.beranda.cta?.eyebrow || konten.situs.ctaEyebrow}
       />
     </>
   )

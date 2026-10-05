@@ -36,6 +36,7 @@ export function Navbar({
   tagline,
   whatsapp,
   layananNav,
+  logoImage,
 }: {
   brandNama?: string
   /** Navigasi level atas dari CMS — item dengan `anak` jadi dropdown. */
@@ -46,6 +47,8 @@ export function Navbar({
   whatsapp?: string
   /** Daftar layanan (dari CMS Layanan) — menggantikan submenu item "Layanan". */
   layananNav?: readonly { label: string; href: string }[]
+  /** Logo dari CMS (navbar.logoImage) — fallback logo statis FE. */
+  logoImage?: string
 }) {
   const daftar: ItemNav[] =
     navigasiCms && navigasiCms.length > 0
@@ -151,7 +154,7 @@ export function Navbar({
           onClick={() => setOpen(false)}
         >
           <Image
-            src="/images/logo/logo-white.png"
+            src={logoImage?.trim() || "/images/logo/logo-white.png"}
             alt={brandNama?.trim() || "CV. An Nasr Konsultan"}
             width={40}
             height={40}

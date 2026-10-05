@@ -90,6 +90,7 @@ export default async function KarirPage({
                     item={item}
                     brand={konten.situs.brandNama}
                     tagline={konten.situs.brandTagline}
+                    logo={konten.situs.logo}
                   />
                 ))}
             </div>

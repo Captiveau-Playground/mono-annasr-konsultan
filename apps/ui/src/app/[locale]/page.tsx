@@ -128,7 +128,7 @@ export default async function BerandaPage({
       <FounderSection
         founder={konten.founder}
         judul={kontenSitus.situs.founderJudul}
-        eyebrow={kontenSitus.situs.founderEyebrow}
+        eyebrow={konten.founder?.eyebrow || kontenSitus.situs.founderEyebrow}
       />
       <KenapaKami
         alasan={konten.keunggulan}
@@ -165,7 +165,7 @@ export default async function BerandaPage({
       <CtaBanner
         judul={konten.cta?.judul}
         deskripsi={konten.cta?.deskripsi}
-        eyebrow={kontenSitus.situs.ctaEyebrow}
+        eyebrow={konten.cta?.eyebrow || kontenSitus.situs.ctaEyebrow}
       />
     </>
   )

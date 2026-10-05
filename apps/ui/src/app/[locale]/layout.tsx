@@ -163,6 +163,8 @@ export default async function RootLayout({
           links?: { label?: string; link?: LinkCms }[]
         }[]
         copyRight?: string
+        creditText?: string
+        logoImage?: { url?: string }
       }
     }
   )?.data
@@ -178,6 +180,15 @@ export default async function RootLayout({
           }))
           .filter((l) => l.label),
       })) ?? []
+
+  // Logo footer dari CMS — `/uploads/...` lewat proxy same-origin.
+  const footerLogo = (() => {
+    const u = footerData?.logoImage?.url
+    if (!u) return
+    if (u.startsWith("http") || !u.startsWith("/uploads/")) return u
+
+    return `/api/asset${u}`
+  })()
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -202,6 +213,7 @@ export default async function RootLayout({
             <SmoothScroll />
             <Navbar
               brandNama={kontenSitus.situs.brandNama}
+              logoImage={kontenSitus.situs.logo}
               navigasiCms={kontenSitus.situs.navigasi}
               tagline={kontenSitus.situs.brandTagline}
               whatsapp={kontenSitus.kontak.whatsapp}
@@ -223,6 +235,8 @@ export default async function RootLayout({
               )}
               sections={footerSections}
               copyRight={footerData?.copyRight}
+              creditText={footerData?.creditText}
+              logoImage={footerLogo}
               jam={kontenSitus.kontak.jamOperasional}
               kantor={kontenSitus.kontak.kantor}
               telepon={kontenSitus.kontak.telepon}

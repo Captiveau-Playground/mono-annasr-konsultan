@@ -246,6 +246,8 @@ export type KontenSitus = {
       keunggulan: string[]
       /** Gambar hero dari CMS — kosong = pakai gambar bawaan. */
       gambar: string[]
+      /** Label kecil di atas judul — dari CMS tentang.hero.eyebrow. */
+      eyebrow: string
     }
     statistik: { nilai: string; label: string }[]
     founder: {
@@ -254,6 +256,8 @@ export type KontenSitus = {
       teks: string
       kutipan: string
       foto?: string
+      /** Label kecil di atas nama — dari CMS tentang.founder.eyebrow. */
+      eyebrow: string
     }
     perjalanan: { tahun: string; judul: string; teks: string }[]
     visiMisi: { judul: string; teks: string }[]
@@ -300,6 +304,8 @@ export type KontenSitus = {
   situs: {
     brandNama: string
     brandTagline: string
+    /** Logo brand dari CMS navbar.logoImage (fallback logo statis FE). */
+    logo: string
     rekananIntroJudul: string
     rekananIntroDeskripsi: string
     navigasi: ItemNavigasi[]
@@ -350,6 +356,10 @@ export type KontenSitus = {
     artikelHeroEyebrow: string
     karirHeroEyebrow: string
     kontakEyebrow: string
+    layananTentangJudul: string
+    layananManfaatJudul: string
+    layananLingkupJudul: string
+    layananKonsultasiLabel: string
   }
 }
 
@@ -385,6 +395,7 @@ function artikelCms(daftar: Record<string, unknown>[]) {
  * yang ditolak Strapi dengan "Invalid key smart".
  */
 const POPULATE_SMART: Record<string, Record<string, "smart" | true>> = {
+  navbar: { logoImage: true },
   tentang: {
     hero: "smart",
     statistik: "smart",
@@ -497,7 +508,7 @@ async function ambil(nama: string, locale: Locale): Promise<Raw> {
 }
 
 export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
-  const [t, lay, por, kl, kar, kon, art, sit, home] = await Promise.all([
+  const [t, lay, por, kl, kar, kon, art, sit, home, nav] = await Promise.all([
     ambil("tentang", locale),
     ambilKoleksi("layanan", locale),
     ambilKoleksi("portfolio", locale),
@@ -507,6 +518,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
     ambilKoleksi("artikel", locale),
     ambil("situs", locale),
     (await import("@/lib/annasr/beranda")).fetchBeranda(locale),
+    ambil("navbar", locale),
   ])
 
   const kota = Array.isArray(t.kotaProyek)
@@ -533,6 +545,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           (t.hero as { deskripsi?: unknown })?.deskripsi,
           perusahaan.singkat
         ),
+        eyebrow: teks((t.hero as { eyebrow?: unknown })?.eyebrow, ""),
         keunggulan: teksArr((t.hero as { keunggulan?: unknown })?.keunggulan, [
           "Berdiri sejak 2014",
           "Puluhan proyek daerah",
@@ -571,6 +584,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           (t.founder as { kutipan?: unknown })?.kutipan,
           "Setiap pekerjaan harus dapat dipertanggungjawabkan secara teknis maupun moral."
         ),
+        eyebrow: teks((t.founder as { eyebrow?: unknown })?.eyebrow, ""),
         foto: medUrl((t.founder as { foto?: { url?: unknown } })?.foto, ""),
       },
       tentangInti: (() => {
@@ -797,6 +811,10 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
     situs: {
       brandNama: teks(sit.brandNama, "CV. An Nasr Konsultan"),
       brandTagline: teks(sit.brandTagline, "Konsultan Teknik & Konstruksi"),
+      logo: medUrl(
+        (nav.logoImage ?? nav.logo) as undefined | { url?: unknown },
+        ""
+      ),
       rekananIntroJudul: teks(
         sit.rekananIntroJudul,
         "Rekanan & Sertifikat Kerjasama"
@@ -926,6 +944,13 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
       artikelHeroEyebrow: teks(sit.artikelHeroEyebrow, "Artikel"),
       karirHeroEyebrow: teks(sit.karirHeroEyebrow, "Karir"),
       kontakEyebrow: teks(sit.kontakEyebrow, "Kontak"),
+      layananTentangJudul: teks(sit.layananTentangJudul, "Tentang layanan ini"),
+      layananManfaatJudul: teks(
+        sit.layananManfaatJudul,
+        "Manfaat untuk proyek Anda"
+      ),
+      layananLingkupJudul: teks(sit.layananLingkupJudul, "Lingkup pekerjaan"),
+      layananKonsultasiLabel: teks(sit.layananKonsultasiLabel, "Konsultasi"),
     },
   }
 }

@@ -135,6 +135,7 @@ describe("beranda (fetchBeranda)", () => {
       ],
     },
     founder: {
+      eyebrow: "QA eyebrow founder",
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
       teks: "QA teks founder",
@@ -144,7 +145,11 @@ describe("beranda (fetchBeranda)", () => {
     },
     keunggulan: [{ judul: "QA alasan 1", teks: "QA alasan teks" }],
     faq: [{ tanya: "QA tanya", jawab: "QA jawab" }],
-    cta: { judul: "QA cta judul", deskripsi: "QA cta deskripsi" },
+    cta: {
+      eyebrow: "QA eyebrow cta",
+      judul: "QA cta judul",
+      deskripsi: "QA cta deskripsi",
+    },
   }
 
   it("mengambil SEMUA nilai CMS (bukan fallback) ketika CMS lengkap", async () => {
@@ -162,6 +167,7 @@ describe("beranda (fetchBeranda)", () => {
       ],
     })
     expect(r.founder).toEqual({
+      eyebrow: "QA eyebrow founder",
       nama: "QA nama founder",
       jabatan: "QA jabatan founder",
       teks: "QA teks founder",
@@ -174,6 +180,7 @@ describe("beranda (fetchBeranda)", () => {
     ])
     expect(r.faq).toEqual([{ tanya: "QA tanya", jawab: "QA jawab" }])
     expect(r.cta).toEqual({
+      eyebrow: "QA eyebrow cta",
       judul: "QA cta judul",
       deskripsi: "QA cta deskripsi",
     })
@@ -194,6 +201,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
   const CMS = {
     "api::tentang.tentang": {
       hero: {
+        eyebrow: "QA eyebrow hero",
         judul: "QA t hero",
         deskripsi: "QA t deskripsi",
         keunggulan: ["QA-t-ke"],
@@ -201,6 +209,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       },
       statistik: [{ nilai: "QA1", label: "QA stat" }],
       founder: {
+        eyebrow: "QA eyebrow founder t",
         nama: "QA f nama",
         jabatan: "QA f jabatan",
         teks: "QA f teks",
@@ -285,6 +294,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
     const r = (await fetchKontenSitus("en")).tentang
 
     expect(r.hero).toEqual({
+      eyebrow: "QA eyebrow hero",
       judul: "QA t hero",
       deskripsi: "QA t deskripsi",
       keunggulan: ["QA-t-ke"],
@@ -298,6 +308,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
     expect(r.tentangGambar).toBe("/api/asset/uploads/qa-tentang.jpg")
     expect(r.statistik).toEqual([{ nilai: "QA1", label: "QA stat" }])
     expect(r.founder).toEqual({
+      eyebrow: "QA eyebrow founder t",
       nama: "QA f nama",
       jabatan: "QA f jabatan",
       teks: "QA f teks",

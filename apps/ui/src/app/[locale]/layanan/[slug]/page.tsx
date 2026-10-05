@@ -103,13 +103,15 @@ export default async function DetailLayanan({
 
       <section className="bg-surface px-6 py-16 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-foreground text-2xl">Tentang layanan ini</h2>
+          <h2 className="text-foreground text-2xl">
+            {konten.situs.layananTentangJudul}
+          </h2>
           <p className="text-muted-foreground mt-4 text-base leading-relaxed">
             {item.deskripsi}
           </p>
 
           <h3 className="text-foreground mt-12 text-xl">
-            Manfaat untuk proyek Anda
+            {konten.situs.layananManfaatJudul}
           </h3>
           <ul className="mx-auto mt-6 grid gap-3 text-left sm:grid-cols-2">
             {item.manfaat.map((m) => (
@@ -123,7 +125,9 @@ export default async function DetailLayanan({
             ))}
           </ul>
 
-          <h3 className="text-foreground mt-12 text-xl">Lingkup pekerjaan</h3>
+          <h3 className="text-foreground mt-12 text-xl">
+            {konten.situs.layananLingkupJudul}
+          </h3>
           <ul className="mx-auto mt-6 flex flex-col gap-2.5 text-left">
             {item.detail.map((d) => (
               <li
@@ -138,7 +142,7 @@ export default async function DetailLayanan({
 
           <Button asChild size="pill" className="mt-10">
             <Link href="/kontak">
-              Konsultasi {item.nama}
+              {konten.situs.layananKonsultasiLabel} {item.nama}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
@@ -172,7 +176,7 @@ export default async function DetailLayanan({
       <CtaBanner
         judul={konten.beranda.cta?.judul}
         deskripsi={konten.beranda.cta?.deskripsi}
-        eyebrow={konten.situs.ctaEyebrow}
+        eyebrow={konten.beranda.cta?.eyebrow || konten.situs.ctaEyebrow}
       />
     </>
   )

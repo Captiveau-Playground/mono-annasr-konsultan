@@ -16,11 +16,14 @@ export function JobCard({
   item,
   brand = "CV. An Nasr Konsultan",
   tagline = "Konsultan Teknik &amp; Konstruksi",
+  logo,
 }: {
   item: ItemKarir
   /** Brand & tagline — dari CMS situs. */
   brand?: string
   tagline?: string
+  /** Logo brand — dari CMS navbar.logoImage (fallback statis). */
+  logo?: string
 }) {
   const tutup = item.status === "ditutup"
   const kualifikasi = item.kualifikasi.slice(0, 3)
@@ -36,7 +39,7 @@ export function JobCard({
         {/* Header: logo + label status */}
         <div className="flex items-center gap-3">
           <Image
-            src="/images/logo/logo-white.png"
+            src={logo?.trim() || "/images/logo/logo-white.png"}
             alt={brand}
             width={40}
             height={40}
