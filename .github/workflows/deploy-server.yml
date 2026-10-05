@@ -78,8 +78,14 @@ jobs:
           if [ -n "$GHCR_USER" ]; then
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
           fi
+          # Tunggu singkat agar tag `latest` di GHCR terpropagasi (build multi-arch
+          # bisa selesai beberapa detik sebelum manifest `latest` ikut ter-update).
+          sleep 20
+          # `--pull always` memaksa compose memeriksa registry saat up, bukan
+          # memakai image lokal yang mungkin masih digest lama.
           docker compose pull ui strapi
-          docker compose up -d --remove-orphans
+          docker compose up -d --pull always --force-recreate --remove-orphans ui strapi
+          docker compose ps
           docker image prune -f
           RMT
           )
