@@ -4,6 +4,10 @@
     "displayName": "Persyaratan (Kartu)"
   },
   "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "description": "Label kecil di atas judul kartu (opsional)."
+    },
     "judul": {
       "type": "string"
     },
@@ -17,6 +21,18 @@
   },
   "config": {
     "metadatas": {
+      "eyebrow": {
+        "edit": {
+          "label": "Eyebrow (label kecil di atas judul)",
+          "description": "",
+          "placeholder": ""
+        },
+        "list": {
+          "label": "Eyebrow",
+          "searchable": false,
+          "sortable": false
+        }
+      },
       "judul": {
         "edit": {
           "label": "Judul Kartu",
