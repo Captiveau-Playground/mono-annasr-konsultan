@@ -263,7 +263,13 @@ export type KontenSitus = {
     visiMisi: { judul: string; teks: string }[]
     tim: { nama: string; jabatan: string; foto?: string; linkedin?: string }[]
     /** Inti "Tentang Kami" — dari field `tentang` (persyaratan-kartu) di CMS. */
-    tentangInti: { judul: string; deskripsi: string; daftar: string[] }
+    tentangInti: {
+      judul: string
+      deskripsi: string
+      daftar: string[]
+      /** Label kecil di atas judul — dari CMS tentang.tentang.eyebrow. */
+      eyebrow: string
+    }
     /** Gambar section "Tentang Kami" dari CMS — kosong = pakai gambar bawaan. */
     tentangGambar: string
     jangkauanJudul: string
@@ -590,12 +596,18 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
       tentangInti: (() => {
         const inti = t.tentang as
           | undefined
-          | { judul?: unknown; deskripsi?: unknown; daftar?: unknown }
+          | {
+              judul?: unknown
+              deskripsi?: unknown
+              daftar?: unknown
+              eyebrow?: unknown
+            }
         if (!inti) {
           return {
             judul: "",
             deskripsi: "",
             daftar: [],
+            eyebrow: "",
           }
         }
 
@@ -603,6 +615,7 @@ export async function fetchKontenSitus(locale: Locale): Promise<KontenSitus> {
           judul: teks(inti.judul, ""),
           deskripsi: teks(inti.deskripsi, ""),
           daftar: teksArr(inti.daftar, []),
+          eyebrow: teks(inti.eyebrow, ""),
         }
       })(),
       tentangGambar: medUrl(

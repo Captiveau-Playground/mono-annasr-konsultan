@@ -31,6 +31,7 @@ export function TentangInti({
   poin = [],
   statistik = [],
   brand = "CV. AN NASR KONSULTAN — Jombang, Jawa Timur",
+  eyebrow = "Tentang Kami",
   gambar,
 }: {
   /** Dari CMS `tentang.tentang.judul` (field "tentang" di single type Tentang). */
@@ -42,6 +43,8 @@ export function TentangInti({
   statistik?: { nilai: string; label: string }[]
   /** Caption gambar — brand dari CMS situs. */
   brand?: string
+  /** Label kecil di atas judul — dari CMS `tentang.tentang.eyebrow`. */
+  eyebrow?: string
   /** Gambar section dari CMS `tentang.tentangGambar`. Kosong = bawaan. */
   gambar?: string
 }) {
@@ -58,7 +61,7 @@ export function TentangInti({
           <div className="lg:col-span-7">
             <Reveal>
               <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">
-                Tentang Kami
+                {eyebrow}
               </p>
               <h2 className="text-foreground mt-4 max-w-xl text-3xl leading-[1.12] font-bold text-balance sm:text-4xl">
                 {judulTeks}

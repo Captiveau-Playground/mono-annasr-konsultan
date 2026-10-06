@@ -231,6 +231,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       jangkauanDeskripsi: "QA jangkauan deskripsi",
       kotaProyek: [{ nama: "QA kota2", lat: -3, lng: 4 }],
       tentang: {
+        eyebrow: "QA eyebrow inti",
         judul: "QA t inti judul",
         deskripsi: "QA t inti deskripsi",
         daftar: "QA t inti daftar 1\nQA t inti daftar 2",
@@ -301,6 +302,7 @@ describe("konten situs (fetchKontenSitus) — tanpa terkecuali per field", () =>
       gambar: ["/api/asset/uploads/qa-t-hero.jpg"],
     })
     expect(r.tentangInti).toEqual({
+      eyebrow: "QA eyebrow inti",
       judul: "QA t inti judul",
       deskripsi: "QA t inti deskripsi",
       daftar: ["QA t inti daftar 1", "QA t inti daftar 2"],

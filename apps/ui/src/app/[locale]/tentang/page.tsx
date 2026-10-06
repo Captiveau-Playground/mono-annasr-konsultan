@@ -63,6 +63,7 @@ export default async function TentangPage({
         judul={konten.tentangInti.judul || undefined}
         deskripsi={konten.tentangInti.deskripsi || undefined}
         poin={konten.tentangInti.daftar}
+        eyebrow={konten.tentangInti.eyebrow || undefined}
         statistik={konten.statistik}
         brand={k.situs.brandNama || undefined}
         gambar={konten.tentangGambar || undefined}

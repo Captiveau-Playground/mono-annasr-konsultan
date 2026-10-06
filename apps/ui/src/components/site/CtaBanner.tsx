@@ -27,7 +27,7 @@ export function CtaBanner({
             <div className="bg-accent/20 pointer-events-none absolute -top-24 -right-24 size-72 rounded-full blur-3xl" />
             <div className="bg-primary/20 pointer-events-none absolute -bottom-28 -left-20 size-72 rounded-full blur-3xl" />
 
-            <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+            <div className="relative grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
               <div>
                 <p className="text-accent text-xs font-semibold tracking-[0.3em] uppercase">
                   {eyebrow}
@@ -37,7 +37,7 @@ export function CtaBanner({
                 </h2>
               </div>
 
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-end">
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-center">
                 <Button
                   asChild
                   size="xl"
