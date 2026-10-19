@@ -11,7 +11,8 @@ import { Link } from "@/lib/navigation"
 /**
  * Section founder — seluruh teks (nama, jabatan, paragraf, kutipan) dan foto
  * utama diambil dari CMS Beranda (`beranda.founder`), fallback ke data statis.
- * Dua foto pendukung (kantor & lapangan) tetap dekoratif statis.
+ * Foto pendukung tim (kantor & lapangan) sengaja tidak lagi ditampilkan di
+ * beranda — permintaan klien: hanya satu foto founder.
  */
 export function FounderSection({
   founder: founderData,
@@ -33,10 +34,6 @@ export function FounderSection({
     founderData?.kutipan?.trim() ||
     "Setiap pekerjaan harus dapat dipertanggungjawabkan secara teknis maupun moral."
   const foto = founderData?.foto?.trim() || "/images/annasr/founder.jpg"
-  // Dua gambar pendukung — dari CMS bila diisi; per slot fallback ke statis.
-  const pendukung = founderData?.gambarPendukung?.filter(Boolean) ?? []
-  const gambarPendukung1 = pendukung[0] || "/images/annasr/tim-perusahaan.jpg"
-  const gambarPendukung2 = pendukung[1] || "/images/annasr/tim-engineer.jpg"
 
   return (
     <SectionShell
@@ -52,18 +49,22 @@ export function FounderSection({
         </Button>
       }
     >
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
+      <div className="grid items-stretch gap-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]">
         <Reveal arah="left" className="h-full">
           <Image
             src={foto}
             alt={`${nama}, ${jabatan} CV. AN NASR KONSULTAN`}
             width={900}
             height={1100}
-            className="h-full w-full rounded-xl object-cover"
+            className="h-full max-h-[560px] w-full rounded-xl object-cover lg:max-h-none"
           />
         </Reveal>
 
-        <Reveal arah="right" delay={0.08} className="flex flex-col">
+        <Reveal
+          arah="right"
+          delay={0.08}
+          className="flex flex-col justify-center"
+        >
           <h3 className="text-foreground text-xl font-semibold tracking-wide uppercase">
             {nama}
           </h3>
@@ -78,23 +79,6 @@ export function FounderSection({
               &ldquo;{kutipan}&rdquo;
             </blockquote>
           </figure>
-
-          <div className="mt-6 grid flex-1 grid-cols-2 gap-4">
-            <Image
-              src={gambarPendukung1}
-              alt="Rapat koordinasi tim CV. AN NASR KONSULTAN di kantor"
-              width={800}
-              height={600}
-              className="h-full max-h-56 w-full rounded-xl object-cover"
-            />
-            <Image
-              src={gambarPendukung2}
-              alt="Tim teknik CV. AN NASR KONSULTAN di lokasi proyek"
-              width={800}
-              height={600}
-              className="h-full max-h-56 w-full rounded-xl object-cover"
-            />
-          </div>
         </Reveal>
       </div>
     </SectionShell>

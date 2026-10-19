@@ -108,45 +108,56 @@ export function LayananSection({
   return (
     <SectionShell id="layanan" tone="terang" judul={judul} eyebrow={eyebrow}>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {daftar.map((item, i) => (
-          <Reveal key={item.slug} delay={i * 0.07} className="h-full">
-            <article className="border-border bg-card flex h-full flex-col overflow-hidden rounded-xl border shadow-[var(--shadow-soft)]">
-              <Image
-                src={item.gambar}
-                alt={item.alt}
-                width={1200}
-                height={800}
-                sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
-                className="aspect-[16/10] w-full object-cover"
-              />
-              <div className="flex flex-1 flex-col p-5">
-                <h3 className="text-foreground text-xl leading-snug">
-                  {item.nama}
-                </h3>
-                <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
-                  {item.ringkas}
-                </p>
-                <div className="mt-auto pt-6">
-                  <Button
-                    asChild
-                    size="pill"
-                    className="bg-accent text-accent-foreground hover:bg-accent w-full transition-none"
-                  >
-                    <CtaLink
-                      cta="layanan_card"
-                      params={{ layanan: item.nama }}
-                      href={`/layanan/${item.slug}`}
-                      className="font-medium"
+        {daftar.map((item, i) => {
+          const Ikon = item.ikon
+
+          return (
+            <Reveal key={item.slug} delay={i * 0.07} className="h-full">
+              <article className="border-coklat-tua/40 bg-coklat flex h-full flex-col overflow-hidden rounded-xl border text-white shadow-[var(--shadow-soft)]">
+                <Image
+                  src={item.gambar}
+                  alt={item.alt}
+                  width={1200}
+                  height={800}
+                  sizes="(min-width:1024px) 25vw, (min-width:640px) 50vw, 100vw"
+                  className="aspect-[16/10] w-full object-cover"
+                />
+                <div className="flex flex-1 flex-col p-5">
+                  <span className="flex size-11 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25">
+                    <Ikon
+                      className="size-5 text-white"
+                      strokeWidth={1.6}
+                      aria-hidden
+                    />
+                  </span>
+                  <h3 className="mt-4 text-xl leading-snug text-white">
+                    {item.nama}
+                  </h3>
+                  <p className="mt-3 text-sm leading-relaxed text-white">
+                    {item.ringkas}
+                  </p>
+                  <div className="mt-auto pt-6">
+                    <Button
+                      asChild
+                      size="pill"
+                      className="bg-background text-coklat hover:bg-background/90 w-full transition-none"
                     >
-                      Lihat Detail
-                      <ArrowRight className="size-4" />
-                    </CtaLink>
-                  </Button>
+                      <CtaLink
+                        cta="layanan_card"
+                        params={{ layanan: item.nama }}
+                        href={`/layanan/${item.slug}`}
+                        className="font-medium"
+                      >
+                        Lihat Detail
+                        <ArrowRight className="size-4" />
+                      </CtaLink>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </article>
-          </Reveal>
-        ))}
+              </article>
+            </Reveal>
+          )
+        })}
       </div>
     </SectionShell>
   )

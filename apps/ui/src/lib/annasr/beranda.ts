@@ -26,7 +26,8 @@ export type BerandaKonten = {
     teks: string
     kutipan?: string
     foto?: string
-    /** Dua gambar pendukung dari CMS — kosong = pakai gambar bawaan. */
+    /** Dua gambar pendukung dari CMS. Beranda tidak lagi menampilkannya
+     *  (klien minta hanya foto founder) — field tetap dibaca agar CMS utuh. */
     gambarPendukung?: string[]
     /** Label kecil di atas judul section — dari CMS beranda.founder.eyebrow. */
     eyebrow?: string
