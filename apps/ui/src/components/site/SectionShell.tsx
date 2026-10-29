@@ -1,3 +1,4 @@
+import Image from "next/image"
 import type { ReactNode } from "react"
 
 import { Reveal } from "./Reveal"
@@ -23,6 +24,7 @@ export function SectionShell({
   aksi,
   children,
   tone = "terang",
+  latar,
   className = "",
 }: {
   id?: string
@@ -33,6 +35,9 @@ export function SectionShell({
   aksi?: ReactNode
   children: ReactNode
   tone?: "terang" | "krem" | "gelap"
+  /** Gambar latar dekoratif (ornamen batik) — path di /public, mis.
+   *  `/images/new/layanan-bg.webp`. Dirender di belakang konten. */
+  latar?: string
   className?: string
 }) {
   const bg =
@@ -45,9 +50,20 @@ export function SectionShell({
   return (
     <section
       id={id}
-      className={`flex scroll-mt-20 flex-col justify-center overflow-hidden py-20 lg:py-24 ${bg} ${className}`}
+      className={`relative isolate flex scroll-mt-20 flex-col justify-center overflow-hidden py-20 lg:py-24 ${bg} ${className}`}
     >
-      <Kontainer>
+      {latar ? (
+        <Image
+          src={latar}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 object-cover"
+        />
+      ) : null}
+
+      <Kontainer className="relative">
         {judul ? (
           <Reveal className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
             <div>

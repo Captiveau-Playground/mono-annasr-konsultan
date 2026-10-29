@@ -61,6 +61,8 @@
   /* Warna coklat batik An Nasr — dipakai kartu Layanan di beranda. */
   --color-coklat: #a66a43;
   --color-coklat-tua: #8a5435;
+  /* Navy utama An Nasr — latar kartu Layanan & Artikel di beranda. */
+  --color-navy: #092349;
 }
 
 :root {

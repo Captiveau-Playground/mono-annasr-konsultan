@@ -128,6 +128,16 @@ export function Hero({
 
   return (
     <section className="cta-gradient relative isolate overflow-hidden">
+      {/* Latar batik hero (ornamen, alpha rendah) */}
+      <Image
+        src="/images/new/hero-bg.webp"
+        alt=""
+        aria-hidden
+        fill
+        priority
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 object-cover"
+      />
       <div
         className="blueprint-grid pointer-events-none absolute inset-0 opacity-[0.18]"
         aria-hidden

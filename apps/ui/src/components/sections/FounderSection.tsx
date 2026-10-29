@@ -18,12 +18,15 @@ export function FounderSection({
   founder: founderData,
   judul = "Tumbuh dari Pengalaman,\nBerkarya dengan Integritas",
   eyebrow = "Tentang Kami",
+  latar,
 }: {
   founder?: BerandaKonten["founder"]
   /** Judul section — dari CMS situs.founderJudul. */
   judul?: string
   /** Label kecil di atas judul — dari CMS situs.founderEyebrow. */
   eyebrow?: string
+  /** Gambar latar dekoratif (ornamen batik) — dipakai di beranda. */
+  latar?: string
 }) {
   const nama = founderData?.nama?.trim() || founderStatis.nama
   const jabatan = founderData?.jabatan?.trim() || founderStatis.jabatan
@@ -38,6 +41,7 @@ export function FounderSection({
   return (
     <SectionShell
       tone="krem"
+      latar={latar}
       judul={judul}
       eyebrow={eyebrow}
       aksi={

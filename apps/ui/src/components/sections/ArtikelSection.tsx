@@ -11,12 +11,15 @@ export function ArtikelSection({
   items,
   judul = "Wawasan teknik dari pengalaman di lapangan",
   eyebrow = "Artikel",
+  tone = "terang",
 }: {
   items?: Artikel[]
   /** Judul section — dari CMS. */
   judul?: string
   /** Label kecil di atas judul — dari CMS situs.eyebrows. */
   eyebrow?: string
+  /** Warna kartu — "primary" (navy) dipakai di beranda. */
+  tone?: "terang" | "primary"
 }) {
   const terbaru = (items ?? artikel).slice(0, 3)
 
@@ -37,7 +40,7 @@ export function ArtikelSection({
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {terbaru.map((a, i) => (
             <Reveal key={a.slug} delay={i * 0.05} className="h-full">
-              <ArtikelCard item={a} />
+              <ArtikelCard item={a} tone={tone} />
             </Reveal>
           ))}
         </div>

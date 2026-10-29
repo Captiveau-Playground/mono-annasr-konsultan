@@ -26,6 +26,7 @@ export function PortfolioSection({
   judul = "Ratusan Proyek yang\nTelah Kami Kawal",
   eyebrow = "Proyek",
   items,
+  latar,
 }: {
   filterAktif?: boolean
   /** Tampilkan tombol "Lihat Semua Proyek" di header section (dimatikan di halaman Portfolio). */
@@ -37,6 +38,8 @@ export function PortfolioSection({
   /** Label kecil di atas judul — dari CMS situs.proyekEyebrow. */
   eyebrow?: string
   items?: ProyekItem[]
+  /** Gambar latar dekoratif (ornamen batik) — dipakai di beranda. */
+  latar?: string
 }) {
   const [kategori, setKategori] = useState("Semua")
   const [halaman, setHalaman] = useState(1)
@@ -80,6 +83,7 @@ export function PortfolioSection({
     <SectionShell
       id="proyek"
       tone="gelap"
+      latar={latar}
       judul={tanpaJudul ? undefined : judul}
       eyebrow={tanpaJudul ? undefined : eyebrow}
       aksi={

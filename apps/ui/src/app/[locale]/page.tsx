@@ -129,6 +129,7 @@ export default async function BerandaPage({
         founder={konten.founder}
         judul={kontenSitus.situs.founderJudul}
         eyebrow={konten.founder?.eyebrow || kontenSitus.situs.founderEyebrow}
+        latar="/images/new/tentang-kami-bg.webp"
       />
       <KenapaKami
         alasan={konten.keunggulan}
@@ -139,11 +140,13 @@ export default async function BerandaPage({
         items={layananKeItem(kontenSitus.layanan)}
         judul={kontenSitus.situs.layananIntroJudul || undefined}
         eyebrow={kontenSitus.situs.layananEyebrow}
+        latar="/images/new/layanan-bg.webp"
       />
       <PortfolioSection
         items={kontenSitus.portfolio}
         judul={kontenSitus.situs.proyekJudul}
         eyebrow={kontenSitus.situs.proyekEyebrow}
+        latar="/images/new/proyek-bg.webp"
       />
       <JangkauanSection
         judul={kontenSitus.tentang.jangkauanJudul}
@@ -156,6 +159,7 @@ export default async function BerandaPage({
         items={kontenSitus.artikel}
         judul={kontenSitus.situs.artikelJudul || undefined}
         eyebrow={kontenSitus.situs.artikelEyebrow}
+        tone="primary"
       />
       <FaqSection
         items={konten.faq}
@@ -166,6 +170,7 @@ export default async function BerandaPage({
         judul={konten.cta?.judul}
         deskripsi={konten.cta?.deskripsi}
         eyebrow={konten.cta?.eyebrow || kontenSitus.situs.ctaEyebrow}
+        latar="/images/new/cta-banner-bg.webp"
       />
     </>
   )

@@ -12,6 +12,7 @@ export function LayananSection({
   items,
   judul = "Layanan An Nasr dalam\nMendukung Proyek Anda",
   eyebrow = "Layanan",
+  latar,
 }: {
   lengkap?: boolean
   items?: Layanan[]
@@ -19,6 +20,8 @@ export function LayananSection({
   judul?: string
   /** Label kecil di atas judul — dari CMS situs.layananEyebrow. */
   eyebrow?: string
+  /** Gambar latar dekoratif (ornamen batik) — dipakai di beranda. */
+  latar?: string
 }) {
   const daftar = items ?? layanan
   if (lengkap) {
@@ -106,14 +109,20 @@ export function LayananSection({
   }
 
   return (
-    <SectionShell id="layanan" tone="terang" judul={judul} eyebrow={eyebrow}>
+    <SectionShell
+      id="layanan"
+      tone="terang"
+      latar={latar}
+      judul={judul}
+      eyebrow={eyebrow}
+    >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {daftar.map((item, i) => {
           const Ikon = item.ikon
 
           return (
             <Reveal key={item.slug} delay={i * 0.07} className="h-full">
-              <article className="border-coklat-tua/40 bg-coklat flex h-full flex-col overflow-hidden rounded-xl border text-white shadow-[var(--shadow-soft)]">
+              <article className="bg-navy flex h-full flex-col overflow-hidden rounded-xl border border-white/10 text-white shadow-[var(--shadow-soft)]">
                 <Image
                   src={item.gambar}
                   alt={item.alt}
@@ -123,9 +132,9 @@ export function LayananSection({
                   className="aspect-[16/10] w-full object-cover"
                 />
                 <div className="flex flex-1 flex-col p-5">
-                  <span className="flex size-11 items-center justify-center rounded-xl bg-white/15 ring-1 ring-white/25">
+                  <span className="bg-accent/15 ring-accent/30 flex size-11 items-center justify-center rounded-xl ring-1">
                     <Ikon
-                      className="size-5 text-white"
+                      className="text-accent size-5"
                       strokeWidth={1.6}
                       aria-hidden
                     />
@@ -140,7 +149,7 @@ export function LayananSection({
                     <Button
                       asChild
                       size="pill"
-                      className="bg-background text-coklat hover:bg-background/90 w-full transition-none"
+                      className="bg-background text-navy hover:bg-background/90 w-full transition-none"
                     >
                       <CtaLink
                         cta="layanan_card"

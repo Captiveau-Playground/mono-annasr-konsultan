@@ -1,6 +1,7 @@
 "use client"
 
 import { ArrowRight } from "lucide-react"
+import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
@@ -13,15 +14,28 @@ export function CtaBanner({
   judul = "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
   deskripsi = "Sampaikan rencana pembangunan Anda, tim kami akan membantu menyusun solusi teknis yang tepat sasaran dan sesuai anggaran.",
   eyebrow = "Konsultasi Gratis",
+  latar,
 }: {
   judul?: string
   deskripsi?: string
   /** Label kecil di atas judul — dari CMS situs.ctaEyebrow. */
   eyebrow?: string
+  /** Gambar latar dekoratif (ornamen batik) — dipakai di beranda. */
+  latar?: string
 }) {
   return (
-    <section className="bg-secondary py-20 lg:py-24">
-      <Kontainer>
+    <section className="bg-secondary relative isolate overflow-hidden py-20 lg:py-24">
+      {latar ? (
+        <Image
+          src={latar}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 object-cover"
+        />
+      ) : null}
+      <Kontainer className="relative">
         <Reveal>
           <div className="marble-card border-primary/10 relative overflow-hidden rounded-2xl border px-8 py-14 shadow-[var(--shadow-lift)] lg:px-14 lg:py-16">
             <div className="bg-accent/20 pointer-events-none absolute -top-24 -right-24 size-72 rounded-full blur-3xl" />
