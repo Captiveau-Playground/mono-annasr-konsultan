@@ -235,3 +235,37 @@ export function contactPageLd({
     }),
   }
 }
+
+/**
+ * JSON-LD halaman generik — menandai jenis halaman (AboutPage, CollectionPage,
+ * Blog, Service) supaya Google memahami konteks tiap URL, bukan hanya
+ * LocalBusiness di beranda.
+ */
+export function halamanLd({
+  tipe,
+  url,
+  nama,
+  deskripsi,
+  gambar,
+}: {
+  tipe: "AboutPage" | "CollectionPage" | "Blog" | "Service" | "ContactPage"
+  url: string
+  nama: string
+  deskripsi?: string
+  gambar?: string
+}): LdObject {
+  const situs = new URL("/", url)
+  const bersih = url.endsWith("/") ? url.slice(0, -1) : url
+
+  return {
+    "@context": "https://schema.org",
+    "@type": tipe,
+    "@id": `${bersih}#halaman`,
+    url,
+    name: nama,
+    ...(deskripsi && { description: deskripsi }),
+    ...(gambar && { image: gambar }),
+    inLanguage: "id-ID",
+    isPartOf: { "@type": "WebSite", "@id": `${situs.href}#website` },
+  }
+}

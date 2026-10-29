@@ -4,10 +4,13 @@ import { setRequestLocale } from "next-intl/server"
 
 import { KlienSection } from "@/components/sections/KlienSection"
 import { PetaSection } from "@/components/sections/PetaSection"
+import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { PageHero } from "@/components/site/PageHero"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
+import { breadcrumbLd, halamanLd } from "@/lib/seo/structured-data"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -28,6 +31,7 @@ export async function generateMetadata({
   const seo = konten.situs.seo?.klien
 
   return {
+    alternates: alternatesUntuk("/klien", locale),
     title: seo?.judul || judul,
     description: seo?.deskripsi || deskripsi,
   }
@@ -44,8 +48,30 @@ export default async function KlienPage({
 
   const konten = await fetchKontenSitus(locale)
 
+  const baseUrl = publicBaseUrl()
+
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? breadcrumbLd({
+                url: baseUrl,
+                items: [
+                  { name: "Beranda", path: "/" },
+                  { name: "Klien Kami", path: "/klien" },
+                ],
+              })
+            : null,
+          baseUrl
+            ? halamanLd({
+                tipe: "CollectionPage",
+                url: `${baseUrl}/klien`,
+                nama: "Klien Kami — CV. An Nasr Konsultan",
+              })
+            : null,
+        ]}
+      />
       <PageHero
         eyebrow={konten.situs.klienEyebrow}
         judul={konten.klienHero.judul}

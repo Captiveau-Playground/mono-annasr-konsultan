@@ -10,7 +10,7 @@ import { PageHero } from "@/components/site/PageHero"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale, Link } from "@/lib/navigation"
 import { breadcrumbLd } from "@/lib/seo/structured-data"
-import { publicBaseUrl } from "@/lib/seo/urls"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export async function generateMetadata({
   params,
@@ -24,6 +24,7 @@ export async function generateMetadata({
   const seo = konten.situs.seo?.karir
 
   return {
+    alternates: alternatesUntuk("/karir", locale),
     title: seo?.judul || "Karir — Bergabung Bersama CV. AN NASR KONSULTAN",
     description:
       seo?.deskripsi ||

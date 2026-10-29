@@ -10,7 +10,7 @@ import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { fetchRekanan, type RekananItem } from "@/lib/annasr/rekanan"
 import { isValidLocale, Link } from "@/lib/navigation"
 import { breadcrumbLd } from "@/lib/seo/structured-data"
-import { publicBaseUrl } from "@/lib/seo/urls"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export async function generateMetadata({
   params,
@@ -24,6 +24,7 @@ export async function generateMetadata({
   const seo = konten.situs.seo?.rekanan
 
   return {
+    alternates: alternatesUntuk("/rekanan", locale),
     title:
       seo?.judul || "Rekanan & Sertifikat Kerjasama — CV. AN NASR KONSULTAN",
     description:
@@ -78,7 +79,7 @@ function KartuRekanan({ item }: { item: RekananItem }) {
           {item.nama}
         </h2>
         {item.instansi ? (
-          <p className="text-accent mt-1.5 text-xs font-semibold tracking-[0.14em] uppercase">
+          <p className="text-accent-teks mt-1.5 text-xs font-semibold tracking-[0.14em] uppercase">
             {item.instansi}
           </p>
         ) : null}

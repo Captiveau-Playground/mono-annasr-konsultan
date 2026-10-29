@@ -14,7 +14,7 @@ import { artikel } from "@/data/perusahaan"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale, Link } from "@/lib/navigation"
 import { articleLd, breadcrumbLd } from "@/lib/seo/structured-data"
-import { publicBaseUrl } from "@/lib/seo/urls"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   const locales = ["en", "cs"]
@@ -36,7 +36,16 @@ export async function generateMetadata({
   const item = konten.artikel.find((a) => a.slug === slug)
 
   return {
-    title: `${item?.judul ?? "Artikel"} — CV. AN NASR KONSULTAN`,
+    alternates: alternatesUntuk(`/artikel/${slug}`, locale),
+    title: (() => {
+      const judulArtikel = item?.judul ?? "Artikel"
+
+      // Judul + brand bisa >60 karakter (terpotong di SERP) — suffix brand
+      // hanya dipakai bila masih muat.
+      return judulArtikel.length > 45
+        ? judulArtikel
+        : `${judulArtikel} — CV. AN NASR KONSULTAN`
+    })(),
     description: item?.ringkas,
   }
 }
@@ -100,7 +109,7 @@ export default async function DetailArtikel({
 
           {/* Kepala artikel */}
           <Reveal className="mx-auto mt-8 max-w-7xl">
-            <p className="text-accent text-xs font-semibold tracking-[0.22em] uppercase">
+            <p className="text-accent-teks text-xs font-semibold tracking-[0.22em] uppercase">
               {item.kategori}
             </p>
             <h1 className="text-foreground mt-3 text-3xl leading-[1.15] text-balance sm:text-4xl lg:text-[2.75rem]">

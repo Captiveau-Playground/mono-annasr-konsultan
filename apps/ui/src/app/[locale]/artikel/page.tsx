@@ -3,9 +3,12 @@ import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
 import { ArtikelList } from "@/components/artikel/ArtikelList"
+import { JsonLd } from "@/components/seo/JsonLd"
 import { PageHero } from "@/components/site/PageHero"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
+import { breadcrumbLd, halamanLd } from "@/lib/seo/structured-data"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -26,6 +29,7 @@ export async function generateMetadata({
   const seo = konten.situs.seo?.artikel
 
   return {
+    alternates: alternatesUntuk("/artikel", locale),
     title: seo?.judul || judul,
     description: seo?.deskripsi || deskripsi,
   }
@@ -42,8 +46,30 @@ export default async function ArtikelPage({
 
   const konten = await fetchKontenSitus(locale)
 
+  const baseUrl = publicBaseUrl()
+
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? breadcrumbLd({
+                url: baseUrl,
+                items: [
+                  { name: "Beranda", path: "/" },
+                  { name: "Artikel", path: "/artikel" },
+                ],
+              })
+            : null,
+          baseUrl
+            ? halamanLd({
+                tipe: "Blog",
+                url: `${baseUrl}/artikel`,
+                nama: "Artikel — CV. An Nasr Konsultan",
+              })
+            : null,
+        ]}
+      />
       <PageHero
         eyebrow={konten.situs.artikelHeroEyebrow}
         judul={konten.artikelHero.judul}

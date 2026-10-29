@@ -70,9 +70,6 @@ export async function generateMetadata({
     },
     description: deskripsi,
     applicationName: brand,
-    alternates: {
-      canonical: locale === routing.defaultLocale ? "/" : `/${locale}`,
-    },
     openGraph: {
       type: "website",
       locale: locale === "cs" ? "cs_CZ" : "id_ID",
@@ -190,8 +187,9 @@ export default async function RootLayout({
     return `/api/asset${u}`
   })()
 
+  // Konten utama berbahasa Indonesia; locale "en" hanya nama rute.
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale === "cs" ? "cs" : "id"} suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen antialiased",

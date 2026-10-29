@@ -112,7 +112,7 @@ export function KontakSection({
   return (
     <section className="px-6 py-20 lg:px-8 lg:py-24">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:gap-16">
-        <Reveal arah="left">
+        <Reveal arah="left" className="min-w-0">
           <div className="border-border bg-card rounded-[2rem] border p-8 shadow-[var(--shadow-soft)] lg:p-10">
             <h2 className="text-foreground text-2xl">Kirim Pesan</h2>
             <p className="text-muted-foreground mt-2 text-sm">
@@ -209,7 +209,7 @@ export function KontakSection({
           </div>
         </Reveal>
 
-        <Reveal arah="right" className="space-y-6">
+        <Reveal arah="right" className="min-w-0 space-y-6">
           <div className="border-border bg-surface rounded-[2rem] border p-8 lg:p-10">
             <h2 className="text-foreground text-2xl">Informasi Kontak</h2>
             <ul className="mt-8 space-y-7">
@@ -217,11 +217,11 @@ export function KontakSection({
                 <span className="bg-primary/8 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                   <MapPin className="size-5" strokeWidth={1.6} />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="text-foreground block text-sm font-semibold">
                     Domisili Perusahaan
                   </span>
-                  <span className="text-muted-foreground mt-1 block text-sm leading-relaxed">
+                  <span className="text-muted-foreground mt-1 block text-sm leading-relaxed break-words">
                     {k.domisili}
                   </span>
                 </span>
@@ -230,11 +230,11 @@ export function KontakSection({
                 <span className="bg-primary/8 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                   <MapPin className="size-5" strokeWidth={1.6} />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="text-foreground block text-sm font-semibold">
                     Alamat Kantor
                   </span>
-                  <span className="text-muted-foreground mt-1 block text-sm leading-relaxed">
+                  <span className="text-muted-foreground mt-1 block text-sm leading-relaxed break-words">
                     {k.kantor}
                   </span>
                 </span>
@@ -243,7 +243,7 @@ export function KontakSection({
                 <span className="bg-primary/8 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                   <Phone className="size-5" strokeWidth={1.6} />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="text-foreground block text-sm font-semibold">
                     Telepon
                   </span>
@@ -255,7 +255,7 @@ export function KontakSection({
                         location: "kontak_page",
                       })
                     }
-                    className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
+                    className="text-muted-foreground hover:text-primary mt-1 block text-sm break-all transition-colors"
                   >
                     {k.telepon}
                   </a>
@@ -265,7 +265,7 @@ export function KontakSection({
                 <span className="bg-primary/8 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                   <Mail className="size-5" strokeWidth={1.6} />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="text-foreground block text-sm font-semibold">
                     Email
                   </span>
@@ -277,7 +277,7 @@ export function KontakSection({
                         location: "kontak_page",
                       })
                     }
-                    className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
+                    className="text-muted-foreground hover:text-primary mt-1 block text-sm break-all transition-colors"
                   >
                     {k.email}
                   </a>
@@ -287,7 +287,7 @@ export function KontakSection({
                 <span className="bg-primary/8 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                   <MessageCircle className="size-5" strokeWidth={1.6} />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="text-foreground block text-sm font-semibold">
                     WhatsApp
                   </span>
@@ -301,7 +301,7 @@ export function KontakSection({
                         location: "kontak_page",
                       })
                     }
-                    className="text-muted-foreground hover:text-primary mt-1 block text-sm transition-colors"
+                    className="text-muted-foreground hover:text-primary mt-1 block text-sm break-all transition-colors"
                   >
                     +{k.whatsapp}
                   </a>
@@ -311,7 +311,7 @@ export function KontakSection({
                 <span className="bg-primary/8 text-accent flex size-11 shrink-0 items-center justify-center rounded-xl">
                   <InstagramIcon className="size-5" />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="text-foreground block text-sm font-semibold">
                     Instagram
                   </span>
@@ -329,7 +329,7 @@ export function KontakSection({
                 <span className="bg-primary/8 text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
                   <Clock className="size-5" strokeWidth={1.6} />
                 </span>
-                <span>
+                <span className="min-w-0">
                   <span className="text-foreground block text-sm font-semibold">
                     Jam Operasional
                   </span>

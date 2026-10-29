@@ -4,12 +4,15 @@ import Image from "next/image"
 import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
+import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { Reveal } from "@/components/site/Reveal"
 import { Button } from "@/components/ui/button"
 import { layanan } from "@/data/perusahaan"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale, Link } from "@/lib/navigation"
+import { breadcrumbLd, halamanLd } from "@/lib/seo/structured-data"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   const locales = ["en", "cs"]
@@ -31,6 +34,7 @@ export async function generateMetadata({
   const item = konten.layanan.find((l) => l.slug === slug)
 
   return {
+    alternates: alternatesUntuk(`/layanan/${slug}`, locale),
     title: `${item?.nama ?? "Layanan"} — CV. AN NASR KONSULTAN`,
     description:
       item?.ringkas ??
@@ -56,9 +60,32 @@ export default async function DetailLayanan({
     9
   )
   const thumbCount = galeri.length - 1
+  const baseUrl = publicBaseUrl()
 
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? breadcrumbLd({
+                url: baseUrl,
+                items: [
+                  { name: "Beranda", path: "/" },
+                  { name: "Layanan", path: "/layanan" },
+                  { name: item.nama, path: `/layanan/${item.slug}` },
+                ],
+              })
+            : null,
+          baseUrl
+            ? halamanLd({
+                tipe: "Service",
+                url: `${baseUrl}/layanan/${item.slug}`,
+                nama: `${item.nama} — CV. An Nasr Konsultan`,
+                deskripsi: item.ringkas,
+              })
+            : null,
+        ]}
+      />
       <section className="px-6 pt-24 pb-16 lg:px-8 lg:pt-28 lg:pb-20">
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-primary text-xs font-semibold tracking-[0.22em] uppercase">

@@ -8,7 +8,7 @@ import { PageHero } from "@/components/site/PageHero"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 import { breadcrumbLd, contactPageLd } from "@/lib/seo/structured-data"
-import { publicBaseUrl } from "@/lib/seo/urls"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -18,9 +18,19 @@ const judul = "Kontak — CV. AN NASR KONSULTAN Jombang"
 const deskripsi =
   "Hubungi CV. AN NASR KONSULTAN untuk konsultasi proyek perencanaan, pengawasan, perizinan, dan konstruksi di Kabupaten Jombang, Jawa Timur."
 
-export const metadata: Metadata = {
-  title: judul,
-  description: deskripsi,
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  if (!isValidLocale(locale)) return {}
+
+  return {
+    alternates: alternatesUntuk("/kontak", locale),
+    title: judul,
+    description: deskripsi,
+  }
 }
 
 export default async function KontakPage({

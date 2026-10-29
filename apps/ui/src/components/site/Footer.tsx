@@ -120,7 +120,7 @@ export function Footer({
             <div className="flex items-center gap-3">
               <Image
                 src={logoImage?.trim() || "/images/logo/logo-white.png"}
-                alt={namaBrand}
+                alt=""
                 width={40}
                 height={40}
                 className="size-10 shrink-0 object-contain"

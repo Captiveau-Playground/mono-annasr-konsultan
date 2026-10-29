@@ -329,7 +329,7 @@ export function Navbar({
           <span className="flex size-10 shrink-0 items-center justify-center">
             <Image
               src={logoImage?.trim() || "/images/logo/logo-white.png"}
-              alt={brandNama?.trim() || "CV. An Nasr Konsultan"}
+              alt=""
               width={40}
               height={40}
               priority

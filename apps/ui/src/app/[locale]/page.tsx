@@ -17,7 +17,7 @@ import { fetchBeranda } from "@/lib/annasr/beranda"
 import { fetchKontenSitus, ikonLayanan } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 import { faqLd, localBusinessLd, websiteLd } from "@/lib/seo/structured-data"
-import { publicBaseUrl } from "@/lib/seo/urls"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -40,6 +40,7 @@ export async function generateMetadata({
   const seo = konten.situs.seo?.beranda
 
   return {
+    alternates: alternatesUntuk("/", locale),
     title: seo?.judul || `${brand} — ${tagline}`,
     description: seo?.deskripsi || deskripsi + ", Jawa Timur.",
   }

@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale, Link } from "@/lib/navigation"
 import { articleLd } from "@/lib/seo/structured-data"
-import { publicBaseUrl } from "@/lib/seo/urls"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export async function generateMetadata({
   params,
@@ -25,6 +25,7 @@ export async function generateMetadata({
   const item = konten.karir.find((p) => p.slug === slug)
 
   return {
+    alternates: alternatesUntuk(`/karir/${slug}`, locale),
     title: `${item?.nama ?? "Lowongan"} — CV. AN NASR KONSULTAN`,
     description: item?.ringkas,
   }

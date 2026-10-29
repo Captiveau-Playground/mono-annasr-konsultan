@@ -37,10 +37,10 @@ export function KisahPerusahaan({
           <div className="lg:col-span-7">
             <ol className="border-border relative flex flex-col gap-10 border-l-2 pl-8">
               {perjalanan.map((tahap, i) => (
-                <Reveal key={tahap.tahun} arah="right" delay={i * 0.05}>
-                  <li className="relative">
+                <li key={tahap.tahun} className="relative">
+                  <Reveal arah="right" delay={i * 0.05}>
                     <span className="bg-accent ring-surface absolute top-1.5 -left-[38px] size-3.5 rounded-full ring-4" />
-                    <p className="text-accent text-sm font-bold">
+                    <p className="text-accent-teks text-sm font-bold">
                       {tahap.tahun}
                     </p>
                     <h3 className="text-foreground mt-1.5 text-xl font-semibold">
@@ -49,8 +49,8 @@ export function KisahPerusahaan({
                     <p className="text-muted-foreground mt-2 max-w-xl text-base leading-7">
                       {tahap.teks}
                     </p>
-                  </li>
-                </Reveal>
+                  </Reveal>
+                </li>
               ))}
             </ol>
           </div>

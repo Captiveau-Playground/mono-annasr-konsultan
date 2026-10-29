@@ -14,3 +14,27 @@ export function publicBaseUrl(): string {
 
   return ""
 }
+
+/**
+ * Canonical + hreflang untuk satu halaman.
+ *
+ * - Default locale (`en` di routing, isinya bahasa Indonesia) = tanpa prefix.
+ * - `cs` = prefix `/cs`.
+ * - `languages` memberi sinyal hreflang `id`, `cs`, dan `x-default` supaya
+ *   Google tidak menganggap halaman locale lain sebagai duplikat.
+ */
+export function alternatesUntuk(path: string, locale: string) {
+  const tanpaSlash =
+    path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path
+  const bersih = tanpaSlash === "/" ? "" : tanpaSlash
+  const kanonik = locale === "cs" ? `/cs${bersih || ""}` : bersih || "/"
+
+  return {
+    canonical: kanonik || "/",
+    languages: {
+      id: bersih || "/",
+      cs: `/cs${bersih || ""}`,
+      "x-default": bersih || "/",
+    },
+  }
+}

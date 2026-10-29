@@ -10,8 +10,11 @@ import { Link } from "@/lib/navigation"
 export function ArtikelCard({
   item,
   tone = "terang",
+  prioritas = false,
 }: {
   item: Artikel
+  /** true untuk kartu pertama yang terlihat tanpa scroll (LCP). */
+  prioritas?: boolean
   /** "primary" = kartu navy (dipakai di beranda), "terang" = kartu putih. */
   tone?: "terang" | "primary"
 }) {
@@ -30,11 +33,12 @@ export function ArtikelCard({
           width={1200}
           height={800}
           sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+          priority={prioritas}
           className="aspect-[16/10] w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </Link>
       <div className="flex flex-1 flex-col p-6">
-        <span className="text-accent text-xs font-semibold tracking-[0.18em] uppercase">
+        <span className="text-accent-teks text-xs font-semibold tracking-[0.18em] uppercase">
           {item.kategori}
         </span>
         <Link

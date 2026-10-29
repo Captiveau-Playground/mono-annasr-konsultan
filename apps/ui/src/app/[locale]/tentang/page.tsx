@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { setRequestLocale } from "next-intl/server"
 
 import { JangkauanSection } from "@/components/sections/JangkauanSection"
+import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { Founder } from "@/components/tentang/Founder"
 import { KisahPerusahaan } from "@/components/tentang/KisahPerusahaan"
@@ -12,6 +13,8 @@ import { TimTentang } from "@/components/tentang/TimTentang"
 import { VisiMisi } from "@/components/tentang/VisiMisi"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
+import { breadcrumbLd, halamanLd } from "@/lib/seo/structured-data"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -32,6 +35,7 @@ export async function generateMetadata({
   const seo = k.situs.seo?.tentang
 
   return {
+    alternates: alternatesUntuk("/tentang", locale),
     title: seo?.judul || judul,
     description: seo?.deskripsi || deskripsi,
   }
@@ -49,8 +53,30 @@ export default async function TentangPage({
   const k = await fetchKontenSitus(locale)
   const konten = k.tentang
 
+  const baseUrl = publicBaseUrl()
+
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? breadcrumbLd({
+                url: baseUrl,
+                items: [
+                  { name: "Beranda", path: "/" },
+                  { name: "Tentang Kami", path: "/tentang" },
+                ],
+              })
+            : null,
+          baseUrl
+            ? halamanLd({
+                tipe: "AboutPage",
+                url: `${baseUrl}/tentang`,
+                nama: "Tentang Kami — CV. An Nasr Konsultan",
+              })
+            : null,
+        ]}
+      />
       <TentangHero
         eyebrow={konten.hero.eyebrow || k.situs.tentangHeroEyebrow}
         judul={konten.hero.judul}

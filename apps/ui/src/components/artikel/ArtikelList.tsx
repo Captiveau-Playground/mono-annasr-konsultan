@@ -79,7 +79,7 @@ export function ArtikelList({
             </div>
 
             <div className="flex flex-col justify-center p-8 lg:p-10">
-              <p className="text-accent text-xs font-semibold tracking-[0.18em] uppercase">
+              <p className="text-accent-teks text-xs font-semibold tracking-[0.18em] uppercase">
                 {unggulan.kategori}
               </p>
               <h2 className="text-foreground mt-3 text-2xl leading-tight text-balance sm:text-3xl">
@@ -142,8 +142,8 @@ export function ArtikelList({
       {/* Daftar artikel */}
       {tampil.length > 0 ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {tampil.map((a) => (
-            <ArtikelCard key={a.slug} item={a} />
+          {tampil.map((a, i) => (
+            <ArtikelCard key={a.slug} item={a} prioritas={i === 0} />
           ))}
         </div>
       ) : (

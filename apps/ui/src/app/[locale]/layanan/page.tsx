@@ -10,7 +10,7 @@ import { PageHero } from "@/components/site/PageHero"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
 import { breadcrumbLd, serviceListLd } from "@/lib/seo/structured-data"
-import { publicBaseUrl } from "@/lib/seo/urls"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -31,6 +31,7 @@ export async function generateMetadata({
   const seo = konten.situs.seo?.layanan
 
   return {
+    alternates: alternatesUntuk("/layanan", locale),
     title: seo?.judul || judul,
     description: seo?.deskripsi || deskripsi,
   }

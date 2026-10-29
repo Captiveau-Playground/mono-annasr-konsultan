@@ -112,6 +112,10 @@
   }
   body {
     @apply text-black dark:text-white;
+    /* Animasi Reveal (translate 32px) sempat membuat halaman bisa digeser
+       horizontal di mobile sebelum elemen masuk viewport. `clip` tidak
+       membuat scroll container, jadi `position: sticky` tetap bekerja. */
+    overflow-x: clip;
   }
 }
 

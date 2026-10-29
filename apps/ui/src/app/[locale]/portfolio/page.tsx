@@ -5,9 +5,12 @@ import { setRequestLocale } from "next-intl/server"
 import { JangkauanSection } from "@/components/sections/JangkauanSection"
 import { KlienSection } from "@/components/sections/KlienSection"
 import { PortfolioSection } from "@/components/sections/PortfolioSection"
+import { JsonLd } from "@/components/seo/JsonLd"
 import { CtaBanner } from "@/components/site/CtaBanner"
 import { fetchKontenSitus } from "@/lib/annasr/konten"
 import { isValidLocale } from "@/lib/navigation"
+import { breadcrumbLd, halamanLd } from "@/lib/seo/structured-data"
+import { alternatesUntuk, publicBaseUrl } from "@/lib/seo/urls"
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "cs" }]
@@ -28,6 +31,7 @@ export async function generateMetadata({
   const seo = konten.situs.seo?.portfolio
 
   return {
+    alternates: alternatesUntuk("/portfolio", locale),
     title: seo?.judul || judul,
     description: seo?.deskripsi || deskripsi,
   }
@@ -44,8 +48,30 @@ export default async function PortfolioPage({
 
   const konten = await fetchKontenSitus(locale)
 
+  const baseUrl = publicBaseUrl()
+
   return (
     <>
+      <JsonLd
+        data={[
+          baseUrl
+            ? breadcrumbLd({
+                url: baseUrl,
+                items: [
+                  { name: "Beranda", path: "/" },
+                  { name: "Portofolio Proyek", path: "/portfolio" },
+                ],
+              })
+            : null,
+          baseUrl
+            ? halamanLd({
+                tipe: "CollectionPage",
+                url: `${baseUrl}/portfolio`,
+                nama: "Portofolio Proyek — CV. An Nasr Konsultan",
+              })
+            : null,
+        ]}
+      />
       <PortfolioSection
         items={konten.portfolio}
         showAllButton={false}
