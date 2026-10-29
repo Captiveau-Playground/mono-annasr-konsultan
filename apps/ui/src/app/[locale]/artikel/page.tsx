@@ -48,6 +48,7 @@ export default async function ArtikelPage({
         eyebrow={konten.situs.artikelHeroEyebrow}
         judul={konten.artikelHero.judul}
         teks={konten.artikelHero.deskripsi}
+        latar="/images/new/header/header-artikel-bg.webp"
       />
 
       <section className="bg-background py-20 lg:py-24">

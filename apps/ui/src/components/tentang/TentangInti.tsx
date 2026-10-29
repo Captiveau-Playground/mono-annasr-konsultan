@@ -54,8 +54,17 @@ export function TentangInti({
   const judulTeks = judul.trim() ? judul : JUDUL_STATIS
 
   return (
-    <section className="bg-background py-20 lg:py-24">
-      <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
+    <section className="bg-background relative isolate overflow-hidden py-20 lg:py-24">
+      {/* Latar batik section ke-2 (di atas Visi & Misi) */}
+      <Image
+        src="/images/new/tentang-kami/tentang-kami-bg.webp"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 object-cover"
+      />
+      <div className="relative mx-auto w-full max-w-7xl px-6 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
           {/* 7/12 — teks */}
           <div className="lg:col-span-7">

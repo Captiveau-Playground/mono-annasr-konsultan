@@ -29,7 +29,16 @@ export function Founder({
   const fotoData = data?.foto?.trim() || "/images/annasr/founder.jpg"
 
   return (
-    <section className="bg-secondary text-primary-foreground relative overflow-hidden py-20 lg:py-24">
+    <section className="bg-secondary text-primary-foreground relative isolate overflow-hidden py-20 lg:py-24">
+      {/* Latar batik section founder */}
+      <Image
+        src="/images/new/tentang-kami/founder-bg.webp"
+        alt=""
+        aria-hidden
+        fill
+        sizes="100vw"
+        className="pointer-events-none absolute inset-0 object-cover"
+      />
       <div
         className="blueprint-grid pointer-events-none absolute inset-0 opacity-[0.08]"
         aria-hidden

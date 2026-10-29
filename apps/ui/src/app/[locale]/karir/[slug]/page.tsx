@@ -67,6 +67,7 @@ export default async function DetailKarir({
         eyebrow={konten.situs.karirHeroEyebrow}
         judul={item.nama}
         teks={`${item.tipe} · ${item.lokasi}`}
+        latar="/images/new/header/header-karir-bg.webp"
       />
 
       <section className="bg-background px-6 py-16 lg:px-8 lg:py-24">

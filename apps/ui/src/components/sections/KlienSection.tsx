@@ -90,6 +90,7 @@ export function KlienSection({
   return (
     <SectionShell
       tone="krem"
+      className="bg-biru"
       eyebrow={eyebrow}
       judul={judul ?? "Dipercaya oleh\nBerbagai Klien"}
     >

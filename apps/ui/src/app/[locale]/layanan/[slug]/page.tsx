@@ -101,8 +101,18 @@ export default async function DetailLayanan({
         </div>
       </section>
 
-      <section className="bg-surface px-6 py-16 lg:px-8 lg:py-20">
-        <div className="mx-auto max-w-3xl text-center">
+      {/* Tentang + manfaat + lingkup pekerjaan — latar batik menempel di
+          dasar section, tepat di atas section Alur Pengerjaan. */}
+      <section className="bg-surface relative isolate overflow-hidden px-6 py-16 lg:px-8 lg:py-20">
+        <Image
+          src="/images/new/layanan-bg.webp"
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="pointer-events-none absolute inset-0 object-cover object-bottom"
+        />
+        <div className="relative mx-auto max-w-3xl text-center">
           <h2 className="text-foreground text-2xl">
             {konten.situs.layananTentangJudul}
           </h2>

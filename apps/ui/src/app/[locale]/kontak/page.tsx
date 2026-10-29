@@ -61,6 +61,7 @@ export default async function KontakPage({
         eyebrow={konten.situs.kontakEyebrow}
         judul={konten.kontak.judul}
         teks={konten.kontak.deskripsi}
+        latar="/images/new/header/header-kontak-bg.webp"
       />
       <KontakSection kontak={konten.kontak} />
     </>

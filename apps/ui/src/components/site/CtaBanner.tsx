@@ -14,13 +14,14 @@ export function CtaBanner({
   judul = "Konsultasikan Kebutuhan Proyek Anda Bersama Kami",
   deskripsi = "Sampaikan rencana pembangunan Anda, tim kami akan membantu menyusun solusi teknis yang tepat sasaran dan sesuai anggaran.",
   eyebrow = "Konsultasi Gratis",
-  latar,
+  latar = "/images/new/cta-banner-bg.webp",
 }: {
   judul?: string
   deskripsi?: string
   /** Label kecil di atas judul — dari CMS situs.ctaEyebrow. */
   eyebrow?: string
-  /** Gambar latar dekoratif (ornamen batik) — dipakai di beranda. */
+  /** Gambar latar dekoratif (ornamen batik). Default: sama dengan beranda,
+   *  supaya semua section CTA di seluruh halaman konsisten. */
   latar?: string
 }) {
   return (

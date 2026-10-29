@@ -281,18 +281,33 @@ export function Navbar({
   return (
     <header
       className={cn(
-        // Garis bawah dibuat lewat pseudo-element, BUKAN `border-b`: border
-        // menambah tinggi header 1px, sehingga section pertama yang ditarik
-        // -mt-16 menyisakan garis putih 1px di puncak halaman.
-        "sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300",
-        "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:content-['']",
-        menyatu
-          ? "bg-transparent after:bg-transparent"
-          : scrolled
-            ? "bg-secondary/85 shadow-[0_10px_30px_-15px_rgba(4,10,22,0.6)] backdrop-blur-xl after:bg-white/5"
-            : "cta-gradient after:bg-white/10"
+        // Latar TIDAK di header langsung: dua lapisan opaque di bawah ini yang
+        // saling cross-fade. Sebelumnya header sempat transparan + backdrop-blur
+        // saat transisi sehingga konten di belakangnya menembus (terlihat
+        // seperti "navbar kedua") — terutama di halaman berlatar putih.
+        "sticky top-0 z-50 transition-shadow duration-300",
+        scrolled ? "shadow-[0_10px_30px_-15px_rgba(4,10,22,0.6)]" : ""
       )}
     >
+      {/* Lapisan 1 (bawah): navy solid. Selalu opaque saat bukan mode
+          "menyatu", supaya saat lapisan gradient memudar tidak ada frame
+          tembus pandang (penyebab tampilan seperti navbar ganda). */}
+      <div
+        aria-hidden
+        className={cn(
+          "bg-secondary pointer-events-none absolute inset-0 border-b border-white/5 transition-opacity duration-300",
+          scrolled || !menyatu ? "opacity-100" : "opacity-0"
+        )}
+      />
+      {/* Lapisan 2 (atas): gradient navy — memudar saat scroll. */}
+      <div
+        aria-hidden
+        className={cn(
+          "cta-gradient pointer-events-none absolute inset-0 transition-opacity duration-300",
+          !scrolled && !menyatu ? "opacity-100" : "opacity-0"
+        )}
+      />
+
       <a
         href="#konten"
         className="focus:text-primary sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:shadow-lg"
@@ -304,7 +319,7 @@ export function Navbar({
           lompatan layout pada konten di bawahnya. */}
       <nav
         aria-label="Navigasi utama"
-        className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 lg:px-8"
+        className="relative mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 lg:px-8"
       >
         <Link
           href="/"

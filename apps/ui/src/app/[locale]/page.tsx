@@ -146,7 +146,6 @@ export default async function BerandaPage({
         items={kontenSitus.portfolio}
         judul={kontenSitus.situs.proyekJudul}
         eyebrow={kontenSitus.situs.proyekEyebrow}
-        latar="/images/new/proyek-bg.webp"
       />
       <JangkauanSection
         judul={kontenSitus.tentang.jangkauanJudul}
@@ -170,7 +169,6 @@ export default async function BerandaPage({
         judul={konten.cta?.judul}
         deskripsi={konten.cta?.deskripsi}
         eyebrow={konten.cta?.eyebrow || kontenSitus.situs.ctaEyebrow}
-        latar="/images/new/cta-banner-bg.webp"
       />
     </>
   )

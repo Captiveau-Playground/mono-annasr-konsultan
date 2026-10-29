@@ -63,6 +63,8 @@
   --color-coklat-tua: #8a5435;
   /* Navy utama An Nasr — latar kartu Layanan & Artikel di beranda. */
   --color-navy: #092349;
+  /* Biru muda — latar section Klien Kami (marquee logo). */
+  --color-biru: #92b5e9;
 }
 
 :root {

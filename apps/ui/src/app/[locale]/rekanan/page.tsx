@@ -127,6 +127,7 @@ export default async function RekananPage({
         eyebrow={situs.situs.rekananEyebrow}
         judul={situs.situs.rekananIntroJudul}
         teks={situs.situs.rekananIntroDeskripsi}
+        latar="/images/new/header/header-rekanan-bg.png"
       />
       <section className="bg-background px-5 py-16 lg:px-8 lg:py-24">
         <div className="mx-auto w-full max-w-7xl">
