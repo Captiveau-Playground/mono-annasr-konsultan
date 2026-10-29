@@ -1,6 +1,8 @@
 import Image from "next/image"
 import type { ReactNode } from "react"
 
+import { cn } from "@/lib/styles"
+
 import { Reveal } from "./Reveal"
 
 export function Kontainer({
@@ -50,7 +52,11 @@ export function SectionShell({
   return (
     <section
       id={id}
-      className={`relative isolate flex scroll-mt-20 flex-col justify-center overflow-hidden py-20 lg:py-24 ${bg} ${className}`}
+      className={cn(
+        "relative isolate flex scroll-mt-20 flex-col justify-center overflow-hidden py-20 lg:py-24",
+        bg,
+        className
+      )}
     >
       {latar ? (
         <Image

@@ -3,17 +3,9 @@
 import { ChevronDown, Menu, X } from "lucide-react"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
 import { navigasi, perusahaan } from "@/data/perusahaan"
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics/events"
 import { Link } from "@/lib/navigation"
@@ -29,6 +21,162 @@ type ItemNav = {
 type EntryMenu =
   | { type: "link"; item: ItemNav }
   | { type: "grup"; item: ItemNav }
+
+/**
+ * Rute yang section pertamanya berlatar gelap (hero navy). Di rute ini navbar
+ * boleh transparan total saat di puncak halaman — menyatu dengan hero.
+ * Rute lain memakai latar solid supaya teks putih tetap terbaca di atas
+ * halaman terang (mis. /tentang, /layanan/[slug]).
+ */
+const RUTE_HERO_GELAP = [
+  /^\/$/,
+  /^\/layanan$/,
+  /^\/portfolio$/,
+  /^\/klien$/,
+  /^\/karir(\/.*)?$/,
+  /^\/kontak$/,
+  /^\/artikel$/,
+  /^\/rekanan$/,
+]
+
+const tanpaLocale = (pathname: string) =>
+  pathname.replace(/^\/(cs|en)(?=\/|$)/, "") || "/"
+
+/** Dropdown desktop — state dikontrol sendiri (hover-intent + klik + keyboard).
+ *  Sengaja tidak memakai Radix NavigationMenu: animasi slide horizontalnya
+ *  membuat panel "melompat", dan celah 6px antara trigger & panel memutus hover. */
+function GrupNav({
+  item,
+  aktifGrup,
+  subAktif,
+}: {
+  item: ItemNav
+  aktifGrup: boolean
+  subAktif: (href: string) => boolean
+}) {
+  const id = useId()
+  const [buka, setBuka] = useState(false)
+  const tombol = useRef<HTMLButtonElement | null>(null)
+  const panel = useRef<HTMLDivElement | null>(null)
+
+  // Satu mode saja: KLIK untuk buka/tutup (tanpa hover-open), supaya tidak
+  // ada dua trigger yang saling bertabrakan (hover buka → klik malah menutup).
+  // Tutup saat Escape / klik di luar / halaman di-scroll.
+  useEffect(() => {
+    if (!buka) return
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return
+      setBuka(false)
+      tombol.current?.focus()
+    }
+
+    const onPointer = (e: PointerEvent) => {
+      const target = e.target as Node | null
+      if (!target) return
+      if (panel.current?.contains(target) || tombol.current?.contains(target)) {
+        return
+      }
+      setBuka(false)
+    }
+
+    const onScroll = () => setBuka(false)
+
+    document.addEventListener("keydown", onKey)
+    document.addEventListener("pointerdown", onPointer)
+    window.addEventListener("scroll", onScroll, { passive: true })
+
+    return () => {
+      document.removeEventListener("keydown", onKey)
+      document.removeEventListener("pointerdown", onPointer)
+      window.removeEventListener("scroll", onScroll)
+    }
+  }, [buka])
+
+  const tutup = () => setBuka(false)
+
+  return (
+    <div className="relative">
+      <button
+        ref={tombol}
+        type="button"
+        aria-haspopup="true"
+        aria-expanded={buka}
+        aria-controls={id}
+        aria-current={aktifGrup ? "true" : undefined}
+        onClick={() => setBuka((v) => !v)}
+        onKeyDown={(e) => {
+          if (e.key !== "ArrowDown") {
+            return
+          }
+
+          e.preventDefault()
+          setBuka(true)
+          requestAnimationFrame(() =>
+            panel.current?.querySelector<HTMLAnchorElement>(":scope a")?.focus()
+          )
+        }}
+        className={cn(
+          "inline-flex h-10 items-center gap-1 rounded-full px-3 text-sm font-medium transition-colors outline-none",
+          "text-white/70 hover:bg-white/10 hover:text-white",
+          "focus-visible:ring-accent/70 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+          (buka || aktifGrup) && "bg-white/10 text-white"
+        )}
+      >
+        {item.label}
+        <ChevronDown
+          className={cn(
+            "size-3.5 transition-transform duration-200",
+            buka && "rotate-180"
+          )}
+          aria-hidden
+        />
+      </button>
+
+      {/* pt-2 = jembatan hover: tanpa celah antara trigger dan panel. */}
+      <div
+        id={id}
+        ref={panel}
+        className={cn(
+          "absolute top-full left-1/2 z-50 -translate-x-1/2 pt-2",
+          !buka && "hidden"
+        )}
+      >
+        <div className="border-border/70 bg-popover animate-in fade-in-0 zoom-in-95 slide-in-from-top-1 w-64 rounded-xl border p-2 shadow-[var(--shadow-lift)] duration-150">
+          <ul className="flex flex-col gap-0.5">
+            {(item.anak ?? []).map((sub) => (
+              <li key={sub.href}>
+                <Link
+                  href={sub.href}
+                  onClick={tutup}
+                  aria-current={subAktif(sub.href) ? "page" : undefined}
+                  className={cn(
+                    "block rounded-lg px-3 py-2.5 text-sm transition-colors",
+                    subAktif(sub.href)
+                      ? "bg-primary/8 text-primary font-medium"
+                      : "text-foreground/80 hover:bg-primary/5 hover:text-primary"
+                  )}
+                >
+                  {sub.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="border-border/60 mt-1 border-t pt-1">
+            <Link
+              href={item.href}
+              onClick={tutup}
+              className="text-primary hover:bg-primary/5 flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold"
+            >
+              Lihat semua {item.label.toLowerCase()}
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function Navbar({
   brandNama,
@@ -117,35 +265,32 @@ export function Navbar({
       : { type: "link", item: itemFinal }
   })
 
-  /** Mode "di atas halaman" (belum scroll): navy pekat menyatu dengan hero. */
-  const atas = !scrolled
+  const path = tanpaLocale(pathname)
+  const heroGelap = RUTE_HERO_GELAP.some((re) => re.test(path))
+  /** Di puncak halaman + hero gelap: navbar menyatu (transparan) dengan hero. */
+  const menyatu = !scrolled && heroGelap
 
   const kelasLink = (href: string) =>
     cn(
       "relative rounded-full px-3 py-2 text-sm font-medium transition-colors",
       "text-white/70 hover:bg-white/10 hover:text-white",
       "outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-      aktif(href) &&
-        "bg-white/10 text-white hover:bg-white/10 hover:text-white after:absolute after:bottom-0.5 after:left-1/2 after:size-1 after:-translate-x-1/2 after:rounded-full after:bg-accent after:content-['']"
-    )
-
-  const kelasTrigger = (aktifGrup: boolean) =>
-    cn(
-      "h-10 gap-1 rounded-full px-3 text-sm font-medium",
-      // Override bg-background & hover/accent bawaan shadcn dengan glassy putih.
-      "bg-transparent! text-white/70 hover:bg-white/10! hover:text-white! data-[state=open]:bg-white/10! data-[state=open]:text-white! hover:[&_svg]:text-white! data-[state=open]:[&_svg]:text-white!",
-      "outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
-      aktifGrup &&
-        "bg-white/10! text-white! hover:bg-white/10! hover:text-white! data-[state=open]:bg-white/10! data-[state=open]:text-white!"
+      aktif(href) && "bg-white/10 text-white hover:bg-white/10 hover:text-white"
     )
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b transition-all duration-300",
-        atas
-          ? "cta-gradient border-white/10"
-          : "bg-secondary/85 border-white/5 shadow-[0_10px_30px_-15px_rgba(4,10,22,0.6)] backdrop-blur-xl"
+        // Garis bawah dibuat lewat pseudo-element, BUKAN `border-b`: border
+        // menambah tinggi header 1px, sehingga section pertama yang ditarik
+        // -mt-16 menyisakan garis putih 1px di puncak halaman.
+        "sticky top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300",
+        "after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:content-['']",
+        menyatu
+          ? "bg-transparent after:bg-transparent"
+          : scrolled
+            ? "bg-secondary/85 shadow-[0_10px_30px_-15px_rgba(4,10,22,0.6)] backdrop-blur-xl after:bg-white/5"
+            : "cta-gradient after:bg-white/10"
       )}
     >
       <a
@@ -159,21 +304,28 @@ export function Navbar({
           lompatan layout pada konten di bawahnya. */}
       <nav
         aria-label="Navigasi utama"
-        className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center px-4 transition-none sm:px-6 lg:px-8"
+        className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 lg:px-8"
       >
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80"
           onClick={() => setOpen(false)}
         >
-          <Image
-            src={logoImage?.trim() || "/images/logo/logo-white.png"}
-            alt={brandNama?.trim() || "CV. An Nasr Konsultan"}
-            width={40}
-            height={40}
-            priority
-            className="size-10 shrink-0 object-contain"
-          />
+          <span className="flex size-10 shrink-0 items-center justify-center">
+            <Image
+              src={logoImage?.trim() || "/images/logo/logo-white.png"}
+              alt={brandNama?.trim() || "CV. An Nasr Konsultan"}
+              width={40}
+              height={40}
+              priority
+              className={cn(
+                "size-10 object-contain transition-transform duration-300",
+                // Kontraksi halus saat di puncak halaman — tanpa mengubah
+                // lebar kolom logo (mencegah menu ikut bergeser saat scroll).
+                !scrolled && "scale-90"
+              )}
+            />
+          </span>
           <span className="leading-tight">
             <span className="block font-[family-name:var(--font-heading)] text-sm font-semibold text-white">
               {brandNama?.trim() || "CV. An Nasr Konsultan"}
@@ -184,86 +336,49 @@ export function Navbar({
           </span>
         </Link>
 
-        {/* Navigasi desktop — item flat + grup yang bisa di-expand.
-            viewport={false}: tiap dropdown dirender inline di dalam item-nya
-            sehingga mengikuti posisi trigger (Profil/Layanan), bukan viewport
-            bersama yang posisinya tetap di kiri menu. */}
-        <NavigationMenu
-          viewport={false}
-          className="hidden justify-self-center lg:flex"
-        >
-          <NavigationMenuList className="gap-1">
-            {menu.map((entry) => {
-              if (entry.type === "grup") {
-                const item = entry.item
-                const gAktif =
-                  aktif(item.href) ||
-                  (item.anak ?? []).some((a) => aktif(a.href))
-
-                return (
-                  <NavigationMenuItem key={item.href}>
-                    <NavigationMenuTrigger
-                      className={kelasTrigger(gAktif)}
-                      aria-current={gAktif ? "true" : undefined}
-                    >
-                      {item.label}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="border-border/70 min-w-64 rounded-xl shadow-[var(--shadow-lift)]">
-                      <ul className="flex flex-col gap-0.5 p-2">
-                        {(item.anak ?? []).map((sub) => (
-                          <li key={sub.href}>
-                            <NavigationMenuLink
-                              href={sub.href}
-                              aria-current={
-                                aktif(sub.href) ? "page" : undefined
-                              }
-                              className={cn(
-                                "relative block rounded-lg px-3 py-2.5 text-sm transition-colors",
-                                aktif(sub.href)
-                                  ? "bg-primary/8 text-primary font-medium"
-                                  : "text-foreground/80 hover:bg-primary/5 hover:text-primary"
-                              )}
-                            >
-                              {sub.label}
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                )
-              }
-
+        {/* Navigasi desktop — item flat + grup dengan dropdown sendiri. */}
+        <ul className="hidden items-center justify-center gap-1 justify-self-center lg:flex">
+          {menu.map((entry) => {
+            if (entry.type === "grup") {
               const item = entry.item
+              const gAktif =
+                aktif(item.href) || (item.anak ?? []).some((a) => aktif(a.href))
 
               return (
-                <NavigationMenuItem key={item.href}>
-                  <NavigationMenuLink
-                    href={item.href}
-                    aria-current={aktif(item.href) ? "page" : undefined}
-                    onClick={() => {
-                      if (item.href === "/kontak") {
-                        trackEvent(ANALYTICS_EVENTS.ctaClicked, {
-                          cta: "nav_kontak",
-                        })
-                      }
-                    }}
-                    className={kelasLink(item.href)}
-                  >
-                    {item.label}
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
+                <li key={item.href}>
+                  <GrupNav item={item} aktifGrup={gAktif} subAktif={aktif} />
+                </li>
               )
-            })}
-          </NavigationMenuList>
-        </NavigationMenu>
+            }
+
+            const item = entry.item
+
+            return (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  aria-current={aktif(item.href) ? "page" : undefined}
+                  onClick={() => {
+                    if (item.href === "/kontak") {
+                      trackEvent(ANALYTICS_EVENTS.ctaClicked, {
+                        cta: "nav_kontak",
+                      })
+                    }
+                  }}
+                  className={kelasLink(item.href)}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
 
         <div className="flex shrink-0 items-center gap-2 justify-self-end">
           <Button
             asChild
-            variant="heroGhost"
             size="pill"
-            className="hidden rounded-full px-6 font-semibold transition-transform hover:scale-[1.03] lg:inline-flex"
+            className="bg-accent text-accent-foreground hover:bg-accent/90 hidden rounded-full px-6 font-semibold shadow-[var(--shadow-soft)] transition-transform hover:scale-[1.03] lg:inline-flex"
           >
             <a
               href={`https://wa.me/${nomorWa}`}
@@ -337,6 +452,9 @@ export function Navbar({
                             <Link
                               href={sub.href}
                               onClick={() => setOpen(false)}
+                              aria-current={
+                                aktif(sub.href) ? "page" : undefined
+                              }
                               className={cn(
                                 "relative block rounded-lg px-3 py-2.5 text-sm transition-colors",
                                 aktif(sub.href)
@@ -365,7 +483,7 @@ export function Navbar({
                   className={cn(
                     "focus-visible:ring-accent/70 relative block border-b border-white/10 px-3 py-3 text-sm font-medium transition-colors outline-none last:border-0 focus-visible:ring-2",
                     aktif(item.href)
-                      ? "before:bg-accent text-white before:absolute before:top-1/2 before:left-0 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:content-['']"
+                      ? "bg-white/10 text-white"
                       : "text-white/80 hover:bg-white/10 hover:text-white"
                   )}
                 >
@@ -377,9 +495,8 @@ export function Navbar({
             <div className="pt-4">
               <Button
                 asChild
-                variant="heroGhost"
                 size="pill"
-                className="w-full rounded-full"
+                className="bg-accent text-accent-foreground hover:bg-accent/90 w-full rounded-full font-semibold"
               >
                 <a
                   href={`https://wa.me/${nomorWa}`}

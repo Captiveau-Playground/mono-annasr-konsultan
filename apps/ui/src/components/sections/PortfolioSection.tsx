@@ -84,6 +84,9 @@ export function PortfolioSection({
       id="proyek"
       tone="gelap"
       latar={latar}
+      // Di halaman Portfolio section ini yang pertama: tarik ke bawah navbar
+      // transparan (navbar sticky berada di atas section, bukan menumpuk).
+      className={tanpaJudul ? "-mt-16 pt-36 lg:pt-40" : undefined}
       judul={tanpaJudul ? undefined : judul}
       eyebrow={tanpaJudul ? undefined : eyebrow}
       aksi={
@@ -118,7 +121,7 @@ export function PortfolioSection({
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {tampil.map((p, i) => (
-          <Reveal key={p.nama} delay={i * 0.04}>
+          <Reveal key={`${p.nama}|${p.lokasi}|${p.gambar}`} delay={i * 0.04}>
             <article className="group border-primary-foreground/10 relative overflow-hidden rounded-lg border">
               <Image
                 src={p.gambar}
