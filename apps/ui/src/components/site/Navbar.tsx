@@ -122,9 +122,11 @@ export function Navbar({
 
   const kelasLink = (href: string) =>
     cn(
-      "rounded-full px-3 py-2 text-sm font-medium transition-colors",
+      "relative rounded-full px-3 py-2 text-sm font-medium transition-colors",
       "text-white/70 hover:bg-white/10 hover:text-white",
-      aktif(href) && "bg-white/10 text-white hover:bg-white/10 hover:text-white"
+      "outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
+      aktif(href) &&
+        "bg-white/10 text-white hover:bg-white/10 hover:text-white after:absolute after:bottom-0.5 after:left-1/2 after:size-1 after:-translate-x-1/2 after:rounded-full after:bg-accent after:content-['']"
     )
 
   const kelasTrigger = (aktifGrup: boolean) =>
@@ -132,6 +134,7 @@ export function Navbar({
       "h-10 gap-1 rounded-full px-3 text-sm font-medium",
       // Override bg-background & hover/accent bawaan shadcn dengan glassy putih.
       "bg-transparent! text-white/70 hover:bg-white/10! hover:text-white! data-[state=open]:bg-white/10! data-[state=open]:text-white! hover:[&_svg]:text-white! data-[state=open]:[&_svg]:text-white!",
+      "outline-none focus-visible:ring-2 focus-visible:ring-accent/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent",
       aktifGrup &&
         "bg-white/10! text-white! hover:bg-white/10! hover:text-white! data-[state=open]:bg-white/10! data-[state=open]:text-white!"
     )
@@ -139,15 +142,25 @@ export function Navbar({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b border-white/10 transition-all duration-300",
+        "sticky top-0 z-50 border-b transition-all duration-300",
         atas
-          ? "cta-gradient"
-          : "bg-secondary/85 shadow-[0_10px_30px_-15px_rgba(4,10,22,0.6)] backdrop-blur-xl"
+          ? "cta-gradient border-white/10"
+          : "bg-secondary/85 border-white/5 shadow-[0_10px_30px_-15px_rgba(4,10,22,0.6)] backdrop-blur-xl"
       )}
     >
+      <a
+        href="#konten"
+        className="focus:text-primary sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-4 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:shadow-lg"
+      >
+        Lewati ke konten
+      </a>
+
       {/* Tinggi konstan h-16 — tidak menyusut saat scroll supaya tidak ada
           lompatan layout pada konten di bawahnya. */}
-      <nav className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center px-4 transition-none sm:px-6 lg:px-8">
+      <nav
+        aria-label="Navigasi utama"
+        className="mx-auto grid h-16 max-w-[80rem] grid-cols-[auto_1fr_auto] items-center px-4 transition-none sm:px-6 lg:px-8"
+      >
         <Link
           href="/"
           className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-80"
@@ -166,7 +179,7 @@ export function Navbar({
               {brandNama?.trim() || "CV. An Nasr Konsultan"}
             </span>
             <span className="hidden text-[11px] tracking-wide text-white/60 sm:block">
-              {tagline ?? "Konsultan Teknik &amp; Konstruksi"}
+              {tagline ?? "Konsultan Teknik & Konstruksi"}
             </span>
           </span>
         </Link>
@@ -189,20 +202,26 @@ export function Navbar({
 
                 return (
                   <NavigationMenuItem key={item.href}>
-                    <NavigationMenuTrigger className={kelasTrigger(gAktif)}>
+                    <NavigationMenuTrigger
+                      className={kelasTrigger(gAktif)}
+                      aria-current={gAktif ? "true" : undefined}
+                    >
                       {item.label}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="border-border bg-popover flex w-60 flex-col gap-0.5 p-1.5 shadow-[var(--shadow-soft)]">
+                    <NavigationMenuContent className="border-border/70 min-w-64 rounded-xl shadow-[var(--shadow-lift)]">
+                      <ul className="flex flex-col gap-0.5 p-2">
                         {(item.anak ?? []).map((sub) => (
                           <li key={sub.href}>
                             <NavigationMenuLink
                               href={sub.href}
+                              aria-current={
+                                aktif(sub.href) ? "page" : undefined
+                              }
                               className={cn(
-                                "block rounded-lg px-3 py-2 text-sm transition-colors",
+                                "relative block rounded-lg px-3 py-2.5 text-sm transition-colors",
                                 aktif(sub.href)
-                                  ? "bg-primary/10 text-primary"
-                                  : "text-foreground hover:bg-muted"
+                                  ? "bg-primary/8 text-primary font-medium"
+                                  : "text-foreground/80 hover:bg-primary/5 hover:text-primary"
                               )}
                             >
                               {sub.label}
@@ -257,23 +276,34 @@ export function Navbar({
 
           <button
             type="button"
-            aria-label="Buka menu"
+            aria-label={open ? "Tutup menu" : "Buka menu"}
             aria-expanded={open}
             aria-controls="menu-mobile"
             onClick={() => setOpen((v) => !v)}
-            className="flex size-10 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors hover:bg-white/10 hover:text-white lg:hidden"
+            className="focus-visible:ring-accent/70 flex size-10 items-center justify-center rounded-full border border-white/25 text-white/80 transition-colors outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent lg:hidden"
           >
             {open ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
       </nav>
 
+      {/* Backdrop gelap — klik di luar panel untuk menutup (mobile). */}
+      {open ? (
+        <button
+          type="button"
+          aria-label="Tutup menu"
+          tabIndex={-1}
+          onClick={() => setOpen(false)}
+          className="animate-in fade-in bg-secondary/50 fixed inset-0 top-16 z-40 backdrop-blur-[2px] duration-200 lg:hidden"
+        />
+      ) : null}
+
       {/* Mobile — panel navy gelap menyatu dengan identitas brand; halaman
           dikunci (overflow hidden) dan bisa ditutup dengan Escape. */}
       {open ? (
         <div
           id="menu-mobile"
-          className="bg-secondary absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 shadow-[var(--shadow-lift)] lg:hidden"
+          className="bg-secondary animate-in fade-in slide-in-from-top-2 absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 shadow-[var(--shadow-lift)] duration-200 lg:hidden"
         >
           <div className="mx-auto max-w-[80rem] px-4 py-4">
             {menu.map((entry) => {
@@ -289,7 +319,7 @@ export function Navbar({
                     <button
                       type="button"
                       onClick={() => setBukaMobile(terbuka ? null : item.href)}
-                      className="flex w-full items-center justify-between px-3 py-3 text-sm font-medium text-white"
+                      className="focus-visible:ring-accent/70 flex w-full items-center justify-between rounded-lg px-3 py-3 text-sm font-medium text-white transition-colors outline-none hover:bg-white/5 focus-visible:ring-2"
                       aria-expanded={terbuka}
                     >
                       {item.label}
@@ -308,7 +338,7 @@ export function Navbar({
                               href={sub.href}
                               onClick={() => setOpen(false)}
                               className={cn(
-                                "block rounded-lg px-3 py-2.5 text-sm",
+                                "relative block rounded-lg px-3 py-2.5 text-sm transition-colors",
                                 aktif(sub.href)
                                   ? "bg-white/10 text-white"
                                   : "text-white/70 hover:bg-white/10 hover:text-white"
@@ -333,9 +363,9 @@ export function Navbar({
                   onClick={() => setOpen(false)}
                   aria-current={aktif(item.href) ? "page" : undefined}
                   className={cn(
-                    "block border-b border-white/10 px-3 py-3 text-sm font-medium last:border-0",
+                    "focus-visible:ring-accent/70 relative block border-b border-white/10 px-3 py-3 text-sm font-medium transition-colors outline-none last:border-0 focus-visible:ring-2",
                     aktif(item.href)
-                      ? "text-white"
+                      ? "before:bg-accent text-white before:absolute before:top-1/2 before:left-0 before:h-4 before:w-0.5 before:-translate-y-1/2 before:rounded-full before:content-['']"
                       : "text-white/80 hover:bg-white/10 hover:text-white"
                   )}
                 >

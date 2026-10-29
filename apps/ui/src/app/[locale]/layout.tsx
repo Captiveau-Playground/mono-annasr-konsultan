@@ -222,7 +222,9 @@ export default async function RootLayout({
                 href: `/layanan/${l.slug}`,
               }))}
             />
-            <main className="min-h-screen">{children}</main>
+            <main id="konten" className="min-h-screen">
+              {children}
+            </main>
             <Footer
               brand={kontenSitus.situs.brandNama}
               tagline={kontenSitus.situs.brandTagline}

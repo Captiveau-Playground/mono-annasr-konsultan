@@ -35,10 +35,20 @@ const ALASAN_STATIS: Alasan[] = [
   },
 ]
 
+/** Jarak (dalam tinggi viewport) tempat sebuah kartu dianggap "paling fokus". */
+const RENTANG_FOKUS = 0.62
+/** Pergeseran maksimum kartu (px) saat jauh dari pusat layar. */
+const GESER_MAKS = 26
+
+const batasi = (v: number, min = 0, max = 1) => Math.min(max, Math.max(min, v))
+
 /**
- * "Mengapa Memilih An Nasr Konsultan" — scrollytelling: panel kiri sticky
- * (judul + penghitung besar + progress), daftar alasan di kanan menyala satu
- * per satu saat scroll; item yang sedang terbaca disorot.
+ * "Mengapa Memilih An Nasr Konsultan" — scrollytelling halus.
+ *
+ * Kartu tidak lagi menyala/mati mendadak: tiap kartu dihitung jaraknya ke
+ * pusat viewport setiap frame (rAF) lalu digeser & diskalakan secara kontinu,
+ * sehingga geraknya mengikuti scroll. Panel kiri sticky menampilkan nomor
+ * aktif + progress yang juga mengalir (bukan melompat per item).
  */
 export function KenapaKami({
   alasan = [],
@@ -58,28 +68,85 @@ export function KenapaKami({
   }))
 
   const [aktif, setAktif] = useState(0)
-  const refs = useRef<(HTMLElement | null)[]>([])
+  const kartuRefs = useRef<(HTMLElement | null)[]>([])
+  const barRef = useRef<HTMLDivElement | null>(null)
+  const aktifRef = useRef(0)
 
   useEffect(() => {
-    if (typeof IntersectionObserver === "undefined") return
+    const els = kartuRefs.current.filter(Boolean) as HTMLElement[]
+    if (els.length === 0) return
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            const i = refs.current.indexOf(e.target as HTMLElement)
-            if (i !== -1) setAktif(i)
-          }
+    const kurangiGerak = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+
+    let raf = 0
+
+    const hitung = () => {
+      raf = 0
+      const vh = window.innerHeight || 1
+      const pusat = vh / 2
+      let terdekat = 0
+      let jarakTerdekat = Infinity
+
+      for (const [i, el] of els.entries()) {
+        const r = el.getBoundingClientRect()
+        const tengahKartu = r.top + r.height / 2
+        const jarak = (tengahKartu - pusat) / vh
+
+        // 1 = tepat di pusat layar, 0 = jauh di luar rentang fokus.
+        const fokus = batasi(1 - Math.abs(jarak) / RENTANG_FOKUS)
+
+        if (!kurangiGerak) {
+          const geser = batasi(jarak, -1, 1) * GESER_MAKS
+          const skala = 0.975 + 0.025 * fokus
+
+          el.style.transform = `translate3d(0, ${geser.toFixed(2)}px, 0) scale(${skala.toFixed(4)})`
+          el.style.setProperty("--fokus", fokus.toFixed(3))
         }
-      },
-      // Pita tengah — hanya item yang melewati tengah viewport dianggap aktif.
-      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
-    )
 
-    const els = refs.current.filter(Boolean) as HTMLElement[]
-    for (const el of els) io.observe(el)
+        if (Math.abs(jarak) < jarakTerdekat) {
+          jarakTerdekat = Math.abs(jarak)
+          terdekat = i
+        }
+      }
 
-    return () => io.disconnect()
+      // Progress mengalir: dari kartu pertama menyentuh pusat layar sampai
+      // kartu terakhir melewatinya.
+      const pertama = els[0]
+      const akhir = els.at(-1)
+      if (!pertama || !akhir) return
+
+      const r1 = pertama.getBoundingClientRect()
+      const r2 = akhir.getBoundingClientRect()
+      const atas = r1.top + r1.height / 2
+      const bawah = r2.top + r2.height / 2
+      const progres = batasi((pusat - atas) / Math.max(1, bawah - atas))
+
+      if (barRef.current) {
+        barRef.current.style.transform = `scaleX(${progres.toFixed(4)})`
+      }
+
+      if (terdekat !== aktifRef.current) {
+        aktifRef.current = terdekat
+        setAktif(terdekat)
+      }
+    }
+
+    const jadwalkan = () => {
+      if (raf) return
+      raf = requestAnimationFrame(hitung)
+    }
+
+    hitung()
+    window.addEventListener("scroll", jadwalkan, { passive: true })
+    window.addEventListener("resize", jadwalkan)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      window.removeEventListener("scroll", jadwalkan)
+      window.removeEventListener("resize", jadwalkan)
+    }
   }, [])
 
   return (
@@ -110,10 +177,9 @@ export function KenapaKami({
               </p>
               <div className="bg-primary/10 mt-5 h-1 w-48 overflow-hidden rounded-full">
                 <div
-                  className="bg-accent h-full rounded-full transition-all duration-500 ease-out"
-                  style={{
-                    width: `${((aktif + 1) / ALASAN.length) * 100}%`,
-                  }}
+                  ref={barRef}
+                  className="bg-accent h-full origin-left rounded-full will-change-transform"
+                  style={{ transform: "scaleX(0)" }}
                 />
               </div>
               <p className="text-muted-foreground mt-5 max-w-xs text-sm">
@@ -125,7 +191,7 @@ export function KenapaKami({
             </Reveal>
           </div>
 
-          {/* Panel kanan — daftar alasan yang menyala saat scroll */}
+          {/* Panel kanan — kartu bergerak mengikuti scroll */}
           <div className="space-y-10 lg:space-y-16">
             {ALASAN.map((item, i) => {
               const Ikon = item.ikon
@@ -136,25 +202,29 @@ export function KenapaKami({
                 <article
                   key={item.judul}
                   ref={(el) => {
-                    refs.current[i] = el
+                    kartuRefs.current[i] = el
                   }}
                   aria-current={isAktif ? "step" : undefined}
                   className={cn(
-                    "scroll-mt-32 rounded-[20px] border p-7 transition-all duration-500 lg:scroll-mt-24",
+                    "scroll-mt-32 rounded-2xl border p-7 will-change-transform",
+                    "transition-[border-color,box-shadow,background-color] duration-500 ease-out",
+                    "motion-reduce:transform-none motion-reduce:transition-none",
                     gelap
-                      ? "border-primary bg-primary text-primary-foreground"
-                      : "border-transparent bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)]",
+                      ? "bg-navy text-white"
+                      : "bg-card text-foreground shadow-[0_10px_30px_rgba(0,0,0,0.06)]",
                     isAktif
                       ? "border-accent shadow-[var(--shadow-lift)]"
-                      : "opacity-45 saturate-50"
+                      : gelap
+                        ? "border-white/10"
+                        : "border-border"
                   )}
                 >
                   <div className="flex items-start gap-5">
                     <span
                       className={cn(
-                        "flex size-12 shrink-0 items-center justify-center rounded-xl",
+                        "flex size-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-500",
                         gelap
-                          ? "bg-primary-foreground/10 text-accent"
+                          ? "text-accent bg-white/10"
                           : "bg-primary/8 text-primary"
                       )}
                     >
@@ -164,7 +234,7 @@ export function KenapaKami({
                       <p
                         className={cn(
                           "text-[11px] font-semibold tracking-[0.2em] uppercase",
-                          gelap ? "text-primary-foreground/60" : "text-accent"
+                          gelap ? "text-white/70" : "text-primary"
                         )}
                       >
                         Keunggulan {String(i + 1).padStart(2, "0")}
@@ -172,7 +242,7 @@ export function KenapaKami({
                       <h3
                         className={cn(
                           "mt-2 text-xl leading-snug font-semibold",
-                          gelap ? "text-primary-foreground" : "text-foreground"
+                          gelap ? "text-white" : "text-foreground"
                         )}
                       >
                         {item.judul}
@@ -180,9 +250,7 @@ export function KenapaKami({
                       <p
                         className={cn(
                           "mt-3 text-sm leading-7",
-                          gelap
-                            ? "text-primary-foreground/75"
-                            : "text-muted-foreground"
+                          gelap ? "text-white/80" : "text-muted-foreground"
                         )}
                       >
                         {item.teks}
