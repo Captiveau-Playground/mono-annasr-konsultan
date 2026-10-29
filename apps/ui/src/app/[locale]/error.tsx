@@ -1,7 +1,6 @@
 "use client"
 
 // Error boundaries must be Client Components - https://nextjs.org/docs/app/api-reference/file-conventions/error#error
-import * as Sentry from "@sentry/nextjs"
 import { useTranslations } from "next-intl"
 import { useEffect } from "react"
 
@@ -17,7 +16,7 @@ export default function ErrorPage({ error, reset }: Props) {
   const t = useTranslations("errors.global")
 
   useEffect(() => {
-    Sentry.captureException(error)
+    console.error(error)
   }, [error])
 
   const handleTryAgain = () => {

@@ -1,7 +1,6 @@
 "use client"
 
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons"
-import * as Sentry from "@sentry/nextjs"
 import { XIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
@@ -118,7 +117,7 @@ export function ErrorBoundary({
       onError(error, info)
     }
 
-    Sentry.captureException(error)
+    console.error(error)
   }
 
   return (

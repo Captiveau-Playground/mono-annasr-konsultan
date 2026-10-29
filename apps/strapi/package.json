@@ -49,7 +49,6 @@
     "@strapi/design-system": "2.2.4",
     "@strapi/icons": "2.2.4",
     "@strapi/logger": "5.52.2",
-    "@strapi/plugin-sentry": "5.52.2",
     "@strapi/plugin-users-permissions": "5.52.2",
     "@strapi/provider-email-mailgun": "5.52.2",
     "@strapi/provider-email-nodemailer": "5.52.2",

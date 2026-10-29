@@ -1244,9 +1244,6 @@ export const cs = {
   "global.plugins.i18n": "Mezinárodní",
   "global.plugins.i18n.description":
     "Tento plugin umožňuje vytvářet, číst a aktualizovat obsah v různých jazycích, jak z administrátorského panelu, tak z API.",
-  "global.plugins.sentry": "Sentry",
-  "global.plugins.sentry.description":
-    "Posílejte Strapi chybové události do Sentry.",
   "global.plugins.upload": "Mediální knihovna",
   "global.plugins.upload.description": "Správa mediálních souborů.",
   "global.plugins.users-permissions": "Role a oprávnění",

@@ -1,5 +1,4 @@
 import { azureMonitorProvider } from "./providers/azure-monitor"
-import { sentryProvider } from "./providers/sentry"
 import type { TelemetryProvider, TelemetryRuntime } from "./types"
 
 export type { TelemetryProvider, TelemetryRuntime } from "./types"
@@ -16,10 +15,9 @@ export type { TelemetryProvider, TelemetryRuntime } from "./types"
 export async function initializeTelemetry(
   runtime: TelemetryRuntime
 ): Promise<void> {
-  const providers: TelemetryProvider[] = [
-    azureMonitorProvider(),
-    sentryProvider(),
-  ].filter((provider): provider is TelemetryProvider => provider !== null)
+  const providers: TelemetryProvider[] = [azureMonitorProvider()].filter(
+    (provider): provider is TelemetryProvider => provider !== null
+  )
 
   // Telemetry is best-effort: a misconfigured provider must not break
   // instrumentation, so isolate each provider and continue past failures.

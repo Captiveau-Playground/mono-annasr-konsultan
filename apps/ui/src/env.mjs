@@ -36,10 +36,6 @@ export const env = createEnv({
 
     BETTER_AUTH_SECRET: z.string().optional(),
 
-    SENTRY_AUTH_TOKEN: z.string().optional(),
-    SENTRY_ORG: z.string().optional(),
-    SENTRY_PROJECT: z.string().optional(),
-    SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: z.string().optional(),
 
     // Observability — see packages/logging and src/lib/telemetry
     OTEL_SERVICE_NAME: z.string().optional(),
@@ -71,7 +67,6 @@ export const env = createEnv({
    * consider runtime injection instead (through `window.__ENV__` or similar hack).
    */
   client: {
-    NEXT_PUBLIC_SENTRY_DSN: z.string().optional(),
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: z.string().optional(),
     NEXT_PUBLIC_PREVENT_UNUSED_FUNCTIONS_ERROR_LOGS: optionalZodBoolean(),
     // CARTO basemaps API key — tanpa key, tile gratis menampilkan watermark
@@ -116,11 +111,6 @@ export const env = createEnv({
 
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
 
-    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
-    SENTRY_ORG: process.env.SENTRY_ORG,
-    SENTRY_PROJECT: process.env.SENTRY_PROJECT,
-    SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING:
-      process.env.SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING,
 
     OTEL_SERVICE_NAME: process.env.OTEL_SERVICE_NAME,
     LOG_LEVEL: process.env.LOG_LEVEL,
@@ -137,7 +127,6 @@ export const env = createEnv({
 
     // client
     // @dominik-juriga - find out if these are specific per environment
-    NEXT_PUBLIC_SENTRY_DSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
     NEXT_PUBLIC_RECAPTCHA_SITE_KEY: process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY,
     NEXT_PUBLIC_PREVENT_UNUSED_FUNCTIONS_ERROR_LOGS:
       process.env.NEXT_PUBLIC_PREVENT_UNUSED_FUNCTIONS_ERROR_LOGS,

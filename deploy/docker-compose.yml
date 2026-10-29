@@ -113,7 +113,6 @@ services:
       GTM_ID: ${GTM_ID:-}
       MS_CLARITY_ID: ${MS_CLARITY_ID:-}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:-}
-      SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: "1"
       SHOW_NON_BLOCKING_ERRORS: ${SHOW_NON_BLOCKING_ERRORS:-false}
     ports:
       # Host 3006 (dipakai reverse proxy) -> container 3000 (ENV PORT image)
