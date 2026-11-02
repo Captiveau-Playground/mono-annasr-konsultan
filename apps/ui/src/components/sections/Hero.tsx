@@ -88,7 +88,11 @@ export function Hero({
           ) : null}
 
           <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row">
-            <Button asChild size="xl" className="rounded-full">
+            <Button
+              asChild
+              size="xl"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full"
+            >
               <CtaLink cta="hero_konsultasi" href="/kontak">
                 Konsultasi Sekarang
                 <ArrowRight className="size-4" />

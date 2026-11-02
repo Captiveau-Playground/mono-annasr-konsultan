@@ -162,16 +162,6 @@ function GrupNav({
               </li>
             ))}
           </ul>
-          <div className="border-border/60 mt-1 border-t pt-1">
-            <Link
-              href={item.href}
-              onClick={tutup}
-              className="text-primary hover:bg-primary/5 flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold"
-            >
-              Lihat semua {item.label.toLowerCase()}
-              <span aria-hidden>→</span>
-            </Link>
-          </div>
         </div>
       </div>
     </div>
