@@ -6,17 +6,25 @@ Semua event dikirim ke `dataLayer`; tag GA4 & pengaturan marketing dikelola di
 
 ## 1. Setup awal (sekali)
 
-| Langkah | Di mana                                                | Yang dilakukan                                                                                                                             |
-| ------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| 1       | [analytics.google.com](https://analytics.google.com)   | Buat property GA4 + **Web data stream**, catat ID (G-XXXXXXX). Nanti dipakai di GTM.                                                       |
-| 2       | [tagmanager.google.com](https://tagmanager.google.com) | Buat container **Web** → dapat `GTM-XXXXXXX`.                                                                                              |
-| 3       | [clarity.microsoft.com](https://clarity.microsoft.com) | Buat project → dapat ID Clarity (10–12 karakter).                                                                                          |
-| 4       | Env                                                    | Isi `GTM_ID` & `MS_CLARITY_ID` (`.env.local` dev / `deploy/.env` prod). Tanpa keduanya → **tidak ada script dimuat** (aman untuk staging). |
+| Langkah | Di mana                                                | Yang dilakukan                                                                                                                                                                |
+| ------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | [analytics.google.com](https://analytics.google.com)   | Buat property GA4 + **Web data stream**, catat ID (G-XXXXXXX). Nanti dipakai di GTM.                                                                                          |
+| 2       | [tagmanager.google.com](https://tagmanager.google.com) | Buat container **Web** → dapat `GTM-XXXXXXX`.                                                                                                                                 |
+| 3       | [clarity.microsoft.com](https://clarity.microsoft.com) | Buat project → dapat ID Clarity (10–12 karakter).                                                                                                                             |
+| 4       | Env                                                    | `GTM_ID` **opsional** (ada default `GTM-TJPCCLSL` di `src/lib/analytics/gtm.ts`). Isi `MS_CLARITY_ID` bila ingin Clarity aktif. Set di `.env.local` dev / `deploy/.env` prod. |
 
 Mekanisme: `apps/ui/src/components/analytics/Analytics.tsx` (server) membaca env
-runtime → merender GTM (`@next/third-parties`) + Clarity (`next/script`).
-CSP (`apps/ui/src/lib/proxies/securityHeaders.ts`) sudah me-allowlist
-`googletagmanager.com`, `google-analytics.com`, `clarity.ms`, `analytics.google.com`.
+runtime → merender `<GoogleTagManager>` (inline snippet, server-rendered) +
+Clarity (`next/script`).
+
+> **Kenapa server-rendered, bukan `next/script`?** Di App Router strategi
+> `afterInteractive` hanya mengeluarkan `<link rel="preload">` saat SSR — tag
+> baru diinject setelah hydration. Akibatnya checker instalasi Google
+> ("Google tag wasn't detected") gagal walau tag jalan di browser, dan event
+> sebelum hydration bisa hilang. Karena itu `gtm.ts` merender snippet resmi
+> sebagai inline script yang ikut di HTML awal.
+> CSP (`apps/ui/src/lib/proxies/securityHeaders.ts`) sudah me-allowlist
+> `googletagmanager.com`, `google-analytics.com`, `clarity.ms`, `analytics.google.com`.
 
 ## 2. Tag di GTM (buat sekali, lalu kelola di sana)
 

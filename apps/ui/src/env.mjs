@@ -36,7 +36,6 @@ export const env = createEnv({
 
     BETTER_AUTH_SECRET: z.string().optional(),
 
-
     // Observability — see packages/logging and src/lib/telemetry
     OTEL_SERVICE_NAME: z.string().optional(),
     LOG_LEVEL: z
@@ -110,7 +109,6 @@ export const env = createEnv({
     NEXT_OUTPUT: process.env.NEXT_OUTPUT,
 
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
-
 
     OTEL_SERVICE_NAME: process.env.OTEL_SERVICE_NAME,
     LOG_LEVEL: process.env.LOG_LEVEL,

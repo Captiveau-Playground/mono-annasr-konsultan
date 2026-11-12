@@ -1,25 +1,26 @@
+import { DEFAULT_GTM_ID } from "@/lib/analytics/gtm"
 import { getEnvVar } from "@/lib/env-vars"
 
 import { ClarityScript } from "./ClarityScript"
-import { GoogleTagManagerClient } from "./GoogleTagManagerClient"
+import { GoogleTagManager } from "./GoogleTagManager"
 
 /**
  * Analytics global (Server Component): membaca env runtime lalu merender
- * GTM (GA4 lewat GTM) dan/atau Microsoft Clarity.
+ * GTM (GA4 dikelola di dalam container GTM) dan/atau Microsoft Clarity.
  *
- * Tanpa `GTM_ID` / `MS_CLARITY_ID` → tidak merender apa pun (dev aman).
+ * `GTM_ID` punya default (`DEFAULT_GTM_ID`) supaya tag tetap terpasang tanpa
+ * konfigurasi tambahan di server; set `GTM_ID` untuk menimpanya per environment.
+ * Tanpa `MS_CLARITY_ID` → Clarity tidak dimuat.
  *
- * Rute yang boleh di-lewati: halaman admin/CMS tidak memakai komponen ini.
+ * Rute admin/CMS tidak memakai komponen ini.
  */
 export function Analytics() {
-  const gtmId = getEnvVar("GTM_ID")
+  const gtmId = getEnvVar("GTM_ID") ?? DEFAULT_GTM_ID
   const clarityId = getEnvVar("MS_CLARITY_ID")
-
-  if (!gtmId && !clarityId) return null
 
   return (
     <>
-      {gtmId ? <GoogleTagManagerClient gtmId={gtmId} /> : null}
+      <GoogleTagManager gtmId={gtmId} />
       {clarityId ? <ClarityScript clarityId={clarityId} /> : null}
     </>
   )
